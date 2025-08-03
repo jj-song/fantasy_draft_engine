@@ -14,6 +14,7 @@
 **📊 Overall Progress**:
 - **Phase 0 (Foundation)**: ✅ 100% Complete
 - **Phase 1 (Advanced ML)**: ✅ 100% Complete
+- **Phase 1.5 (Industry Standards)**: 🎯 Next Priority
 - **Phase 2 (Real-time & Integration)**: 🚀 Ready to begin
 - **Phase 3 (Interactive Features)**: 📋 Planned
 - **Phase 4 (Production & Scale)**: 📋 Planned
@@ -141,29 +142,73 @@ Build an AI-powered fantasy football draft tool that generates data-driven ranki
 - ✅ Rankings show logical position scarcity patterns
 - ✅ Draft tools generate outputs in <30 seconds
 
-### Phase 2: Real-time Integration & Advanced Analytics (8-10 weeks) 🚀 READY TO START
+### Phase 1.5: Industry-Standard Data Enhancement (2-3 weeks) 🎯 NEXT PRIORITY
+
+#### Planned Deliverables
+- [ ] **Advanced Opportunity Metrics Foundation**
+  - Target Share calculation per game
+  - Air Yards and Air Yards Share tracking
+  - WOPR (Weighted Opportunity Rating)
+  - aDOT (Average Depth of Target)
+  - Snap Count/Share tracking from nfl_data_py
+  - Route participation rate for WR/TE
+  - Red Zone opportunities (targets + carries)
+  - High-Value Touch % (RZ + 3rd down + 2-min drill)
+
+- [ ] **Enhanced Historical Analysis**
+  - Rolling averages (last 3, 5, 8 games)
+  - Trend detection algorithms (improving/declining)
+  - Home/Road performance splits
+  - Dome vs outdoor performance tracking
+  - Primetime game adjustments
+  - Rest advantage/disadvantage factors
+
+- [ ] **Position-Specific Advanced Features**
+  - QB: Pressure rate impacts, weapon quality scores
+  - RB: O-line blocking grades, goal line usage
+  - WR: Separation metrics, contested catch rates
+  - TE: Inline vs slot usage, red zone targeting
+
+#### Success Criteria
+- [ ] Implement 20+ advanced opportunity metrics
+- [ ] Historical trend analysis for all 600+ players
+- [ ] Position-specific features improve model R² by 5%+
+- [ ] Match FantasyPros basic feature coverage
+
+### Phase 2: Real-time Integration & Advanced Analytics (10-12 weeks) 🚀 READY TO START
 
 #### Planned Deliverables
 - [ ] **Real-time Data Pipeline**
   - Injury report integration (official NFL sources)
+  - Practice participation tracking (DNP, Limited, Full)
   - Weather data API integration
   - Vegas odds and game totals
+  - Player prop lines as validation data
   - Beat reporter sentiment analysis
+  - News aggregation with impact scoring
   - Streaming architecture with Apache Kafka
 
 - [ ] **Team Unit Analysis** (From Past Project)
   - Offensive line impact on RB performance
-  - Defensive unit strength ratings
+  - Position-specific defensive grades (vs QB, RB, WR, TE)
   - Pass/run blocking grades integration
   - Opponent defensive adjustments
   - Team pace and play volume metrics
+  - Strength of Schedule (forward-looking, not historical)
+  - Coaching tendency analysis
 
-- [ ] **Advanced Modeling**
+- [ ] **Advanced Modeling & Projections**
   - Multi-task learning across positions
   - Player trajectory modeling (age curves)
   - Injury impact prediction models
   - Schedule strength adjustments
   - Bayesian uncertainty quantification
+  - Confidence intervals for all projections
+  - Floor/ceiling projections (10th/90th percentile)
+  - Boom/bust probability scores
+  - Neural network model addition to ensemble
+  - Multiple model ensemble with bayesian averaging
+  - Scenario-based projections (if healthy, if starter, etc.)
 
 - [ ] **API Development**
   - FastAPI REST endpoints
@@ -178,8 +223,12 @@ Build an AI-powered fantasy football draft tool that generates data-driven ranki
 - [ ] API response times <200ms for rankings
 - [ ] 99.9% uptime for data pipeline
 - [ ] Team unit features improve RB predictions by 15%+
+- [ ] Exceed FantasyPros ECR accuracy by 15%+
+- [ ] Projection confidence intervals with 90% accuracy
+- [ ] Neural network ensemble improves R² by 3%+
+- [ ] Forward-looking SOS correlation 0.65+ with actual
 
-### Phase 3: Interactive Features (10-12 weeks)
+### Phase 3: Interactive Features (12-14 weeks)
 
 #### Planned Deliverables
 - [ ] **Auction Value Calculator**
@@ -203,12 +252,24 @@ Build an AI-powered fantasy football draft tool that generates data-driven ranki
   - Position run detection
   - Auto-draft capabilities
 
-- [ ] **Weekly Tools**
+- [ ] **Expert Consensus Integration**
+  - ECR-style aggregation system
+  - Multiple projection sources comparison
+  - Projection volatility tracking week-to-week
+  - Ranking correlation validation
+  - Expert accuracy scoring system
+
+- [ ] **Weekly Tools & Trend Analysis**
   - Start/sit optimizer
   - DFS lineup generator
   - Waiver wire rankings
   - Matchup projections
   - Weather impact analysis
+  - Rolling performance averages (last 3, 5, 8 games)
+  - Trend detection (improving/declining players)
+  - Rookie progression modeling
+  - Coaching change impact analysis
+  - Usage pattern change detection
 
 #### Success Criteria
 - [ ] Auction values within $3 of actual results
@@ -216,6 +277,9 @@ Build an AI-powered fantasy football draft tool that generates data-driven ranki
 - [ ] Draft assistant improves team scores by 15%+
 - [ ] Weekly tools achieve 60%+ start/sit accuracy
 - [ ] User engagement 3x per week during season
+- [ ] ECR correlation 0.80+ with end-of-season results
+- [ ] Trend detection identifies 70%+ breakouts early
+- [ ] Expert consensus accuracy beats individual experts
 
 ### Phase 4: Production & Scale (12-16 weeks)
 
@@ -436,6 +500,40 @@ POST /api/v1/draft/recommend
    - Database query caching
    - Model prediction caching
 
+## Industry Research & Competitive Analysis
+
+### Major Fantasy Sites Analysis (Completed August 2025)
+
+**FantasyPros Methodology**:
+- **ECR (Expert Consensus Rankings)**: Rank Points system aggregating 100+ experts
+- **Accuracy Tracking**: 10-year methodology tracking expert performance
+- **Update Frequency**: Daily rankings updates
+- **Key Strength**: Collective wisdom approach avoiding simple averages
+
+**ESPN Methodology**:
+- **Mike Clay Projections**: Hybrid statistical + subjective analysis
+- **Expert Aggregation**: 8-person analyst consensus for rankings
+- **Factors**: Dropback shares, carry shares, target shares, coaching trends
+- **Limitations**: Lower accuracy compared to other projection systems
+
+**Industry Standard Features Identified**:
+- Target Share, Air Yards, WOPR, aDOT for WR/TE evaluation
+- Snap Count/Share for usage trending
+- Red Zone opportunities tracking
+- Strength of Schedule (forward-looking)
+- Injury report integration with practice participation
+- Weather and venue considerations
+- Vegas lines for game script projections
+- Rolling performance averages for trend detection
+
+**Our Competitive Advantages**:
+- More sophisticated ML ensemble (RF + LightGBM + Neural Networks)
+- 300+ engineered features vs manual expert analysis
+- Real-time model updates vs daily manual updates
+- Position-specific modeling vs generic approaches
+- Confidence intervals and uncertainty quantification
+- Historical backtesting validation
+
 ## Integration with Past Project
 
 ### Team Unit Analysis Features
@@ -465,6 +563,9 @@ From `fantasy_football_analyzer` project:
 
 ### Technical Metrics
 - **Model Accuracy**: RMSE < 2.5 FPPG, R² > 0.70
+- **Industry Comparison**: Exceed FantasyPros ECR accuracy by 15%+
+- **Advanced Metrics**: 20+ opportunity/efficiency metrics implemented
+- **Prediction Confidence**: 90% accuracy on confidence intervals
 - **Prediction Latency**: <100ms per player
 - **Data Freshness**: <5 minute delay
 - **System Uptime**: 99.9% availability
@@ -476,10 +577,13 @@ From `fantasy_football_analyzer` project:
 - **NPS Score**: 50+ from active users
 
 ### Performance Benchmarks
+- **vs FantasyPros ECR**: 15% better accuracy
+- **vs ESPN Rankings**: 20% better accuracy  
 - **vs Expert Consensus**: 20% better accuracy
 - **vs Last Year Baseline**: 40% improvement
 - **vs Simple Average**: 60% better predictions
 - **User Draft Results**: Top 3 finish rate 40%+
+- **Ranking Correlation**: 0.80+ with end-of-season results
 
 ## Risk Management
 

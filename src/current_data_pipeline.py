@@ -81,7 +81,7 @@ def get_current_season_performance(year=None):
     
     try:
         # Get current season stats
-        from data_storage import load_raw_data
+        from src.data_storage import load_raw_data
         
         try:
             # Try to load existing data first
@@ -97,7 +97,7 @@ def get_current_season_performance(year=None):
                 current_data['player_name'] = current_data['first_name'].astype(str) + ' ' + current_data['last_name'].astype(str)
             
             # Save for future use
-            from data_storage import save_raw_data
+            from src.data_storage import save_raw_data
             save_raw_data(current_data, year)
             logger.info(f"✅ Saved fresh {year} data: {len(current_data)} records")
         
