@@ -236,7 +236,7 @@ class TestUsageMetricsValidation(unittest.TestCase):
 class TestUsageAnalyticsIntegration(unittest.TestCase):
     """Test integration with real data pipeline."""
     
-    @patch('src.features.usage_analytics.create_current_inference_dataset')
+    @patch('src.current_data_pipeline.create_current_inference_dataset')
     def test_get_usage_analytics_for_season(self, mock_create_dataset):
         """Test getting usage analytics for a season."""
         # Mock the data creation
