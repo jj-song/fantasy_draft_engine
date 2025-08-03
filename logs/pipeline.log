@@ -1,0 +1,2503 @@
+2025-08-03 00:26:36,000 - INFO - 🏈 Fantasy Draft Engine - Complete Pipeline
+2025-08-03 00:26:36,000 - INFO - 📊 AI-powered rankings from 14 years of NFL data
+2025-08-03 00:26:36,000 - INFO - 🤖 Training ensemble models for 6 positions
+2025-08-03 00:26:36,000 - INFO - 
+2025-08-03 00:26:36,000 - INFO - Created directory: data/raw
+2025-08-03 00:26:36,000 - INFO - Created directory: data/processed
+2025-08-03 00:26:36,000 - INFO - Created directory: data/processed/position_specific
+2025-08-03 00:26:36,000 - INFO - Created directory: data/draft_lists
+2025-08-03 00:26:36,000 - INFO - Created directory: saved_models
+2025-08-03 00:26:36,000 - INFO - Created directory: plots
+2025-08-03 00:26:36,000 - INFO - Created directory: logs
+2025-08-03 00:26:36,000 - INFO - ================================================================================
+2025-08-03 00:26:36,000 - INFO - STEP 1: Data Acquisition (2010-2023 NFL Data)
+2025-08-03 00:26:36,000 - INFO - ================================================================================
+2025-08-03 00:26:37,427 - INFO - NumExpr defaulting to 8 threads.
+2025-08-03 00:26:37,913 - INFO - Fetching NFL data from 2010 to 2023...
+2025-08-03 00:26:37,913 - INFO - This may take 5-8 minutes depending on your internet connection...
+2025-08-03 00:26:37,913 - INFO - Fetching and saving player statistics for seasons 2010 to 2023
+2025-08-03 00:26:37,913 - INFO - Processing season 2010...
+2025-08-03 00:26:37,913 - INFO - Fetching player statistics for 2010 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:39,627 - INFO - Successfully fetched raw data for 2010 season
+2025-08-03 00:26:39,644 - INFO - Successfully merged stats for 2010 season. Total players: 523
+2025-08-03 00:26:39,653 - INFO - Successfully saved player statistics for 2010 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2010.parquet
+2025-08-03 00:26:39,653 - INFO - Completed processing for season 2010
+2025-08-03 00:26:39,653 - INFO - Processing season 2011...
+2025-08-03 00:26:39,653 - INFO - Fetching player statistics for 2011 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:41,065 - INFO - Successfully fetched raw data for 2011 season
+2025-08-03 00:26:41,081 - INFO - Successfully merged stats for 2011 season. Total players: 526
+2025-08-03 00:26:41,090 - INFO - Successfully saved player statistics for 2011 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:26:41,090 - INFO - Completed processing for season 2011
+2025-08-03 00:26:41,090 - INFO - Processing season 2012...
+2025-08-03 00:26:41,090 - INFO - Fetching player statistics for 2012 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:42,321 - INFO - Successfully fetched raw data for 2012 season
+2025-08-03 00:26:42,337 - INFO - Successfully merged stats for 2012 season. Total players: 539
+2025-08-03 00:26:42,346 - INFO - Successfully saved player statistics for 2012 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:26:42,346 - INFO - Completed processing for season 2012
+2025-08-03 00:26:42,346 - INFO - Processing season 2013...
+2025-08-03 00:26:42,346 - INFO - Fetching player statistics for 2013 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:43,538 - INFO - Successfully fetched raw data for 2013 season
+2025-08-03 00:26:43,555 - INFO - Successfully merged stats for 2013 season. Total players: 536
+2025-08-03 00:26:43,564 - INFO - Successfully saved player statistics for 2013 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:26:43,564 - INFO - Completed processing for season 2013
+2025-08-03 00:26:43,564 - INFO - Processing season 2014...
+2025-08-03 00:26:43,564 - INFO - Fetching player statistics for 2014 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:44,935 - INFO - Successfully fetched raw data for 2014 season
+2025-08-03 00:26:44,953 - INFO - Successfully merged stats for 2014 season. Total players: 540
+2025-08-03 00:26:44,963 - INFO - Successfully saved player statistics for 2014 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:26:44,963 - INFO - Completed processing for season 2014
+2025-08-03 00:26:44,963 - INFO - Processing season 2015...
+2025-08-03 00:26:44,963 - INFO - Fetching player statistics for 2015 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:46,217 - INFO - Successfully fetched raw data for 2015 season
+2025-08-03 00:26:46,234 - INFO - Successfully merged stats for 2015 season. Total players: 567
+2025-08-03 00:26:46,243 - INFO - Successfully saved player statistics for 2015 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:26:46,243 - INFO - Completed processing for season 2015
+2025-08-03 00:26:46,243 - INFO - Processing season 2016...
+2025-08-03 00:26:46,244 - INFO - Fetching player statistics for 2016 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:47,498 - INFO - Successfully fetched raw data for 2016 season
+2025-08-03 00:26:47,514 - INFO - Successfully merged stats for 2016 season. Total players: 563
+2025-08-03 00:26:47,523 - INFO - Successfully saved player statistics for 2016 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:26:47,523 - INFO - Completed processing for season 2016
+2025-08-03 00:26:47,523 - INFO - Processing season 2017...
+2025-08-03 00:26:47,523 - INFO - Fetching player statistics for 2017 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:48,945 - INFO - Successfully fetched raw data for 2017 season
+2025-08-03 00:26:48,963 - INFO - Successfully merged stats for 2017 season. Total players: 552
+2025-08-03 00:26:48,972 - INFO - Successfully saved player statistics for 2017 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:26:48,972 - INFO - Completed processing for season 2017
+2025-08-03 00:26:48,972 - INFO - Processing season 2018...
+2025-08-03 00:26:48,972 - INFO - Fetching player statistics for 2018 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:50,887 - INFO - Successfully fetched raw data for 2018 season
+2025-08-03 00:26:50,904 - INFO - Successfully merged stats for 2018 season. Total players: 566
+2025-08-03 00:26:50,913 - INFO - Successfully saved player statistics for 2018 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:26:50,913 - INFO - Completed processing for season 2018
+2025-08-03 00:26:50,913 - INFO - Processing season 2019...
+2025-08-03 00:26:50,913 - INFO - Fetching player statistics for 2019 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:52,252 - INFO - Successfully fetched raw data for 2019 season
+2025-08-03 00:26:52,267 - INFO - Successfully merged stats for 2019 season. Total players: 567
+2025-08-03 00:26:52,276 - INFO - Successfully saved player statistics for 2019 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:26:52,276 - INFO - Completed processing for season 2019
+2025-08-03 00:26:52,276 - INFO - Processing season 2020...
+2025-08-03 00:26:52,276 - INFO - Fetching player statistics for 2020 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:53,605 - INFO - Successfully fetched raw data for 2020 season
+2025-08-03 00:26:53,625 - INFO - Successfully merged stats for 2020 season. Total players: 595
+2025-08-03 00:26:53,635 - INFO - Successfully saved player statistics for 2020 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:26:53,635 - INFO - Completed processing for season 2020
+2025-08-03 00:26:53,635 - INFO - Processing season 2021...
+2025-08-03 00:26:53,635 - INFO - Fetching player statistics for 2021 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:54,832 - INFO - Successfully fetched raw data for 2021 season
+2025-08-03 00:26:54,850 - INFO - Successfully merged stats for 2021 season. Total players: 611
+2025-08-03 00:26:54,860 - INFO - Successfully saved player statistics for 2021 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:26:54,860 - INFO - Completed processing for season 2021
+2025-08-03 00:26:54,860 - INFO - Processing season 2022...
+2025-08-03 00:26:54,860 - INFO - Fetching player statistics for 2022 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:56,591 - INFO - Successfully fetched raw data for 2022 season
+2025-08-03 00:26:56,610 - INFO - Successfully merged stats for 2022 season. Total players: 589
+2025-08-03 00:26:56,619 - INFO - Successfully saved player statistics for 2022 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2022.parquet
+2025-08-03 00:26:56,619 - INFO - Completed processing for season 2022
+2025-08-03 00:26:56,620 - INFO - Processing season 2023...
+2025-08-03 00:26:56,620 - INFO - Fetching player statistics for 2023 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:57,871 - INFO - Successfully fetched raw data for 2023 season
+2025-08-03 00:26:57,890 - INFO - Successfully merged stats for 2023 season. Total players: 559
+2025-08-03 00:26:57,899 - INFO - Successfully saved player statistics for 2023 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2023.parquet
+2025-08-03 00:26:57,900 - INFO - Completed processing for season 2023
+2025-08-03 00:26:57,900 - INFO - Completed fetching and saving player statistics for all seasons. Saved 14 files.
+2025-08-03 00:26:57,900 - INFO - ✅ Data acquisition completed in 21.9 seconds
+2025-08-03 00:26:57,900 - INFO - ✅ Saved 14 season files
+2025-08-03 00:26:57,900 - INFO - ================================================================================
+2025-08-03 00:26:57,900 - INFO - STEP 2: Data Cleaning & Preparation
+2025-08-03 00:26:57,900 - INFO - ================================================================================
+2025-08-03 00:26:57,902 - INFO - Cleaning and standardizing player data...
+2025-08-03 00:26:57,902 - INFO - Cleaning and saving player statistics for seasons 2010 to 2023
+2025-08-03 00:26:57,902 - INFO - Processing season 2010...
+2025-08-03 00:26:57,902 - INFO - Cleaning player statistics for 2010 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:57,906 - INFO - Successfully loaded raw player statistics for 2010 season. Total players: 523
+2025-08-03 00:26:57,906 - INFO - Standardizing formats
+2025-08-03 00:26:57,908 - INFO - Handling missing values for QB players
+2025-08-03 00:26:57,911 - WARNING - Remaining missing values after handling for QB: rtd_sh                   8
+dom                      8
+w8dom                    8
+depth_chart_position    81
+dtype: int64
+2025-08-03 00:26:57,912 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:57,914 - INFO - Detected 1 outliers in interceptions for QB players
+2025-08-03 00:26:57,915 - INFO - Handling missing values for RB players
+2025-08-03 00:26:57,918 - WARNING - Remaining missing values after handling for RB: rtd_sh                    2
+dom                       2
+w8dom                     2
+depth_chart_position    128
+gsis_id                   3
+first_name                3
+last_name                 3
+birth_date                3
+dtype: int64
+2025-08-03 00:26:57,918 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:57,920 - INFO - Detected 3 outliers in rushing_tds for RB players
+2025-08-03 00:26:57,921 - INFO - Detected 4 outliers in receptions for RB players
+2025-08-03 00:26:57,922 - INFO - Detected 7 outliers in receiving_yards for RB players
+2025-08-03 00:26:57,923 - INFO - Handling missing values for WR players
+2025-08-03 00:26:57,926 - WARNING - Remaining missing values after handling for WR: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    207
+dtype: int64
+2025-08-03 00:26:57,926 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:57,927 - INFO - Detected 2 outliers in receptions for WR players
+2025-08-03 00:26:57,928 - INFO - Detected 1 outliers in receiving_yards for WR players
+2025-08-03 00:26:57,929 - INFO - Detected 6 outliers in receiving_tds for WR players
+2025-08-03 00:26:57,929 - INFO - Handling missing values for TE players
+2025-08-03 00:26:57,932 - WARNING - Remaining missing values after handling for TE: rtd_sh                    1
+dom                       1
+w8dom                     1
+depth_chart_position    107
+dtype: int64
+2025-08-03 00:26:57,932 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:57,933 - INFO - Detected 1 outliers in receptions for TE players
+2025-08-03 00:26:57,934 - INFO - Detected 1 outliers in receiving_yards for TE players
+2025-08-03 00:26:57,935 - INFO - Detected 4 outliers in receiving_tds for TE players
+2025-08-03 00:26:57,937 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:57,938 - WARNING - Found 1 QB players with games played but no offensive stats
+2025-08-03 00:26:57,939 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:26:57,940 - WARNING - Potential data issues detected for 2 players
+2025-08-03 00:26:57,940 - INFO - Successfully cleaned player statistics for 2010 season. Total players: 523
+2025-08-03 00:26:57,945 - INFO - Successfully saved cleaned player statistics for 2010 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2010.parquet
+2025-08-03 00:26:57,945 - INFO - Completed cleaning for season 2010
+2025-08-03 00:26:57,945 - INFO - Processing season 2011...
+2025-08-03 00:26:57,945 - INFO - Cleaning player statistics for 2011 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:57,948 - INFO - Successfully loaded raw player statistics for 2011 season. Total players: 526
+2025-08-03 00:26:57,949 - INFO - Standardizing formats
+2025-08-03 00:26:57,950 - INFO - Handling missing values for QB players
+2025-08-03 00:26:57,952 - WARNING - Remaining missing values after handling for QB: rtd_sh                   1
+dom                      1
+w8dom                    1
+depth_chart_position    77
+dtype: int64
+2025-08-03 00:26:57,952 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:57,954 - INFO - Detected 4 outliers in passing_tds for QB players
+2025-08-03 00:26:57,955 - INFO - Handling missing values for RB players
+2025-08-03 00:26:57,957 - WARNING - Remaining missing values after handling for RB: rtd_sh                    5
+dom                       5
+w8dom                     5
+depth_chart_position    134
+gsis_id                   7
+first_name                7
+last_name                 7
+birth_date                7
+dtype: int64
+2025-08-03 00:26:57,957 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:57,958 - INFO - Detected 1 outliers in carries for RB players
+2025-08-03 00:26:57,959 - INFO - Detected 3 outliers in rushing_yards for RB players
+2025-08-03 00:26:57,960 - INFO - Detected 8 outliers in rushing_tds for RB players
+2025-08-03 00:26:57,961 - INFO - Detected 3 outliers in receptions for RB players
+2025-08-03 00:26:57,962 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:26:57,962 - INFO - Handling missing values for WR players
+2025-08-03 00:26:57,965 - WARNING - Remaining missing values after handling for WR: rtd_sh                    3
+dom                       3
+w8dom                     3
+depth_chart_position    205
+dtype: int64
+2025-08-03 00:26:57,965 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:57,966 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:26:57,967 - INFO - Detected 3 outliers in receiving_yards for WR players
+2025-08-03 00:26:57,968 - INFO - Detected 3 outliers in receiving_tds for WR players
+2025-08-03 00:26:57,968 - INFO - Handling missing values for TE players
+2025-08-03 00:26:57,971 - WARNING - Remaining missing values after handling for TE: rtd_sh                    1
+dom                       1
+w8dom                     1
+depth_chart_position    110
+gsis_id                   1
+first_name                1
+last_name                 1
+birth_date                1
+dtype: int64
+2025-08-03 00:26:57,971 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:57,972 - INFO - Detected 3 outliers in targets for TE players
+2025-08-03 00:26:57,973 - INFO - Detected 4 outliers in receptions for TE players
+2025-08-03 00:26:57,974 - INFO - Detected 5 outliers in receiving_yards for TE players
+2025-08-03 00:26:57,975 - INFO - Detected 3 outliers in receiving_tds for TE players
+2025-08-03 00:26:57,977 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:57,977 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:26:57,978 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:26:57,978 - WARNING - Found 3 WR players with games played but no offensive stats
+2025-08-03 00:26:57,980 - WARNING - Potential data issues detected for 6 players
+2025-08-03 00:26:57,980 - INFO - Successfully cleaned player statistics for 2011 season. Total players: 526
+2025-08-03 00:26:57,984 - INFO - Successfully saved cleaned player statistics for 2011 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2011.parquet
+2025-08-03 00:26:57,984 - INFO - Completed cleaning for season 2011
+2025-08-03 00:26:57,984 - INFO - Processing season 2012...
+2025-08-03 00:26:57,984 - INFO - Cleaning player statistics for 2012 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:57,987 - INFO - Successfully loaded raw player statistics for 2012 season. Total players: 539
+2025-08-03 00:26:57,987 - INFO - Standardizing formats
+2025-08-03 00:26:57,988 - INFO - Handling missing values for QB players
+2025-08-03 00:26:57,991 - WARNING - Remaining missing values after handling for QB: rtd_sh                   4
+dom                      4
+w8dom                    4
+depth_chart_position    72
+dtype: int64
+2025-08-03 00:26:57,991 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:57,993 - INFO - Handling missing values for RB players
+2025-08-03 00:26:57,996 - WARNING - Remaining missing values after handling for RB: rtd_sh                    3
+dom                       3
+w8dom                     3
+depth_chart_position    146
+gsis_id                   5
+first_name                5
+last_name                 5
+birth_date                5
+dtype: int64
+2025-08-03 00:26:57,996 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:57,997 - INFO - Detected 11 outliers in carries for RB players
+2025-08-03 00:26:57,998 - INFO - Detected 15 outliers in rushing_yards for RB players
+2025-08-03 00:26:57,999 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:26:57,999 - INFO - Detected 8 outliers in receptions for RB players
+2025-08-03 00:26:58,000 - INFO - Detected 8 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,000 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,003 - WARNING - Remaining missing values after handling for WR: rtd_sh                   10
+dom                      10
+w8dom                    10
+depth_chart_position    214
+dtype: int64
+2025-08-03 00:26:58,003 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,004 - INFO - Detected 3 outliers in targets for WR players
+2025-08-03 00:26:58,005 - INFO - Detected 4 outliers in receptions for WR players
+2025-08-03 00:26:58,006 - INFO - Detected 2 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,007 - INFO - Detected 5 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,007 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,010 - WARNING - Remaining missing values after handling for TE: rtd_sh                    7
+dom                       7
+w8dom                     7
+depth_chart_position    107
+dtype: int64
+2025-08-03 00:26:58,010 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,011 - INFO - Detected 1 outliers in receptions for TE players
+2025-08-03 00:26:58,013 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,014 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,015 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:26:58,015 - WARNING - Found 3 RB players with games played but no offensive stats
+2025-08-03 00:26:58,017 - WARNING - Potential data issues detected for 6 players
+2025-08-03 00:26:58,017 - INFO - Successfully cleaned player statistics for 2012 season. Total players: 539
+2025-08-03 00:26:58,022 - INFO - Successfully saved cleaned player statistics for 2012 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2012.parquet
+2025-08-03 00:26:58,022 - INFO - Completed cleaning for season 2012
+2025-08-03 00:26:58,022 - INFO - Processing season 2013...
+2025-08-03 00:26:58,022 - INFO - Cleaning player statistics for 2013 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,025 - INFO - Successfully loaded raw player statistics for 2013 season. Total players: 536
+2025-08-03 00:26:58,026 - INFO - Standardizing formats
+2025-08-03 00:26:58,027 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,029 - WARNING - Remaining missing values after handling for QB: rtd_sh                   2
+dom                      2
+w8dom                    2
+depth_chart_position    70
+dtype: int64
+2025-08-03 00:26:58,029 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,031 - INFO - Detected 1 outliers in passing_tds for QB players
+2025-08-03 00:26:58,032 - INFO - Detected 1 outliers in interceptions for QB players
+2025-08-03 00:26:58,032 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,035 - WARNING - Remaining missing values after handling for RB: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    140
+gsis_id                   2
+first_name                2
+last_name                 2
+birth_date                2
+dtype: int64
+2025-08-03 00:26:58,035 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,036 - INFO - Detected 1 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,037 - INFO - Detected 3 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,038 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:26:58,039 - INFO - Detected 11 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,039 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,042 - WARNING - Remaining missing values after handling for WR: rtd_sh                    5
+dom                       5
+w8dom                     5
+depth_chart_position    206
+gsis_id                   1
+first_name                1
+last_name                 1
+birth_date                1
+dtype: int64
+2025-08-03 00:26:58,042 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,043 - INFO - Detected 3 outliers in receptions for WR players
+2025-08-03 00:26:58,044 - INFO - Detected 5 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,045 - INFO - Detected 6 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,045 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,048 - WARNING - Remaining missing values after handling for TE: depth_chart_position    120
+dtype: int64
+2025-08-03 00:26:58,048 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,048 - INFO - Detected 3 outliers in targets for TE players
+2025-08-03 00:26:58,049 - INFO - Detected 4 outliers in receptions for TE players
+2025-08-03 00:26:58,050 - INFO - Detected 2 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,051 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,052 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,053 - WARNING - Found 4 QB players with games played but no offensive stats
+2025-08-03 00:26:58,054 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:26:58,054 - WARNING - Found 2 WR players with games played but no offensive stats
+2025-08-03 00:26:58,056 - WARNING - Potential data issues detected for 7 players
+2025-08-03 00:26:58,056 - INFO - Successfully cleaned player statistics for 2013 season. Total players: 536
+2025-08-03 00:26:58,060 - INFO - Successfully saved cleaned player statistics for 2013 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2013.parquet
+2025-08-03 00:26:58,060 - INFO - Completed cleaning for season 2013
+2025-08-03 00:26:58,060 - INFO - Processing season 2014...
+2025-08-03 00:26:58,060 - INFO - Cleaning player statistics for 2014 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,063 - INFO - Successfully loaded raw player statistics for 2014 season. Total players: 540
+2025-08-03 00:26:58,063 - INFO - Standardizing formats
+2025-08-03 00:26:58,064 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,067 - WARNING - Remaining missing values after handling for QB: rtd_sh                   3
+dom                      3
+w8dom                    3
+depth_chart_position    76
+dtype: int64
+2025-08-03 00:26:58,067 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,069 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,071 - WARNING - Remaining missing values after handling for RB: depth_chart_position    141
+dtype: int64
+2025-08-03 00:26:58,072 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,072 - INFO - Detected 2 outliers in carries for RB players
+2025-08-03 00:26:58,073 - INFO - Detected 6 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,074 - INFO - Detected 2 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,075 - INFO - Detected 3 outliers in receptions for RB players
+2025-08-03 00:26:58,076 - INFO - Detected 4 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,076 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,079 - WARNING - Remaining missing values after handling for WR: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    206
+dtype: int64
+2025-08-03 00:26:58,079 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,081 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:26:58,082 - INFO - Detected 1 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,083 - INFO - Detected 18 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,083 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,086 - WARNING - Remaining missing values after handling for TE: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    117
+dtype: int64
+2025-08-03 00:26:58,086 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,087 - INFO - Detected 4 outliers in targets for TE players
+2025-08-03 00:26:58,088 - INFO - Detected 11 outliers in receptions for TE players
+2025-08-03 00:26:58,089 - INFO - Detected 11 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,090 - INFO - Detected 10 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,092 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,093 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:26:58,093 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:26:58,094 - WARNING - Found 2 WR players with games played but no offensive stats
+2025-08-03 00:26:58,094 - WARNING - Found 1 TE players with games played but no offensive stats
+2025-08-03 00:26:58,096 - WARNING - Potential data issues detected for 7 players
+2025-08-03 00:26:58,096 - INFO - Successfully cleaned player statistics for 2014 season. Total players: 540
+2025-08-03 00:26:58,108 - INFO - Successfully saved cleaned player statistics for 2014 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2014.parquet
+2025-08-03 00:26:58,108 - INFO - Completed cleaning for season 2014
+2025-08-03 00:26:58,108 - INFO - Processing season 2015...
+2025-08-03 00:26:58,108 - INFO - Cleaning player statistics for 2015 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,111 - INFO - Successfully loaded raw player statistics for 2015 season. Total players: 567
+2025-08-03 00:26:58,111 - INFO - Standardizing formats
+2025-08-03 00:26:58,112 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,115 - WARNING - Remaining missing values after handling for QB: rtd_sh                   1
+dom                      1
+w8dom                    1
+depth_chart_position    79
+dtype: int64
+2025-08-03 00:26:58,115 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,117 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,120 - WARNING - Remaining missing values after handling for RB: rtd_sh                    1
+dom                       1
+w8dom                     1
+depth_chart_position    155
+gsis_id                   2
+first_name                2
+last_name                 2
+birth_date                2
+dtype: int64
+2025-08-03 00:26:58,120 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,121 - INFO - Detected 5 outliers in carries for RB players
+2025-08-03 00:26:58,121 - INFO - Detected 2 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,122 - INFO - Detected 7 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,123 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:26:58,124 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,124 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,127 - WARNING - Remaining missing values after handling for WR: rtd_sh                    6
+dom                       6
+w8dom                     6
+depth_chart_position    218
+dtype: int64
+2025-08-03 00:26:58,127 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,128 - INFO - Detected 6 outliers in targets for WR players
+2025-08-03 00:26:58,129 - INFO - Detected 7 outliers in receptions for WR players
+2025-08-03 00:26:58,130 - INFO - Detected 8 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,131 - INFO - Detected 6 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,131 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,134 - WARNING - Remaining missing values after handling for TE: depth_chart_position    115
+dtype: int64
+2025-08-03 00:26:58,134 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,134 - INFO - Detected 7 outliers in targets for TE players
+2025-08-03 00:26:58,135 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:26:58,136 - INFO - Detected 5 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,137 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,139 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,139 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:26:58,140 - WARNING - Found 6 WR players with games played but no offensive stats
+2025-08-03 00:26:58,142 - WARNING - Potential data issues detected for 8 players
+2025-08-03 00:26:58,142 - INFO - Successfully cleaned player statistics for 2015 season. Total players: 567
+2025-08-03 00:26:58,146 - INFO - Successfully saved cleaned player statistics for 2015 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2015.parquet
+2025-08-03 00:26:58,146 - INFO - Completed cleaning for season 2015
+2025-08-03 00:26:58,146 - INFO - Processing season 2016...
+2025-08-03 00:26:58,146 - INFO - Cleaning player statistics for 2016 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,149 - INFO - Successfully loaded raw player statistics for 2016 season. Total players: 563
+2025-08-03 00:26:58,150 - INFO - Standardizing formats
+2025-08-03 00:26:58,151 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,153 - WARNING - Remaining missing values after handling for QB: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:26:58,153 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,155 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,158 - WARNING - Remaining missing values after handling for RB: rtd_sh         4
+dom            4
+w8dom          4
+gsis_id       18
+first_name    18
+last_name     18
+birth_date    18
+dtype: int64
+2025-08-03 00:26:58,158 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,159 - INFO - Detected 11 outliers in carries for RB players
+2025-08-03 00:26:58,160 - INFO - Detected 10 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,160 - INFO - Detected 14 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,161 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:26:58,162 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,162 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,165 - WARNING - Remaining missing values after handling for WR: rtd_sh    4
+dom       4
+w8dom     4
+dtype: int64
+2025-08-03 00:26:58,165 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,167 - INFO - Detected 4 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,168 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,170 - WARNING - Remaining missing values after handling for TE: rtd_sh        5
+dom           5
+w8dom         5
+gsis_id       1
+first_name    1
+last_name     1
+birth_date    1
+dtype: int64
+2025-08-03 00:26:58,170 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,171 - INFO - Detected 3 outliers in targets for TE players
+2025-08-03 00:26:58,172 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:26:58,173 - INFO - Detected 3 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,173 - INFO - Detected 9 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,175 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,176 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:26:58,176 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:26:58,177 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:26:58,178 - WARNING - Potential data issues detected for 4 players
+2025-08-03 00:26:58,178 - INFO - Successfully cleaned player statistics for 2016 season. Total players: 563
+2025-08-03 00:26:58,183 - INFO - Successfully saved cleaned player statistics for 2016 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2016.parquet
+2025-08-03 00:26:58,183 - INFO - Completed cleaning for season 2016
+2025-08-03 00:26:58,183 - INFO - Processing season 2017...
+2025-08-03 00:26:58,183 - INFO - Cleaning player statistics for 2017 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,186 - INFO - Successfully loaded raw player statistics for 2017 season. Total players: 552
+2025-08-03 00:26:58,186 - INFO - Standardizing formats
+2025-08-03 00:26:58,187 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,190 - WARNING - Remaining missing values after handling for QB: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,190 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,192 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,194 - WARNING - Remaining missing values after handling for RB: rtd_sh         3
+dom            3
+w8dom          3
+gsis_id       22
+first_name    22
+last_name     22
+birth_date    22
+dtype: int64
+2025-08-03 00:26:58,194 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,195 - INFO - Detected 6 outliers in carries for RB players
+2025-08-03 00:26:58,196 - INFO - Detected 7 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,197 - INFO - Detected 10 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,198 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:26:58,199 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,199 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,202 - WARNING - Remaining missing values after handling for WR: rtd_sh    4
+dom       4
+w8dom     4
+dtype: int64
+2025-08-03 00:26:58,202 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,203 - INFO - Detected 2 outliers in receptions for WR players
+2025-08-03 00:26:58,204 - INFO - Detected 4 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,205 - INFO - Detected 13 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,205 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,208 - WARNING - Remaining missing values after handling for TE: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:26:58,208 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,209 - INFO - Detected 6 outliers in targets for TE players
+2025-08-03 00:26:58,210 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:26:58,211 - INFO - Detected 4 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,212 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,213 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,214 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:26:58,215 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:26:58,216 - WARNING - Potential data issues detected for 3 players
+2025-08-03 00:26:58,216 - INFO - Successfully cleaned player statistics for 2017 season. Total players: 552
+2025-08-03 00:26:58,221 - INFO - Successfully saved cleaned player statistics for 2017 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2017.parquet
+2025-08-03 00:26:58,221 - INFO - Completed cleaning for season 2017
+2025-08-03 00:26:58,221 - INFO - Processing season 2018...
+2025-08-03 00:26:58,221 - INFO - Cleaning player statistics for 2018 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,225 - INFO - Successfully loaded raw player statistics for 2018 season. Total players: 566
+2025-08-03 00:26:58,225 - INFO - Standardizing formats
+2025-08-03 00:26:58,226 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,228 - WARNING - Remaining missing values after handling for QB: rtd_sh    1
+dom       1
+w8dom     1
+dtype: int64
+2025-08-03 00:26:58,228 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,230 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,233 - WARNING - Remaining missing values after handling for RB: rtd_sh         4
+dom            4
+w8dom          4
+gsis_id       15
+first_name    15
+last_name     15
+birth_date    15
+dtype: int64
+2025-08-03 00:26:58,233 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,234 - INFO - Detected 1 outliers in carries for RB players
+2025-08-03 00:26:58,235 - INFO - Detected 3 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,236 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,236 - INFO - Detected 9 outliers in receptions for RB players
+2025-08-03 00:26:58,237 - INFO - Detected 12 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,237 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,240 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,240 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,241 - INFO - Detected 3 outliers in targets for WR players
+2025-08-03 00:26:58,242 - INFO - Detected 8 outliers in receptions for WR players
+2025-08-03 00:26:58,243 - INFO - Detected 8 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,244 - INFO - Detected 4 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,244 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,247 - WARNING - Remaining missing values after handling for TE: rtd_sh        4
+dom           4
+w8dom         4
+gsis_id       1
+first_name    1
+last_name     1
+birth_date    1
+dtype: int64
+2025-08-03 00:26:58,247 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,248 - INFO - Detected 8 outliers in targets for TE players
+2025-08-03 00:26:58,249 - INFO - Detected 7 outliers in receptions for TE players
+2025-08-03 00:26:58,250 - INFO - Detected 7 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,250 - INFO - Detected 6 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,252 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,253 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:26:58,253 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:26:58,254 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:26:58,255 - WARNING - Potential data issues detected for 5 players
+2025-08-03 00:26:58,255 - INFO - Successfully cleaned player statistics for 2018 season. Total players: 566
+2025-08-03 00:26:58,260 - INFO - Successfully saved cleaned player statistics for 2018 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2018.parquet
+2025-08-03 00:26:58,260 - INFO - Completed cleaning for season 2018
+2025-08-03 00:26:58,260 - INFO - Processing season 2019...
+2025-08-03 00:26:58,260 - INFO - Cleaning player statistics for 2019 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,263 - INFO - Successfully loaded raw player statistics for 2019 season. Total players: 567
+2025-08-03 00:26:58,263 - INFO - Standardizing formats
+2025-08-03 00:26:58,264 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,266 - WARNING - Remaining missing values after handling for QB: rtd_sh    9
+dom       9
+w8dom     9
+dtype: int64
+2025-08-03 00:26:58,266 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,268 - INFO - Detected 3 outliers in interceptions for QB players
+2025-08-03 00:26:58,269 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,271 - WARNING - Remaining missing values after handling for RB: rtd_sh         6
+dom            6
+w8dom          6
+gsis_id       15
+first_name    15
+last_name     15
+birth_date    15
+dtype: int64
+2025-08-03 00:26:58,271 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,272 - INFO - Detected 6 outliers in carries for RB players
+2025-08-03 00:26:58,273 - INFO - Detected 9 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,274 - INFO - Detected 12 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,275 - INFO - Detected 6 outliers in receptions for RB players
+2025-08-03 00:26:58,276 - INFO - Detected 7 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,276 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,278 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,279 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,279 - INFO - Detected 1 outliers in targets for WR players
+2025-08-03 00:26:58,280 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:26:58,281 - INFO - Detected 2 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,282 - INFO - Detected 1 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,282 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,285 - WARNING - Remaining missing values after handling for TE: rtd_sh        4
+dom           4
+w8dom         4
+gsis_id       2
+first_name    2
+last_name     2
+birth_date    2
+dtype: int64
+2025-08-03 00:26:58,285 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,285 - INFO - Detected 4 outliers in targets for TE players
+2025-08-03 00:26:58,286 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:26:58,287 - INFO - Detected 6 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,288 - INFO - Detected 2 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,290 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,290 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:26:58,291 - WARNING - Found 2 RB players with games played but no offensive stats
+2025-08-03 00:26:58,291 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:26:58,293 - WARNING - Potential data issues detected for 6 players
+2025-08-03 00:26:58,293 - INFO - Successfully cleaned player statistics for 2019 season. Total players: 567
+2025-08-03 00:26:58,297 - INFO - Successfully saved cleaned player statistics for 2019 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2019.parquet
+2025-08-03 00:26:58,297 - INFO - Completed cleaning for season 2019
+2025-08-03 00:26:58,297 - INFO - Processing season 2020...
+2025-08-03 00:26:58,297 - INFO - Cleaning player statistics for 2020 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,300 - INFO - Successfully loaded raw player statistics for 2020 season. Total players: 595
+2025-08-03 00:26:58,301 - INFO - Standardizing formats
+2025-08-03 00:26:58,301 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,304 - WARNING - Remaining missing values after handling for QB: rtd_sh        8
+dom           8
+w8dom         8
+gsis_id       1
+first_name    1
+last_name     1
+birth_date    1
+dtype: int64
+2025-08-03 00:26:58,304 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,306 - INFO - Detected 1 outliers in passing_tds for QB players
+2025-08-03 00:26:58,307 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,309 - WARNING - Remaining missing values after handling for RB: rtd_sh         2
+dom            2
+w8dom          2
+gsis_id       15
+first_name    15
+last_name     15
+birth_date    15
+dtype: int64
+2025-08-03 00:26:58,309 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,310 - INFO - Detected 3 outliers in carries for RB players
+2025-08-03 00:26:58,311 - INFO - Detected 4 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,312 - INFO - Detected 14 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,313 - INFO - Detected 8 outliers in receptions for RB players
+2025-08-03 00:26:58,314 - INFO - Detected 9 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,314 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,317 - WARNING - Remaining missing values after handling for WR: rtd_sh    6
+dom       6
+w8dom     6
+dtype: int64
+2025-08-03 00:26:58,317 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,318 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:26:58,319 - INFO - Detected 1 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,319 - INFO - Detected 5 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,320 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,323 - WARNING - Remaining missing values after handling for TE: rtd_sh        1
+dom           1
+w8dom         1
+gsis_id       2
+first_name    2
+last_name     2
+birth_date    2
+dtype: int64
+2025-08-03 00:26:58,323 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,323 - INFO - Detected 4 outliers in targets for TE players
+2025-08-03 00:26:58,324 - INFO - Detected 3 outliers in receptions for TE players
+2025-08-03 00:26:58,325 - INFO - Detected 2 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,326 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,328 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,328 - WARNING - Found 4 QB players with games played but no offensive stats
+2025-08-03 00:26:58,329 - WARNING - Found 2 RB players with games played but no offensive stats
+2025-08-03 00:26:58,329 - WARNING - Found 2 WR players with games played but no offensive stats
+2025-08-03 00:26:58,331 - WARNING - Potential data issues detected for 8 players
+2025-08-03 00:26:58,331 - INFO - Successfully cleaned player statistics for 2020 season. Total players: 595
+2025-08-03 00:26:58,336 - INFO - Successfully saved cleaned player statistics for 2020 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2020.parquet
+2025-08-03 00:26:58,336 - INFO - Completed cleaning for season 2020
+2025-08-03 00:26:58,336 - INFO - Processing season 2021...
+2025-08-03 00:26:58,336 - INFO - Cleaning player statistics for 2021 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,339 - INFO - Successfully loaded raw player statistics for 2021 season. Total players: 611
+2025-08-03 00:26:58,339 - INFO - Standardizing formats
+2025-08-03 00:26:58,340 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,343 - WARNING - Remaining missing values after handling for QB: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,343 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,345 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,348 - WARNING - Remaining missing values after handling for RB: rtd_sh         3
+dom            3
+w8dom          3
+gsis_id       14
+first_name    14
+last_name     14
+birth_date    14
+dtype: int64
+2025-08-03 00:26:58,348 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,349 - INFO - Detected 3 outliers in carries for RB players
+2025-08-03 00:26:58,350 - INFO - Detected 2 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,351 - INFO - Detected 12 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,351 - INFO - Detected 3 outliers in receptions for RB players
+2025-08-03 00:26:58,352 - INFO - Detected 3 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,352 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,355 - WARNING - Remaining missing values after handling for WR: rtd_sh    6
+dom       6
+w8dom     6
+dtype: int64
+2025-08-03 00:26:58,355 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,356 - INFO - Detected 8 outliers in targets for WR players
+2025-08-03 00:26:58,357 - INFO - Detected 9 outliers in receptions for WR players
+2025-08-03 00:26:58,358 - INFO - Detected 5 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,359 - INFO - Detected 16 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,359 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,362 - WARNING - Remaining missing values after handling for TE: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,362 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,363 - INFO - Detected 6 outliers in targets for TE players
+2025-08-03 00:26:58,363 - INFO - Detected 6 outliers in receptions for TE players
+2025-08-03 00:26:58,364 - INFO - Detected 9 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,365 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,367 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,367 - WARNING - Found 7 QB players with games played but no offensive stats
+2025-08-03 00:26:58,368 - WARNING - Found 2 RB players with games played but no offensive stats
+2025-08-03 00:26:58,368 - WARNING - Found 3 WR players with games played but no offensive stats
+2025-08-03 00:26:58,370 - WARNING - Potential data issues detected for 12 players
+2025-08-03 00:26:58,370 - INFO - Successfully cleaned player statistics for 2021 season. Total players: 611
+2025-08-03 00:26:58,374 - INFO - Successfully saved cleaned player statistics for 2021 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2021.parquet
+2025-08-03 00:26:58,374 - INFO - Completed cleaning for season 2021
+2025-08-03 00:26:58,374 - INFO - Processing season 2022...
+2025-08-03 00:26:58,374 - INFO - Cleaning player statistics for 2022 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,377 - INFO - Successfully loaded raw player statistics for 2022 season. Total players: 589
+2025-08-03 00:26:58,378 - INFO - Standardizing formats
+2025-08-03 00:26:58,379 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,381 - WARNING - Remaining missing values after handling for QB: rtd_sh    3
+dom       3
+w8dom     3
+dtype: int64
+2025-08-03 00:26:58,381 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,383 - INFO - Detected 1 outliers in passing_tds for QB players
+2025-08-03 00:26:58,384 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,386 - WARNING - Remaining missing values after handling for RB: rtd_sh         3
+dom            3
+w8dom          3
+gsis_id       11
+first_name    11
+last_name     11
+birth_date    11
+dtype: int64
+2025-08-03 00:26:58,386 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,387 - INFO - Detected 8 outliers in carries for RB players
+2025-08-03 00:26:58,388 - INFO - Detected 6 outliers in rushing_yards for RB players
+2025-08-03 00:26:58,389 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,390 - INFO - Detected 10 outliers in receptions for RB players
+2025-08-03 00:26:58,391 - INFO - Detected 7 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,391 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,394 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,394 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,395 - INFO - Detected 2 outliers in targets for WR players
+2025-08-03 00:26:58,395 - INFO - Detected 2 outliers in receptions for WR players
+2025-08-03 00:26:58,396 - INFO - Detected 7 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,397 - INFO - Detected 11 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,397 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,400 - WARNING - Remaining missing values after handling for TE: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,400 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,401 - INFO - Detected 6 outliers in targets for TE players
+2025-08-03 00:26:58,402 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:26:58,403 - INFO - Detected 3 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,403 - INFO - Detected 6 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,405 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,406 - WARNING - Found 1 QB players with games played but no offensive stats
+2025-08-03 00:26:58,406 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:26:58,408 - WARNING - Potential data issues detected for 2 players
+2025-08-03 00:26:58,408 - INFO - Successfully cleaned player statistics for 2022 season. Total players: 589
+2025-08-03 00:26:58,413 - INFO - Successfully saved cleaned player statistics for 2022 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2022.parquet
+2025-08-03 00:26:58,413 - INFO - Completed cleaning for season 2022
+2025-08-03 00:26:58,413 - INFO - Processing season 2023...
+2025-08-03 00:26:58,413 - INFO - Cleaning player statistics for 2023 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:26:58,416 - INFO - Successfully loaded raw player statistics for 2023 season. Total players: 559
+2025-08-03 00:26:58,416 - INFO - Standardizing formats
+2025-08-03 00:26:58,417 - INFO - Handling missing values for QB players
+2025-08-03 00:26:58,420 - WARNING - Remaining missing values after handling for QB: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:26:58,420 - INFO - Detecting outliers for QB players
+2025-08-03 00:26:58,422 - INFO - Detected 1 outliers in interceptions for QB players
+2025-08-03 00:26:58,422 - INFO - Handling missing values for RB players
+2025-08-03 00:26:58,425 - WARNING - Remaining missing values after handling for RB: rtd_sh         5
+dom            5
+w8dom          5
+gsis_id       10
+first_name    10
+last_name     10
+birth_date    10
+dtype: int64
+2025-08-03 00:26:58,425 - INFO - Detecting outliers for RB players
+2025-08-03 00:26:58,426 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:26:58,427 - INFO - Detected 4 outliers in receptions for RB players
+2025-08-03 00:26:58,428 - INFO - Detected 6 outliers in receiving_yards for RB players
+2025-08-03 00:26:58,428 - INFO - Handling missing values for WR players
+2025-08-03 00:26:58,431 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:26:58,431 - INFO - Detecting outliers for WR players
+2025-08-03 00:26:58,432 - INFO - Detected 1 outliers in targets for WR players
+2025-08-03 00:26:58,433 - INFO - Detected 5 outliers in receptions for WR players
+2025-08-03 00:26:58,433 - INFO - Detected 5 outliers in receiving_yards for WR players
+2025-08-03 00:26:58,434 - INFO - Detected 3 outliers in receiving_tds for WR players
+2025-08-03 00:26:58,435 - INFO - Handling missing values for TE players
+2025-08-03 00:26:58,437 - WARNING - Remaining missing values after handling for TE: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:26:58,437 - INFO - Detecting outliers for TE players
+2025-08-03 00:26:58,438 - INFO - Detected 7 outliers in targets for TE players
+2025-08-03 00:26:58,439 - INFO - Detected 8 outliers in receptions for TE players
+2025-08-03 00:26:58,440 - INFO - Detected 6 outliers in receiving_yards for TE players
+2025-08-03 00:26:58,441 - INFO - Detected 6 outliers in receiving_tds for TE players
+2025-08-03 00:26:58,442 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:26:58,443 - WARNING - Found 5 QB players with games played but no offensive stats
+2025-08-03 00:26:58,444 - WARNING - Found 3 RB players with games played but no offensive stats
+2025-08-03 00:26:58,445 - WARNING - Potential data issues detected for 8 players
+2025-08-03 00:26:58,445 - INFO - Successfully cleaned player statistics for 2023 season. Total players: 559
+2025-08-03 00:26:58,450 - INFO - Successfully saved cleaned player statistics for 2023 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2023.parquet
+2025-08-03 00:26:58,450 - INFO - Completed cleaning for season 2023
+2025-08-03 00:26:58,450 - INFO - Completed cleaning and saving player statistics for all seasons. Saved 14 files.
+2025-08-03 00:26:58,450 - INFO - ✅ Data cleaning completed in 0.6 seconds
+2025-08-03 00:26:58,450 - INFO - ================================================================================
+2025-08-03 00:26:58,450 - INFO - STEP 3: Feature Engineering (300+ Features)
+2025-08-03 00:26:58,450 - INFO - ================================================================================
+2025-08-03 00:26:58,454 - INFO - Engineering position-specific features...
+2025-08-03 00:26:58,454 - INFO - Creating efficiency metrics, usage patterns, and advanced stats...
+2025-08-03 00:26:58,454 - INFO - Engineering and saving features for seasons 2010 to 2022
+2025-08-03 00:26:58,454 - INFO - Processing season 2010...
+2025-08-03 00:26:58,454 - INFO - Engineering features for 2010 season to predict 2011
+2025-08-03 00:26:58,454 - INFO - Engineering features for 2010 season to predict 2011
+2025-08-03 00:26:58,454 - INFO - Loading raw data for 2011 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:26:58,457 - INFO - Successfully loaded actuals data for 2011 to create target variable.
+2025-08-03 00:26:58,457 - INFO - Loading raw data for 2009 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2009.parquet
+2025-08-03 00:26:58,457 - ERROR - Raw data file not found: /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2009.parquet
+2025-08-03 00:26:58,457 - WARNING - Could not load data for 2009 season: [Errno 2] No such file or directory: '/Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2009.parquet'
+2025-08-03 00:26:58,457 - INFO - Loading raw data for 2010 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2010.parquet
+2025-08-03 00:26:58,460 - INFO - Converted 'birth_date' column to datetime for season 2010 in current_season_df
+2025-08-03 00:26:58,461 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,467 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,471 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,472 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,476 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,476 - WARNING - No previous season data available for lagging
+2025-08-03 00:26:58,476 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,481 - INFO - Identified 0 rookies for 2011 season
+2025-08-03 00:26:58,481 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,481 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,481 - WARNING - 'games_L1' not found, using current season 'games' column instead
+2025-08-03 00:26:58,481 - INFO - Applied baseline FPPG of 5.0 to 27 QB players with minimal data
+2025-08-03 00:26:58,481 - INFO - Applied baseline FPPG of 3.0 to 27 RB players with minimal data
+2025-08-03 00:26:58,482 - INFO - Applied baseline FPPG of 2.5 to 45 WR players with minimal data
+2025-08-03 00:26:58,482 - INFO - Applied baseline FPPG of 1.5 to 25 TE players with minimal data
+2025-08-03 00:26:58,483 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2011.
+2025-08-03 00:26:58,483 - INFO - Successfully engineered features for 540 players
+2025-08-03 00:26:58,484 - INFO - Saving engineered features for 2010 season
+2025-08-03 00:26:58,484 - INFO - Saving features for 2010 season (predicting 2011) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2010_predicting_2011.parquet
+2025-08-03 00:26:58,492 - INFO - Completed feature engineering for season 2010
+2025-08-03 00:26:58,492 - INFO - Processing season 2011...
+2025-08-03 00:26:58,492 - INFO - Engineering features for 2011 season to predict 2012
+2025-08-03 00:26:58,492 - INFO - Engineering features for 2011 season to predict 2012
+2025-08-03 00:26:58,492 - INFO - Loading raw data for 2012 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:26:58,495 - INFO - Successfully loaded actuals data for 2012 to create target variable.
+2025-08-03 00:26:58,495 - INFO - Loading raw data for 2010 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2010.parquet
+2025-08-03 00:26:58,498 - INFO - Loading raw data for 2011 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:26:58,502 - INFO - Converted 'birth_date' column to datetime for season 2011 in current_season_df
+2025-08-03 00:26:58,502 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,508 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,513 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,515 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,518 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,521 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,529 - INFO - Identified 0 rookies for 2012 season
+2025-08-03 00:26:58,529 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,529 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,530 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:26:58,530 - INFO - Applied baseline FPPG of 3.0 to 57 RB players with minimal data
+2025-08-03 00:26:58,530 - INFO - Applied baseline FPPG of 2.5 to 69 WR players with minimal data
+2025-08-03 00:26:58,530 - INFO - Applied baseline FPPG of 1.5 to 46 TE players with minimal data
+2025-08-03 00:26:58,532 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2012.
+2025-08-03 00:26:58,532 - INFO - Successfully engineered features for 555 players
+2025-08-03 00:26:58,533 - INFO - Saving engineered features for 2011 season
+2025-08-03 00:26:58,533 - INFO - Saving features for 2011 season (predicting 2012) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2011_predicting_2012.parquet
+2025-08-03 00:26:58,540 - INFO - Completed feature engineering for season 2011
+2025-08-03 00:26:58,540 - INFO - Processing season 2012...
+2025-08-03 00:26:58,540 - INFO - Engineering features for 2012 season to predict 2013
+2025-08-03 00:26:58,540 - INFO - Engineering features for 2012 season to predict 2013
+2025-08-03 00:26:58,540 - INFO - Loading raw data for 2013 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:26:58,543 - INFO - Successfully loaded actuals data for 2013 to create target variable.
+2025-08-03 00:26:58,544 - INFO - Loading raw data for 2011 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:26:58,546 - INFO - Loading raw data for 2012 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:26:58,549 - INFO - Converted 'birth_date' column to datetime for season 2012 in current_season_df
+2025-08-03 00:26:58,549 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,555 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,559 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,560 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,564 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,567 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,576 - INFO - Identified 0 rookies for 2013 season
+2025-08-03 00:26:58,576 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,576 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,576 - INFO - Applied baseline FPPG of 5.0 to 33 QB players with minimal data
+2025-08-03 00:26:58,576 - INFO - Applied baseline FPPG of 3.0 to 58 RB players with minimal data
+2025-08-03 00:26:58,576 - INFO - Applied baseline FPPG of 2.5 to 81 WR players with minimal data
+2025-08-03 00:26:58,577 - INFO - Applied baseline FPPG of 1.5 to 37 TE players with minimal data
+2025-08-03 00:26:58,578 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2013.
+2025-08-03 00:26:58,578 - INFO - Successfully engineered features for 566 players
+2025-08-03 00:26:58,579 - INFO - Saving engineered features for 2012 season
+2025-08-03 00:26:58,579 - INFO - Saving features for 2012 season (predicting 2013) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2012_predicting_2013.parquet
+2025-08-03 00:26:58,587 - INFO - Completed feature engineering for season 2012
+2025-08-03 00:26:58,587 - INFO - Processing season 2013...
+2025-08-03 00:26:58,587 - INFO - Engineering features for 2013 season to predict 2014
+2025-08-03 00:26:58,587 - INFO - Engineering features for 2013 season to predict 2014
+2025-08-03 00:26:58,587 - INFO - Loading raw data for 2014 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:26:58,590 - INFO - Successfully loaded actuals data for 2014 to create target variable.
+2025-08-03 00:26:58,591 - INFO - Loading raw data for 2012 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:26:58,593 - INFO - Loading raw data for 2013 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:26:58,597 - INFO - Converted 'birth_date' column to datetime for season 2013 in current_season_df
+2025-08-03 00:26:58,597 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,603 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,607 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,608 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,611 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,614 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,623 - INFO - Identified 0 rookies for 2014 season
+2025-08-03 00:26:58,623 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,623 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,623 - INFO - Applied baseline FPPG of 5.0 to 33 QB players with minimal data
+2025-08-03 00:26:58,623 - INFO - Applied baseline FPPG of 3.0 to 51 RB players with minimal data
+2025-08-03 00:26:58,624 - INFO - Applied baseline FPPG of 2.5 to 82 WR players with minimal data
+2025-08-03 00:26:58,624 - INFO - Applied baseline FPPG of 1.5 to 55 TE players with minimal data
+2025-08-03 00:26:58,626 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2014.
+2025-08-03 00:26:58,626 - INFO - Successfully engineered features for 563 players
+2025-08-03 00:26:58,627 - INFO - Saving engineered features for 2013 season
+2025-08-03 00:26:58,627 - INFO - Saving features for 2013 season (predicting 2014) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2013_predicting_2014.parquet
+2025-08-03 00:26:58,634 - INFO - Completed feature engineering for season 2013
+2025-08-03 00:26:58,634 - INFO - Processing season 2014...
+2025-08-03 00:26:58,635 - INFO - Engineering features for 2014 season to predict 2015
+2025-08-03 00:26:58,635 - INFO - Engineering features for 2014 season to predict 2015
+2025-08-03 00:26:58,635 - INFO - Loading raw data for 2015 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:26:58,638 - INFO - Successfully loaded actuals data for 2015 to create target variable.
+2025-08-03 00:26:58,638 - INFO - Loading raw data for 2013 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:26:58,641 - INFO - Loading raw data for 2014 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:26:58,644 - INFO - Converted 'birth_date' column to datetime for season 2014 in current_season_df
+2025-08-03 00:26:58,644 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,650 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,653 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,655 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,658 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,661 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,670 - INFO - Identified 0 rookies for 2015 season
+2025-08-03 00:26:58,670 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,670 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,670 - INFO - Applied baseline FPPG of 5.0 to 33 QB players with minimal data
+2025-08-03 00:26:58,671 - INFO - Applied baseline FPPG of 3.0 to 60 RB players with minimal data
+2025-08-03 00:26:58,671 - INFO - Applied baseline FPPG of 2.5 to 71 WR players with minimal data
+2025-08-03 00:26:58,671 - INFO - Applied baseline FPPG of 1.5 to 45 TE players with minimal data
+2025-08-03 00:26:58,672 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2015.
+2025-08-03 00:26:58,673 - INFO - Successfully engineered features for 587 players
+2025-08-03 00:26:58,673 - INFO - Saving engineered features for 2014 season
+2025-08-03 00:26:58,673 - INFO - Saving features for 2014 season (predicting 2015) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2014_predicting_2015.parquet
+2025-08-03 00:26:58,681 - INFO - Completed feature engineering for season 2014
+2025-08-03 00:26:58,681 - INFO - Processing season 2015...
+2025-08-03 00:26:58,681 - INFO - Engineering features for 2015 season to predict 2016
+2025-08-03 00:26:58,681 - INFO - Engineering features for 2015 season to predict 2016
+2025-08-03 00:26:58,681 - INFO - Loading raw data for 2016 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:26:58,684 - INFO - Successfully loaded actuals data for 2016 to create target variable.
+2025-08-03 00:26:58,684 - INFO - Loading raw data for 2014 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:26:58,687 - INFO - Loading raw data for 2015 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:26:58,690 - INFO - Converted 'birth_date' column to datetime for season 2015 in current_season_df
+2025-08-03 00:26:58,690 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,697 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,701 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,702 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,706 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,709 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,718 - INFO - Identified 0 rookies for 2016 season
+2025-08-03 00:26:58,718 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,718 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,718 - INFO - Applied baseline FPPG of 5.0 to 32 QB players with minimal data
+2025-08-03 00:26:58,718 - INFO - Applied baseline FPPG of 3.0 to 59 RB players with minimal data
+2025-08-03 00:26:58,719 - INFO - Applied baseline FPPG of 2.5 to 85 WR players with minimal data
+2025-08-03 00:26:58,719 - INFO - Applied baseline FPPG of 1.5 to 39 TE players with minimal data
+2025-08-03 00:26:58,720 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2016.
+2025-08-03 00:26:58,720 - INFO - Successfully engineered features for 583 players
+2025-08-03 00:26:58,721 - INFO - Saving engineered features for 2015 season
+2025-08-03 00:26:58,722 - INFO - Saving features for 2015 season (predicting 2016) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2015_predicting_2016.parquet
+2025-08-03 00:26:58,730 - INFO - Completed feature engineering for season 2015
+2025-08-03 00:26:58,730 - INFO - Processing season 2016...
+2025-08-03 00:26:58,730 - INFO - Engineering features for 2016 season to predict 2017
+2025-08-03 00:26:58,730 - INFO - Engineering features for 2016 season to predict 2017
+2025-08-03 00:26:58,730 - INFO - Loading raw data for 2017 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:26:58,733 - INFO - Successfully loaded actuals data for 2017 to create target variable.
+2025-08-03 00:26:58,733 - INFO - Loading raw data for 2015 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:26:58,736 - INFO - Loading raw data for 2016 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:26:58,740 - INFO - Converted 'birth_date' column to datetime for season 2016 in current_season_df
+2025-08-03 00:26:58,740 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,746 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,750 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,751 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,755 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,758 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,767 - INFO - Identified 0 rookies for 2017 season
+2025-08-03 00:26:58,767 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,767 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,768 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:26:58,768 - INFO - Applied baseline FPPG of 3.0 to 74 RB players with minimal data
+2025-08-03 00:26:58,768 - INFO - Applied baseline FPPG of 2.5 to 79 WR players with minimal data
+2025-08-03 00:26:58,768 - INFO - Applied baseline FPPG of 1.5 to 48 TE players with minimal data
+2025-08-03 00:26:58,770 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2017.
+2025-08-03 00:26:58,770 - INFO - Successfully engineered features for 578 players
+2025-08-03 00:26:58,770 - INFO - Saving engineered features for 2016 season
+2025-08-03 00:26:58,770 - INFO - Saving features for 2016 season (predicting 2017) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2016_predicting_2017.parquet
+2025-08-03 00:26:58,779 - INFO - Completed feature engineering for season 2016
+2025-08-03 00:26:58,779 - INFO - Processing season 2017...
+2025-08-03 00:26:58,779 - INFO - Engineering features for 2017 season to predict 2018
+2025-08-03 00:26:58,779 - INFO - Engineering features for 2017 season to predict 2018
+2025-08-03 00:26:58,779 - INFO - Loading raw data for 2018 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:26:58,782 - INFO - Successfully loaded actuals data for 2018 to create target variable.
+2025-08-03 00:26:58,782 - INFO - Loading raw data for 2016 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:26:58,785 - INFO - Loading raw data for 2017 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:26:58,788 - INFO - Converted 'birth_date' column to datetime for season 2017 in current_season_df
+2025-08-03 00:26:58,788 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,794 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,798 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,799 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,803 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,806 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,814 - INFO - Identified 0 rookies for 2018 season
+2025-08-03 00:26:58,814 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,814 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,815 - INFO - Applied baseline FPPG of 5.0 to 30 QB players with minimal data
+2025-08-03 00:26:58,815 - INFO - Applied baseline FPPG of 3.0 to 65 RB players with minimal data
+2025-08-03 00:26:58,815 - INFO - Applied baseline FPPG of 2.5 to 74 WR players with minimal data
+2025-08-03 00:26:58,815 - INFO - Applied baseline FPPG of 1.5 to 42 TE players with minimal data
+2025-08-03 00:26:58,817 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2018.
+2025-08-03 00:26:58,817 - INFO - Successfully engineered features for 552 players
+2025-08-03 00:26:58,818 - INFO - Saving engineered features for 2017 season
+2025-08-03 00:26:58,818 - INFO - Saving features for 2017 season (predicting 2018) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2017_predicting_2018.parquet
+2025-08-03 00:26:58,826 - INFO - Completed feature engineering for season 2017
+2025-08-03 00:26:58,826 - INFO - Processing season 2018...
+2025-08-03 00:26:58,826 - INFO - Engineering features for 2018 season to predict 2019
+2025-08-03 00:26:58,826 - INFO - Engineering features for 2018 season to predict 2019
+2025-08-03 00:26:58,826 - INFO - Loading raw data for 2019 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:26:58,829 - INFO - Successfully loaded actuals data for 2019 to create target variable.
+2025-08-03 00:26:58,829 - INFO - Loading raw data for 2017 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:26:58,832 - INFO - Loading raw data for 2018 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:26:58,835 - INFO - Converted 'birth_date' column to datetime for season 2018 in current_season_df
+2025-08-03 00:26:58,835 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,841 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,845 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,846 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,850 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,853 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,862 - INFO - Identified 0 rookies for 2019 season
+2025-08-03 00:26:58,862 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,862 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,862 - INFO - Applied baseline FPPG of 5.0 to 35 QB players with minimal data
+2025-08-03 00:26:58,862 - INFO - Applied baseline FPPG of 3.0 to 59 RB players with minimal data
+2025-08-03 00:26:58,863 - INFO - Applied baseline FPPG of 2.5 to 79 WR players with minimal data
+2025-08-03 00:26:58,863 - INFO - Applied baseline FPPG of 1.5 to 51 TE players with minimal data
+2025-08-03 00:26:58,864 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2019.
+2025-08-03 00:26:58,864 - INFO - Successfully engineered features for 566 players
+2025-08-03 00:26:58,865 - INFO - Saving engineered features for 2018 season
+2025-08-03 00:26:58,865 - INFO - Saving features for 2018 season (predicting 2019) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2018_predicting_2019.parquet
+2025-08-03 00:26:58,873 - INFO - Completed feature engineering for season 2018
+2025-08-03 00:26:58,873 - INFO - Processing season 2019...
+2025-08-03 00:26:58,873 - INFO - Engineering features for 2019 season to predict 2020
+2025-08-03 00:26:58,873 - INFO - Engineering features for 2019 season to predict 2020
+2025-08-03 00:26:58,873 - INFO - Loading raw data for 2020 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:26:58,876 - INFO - Successfully loaded actuals data for 2020 to create target variable.
+2025-08-03 00:26:58,876 - INFO - Loading raw data for 2018 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:26:58,878 - INFO - Loading raw data for 2019 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:26:58,881 - INFO - Converted 'birth_date' column to datetime for season 2019 in current_season_df
+2025-08-03 00:26:58,881 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,887 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,891 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,893 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,896 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,899 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,908 - INFO - Identified 0 rookies for 2020 season
+2025-08-03 00:26:58,908 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,908 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,909 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:26:58,909 - INFO - Applied baseline FPPG of 3.0 to 57 RB players with minimal data
+2025-08-03 00:26:58,909 - INFO - Applied baseline FPPG of 2.5 to 86 WR players with minimal data
+2025-08-03 00:26:58,909 - INFO - Applied baseline FPPG of 1.5 to 43 TE players with minimal data
+2025-08-03 00:26:58,911 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2020.
+2025-08-03 00:26:58,911 - INFO - Successfully engineered features for 567 players
+2025-08-03 00:26:58,911 - INFO - Saving engineered features for 2019 season
+2025-08-03 00:26:58,912 - INFO - Saving features for 2019 season (predicting 2020) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2019_predicting_2020.parquet
+2025-08-03 00:26:58,919 - INFO - Completed feature engineering for season 2019
+2025-08-03 00:26:58,919 - INFO - Processing season 2020...
+2025-08-03 00:26:58,919 - INFO - Engineering features for 2020 season to predict 2021
+2025-08-03 00:26:58,919 - INFO - Engineering features for 2020 season to predict 2021
+2025-08-03 00:26:58,919 - INFO - Loading raw data for 2021 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:26:58,923 - INFO - Successfully loaded actuals data for 2021 to create target variable.
+2025-08-03 00:26:58,923 - INFO - Loading raw data for 2019 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:26:58,926 - INFO - Loading raw data for 2020 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:26:58,929 - INFO - Converted 'birth_date' column to datetime for season 2020 in current_season_df
+2025-08-03 00:26:58,929 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,935 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,939 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,940 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,944 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,947 - INFO - Handling rookies for prediction
+2025-08-03 00:26:58,956 - INFO - Identified 0 rookies for 2021 season
+2025-08-03 00:26:58,956 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:58,956 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:58,957 - INFO - Applied baseline FPPG of 5.0 to 39 QB players with minimal data
+2025-08-03 00:26:58,957 - INFO - Applied baseline FPPG of 3.0 to 62 RB players with minimal data
+2025-08-03 00:26:58,957 - INFO - Applied baseline FPPG of 2.5 to 88 WR players with minimal data
+2025-08-03 00:26:58,957 - INFO - Applied baseline FPPG of 1.5 to 47 TE players with minimal data
+2025-08-03 00:26:58,959 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2021.
+2025-08-03 00:26:58,959 - INFO - Successfully engineered features for 595 players
+2025-08-03 00:26:58,960 - INFO - Saving engineered features for 2020 season
+2025-08-03 00:26:58,960 - INFO - Saving features for 2020 season (predicting 2021) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2020_predicting_2021.parquet
+2025-08-03 00:26:58,968 - INFO - Completed feature engineering for season 2020
+2025-08-03 00:26:58,968 - INFO - Processing season 2021...
+2025-08-03 00:26:58,968 - INFO - Engineering features for 2021 season to predict 2022
+2025-08-03 00:26:58,968 - INFO - Engineering features for 2021 season to predict 2022
+2025-08-03 00:26:58,968 - INFO - Loading raw data for 2022 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2022.parquet
+2025-08-03 00:26:58,971 - INFO - Successfully loaded actuals data for 2022 to create target variable.
+2025-08-03 00:26:58,971 - INFO - Loading raw data for 2020 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:26:58,974 - INFO - Loading raw data for 2021 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:26:58,978 - INFO - Converted 'birth_date' column to datetime for season 2021 in current_season_df
+2025-08-03 00:26:58,978 - INFO - Calculating per-game statistics
+2025-08-03 00:26:58,984 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:58,988 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:58,989 - INFO - Calculating usage metrics
+2025-08-03 00:26:58,993 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:58,996 - INFO - Handling rookies for prediction
+2025-08-03 00:26:59,006 - INFO - Identified 0 rookies for 2022 season
+2025-08-03 00:26:59,006 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:59,006 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:59,007 - INFO - Applied baseline FPPG of 5.0 to 36 QB players with minimal data
+2025-08-03 00:26:59,007 - INFO - Applied baseline FPPG of 3.0 to 62 RB players with minimal data
+2025-08-03 00:26:59,007 - INFO - Applied baseline FPPG of 2.5 to 85 WR players with minimal data
+2025-08-03 00:26:59,007 - INFO - Applied baseline FPPG of 1.5 to 51 TE players with minimal data
+2025-08-03 00:26:59,009 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2022.
+2025-08-03 00:26:59,009 - INFO - Successfully engineered features for 611 players
+2025-08-03 00:26:59,010 - INFO - Saving engineered features for 2021 season
+2025-08-03 00:26:59,010 - INFO - Saving features for 2021 season (predicting 2022) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2021_predicting_2022.parquet
+2025-08-03 00:26:59,018 - INFO - Completed feature engineering for season 2021
+2025-08-03 00:26:59,018 - INFO - Processing season 2022...
+2025-08-03 00:26:59,018 - INFO - Engineering features for 2022 season to predict 2023
+2025-08-03 00:26:59,018 - INFO - Engineering features for 2022 season to predict 2023
+2025-08-03 00:26:59,018 - INFO - Loading raw data for 2023 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2023.parquet
+2025-08-03 00:26:59,021 - INFO - Successfully loaded actuals data for 2023 to create target variable.
+2025-08-03 00:26:59,021 - INFO - Loading raw data for 2021 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:26:59,024 - INFO - Loading raw data for 2022 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2022.parquet
+2025-08-03 00:26:59,028 - INFO - Converted 'birth_date' column to datetime for season 2022 in current_season_df
+2025-08-03 00:26:59,028 - INFO - Calculating per-game statistics
+2025-08-03 00:26:59,034 - INFO - Calculating efficiency metrics
+2025-08-03 00:26:59,038 - INFO - Calculating team-level aggregates
+2025-08-03 00:26:59,039 - INFO - Calculating usage metrics
+2025-08-03 00:26:59,043 - INFO - Creating lagged features from previous season
+2025-08-03 00:26:59,046 - INFO - Handling rookies for prediction
+2025-08-03 00:26:59,055 - INFO - Identified 0 rookies for 2023 season
+2025-08-03 00:26:59,055 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:26:59,055 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:26:59,056 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:26:59,056 - INFO - Applied baseline FPPG of 3.0 to 51 RB players with minimal data
+2025-08-03 00:26:59,056 - INFO - Applied baseline FPPG of 2.5 to 77 WR players with minimal data
+2025-08-03 00:26:59,056 - INFO - Applied baseline FPPG of 1.5 to 43 TE players with minimal data
+2025-08-03 00:26:59,058 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2023.
+2025-08-03 00:26:59,058 - INFO - Successfully engineered features for 589 players
+2025-08-03 00:26:59,059 - INFO - Saving engineered features for 2022 season
+2025-08-03 00:26:59,059 - INFO - Saving features for 2022 season (predicting 2023) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2022_predicting_2023.parquet
+2025-08-03 00:26:59,067 - INFO - Completed feature engineering for season 2022
+2025-08-03 00:26:59,067 - INFO - Completed engineering and saving features for all seasons. Saved 13 files.
+2025-08-03 00:26:59,068 - INFO - ✅ Feature engineering completed in 0.6 seconds
+2025-08-03 00:26:59,068 - INFO - ================================================================================
+2025-08-03 00:26:59,068 - INFO - STEP 4: Model Training (6 Positions)
+2025-08-03 00:26:59,068 - INFO - ================================================================================
+2025-08-03 00:27:02,110 - ERROR - Model training failed: Traceback (most recent call last):
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/scripts/run_feature_engineering_analysis.py", line 24, in <module>
+    from src.models.model_comparison import ModelComparison
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/src/models/model_comparison.py", line 394
+    columns=X_with_interactions.columns)
+                                       ^
+SyntaxError: closing parenthesis ')' does not match opening parenthesis '{' on line 388
+
+2025-08-03 00:27:02,110 - ERROR - ❌ Pipeline failed at step: Model Training
+2025-08-03 00:27:02,110 - INFO - ================================================================================
+2025-08-03 00:27:02,110 - INFO - PIPELINE SUMMARY
+2025-08-03 00:27:02,110 - INFO - ================================================================================
+2025-08-03 00:27:02,110 - INFO - ✅ Completed Steps: 3/5
+2025-08-03 00:27:02,110 - INFO - ⏱️  Total Runtime: 0.4 minutes
+2025-08-03 00:27:02,110 - ERROR - ❌ Pipeline did not complete successfully
+2025-08-03 00:27:02,110 - ERROR - 🔍 Check the logs above for error details
+2025-08-03 00:29:54,611 - INFO - 🏈 Fantasy Draft Engine - Complete Pipeline
+2025-08-03 00:29:54,611 - INFO - 📊 AI-powered rankings from 14 years of NFL data
+2025-08-03 00:29:54,611 - INFO - 🤖 Training ensemble models for 6 positions
+2025-08-03 00:29:54,611 - INFO - 
+2025-08-03 00:29:54,611 - INFO - Created directory: data/raw
+2025-08-03 00:29:54,611 - INFO - Created directory: data/processed
+2025-08-03 00:29:54,611 - INFO - Created directory: data/processed/position_specific
+2025-08-03 00:29:54,611 - INFO - Created directory: data/draft_lists
+2025-08-03 00:29:54,611 - INFO - Created directory: saved_models
+2025-08-03 00:29:54,611 - INFO - Created directory: plots
+2025-08-03 00:29:54,611 - INFO - Created directory: logs
+2025-08-03 00:29:54,611 - INFO - ================================================================================
+2025-08-03 00:29:54,611 - INFO - STEP 1: Data Acquisition (2010-2023 NFL Data)
+2025-08-03 00:29:54,611 - INFO - ================================================================================
+2025-08-03 00:29:54,832 - INFO - NumExpr defaulting to 8 threads.
+2025-08-03 00:29:54,966 - INFO - Fetching NFL data from 2010 to 2023...
+2025-08-03 00:29:54,966 - INFO - This may take 5-8 minutes depending on your internet connection...
+2025-08-03 00:29:54,966 - INFO - Fetching and saving player statistics for seasons 2010 to 2023
+2025-08-03 00:29:54,966 - INFO - Processing season 2010...
+2025-08-03 00:29:54,966 - INFO - Fetching player statistics for 2010 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:29:56,359 - INFO - Successfully fetched raw data for 2010 season
+2025-08-03 00:29:56,376 - INFO - Successfully merged stats for 2010 season. Total players: 523
+2025-08-03 00:29:56,384 - INFO - Successfully saved player statistics for 2010 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2010.parquet
+2025-08-03 00:29:56,384 - INFO - Completed processing for season 2010
+2025-08-03 00:29:56,384 - INFO - Processing season 2011...
+2025-08-03 00:29:56,384 - INFO - Fetching player statistics for 2011 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:29:57,633 - INFO - Successfully fetched raw data for 2011 season
+2025-08-03 00:29:57,650 - INFO - Successfully merged stats for 2011 season. Total players: 526
+2025-08-03 00:29:57,661 - INFO - Successfully saved player statistics for 2011 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:29:57,661 - INFO - Completed processing for season 2011
+2025-08-03 00:29:57,661 - INFO - Processing season 2012...
+2025-08-03 00:29:57,661 - INFO - Fetching player statistics for 2012 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:29:58,850 - INFO - Successfully fetched raw data for 2012 season
+2025-08-03 00:29:58,867 - INFO - Successfully merged stats for 2012 season. Total players: 539
+2025-08-03 00:29:58,875 - INFO - Successfully saved player statistics for 2012 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:29:58,876 - INFO - Completed processing for season 2012
+2025-08-03 00:29:58,876 - INFO - Processing season 2013...
+2025-08-03 00:29:58,876 - INFO - Fetching player statistics for 2013 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:00,170 - INFO - Successfully fetched raw data for 2013 season
+2025-08-03 00:30:00,187 - INFO - Successfully merged stats for 2013 season. Total players: 536
+2025-08-03 00:30:00,196 - INFO - Successfully saved player statistics for 2013 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:30:00,196 - INFO - Completed processing for season 2013
+2025-08-03 00:30:00,196 - INFO - Processing season 2014...
+2025-08-03 00:30:00,196 - INFO - Fetching player statistics for 2014 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:01,432 - INFO - Successfully fetched raw data for 2014 season
+2025-08-03 00:30:01,449 - INFO - Successfully merged stats for 2014 season. Total players: 540
+2025-08-03 00:30:01,457 - INFO - Successfully saved player statistics for 2014 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:30:01,457 - INFO - Completed processing for season 2014
+2025-08-03 00:30:01,457 - INFO - Processing season 2015...
+2025-08-03 00:30:01,457 - INFO - Fetching player statistics for 2015 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:02,616 - INFO - Successfully fetched raw data for 2015 season
+2025-08-03 00:30:02,631 - INFO - Successfully merged stats for 2015 season. Total players: 567
+2025-08-03 00:30:02,640 - INFO - Successfully saved player statistics for 2015 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:30:02,640 - INFO - Completed processing for season 2015
+2025-08-03 00:30:02,640 - INFO - Processing season 2016...
+2025-08-03 00:30:02,640 - INFO - Fetching player statistics for 2016 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:04,362 - INFO - Successfully fetched raw data for 2016 season
+2025-08-03 00:30:04,379 - INFO - Successfully merged stats for 2016 season. Total players: 563
+2025-08-03 00:30:04,387 - INFO - Successfully saved player statistics for 2016 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:30:04,387 - INFO - Completed processing for season 2016
+2025-08-03 00:30:04,387 - INFO - Processing season 2017...
+2025-08-03 00:30:04,387 - INFO - Fetching player statistics for 2017 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:05,584 - INFO - Successfully fetched raw data for 2017 season
+2025-08-03 00:30:05,599 - INFO - Successfully merged stats for 2017 season. Total players: 552
+2025-08-03 00:30:05,607 - INFO - Successfully saved player statistics for 2017 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:30:05,607 - INFO - Completed processing for season 2017
+2025-08-03 00:30:05,607 - INFO - Processing season 2018...
+2025-08-03 00:30:05,607 - INFO - Fetching player statistics for 2018 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:06,890 - INFO - Successfully fetched raw data for 2018 season
+2025-08-03 00:30:06,907 - INFO - Successfully merged stats for 2018 season. Total players: 566
+2025-08-03 00:30:06,916 - INFO - Successfully saved player statistics for 2018 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:30:06,916 - INFO - Completed processing for season 2018
+2025-08-03 00:30:06,916 - INFO - Processing season 2019...
+2025-08-03 00:30:06,916 - INFO - Fetching player statistics for 2019 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:08,114 - INFO - Successfully fetched raw data for 2019 season
+2025-08-03 00:30:08,130 - INFO - Successfully merged stats for 2019 season. Total players: 567
+2025-08-03 00:30:08,139 - INFO - Successfully saved player statistics for 2019 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:30:08,139 - INFO - Completed processing for season 2019
+2025-08-03 00:30:08,139 - INFO - Processing season 2020...
+2025-08-03 00:30:08,139 - INFO - Fetching player statistics for 2020 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:09,282 - INFO - Successfully fetched raw data for 2020 season
+2025-08-03 00:30:09,300 - INFO - Successfully merged stats for 2020 season. Total players: 595
+2025-08-03 00:30:09,309 - INFO - Successfully saved player statistics for 2020 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:30:09,309 - INFO - Completed processing for season 2020
+2025-08-03 00:30:09,309 - INFO - Processing season 2021...
+2025-08-03 00:30:09,309 - INFO - Fetching player statistics for 2021 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:10,546 - INFO - Successfully fetched raw data for 2021 season
+2025-08-03 00:30:10,562 - INFO - Successfully merged stats for 2021 season. Total players: 611
+2025-08-03 00:30:10,571 - INFO - Successfully saved player statistics for 2021 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:30:10,571 - INFO - Completed processing for season 2021
+2025-08-03 00:30:10,571 - INFO - Processing season 2022...
+2025-08-03 00:30:10,572 - INFO - Fetching player statistics for 2022 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:11,911 - INFO - Successfully fetched raw data for 2022 season
+2025-08-03 00:30:11,928 - INFO - Successfully merged stats for 2022 season. Total players: 589
+2025-08-03 00:30:11,937 - INFO - Successfully saved player statistics for 2022 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2022.parquet
+2025-08-03 00:30:11,937 - INFO - Completed processing for season 2022
+2025-08-03 00:30:11,937 - INFO - Processing season 2023...
+2025-08-03 00:30:11,937 - INFO - Fetching player statistics for 2023 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,271 - INFO - Successfully fetched raw data for 2023 season
+2025-08-03 00:30:13,288 - INFO - Successfully merged stats for 2023 season. Total players: 559
+2025-08-03 00:30:13,297 - INFO - Successfully saved player statistics for 2023 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2023.parquet
+2025-08-03 00:30:13,297 - INFO - Completed processing for season 2023
+2025-08-03 00:30:13,297 - INFO - Completed fetching and saving player statistics for all seasons. Saved 14 files.
+2025-08-03 00:30:13,297 - INFO - ✅ Data acquisition completed in 18.7 seconds
+2025-08-03 00:30:13,297 - INFO - ✅ Saved 14 season files
+2025-08-03 00:30:13,297 - INFO - ================================================================================
+2025-08-03 00:30:13,297 - INFO - STEP 2: Data Cleaning & Preparation
+2025-08-03 00:30:13,297 - INFO - ================================================================================
+2025-08-03 00:30:13,298 - INFO - Cleaning and standardizing player data...
+2025-08-03 00:30:13,298 - INFO - Cleaning and saving player statistics for seasons 2010 to 2023
+2025-08-03 00:30:13,298 - INFO - Processing season 2010...
+2025-08-03 00:30:13,298 - INFO - Cleaning player statistics for 2010 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,301 - INFO - Successfully loaded raw player statistics for 2010 season. Total players: 523
+2025-08-03 00:30:13,302 - INFO - Standardizing formats
+2025-08-03 00:30:13,303 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,307 - WARNING - Remaining missing values after handling for QB: rtd_sh                   8
+dom                      8
+w8dom                    8
+depth_chart_position    81
+dtype: int64
+2025-08-03 00:30:13,307 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,309 - INFO - Detected 1 outliers in interceptions for QB players
+2025-08-03 00:30:13,310 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,313 - WARNING - Remaining missing values after handling for RB: rtd_sh                    2
+dom                       2
+w8dom                     2
+depth_chart_position    128
+gsis_id                   3
+first_name                3
+last_name                 3
+birth_date                3
+dtype: int64
+2025-08-03 00:30:13,313 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,315 - INFO - Detected 3 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,316 - INFO - Detected 4 outliers in receptions for RB players
+2025-08-03 00:30:13,317 - INFO - Detected 7 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,317 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,321 - WARNING - Remaining missing values after handling for WR: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    207
+dtype: int64
+2025-08-03 00:30:13,321 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,322 - INFO - Detected 2 outliers in receptions for WR players
+2025-08-03 00:30:13,323 - INFO - Detected 1 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,324 - INFO - Detected 6 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,325 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,327 - WARNING - Remaining missing values after handling for TE: rtd_sh                    1
+dom                       1
+w8dom                     1
+depth_chart_position    107
+dtype: int64
+2025-08-03 00:30:13,327 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,329 - INFO - Detected 1 outliers in receptions for TE players
+2025-08-03 00:30:13,330 - INFO - Detected 1 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,331 - INFO - Detected 4 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,332 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,333 - WARNING - Found 1 QB players with games played but no offensive stats
+2025-08-03 00:30:13,334 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:30:13,335 - WARNING - Potential data issues detected for 2 players
+2025-08-03 00:30:13,335 - INFO - Successfully cleaned player statistics for 2010 season. Total players: 523
+2025-08-03 00:30:13,340 - INFO - Successfully saved cleaned player statistics for 2010 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2010.parquet
+2025-08-03 00:30:13,340 - INFO - Completed cleaning for season 2010
+2025-08-03 00:30:13,340 - INFO - Processing season 2011...
+2025-08-03 00:30:13,340 - INFO - Cleaning player statistics for 2011 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,343 - INFO - Successfully loaded raw player statistics for 2011 season. Total players: 526
+2025-08-03 00:30:13,343 - INFO - Standardizing formats
+2025-08-03 00:30:13,344 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,347 - WARNING - Remaining missing values after handling for QB: rtd_sh                   1
+dom                      1
+w8dom                    1
+depth_chart_position    77
+dtype: int64
+2025-08-03 00:30:13,347 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,348 - INFO - Detected 4 outliers in passing_tds for QB players
+2025-08-03 00:30:13,349 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,352 - WARNING - Remaining missing values after handling for RB: rtd_sh                    5
+dom                       5
+w8dom                     5
+depth_chart_position    134
+gsis_id                   7
+first_name                7
+last_name                 7
+birth_date                7
+dtype: int64
+2025-08-03 00:30:13,352 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,353 - INFO - Detected 1 outliers in carries for RB players
+2025-08-03 00:30:13,353 - INFO - Detected 3 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,355 - INFO - Detected 8 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,356 - INFO - Detected 3 outliers in receptions for RB players
+2025-08-03 00:30:13,357 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,357 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,360 - WARNING - Remaining missing values after handling for WR: rtd_sh                    3
+dom                       3
+w8dom                     3
+depth_chart_position    205
+dtype: int64
+2025-08-03 00:30:13,360 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,361 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:30:13,362 - INFO - Detected 3 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,363 - INFO - Detected 3 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,363 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,366 - WARNING - Remaining missing values after handling for TE: rtd_sh                    1
+dom                       1
+w8dom                     1
+depth_chart_position    110
+gsis_id                   1
+first_name                1
+last_name                 1
+birth_date                1
+dtype: int64
+2025-08-03 00:30:13,366 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,367 - INFO - Detected 3 outliers in targets for TE players
+2025-08-03 00:30:13,368 - INFO - Detected 4 outliers in receptions for TE players
+2025-08-03 00:30:13,368 - INFO - Detected 5 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,369 - INFO - Detected 3 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,371 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,372 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:30:13,372 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:30:13,373 - WARNING - Found 3 WR players with games played but no offensive stats
+2025-08-03 00:30:13,374 - WARNING - Potential data issues detected for 6 players
+2025-08-03 00:30:13,374 - INFO - Successfully cleaned player statistics for 2011 season. Total players: 526
+2025-08-03 00:30:13,379 - INFO - Successfully saved cleaned player statistics for 2011 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2011.parquet
+2025-08-03 00:30:13,379 - INFO - Completed cleaning for season 2011
+2025-08-03 00:30:13,379 - INFO - Processing season 2012...
+2025-08-03 00:30:13,379 - INFO - Cleaning player statistics for 2012 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,382 - INFO - Successfully loaded raw player statistics for 2012 season. Total players: 539
+2025-08-03 00:30:13,382 - INFO - Standardizing formats
+2025-08-03 00:30:13,383 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,386 - WARNING - Remaining missing values after handling for QB: rtd_sh                   4
+dom                      4
+w8dom                    4
+depth_chart_position    72
+dtype: int64
+2025-08-03 00:30:13,386 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,388 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,391 - WARNING - Remaining missing values after handling for RB: rtd_sh                    3
+dom                       3
+w8dom                     3
+depth_chart_position    146
+gsis_id                   5
+first_name                5
+last_name                 5
+birth_date                5
+dtype: int64
+2025-08-03 00:30:13,391 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,392 - INFO - Detected 11 outliers in carries for RB players
+2025-08-03 00:30:13,393 - INFO - Detected 15 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,394 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,394 - INFO - Detected 8 outliers in receptions for RB players
+2025-08-03 00:30:13,395 - INFO - Detected 8 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,396 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,398 - WARNING - Remaining missing values after handling for WR: rtd_sh                   10
+dom                      10
+w8dom                    10
+depth_chart_position    214
+dtype: int64
+2025-08-03 00:30:13,398 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,399 - INFO - Detected 3 outliers in targets for WR players
+2025-08-03 00:30:13,400 - INFO - Detected 4 outliers in receptions for WR players
+2025-08-03 00:30:13,401 - INFO - Detected 2 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,402 - INFO - Detected 5 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,402 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,405 - WARNING - Remaining missing values after handling for TE: rtd_sh                    7
+dom                       7
+w8dom                     7
+depth_chart_position    107
+dtype: int64
+2025-08-03 00:30:13,405 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,406 - INFO - Detected 1 outliers in receptions for TE players
+2025-08-03 00:30:13,407 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,409 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,410 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:30:13,410 - WARNING - Found 3 RB players with games played but no offensive stats
+2025-08-03 00:30:13,412 - WARNING - Potential data issues detected for 6 players
+2025-08-03 00:30:13,412 - INFO - Successfully cleaned player statistics for 2012 season. Total players: 539
+2025-08-03 00:30:13,416 - INFO - Successfully saved cleaned player statistics for 2012 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2012.parquet
+2025-08-03 00:30:13,416 - INFO - Completed cleaning for season 2012
+2025-08-03 00:30:13,416 - INFO - Processing season 2013...
+2025-08-03 00:30:13,416 - INFO - Cleaning player statistics for 2013 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,419 - INFO - Successfully loaded raw player statistics for 2013 season. Total players: 536
+2025-08-03 00:30:13,420 - INFO - Standardizing formats
+2025-08-03 00:30:13,421 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,423 - WARNING - Remaining missing values after handling for QB: rtd_sh                   2
+dom                      2
+w8dom                    2
+depth_chart_position    70
+dtype: int64
+2025-08-03 00:30:13,423 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,425 - INFO - Detected 1 outliers in passing_tds for QB players
+2025-08-03 00:30:13,426 - INFO - Detected 1 outliers in interceptions for QB players
+2025-08-03 00:30:13,426 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,429 - WARNING - Remaining missing values after handling for RB: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    140
+gsis_id                   2
+first_name                2
+last_name                 2
+birth_date                2
+dtype: int64
+2025-08-03 00:30:13,429 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,430 - INFO - Detected 1 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,431 - INFO - Detected 3 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,432 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:30:13,433 - INFO - Detected 11 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,433 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,436 - WARNING - Remaining missing values after handling for WR: rtd_sh                    5
+dom                       5
+w8dom                     5
+depth_chart_position    206
+gsis_id                   1
+first_name                1
+last_name                 1
+birth_date                1
+dtype: int64
+2025-08-03 00:30:13,436 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,437 - INFO - Detected 3 outliers in receptions for WR players
+2025-08-03 00:30:13,438 - INFO - Detected 5 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,439 - INFO - Detected 6 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,439 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,442 - WARNING - Remaining missing values after handling for TE: depth_chart_position    120
+dtype: int64
+2025-08-03 00:30:13,442 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,443 - INFO - Detected 3 outliers in targets for TE players
+2025-08-03 00:30:13,444 - INFO - Detected 4 outliers in receptions for TE players
+2025-08-03 00:30:13,445 - INFO - Detected 2 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,446 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,447 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,448 - WARNING - Found 4 QB players with games played but no offensive stats
+2025-08-03 00:30:13,448 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:30:13,449 - WARNING - Found 2 WR players with games played but no offensive stats
+2025-08-03 00:30:13,450 - WARNING - Potential data issues detected for 7 players
+2025-08-03 00:30:13,450 - INFO - Successfully cleaned player statistics for 2013 season. Total players: 536
+2025-08-03 00:30:13,455 - INFO - Successfully saved cleaned player statistics for 2013 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2013.parquet
+2025-08-03 00:30:13,455 - INFO - Completed cleaning for season 2013
+2025-08-03 00:30:13,455 - INFO - Processing season 2014...
+2025-08-03 00:30:13,455 - INFO - Cleaning player statistics for 2014 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,458 - INFO - Successfully loaded raw player statistics for 2014 season. Total players: 540
+2025-08-03 00:30:13,458 - INFO - Standardizing formats
+2025-08-03 00:30:13,459 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,462 - WARNING - Remaining missing values after handling for QB: rtd_sh                   3
+dom                      3
+w8dom                    3
+depth_chart_position    76
+dtype: int64
+2025-08-03 00:30:13,462 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,464 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,466 - WARNING - Remaining missing values after handling for RB: depth_chart_position    141
+dtype: int64
+2025-08-03 00:30:13,466 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,467 - INFO - Detected 2 outliers in carries for RB players
+2025-08-03 00:30:13,468 - INFO - Detected 6 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,469 - INFO - Detected 2 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,470 - INFO - Detected 3 outliers in receptions for RB players
+2025-08-03 00:30:13,470 - INFO - Detected 4 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,471 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,473 - WARNING - Remaining missing values after handling for WR: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    206
+dtype: int64
+2025-08-03 00:30:13,473 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,475 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:30:13,476 - INFO - Detected 1 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,476 - INFO - Detected 18 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,477 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,479 - WARNING - Remaining missing values after handling for TE: rtd_sh                    4
+dom                       4
+w8dom                     4
+depth_chart_position    117
+dtype: int64
+2025-08-03 00:30:13,479 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,480 - INFO - Detected 4 outliers in targets for TE players
+2025-08-03 00:30:13,481 - INFO - Detected 11 outliers in receptions for TE players
+2025-08-03 00:30:13,482 - INFO - Detected 11 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,483 - INFO - Detected 10 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,484 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,485 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:30:13,485 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:30:13,486 - WARNING - Found 2 WR players with games played but no offensive stats
+2025-08-03 00:30:13,486 - WARNING - Found 1 TE players with games played but no offensive stats
+2025-08-03 00:30:13,488 - WARNING - Potential data issues detected for 7 players
+2025-08-03 00:30:13,488 - INFO - Successfully cleaned player statistics for 2014 season. Total players: 540
+2025-08-03 00:30:13,500 - INFO - Successfully saved cleaned player statistics for 2014 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2014.parquet
+2025-08-03 00:30:13,500 - INFO - Completed cleaning for season 2014
+2025-08-03 00:30:13,500 - INFO - Processing season 2015...
+2025-08-03 00:30:13,500 - INFO - Cleaning player statistics for 2015 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,503 - INFO - Successfully loaded raw player statistics for 2015 season. Total players: 567
+2025-08-03 00:30:13,504 - INFO - Standardizing formats
+2025-08-03 00:30:13,505 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,508 - WARNING - Remaining missing values after handling for QB: rtd_sh                   1
+dom                      1
+w8dom                    1
+depth_chart_position    79
+dtype: int64
+2025-08-03 00:30:13,508 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,510 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,512 - WARNING - Remaining missing values after handling for RB: rtd_sh                    1
+dom                       1
+w8dom                     1
+depth_chart_position    155
+gsis_id                   2
+first_name                2
+last_name                 2
+birth_date                2
+dtype: int64
+2025-08-03 00:30:13,512 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,513 - INFO - Detected 5 outliers in carries for RB players
+2025-08-03 00:30:13,514 - INFO - Detected 2 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,515 - INFO - Detected 7 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,516 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:30:13,516 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,517 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,519 - WARNING - Remaining missing values after handling for WR: rtd_sh                    6
+dom                       6
+w8dom                     6
+depth_chart_position    218
+dtype: int64
+2025-08-03 00:30:13,520 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,520 - INFO - Detected 6 outliers in targets for WR players
+2025-08-03 00:30:13,521 - INFO - Detected 7 outliers in receptions for WR players
+2025-08-03 00:30:13,522 - INFO - Detected 8 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,523 - INFO - Detected 6 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,523 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,526 - WARNING - Remaining missing values after handling for TE: depth_chart_position    115
+dtype: int64
+2025-08-03 00:30:13,526 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,527 - INFO - Detected 7 outliers in targets for TE players
+2025-08-03 00:30:13,528 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:30:13,529 - INFO - Detected 5 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,529 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,531 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,532 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:30:13,533 - WARNING - Found 6 WR players with games played but no offensive stats
+2025-08-03 00:30:13,534 - WARNING - Potential data issues detected for 8 players
+2025-08-03 00:30:13,534 - INFO - Successfully cleaned player statistics for 2015 season. Total players: 567
+2025-08-03 00:30:13,538 - INFO - Successfully saved cleaned player statistics for 2015 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2015.parquet
+2025-08-03 00:30:13,538 - INFO - Completed cleaning for season 2015
+2025-08-03 00:30:13,538 - INFO - Processing season 2016...
+2025-08-03 00:30:13,538 - INFO - Cleaning player statistics for 2016 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,541 - INFO - Successfully loaded raw player statistics for 2016 season. Total players: 563
+2025-08-03 00:30:13,542 - INFO - Standardizing formats
+2025-08-03 00:30:13,543 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,545 - WARNING - Remaining missing values after handling for QB: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:30:13,545 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,548 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,551 - WARNING - Remaining missing values after handling for RB: rtd_sh         4
+dom            4
+w8dom          4
+gsis_id       18
+first_name    18
+last_name     18
+birth_date    18
+dtype: int64
+2025-08-03 00:30:13,551 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,552 - INFO - Detected 11 outliers in carries for RB players
+2025-08-03 00:30:13,553 - INFO - Detected 10 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,553 - INFO - Detected 14 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,554 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:30:13,555 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,555 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,558 - WARNING - Remaining missing values after handling for WR: rtd_sh    4
+dom       4
+w8dom     4
+dtype: int64
+2025-08-03 00:30:13,558 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,560 - INFO - Detected 4 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,561 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,563 - WARNING - Remaining missing values after handling for TE: rtd_sh        5
+dom           5
+w8dom         5
+gsis_id       1
+first_name    1
+last_name     1
+birth_date    1
+dtype: int64
+2025-08-03 00:30:13,563 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,564 - INFO - Detected 3 outliers in targets for TE players
+2025-08-03 00:30:13,565 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:30:13,566 - INFO - Detected 3 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,567 - INFO - Detected 9 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,568 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,569 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:30:13,570 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:30:13,570 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:30:13,572 - WARNING - Potential data issues detected for 4 players
+2025-08-03 00:30:13,572 - INFO - Successfully cleaned player statistics for 2016 season. Total players: 563
+2025-08-03 00:30:13,576 - INFO - Successfully saved cleaned player statistics for 2016 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2016.parquet
+2025-08-03 00:30:13,576 - INFO - Completed cleaning for season 2016
+2025-08-03 00:30:13,576 - INFO - Processing season 2017...
+2025-08-03 00:30:13,576 - INFO - Cleaning player statistics for 2017 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,579 - INFO - Successfully loaded raw player statistics for 2017 season. Total players: 552
+2025-08-03 00:30:13,580 - INFO - Standardizing formats
+2025-08-03 00:30:13,581 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,583 - WARNING - Remaining missing values after handling for QB: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,583 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,585 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,588 - WARNING - Remaining missing values after handling for RB: rtd_sh         3
+dom            3
+w8dom          3
+gsis_id       22
+first_name    22
+last_name     22
+birth_date    22
+dtype: int64
+2025-08-03 00:30:13,588 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,589 - INFO - Detected 6 outliers in carries for RB players
+2025-08-03 00:30:13,590 - INFO - Detected 7 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,591 - INFO - Detected 10 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,592 - INFO - Detected 5 outliers in receptions for RB players
+2025-08-03 00:30:13,593 - INFO - Detected 5 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,593 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,596 - WARNING - Remaining missing values after handling for WR: rtd_sh    4
+dom       4
+w8dom     4
+dtype: int64
+2025-08-03 00:30:13,596 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,597 - INFO - Detected 2 outliers in receptions for WR players
+2025-08-03 00:30:13,598 - INFO - Detected 4 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,599 - INFO - Detected 13 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,599 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,602 - WARNING - Remaining missing values after handling for TE: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:30:13,602 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,603 - INFO - Detected 6 outliers in targets for TE players
+2025-08-03 00:30:13,604 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:30:13,605 - INFO - Detected 4 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,605 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,607 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,608 - WARNING - Found 2 QB players with games played but no offensive stats
+2025-08-03 00:30:13,608 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:30:13,610 - WARNING - Potential data issues detected for 3 players
+2025-08-03 00:30:13,610 - INFO - Successfully cleaned player statistics for 2017 season. Total players: 552
+2025-08-03 00:30:13,614 - INFO - Successfully saved cleaned player statistics for 2017 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2017.parquet
+2025-08-03 00:30:13,615 - INFO - Completed cleaning for season 2017
+2025-08-03 00:30:13,615 - INFO - Processing season 2018...
+2025-08-03 00:30:13,615 - INFO - Cleaning player statistics for 2018 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,617 - INFO - Successfully loaded raw player statistics for 2018 season. Total players: 566
+2025-08-03 00:30:13,618 - INFO - Standardizing formats
+2025-08-03 00:30:13,619 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,621 - WARNING - Remaining missing values after handling for QB: rtd_sh    1
+dom       1
+w8dom     1
+dtype: int64
+2025-08-03 00:30:13,621 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,623 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,626 - WARNING - Remaining missing values after handling for RB: rtd_sh         4
+dom            4
+w8dom          4
+gsis_id       15
+first_name    15
+last_name     15
+birth_date    15
+dtype: int64
+2025-08-03 00:30:13,626 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,627 - INFO - Detected 1 outliers in carries for RB players
+2025-08-03 00:30:13,628 - INFO - Detected 3 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,629 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,630 - INFO - Detected 9 outliers in receptions for RB players
+2025-08-03 00:30:13,630 - INFO - Detected 12 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,631 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,633 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,633 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,634 - INFO - Detected 3 outliers in targets for WR players
+2025-08-03 00:30:13,635 - INFO - Detected 8 outliers in receptions for WR players
+2025-08-03 00:30:13,636 - INFO - Detected 8 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,637 - INFO - Detected 4 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,637 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,640 - WARNING - Remaining missing values after handling for TE: rtd_sh        4
+dom           4
+w8dom         4
+gsis_id       1
+first_name    1
+last_name     1
+birth_date    1
+dtype: int64
+2025-08-03 00:30:13,640 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,641 - INFO - Detected 8 outliers in targets for TE players
+2025-08-03 00:30:13,642 - INFO - Detected 7 outliers in receptions for TE players
+2025-08-03 00:30:13,643 - INFO - Detected 7 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,644 - INFO - Detected 6 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,645 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,646 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:30:13,646 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:30:13,647 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:30:13,648 - WARNING - Potential data issues detected for 5 players
+2025-08-03 00:30:13,648 - INFO - Successfully cleaned player statistics for 2018 season. Total players: 566
+2025-08-03 00:30:13,653 - INFO - Successfully saved cleaned player statistics for 2018 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2018.parquet
+2025-08-03 00:30:13,653 - INFO - Completed cleaning for season 2018
+2025-08-03 00:30:13,653 - INFO - Processing season 2019...
+2025-08-03 00:30:13,653 - INFO - Cleaning player statistics for 2019 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,656 - INFO - Successfully loaded raw player statistics for 2019 season. Total players: 567
+2025-08-03 00:30:13,656 - INFO - Standardizing formats
+2025-08-03 00:30:13,657 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,660 - WARNING - Remaining missing values after handling for QB: rtd_sh    9
+dom       9
+w8dom     9
+dtype: int64
+2025-08-03 00:30:13,660 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,662 - INFO - Detected 3 outliers in interceptions for QB players
+2025-08-03 00:30:13,662 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,665 - WARNING - Remaining missing values after handling for RB: rtd_sh         6
+dom            6
+w8dom          6
+gsis_id       15
+first_name    15
+last_name     15
+birth_date    15
+dtype: int64
+2025-08-03 00:30:13,665 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,666 - INFO - Detected 6 outliers in carries for RB players
+2025-08-03 00:30:13,667 - INFO - Detected 9 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,668 - INFO - Detected 12 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,668 - INFO - Detected 6 outliers in receptions for RB players
+2025-08-03 00:30:13,669 - INFO - Detected 7 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,670 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,672 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,672 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,673 - INFO - Detected 1 outliers in targets for WR players
+2025-08-03 00:30:13,674 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:30:13,675 - INFO - Detected 2 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,676 - INFO - Detected 1 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,676 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,679 - WARNING - Remaining missing values after handling for TE: rtd_sh        4
+dom           4
+w8dom         4
+gsis_id       2
+first_name    2
+last_name     2
+birth_date    2
+dtype: int64
+2025-08-03 00:30:13,679 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,679 - INFO - Detected 4 outliers in targets for TE players
+2025-08-03 00:30:13,680 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:30:13,681 - INFO - Detected 6 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,682 - INFO - Detected 2 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,684 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,684 - WARNING - Found 3 QB players with games played but no offensive stats
+2025-08-03 00:30:13,685 - WARNING - Found 2 RB players with games played but no offensive stats
+2025-08-03 00:30:13,685 - WARNING - Found 1 WR players with games played but no offensive stats
+2025-08-03 00:30:13,687 - WARNING - Potential data issues detected for 6 players
+2025-08-03 00:30:13,687 - INFO - Successfully cleaned player statistics for 2019 season. Total players: 567
+2025-08-03 00:30:13,691 - INFO - Successfully saved cleaned player statistics for 2019 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2019.parquet
+2025-08-03 00:30:13,691 - INFO - Completed cleaning for season 2019
+2025-08-03 00:30:13,691 - INFO - Processing season 2020...
+2025-08-03 00:30:13,691 - INFO - Cleaning player statistics for 2020 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,694 - INFO - Successfully loaded raw player statistics for 2020 season. Total players: 595
+2025-08-03 00:30:13,694 - INFO - Standardizing formats
+2025-08-03 00:30:13,695 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,698 - WARNING - Remaining missing values after handling for QB: rtd_sh        8
+dom           8
+w8dom         8
+gsis_id       1
+first_name    1
+last_name     1
+birth_date    1
+dtype: int64
+2025-08-03 00:30:13,698 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,699 - INFO - Detected 1 outliers in passing_tds for QB players
+2025-08-03 00:30:13,700 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,703 - WARNING - Remaining missing values after handling for RB: rtd_sh         2
+dom            2
+w8dom          2
+gsis_id       15
+first_name    15
+last_name     15
+birth_date    15
+dtype: int64
+2025-08-03 00:30:13,703 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,704 - INFO - Detected 3 outliers in carries for RB players
+2025-08-03 00:30:13,705 - INFO - Detected 4 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,706 - INFO - Detected 14 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,706 - INFO - Detected 8 outliers in receptions for RB players
+2025-08-03 00:30:13,707 - INFO - Detected 9 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,708 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,711 - WARNING - Remaining missing values after handling for WR: rtd_sh    6
+dom       6
+w8dom     6
+dtype: int64
+2025-08-03 00:30:13,711 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,712 - INFO - Detected 1 outliers in receptions for WR players
+2025-08-03 00:30:13,713 - INFO - Detected 1 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,714 - INFO - Detected 5 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,714 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,717 - WARNING - Remaining missing values after handling for TE: rtd_sh        1
+dom           1
+w8dom         1
+gsis_id       2
+first_name    2
+last_name     2
+birth_date    2
+dtype: int64
+2025-08-03 00:30:13,717 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,718 - INFO - Detected 4 outliers in targets for TE players
+2025-08-03 00:30:13,719 - INFO - Detected 3 outliers in receptions for TE players
+2025-08-03 00:30:13,720 - INFO - Detected 2 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,720 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,722 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,723 - WARNING - Found 4 QB players with games played but no offensive stats
+2025-08-03 00:30:13,723 - WARNING - Found 2 RB players with games played but no offensive stats
+2025-08-03 00:30:13,724 - WARNING - Found 2 WR players with games played but no offensive stats
+2025-08-03 00:30:13,725 - WARNING - Potential data issues detected for 8 players
+2025-08-03 00:30:13,725 - INFO - Successfully cleaned player statistics for 2020 season. Total players: 595
+2025-08-03 00:30:13,730 - INFO - Successfully saved cleaned player statistics for 2020 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2020.parquet
+2025-08-03 00:30:13,730 - INFO - Completed cleaning for season 2020
+2025-08-03 00:30:13,730 - INFO - Processing season 2021...
+2025-08-03 00:30:13,730 - INFO - Cleaning player statistics for 2021 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,733 - INFO - Successfully loaded raw player statistics for 2021 season. Total players: 611
+2025-08-03 00:30:13,733 - INFO - Standardizing formats
+2025-08-03 00:30:13,734 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,737 - WARNING - Remaining missing values after handling for QB: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,737 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,739 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,742 - WARNING - Remaining missing values after handling for RB: rtd_sh         3
+dom            3
+w8dom          3
+gsis_id       14
+first_name    14
+last_name     14
+birth_date    14
+dtype: int64
+2025-08-03 00:30:13,742 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,743 - INFO - Detected 3 outliers in carries for RB players
+2025-08-03 00:30:13,744 - INFO - Detected 2 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,745 - INFO - Detected 12 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,745 - INFO - Detected 3 outliers in receptions for RB players
+2025-08-03 00:30:13,746 - INFO - Detected 3 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,747 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,749 - WARNING - Remaining missing values after handling for WR: rtd_sh    6
+dom       6
+w8dom     6
+dtype: int64
+2025-08-03 00:30:13,749 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,750 - INFO - Detected 8 outliers in targets for WR players
+2025-08-03 00:30:13,751 - INFO - Detected 9 outliers in receptions for WR players
+2025-08-03 00:30:13,752 - INFO - Detected 5 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,753 - INFO - Detected 16 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,753 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,756 - WARNING - Remaining missing values after handling for TE: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,756 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,756 - INFO - Detected 6 outliers in targets for TE players
+2025-08-03 00:30:13,757 - INFO - Detected 6 outliers in receptions for TE players
+2025-08-03 00:30:13,758 - INFO - Detected 9 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,759 - INFO - Detected 5 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,761 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,761 - WARNING - Found 7 QB players with games played but no offensive stats
+2025-08-03 00:30:13,762 - WARNING - Found 2 RB players with games played but no offensive stats
+2025-08-03 00:30:13,763 - WARNING - Found 3 WR players with games played but no offensive stats
+2025-08-03 00:30:13,764 - WARNING - Potential data issues detected for 12 players
+2025-08-03 00:30:13,764 - INFO - Successfully cleaned player statistics for 2021 season. Total players: 611
+2025-08-03 00:30:13,769 - INFO - Successfully saved cleaned player statistics for 2021 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2021.parquet
+2025-08-03 00:30:13,769 - INFO - Completed cleaning for season 2021
+2025-08-03 00:30:13,769 - INFO - Processing season 2022...
+2025-08-03 00:30:13,769 - INFO - Cleaning player statistics for 2022 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,772 - INFO - Successfully loaded raw player statistics for 2022 season. Total players: 589
+2025-08-03 00:30:13,772 - INFO - Standardizing formats
+2025-08-03 00:30:13,773 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,776 - WARNING - Remaining missing values after handling for QB: rtd_sh    3
+dom       3
+w8dom     3
+dtype: int64
+2025-08-03 00:30:13,776 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,777 - INFO - Detected 1 outliers in passing_tds for QB players
+2025-08-03 00:30:13,778 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,781 - WARNING - Remaining missing values after handling for RB: rtd_sh         3
+dom            3
+w8dom          3
+gsis_id       11
+first_name    11
+last_name     11
+birth_date    11
+dtype: int64
+2025-08-03 00:30:13,781 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,781 - INFO - Detected 8 outliers in carries for RB players
+2025-08-03 00:30:13,782 - INFO - Detected 6 outliers in rushing_yards for RB players
+2025-08-03 00:30:13,783 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,784 - INFO - Detected 10 outliers in receptions for RB players
+2025-08-03 00:30:13,785 - INFO - Detected 7 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,785 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,788 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,788 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,789 - INFO - Detected 2 outliers in targets for WR players
+2025-08-03 00:30:13,790 - INFO - Detected 2 outliers in receptions for WR players
+2025-08-03 00:30:13,791 - INFO - Detected 7 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,792 - INFO - Detected 11 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,792 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,795 - WARNING - Remaining missing values after handling for TE: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,795 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,795 - INFO - Detected 6 outliers in targets for TE players
+2025-08-03 00:30:13,796 - INFO - Detected 5 outliers in receptions for TE players
+2025-08-03 00:30:13,797 - INFO - Detected 3 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,798 - INFO - Detected 6 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,799 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,800 - WARNING - Found 1 QB players with games played but no offensive stats
+2025-08-03 00:30:13,801 - WARNING - Found 1 RB players with games played but no offensive stats
+2025-08-03 00:30:13,803 - WARNING - Potential data issues detected for 2 players
+2025-08-03 00:30:13,803 - INFO - Successfully cleaned player statistics for 2022 season. Total players: 589
+2025-08-03 00:30:13,807 - INFO - Successfully saved cleaned player statistics for 2022 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2022.parquet
+2025-08-03 00:30:13,807 - INFO - Completed cleaning for season 2022
+2025-08-03 00:30:13,807 - INFO - Processing season 2023...
+2025-08-03 00:30:13,807 - INFO - Cleaning player statistics for 2023 season for positions: ['QB', 'RB', 'WR', 'TE']
+2025-08-03 00:30:13,810 - INFO - Successfully loaded raw player statistics for 2023 season. Total players: 559
+2025-08-03 00:30:13,810 - INFO - Standardizing formats
+2025-08-03 00:30:13,811 - INFO - Handling missing values for QB players
+2025-08-03 00:30:13,814 - WARNING - Remaining missing values after handling for QB: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:30:13,814 - INFO - Detecting outliers for QB players
+2025-08-03 00:30:13,816 - INFO - Detected 1 outliers in interceptions for QB players
+2025-08-03 00:30:13,816 - INFO - Handling missing values for RB players
+2025-08-03 00:30:13,819 - WARNING - Remaining missing values after handling for RB: rtd_sh         5
+dom            5
+w8dom          5
+gsis_id       10
+first_name    10
+last_name     10
+birth_date    10
+dtype: int64
+2025-08-03 00:30:13,819 - INFO - Detecting outliers for RB players
+2025-08-03 00:30:13,820 - INFO - Detected 13 outliers in rushing_tds for RB players
+2025-08-03 00:30:13,821 - INFO - Detected 4 outliers in receptions for RB players
+2025-08-03 00:30:13,822 - INFO - Detected 6 outliers in receiving_yards for RB players
+2025-08-03 00:30:13,822 - INFO - Handling missing values for WR players
+2025-08-03 00:30:13,825 - WARNING - Remaining missing values after handling for WR: rtd_sh    5
+dom       5
+w8dom     5
+dtype: int64
+2025-08-03 00:30:13,825 - INFO - Detecting outliers for WR players
+2025-08-03 00:30:13,826 - INFO - Detected 1 outliers in targets for WR players
+2025-08-03 00:30:13,827 - INFO - Detected 5 outliers in receptions for WR players
+2025-08-03 00:30:13,828 - INFO - Detected 5 outliers in receiving_yards for WR players
+2025-08-03 00:30:13,829 - INFO - Detected 3 outliers in receiving_tds for WR players
+2025-08-03 00:30:13,829 - INFO - Handling missing values for TE players
+2025-08-03 00:30:13,832 - WARNING - Remaining missing values after handling for TE: rtd_sh    2
+dom       2
+w8dom     2
+dtype: int64
+2025-08-03 00:30:13,833 - INFO - Detecting outliers for TE players
+2025-08-03 00:30:13,833 - INFO - Detected 7 outliers in targets for TE players
+2025-08-03 00:30:13,834 - INFO - Detected 8 outliers in receptions for TE players
+2025-08-03 00:30:13,835 - INFO - Detected 6 outliers in receiving_yards for TE players
+2025-08-03 00:30:13,836 - INFO - Detected 6 outliers in receiving_tds for TE players
+2025-08-03 00:30:13,838 - INFO - Checking for players with games played but no offensive stats
+2025-08-03 00:30:13,838 - WARNING - Found 5 QB players with games played but no offensive stats
+2025-08-03 00:30:13,839 - WARNING - Found 3 RB players with games played but no offensive stats
+2025-08-03 00:30:13,841 - WARNING - Potential data issues detected for 8 players
+2025-08-03 00:30:13,841 - INFO - Successfully cleaned player statistics for 2023 season. Total players: 559
+2025-08-03 00:30:13,845 - INFO - Successfully saved cleaned player statistics for 2023 season to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/player_season_cleaned_2023.parquet
+2025-08-03 00:30:13,845 - INFO - Completed cleaning for season 2023
+2025-08-03 00:30:13,845 - INFO - Completed cleaning and saving player statistics for all seasons. Saved 14 files.
+2025-08-03 00:30:13,845 - INFO - ✅ Data cleaning completed in 0.5 seconds
+2025-08-03 00:30:13,846 - INFO - ================================================================================
+2025-08-03 00:30:13,846 - INFO - STEP 3: Feature Engineering (300+ Features)
+2025-08-03 00:30:13,846 - INFO - ================================================================================
+2025-08-03 00:30:13,846 - INFO - Engineering position-specific features...
+2025-08-03 00:30:13,846 - INFO - Creating efficiency metrics, usage patterns, and advanced stats...
+2025-08-03 00:30:13,846 - INFO - Engineering and saving features for seasons 2010 to 2022
+2025-08-03 00:30:13,846 - INFO - Processing season 2010...
+2025-08-03 00:30:13,846 - INFO - Engineering features for 2010 season to predict 2011
+2025-08-03 00:30:13,846 - INFO - Engineering features for 2010 season to predict 2011
+2025-08-03 00:30:13,846 - INFO - Loading raw data for 2011 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:30:13,849 - INFO - Successfully loaded actuals data for 2011 to create target variable.
+2025-08-03 00:30:13,849 - INFO - Loading raw data for 2009 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2009.parquet
+2025-08-03 00:30:13,849 - ERROR - Raw data file not found: /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2009.parquet
+2025-08-03 00:30:13,849 - WARNING - Could not load data for 2009 season: [Errno 2] No such file or directory: '/Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2009.parquet'
+2025-08-03 00:30:13,849 - INFO - Loading raw data for 2010 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2010.parquet
+2025-08-03 00:30:13,853 - INFO - Converted 'birth_date' column to datetime for season 2010 in current_season_df
+2025-08-03 00:30:13,853 - INFO - Calculating per-game statistics
+2025-08-03 00:30:13,859 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:13,863 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:13,864 - INFO - Calculating usage metrics
+2025-08-03 00:30:13,867 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:13,868 - WARNING - No previous season data available for lagging
+2025-08-03 00:30:13,868 - INFO - Handling rookies for prediction
+2025-08-03 00:30:13,873 - INFO - Identified 0 rookies for 2011 season
+2025-08-03 00:30:13,873 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:13,873 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:13,873 - WARNING - 'games_L1' not found, using current season 'games' column instead
+2025-08-03 00:30:13,873 - INFO - Applied baseline FPPG of 5.0 to 27 QB players with minimal data
+2025-08-03 00:30:13,873 - INFO - Applied baseline FPPG of 3.0 to 27 RB players with minimal data
+2025-08-03 00:30:13,874 - INFO - Applied baseline FPPG of 2.5 to 45 WR players with minimal data
+2025-08-03 00:30:13,874 - INFO - Applied baseline FPPG of 1.5 to 25 TE players with minimal data
+2025-08-03 00:30:13,875 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2011.
+2025-08-03 00:30:13,876 - INFO - Successfully engineered features for 540 players
+2025-08-03 00:30:13,876 - INFO - Saving engineered features for 2010 season
+2025-08-03 00:30:13,876 - INFO - Saving features for 2010 season (predicting 2011) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2010_predicting_2011.parquet
+2025-08-03 00:30:13,883 - INFO - Completed feature engineering for season 2010
+2025-08-03 00:30:13,883 - INFO - Processing season 2011...
+2025-08-03 00:30:13,883 - INFO - Engineering features for 2011 season to predict 2012
+2025-08-03 00:30:13,883 - INFO - Engineering features for 2011 season to predict 2012
+2025-08-03 00:30:13,883 - INFO - Loading raw data for 2012 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:30:13,886 - INFO - Successfully loaded actuals data for 2012 to create target variable.
+2025-08-03 00:30:13,886 - INFO - Loading raw data for 2010 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2010.parquet
+2025-08-03 00:30:13,889 - INFO - Loading raw data for 2011 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:30:13,892 - INFO - Converted 'birth_date' column to datetime for season 2011 in current_season_df
+2025-08-03 00:30:13,892 - INFO - Calculating per-game statistics
+2025-08-03 00:30:13,898 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:13,902 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:13,903 - INFO - Calculating usage metrics
+2025-08-03 00:30:13,907 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:13,910 - INFO - Handling rookies for prediction
+2025-08-03 00:30:13,918 - INFO - Identified 0 rookies for 2012 season
+2025-08-03 00:30:13,918 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:13,918 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:13,919 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:30:13,919 - INFO - Applied baseline FPPG of 3.0 to 57 RB players with minimal data
+2025-08-03 00:30:13,919 - INFO - Applied baseline FPPG of 2.5 to 69 WR players with minimal data
+2025-08-03 00:30:13,919 - INFO - Applied baseline FPPG of 1.5 to 46 TE players with minimal data
+2025-08-03 00:30:13,921 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2012.
+2025-08-03 00:30:13,921 - INFO - Successfully engineered features for 555 players
+2025-08-03 00:30:13,922 - INFO - Saving engineered features for 2011 season
+2025-08-03 00:30:13,922 - INFO - Saving features for 2011 season (predicting 2012) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2011_predicting_2012.parquet
+2025-08-03 00:30:13,929 - INFO - Completed feature engineering for season 2011
+2025-08-03 00:30:13,929 - INFO - Processing season 2012...
+2025-08-03 00:30:13,929 - INFO - Engineering features for 2012 season to predict 2013
+2025-08-03 00:30:13,930 - INFO - Engineering features for 2012 season to predict 2013
+2025-08-03 00:30:13,930 - INFO - Loading raw data for 2013 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:30:13,933 - INFO - Successfully loaded actuals data for 2013 to create target variable.
+2025-08-03 00:30:13,933 - INFO - Loading raw data for 2011 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2011.parquet
+2025-08-03 00:30:13,936 - INFO - Loading raw data for 2012 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:30:13,939 - INFO - Converted 'birth_date' column to datetime for season 2012 in current_season_df
+2025-08-03 00:30:13,939 - INFO - Calculating per-game statistics
+2025-08-03 00:30:13,945 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:13,949 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:13,951 - INFO - Calculating usage metrics
+2025-08-03 00:30:13,954 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:13,957 - INFO - Handling rookies for prediction
+2025-08-03 00:30:13,966 - INFO - Identified 0 rookies for 2013 season
+2025-08-03 00:30:13,966 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:13,966 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:13,966 - INFO - Applied baseline FPPG of 5.0 to 33 QB players with minimal data
+2025-08-03 00:30:13,966 - INFO - Applied baseline FPPG of 3.0 to 58 RB players with minimal data
+2025-08-03 00:30:13,966 - INFO - Applied baseline FPPG of 2.5 to 81 WR players with minimal data
+2025-08-03 00:30:13,967 - INFO - Applied baseline FPPG of 1.5 to 37 TE players with minimal data
+2025-08-03 00:30:13,968 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2013.
+2025-08-03 00:30:13,968 - INFO - Successfully engineered features for 566 players
+2025-08-03 00:30:13,969 - INFO - Saving engineered features for 2012 season
+2025-08-03 00:30:13,969 - INFO - Saving features for 2012 season (predicting 2013) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2012_predicting_2013.parquet
+2025-08-03 00:30:13,977 - INFO - Completed feature engineering for season 2012
+2025-08-03 00:30:13,977 - INFO - Processing season 2013...
+2025-08-03 00:30:13,977 - INFO - Engineering features for 2013 season to predict 2014
+2025-08-03 00:30:13,977 - INFO - Engineering features for 2013 season to predict 2014
+2025-08-03 00:30:13,977 - INFO - Loading raw data for 2014 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:30:13,980 - INFO - Successfully loaded actuals data for 2014 to create target variable.
+2025-08-03 00:30:13,980 - INFO - Loading raw data for 2012 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2012.parquet
+2025-08-03 00:30:13,983 - INFO - Loading raw data for 2013 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:30:13,987 - INFO - Converted 'birth_date' column to datetime for season 2013 in current_season_df
+2025-08-03 00:30:13,987 - INFO - Calculating per-game statistics
+2025-08-03 00:30:13,993 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:13,997 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:13,998 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,001 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,004 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,013 - INFO - Identified 0 rookies for 2014 season
+2025-08-03 00:30:14,013 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,013 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,013 - INFO - Applied baseline FPPG of 5.0 to 33 QB players with minimal data
+2025-08-03 00:30:14,013 - INFO - Applied baseline FPPG of 3.0 to 51 RB players with minimal data
+2025-08-03 00:30:14,014 - INFO - Applied baseline FPPG of 2.5 to 82 WR players with minimal data
+2025-08-03 00:30:14,014 - INFO - Applied baseline FPPG of 1.5 to 55 TE players with minimal data
+2025-08-03 00:30:14,015 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2014.
+2025-08-03 00:30:14,015 - INFO - Successfully engineered features for 563 players
+2025-08-03 00:30:14,016 - INFO - Saving engineered features for 2013 season
+2025-08-03 00:30:14,016 - INFO - Saving features for 2013 season (predicting 2014) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2013_predicting_2014.parquet
+2025-08-03 00:30:14,024 - INFO - Completed feature engineering for season 2013
+2025-08-03 00:30:14,024 - INFO - Processing season 2014...
+2025-08-03 00:30:14,024 - INFO - Engineering features for 2014 season to predict 2015
+2025-08-03 00:30:14,024 - INFO - Engineering features for 2014 season to predict 2015
+2025-08-03 00:30:14,024 - INFO - Loading raw data for 2015 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:30:14,027 - INFO - Successfully loaded actuals data for 2015 to create target variable.
+2025-08-03 00:30:14,027 - INFO - Loading raw data for 2013 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2013.parquet
+2025-08-03 00:30:14,030 - INFO - Loading raw data for 2014 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:30:14,033 - INFO - Converted 'birth_date' column to datetime for season 2014 in current_season_df
+2025-08-03 00:30:14,033 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,039 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,043 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,044 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,047 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,050 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,059 - INFO - Identified 0 rookies for 2015 season
+2025-08-03 00:30:14,059 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,059 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,059 - INFO - Applied baseline FPPG of 5.0 to 33 QB players with minimal data
+2025-08-03 00:30:14,059 - INFO - Applied baseline FPPG of 3.0 to 60 RB players with minimal data
+2025-08-03 00:30:14,060 - INFO - Applied baseline FPPG of 2.5 to 71 WR players with minimal data
+2025-08-03 00:30:14,060 - INFO - Applied baseline FPPG of 1.5 to 45 TE players with minimal data
+2025-08-03 00:30:14,061 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2015.
+2025-08-03 00:30:14,062 - INFO - Successfully engineered features for 587 players
+2025-08-03 00:30:14,062 - INFO - Saving engineered features for 2014 season
+2025-08-03 00:30:14,062 - INFO - Saving features for 2014 season (predicting 2015) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2014_predicting_2015.parquet
+2025-08-03 00:30:14,071 - INFO - Completed feature engineering for season 2014
+2025-08-03 00:30:14,071 - INFO - Processing season 2015...
+2025-08-03 00:30:14,071 - INFO - Engineering features for 2015 season to predict 2016
+2025-08-03 00:30:14,071 - INFO - Engineering features for 2015 season to predict 2016
+2025-08-03 00:30:14,071 - INFO - Loading raw data for 2016 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:30:14,074 - INFO - Successfully loaded actuals data for 2016 to create target variable.
+2025-08-03 00:30:14,074 - INFO - Loading raw data for 2014 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2014.parquet
+2025-08-03 00:30:14,077 - INFO - Loading raw data for 2015 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:30:14,080 - INFO - Converted 'birth_date' column to datetime for season 2015 in current_season_df
+2025-08-03 00:30:14,080 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,086 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,090 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,091 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,095 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,098 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,107 - INFO - Identified 0 rookies for 2016 season
+2025-08-03 00:30:14,107 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,107 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,107 - INFO - Applied baseline FPPG of 5.0 to 32 QB players with minimal data
+2025-08-03 00:30:14,107 - INFO - Applied baseline FPPG of 3.0 to 59 RB players with minimal data
+2025-08-03 00:30:14,108 - INFO - Applied baseline FPPG of 2.5 to 85 WR players with minimal data
+2025-08-03 00:30:14,108 - INFO - Applied baseline FPPG of 1.5 to 39 TE players with minimal data
+2025-08-03 00:30:14,110 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2016.
+2025-08-03 00:30:14,110 - INFO - Successfully engineered features for 583 players
+2025-08-03 00:30:14,110 - INFO - Saving engineered features for 2015 season
+2025-08-03 00:30:14,110 - INFO - Saving features for 2015 season (predicting 2016) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2015_predicting_2016.parquet
+2025-08-03 00:30:14,118 - INFO - Completed feature engineering for season 2015
+2025-08-03 00:30:14,119 - INFO - Processing season 2016...
+2025-08-03 00:30:14,119 - INFO - Engineering features for 2016 season to predict 2017
+2025-08-03 00:30:14,119 - INFO - Engineering features for 2016 season to predict 2017
+2025-08-03 00:30:14,119 - INFO - Loading raw data for 2017 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:30:14,122 - INFO - Successfully loaded actuals data for 2017 to create target variable.
+2025-08-03 00:30:14,122 - INFO - Loading raw data for 2015 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2015.parquet
+2025-08-03 00:30:14,124 - INFO - Loading raw data for 2016 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:30:14,128 - INFO - Converted 'birth_date' column to datetime for season 2016 in current_season_df
+2025-08-03 00:30:14,128 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,134 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,138 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,139 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,143 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,146 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,155 - INFO - Identified 0 rookies for 2017 season
+2025-08-03 00:30:14,155 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,155 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,155 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:30:14,156 - INFO - Applied baseline FPPG of 3.0 to 74 RB players with minimal data
+2025-08-03 00:30:14,156 - INFO - Applied baseline FPPG of 2.5 to 79 WR players with minimal data
+2025-08-03 00:30:14,156 - INFO - Applied baseline FPPG of 1.5 to 48 TE players with minimal data
+2025-08-03 00:30:14,157 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2017.
+2025-08-03 00:30:14,157 - INFO - Successfully engineered features for 578 players
+2025-08-03 00:30:14,158 - INFO - Saving engineered features for 2016 season
+2025-08-03 00:30:14,158 - INFO - Saving features for 2016 season (predicting 2017) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2016_predicting_2017.parquet
+2025-08-03 00:30:14,166 - INFO - Completed feature engineering for season 2016
+2025-08-03 00:30:14,166 - INFO - Processing season 2017...
+2025-08-03 00:30:14,166 - INFO - Engineering features for 2017 season to predict 2018
+2025-08-03 00:30:14,166 - INFO - Engineering features for 2017 season to predict 2018
+2025-08-03 00:30:14,166 - INFO - Loading raw data for 2018 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:30:14,169 - INFO - Successfully loaded actuals data for 2018 to create target variable.
+2025-08-03 00:30:14,169 - INFO - Loading raw data for 2016 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2016.parquet
+2025-08-03 00:30:14,172 - INFO - Loading raw data for 2017 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:30:14,175 - INFO - Converted 'birth_date' column to datetime for season 2017 in current_season_df
+2025-08-03 00:30:14,175 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,181 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,185 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,186 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,190 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,193 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,202 - INFO - Identified 0 rookies for 2018 season
+2025-08-03 00:30:14,202 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,202 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,202 - INFO - Applied baseline FPPG of 5.0 to 30 QB players with minimal data
+2025-08-03 00:30:14,203 - INFO - Applied baseline FPPG of 3.0 to 65 RB players with minimal data
+2025-08-03 00:30:14,203 - INFO - Applied baseline FPPG of 2.5 to 74 WR players with minimal data
+2025-08-03 00:30:14,203 - INFO - Applied baseline FPPG of 1.5 to 42 TE players with minimal data
+2025-08-03 00:30:14,205 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2018.
+2025-08-03 00:30:14,205 - INFO - Successfully engineered features for 552 players
+2025-08-03 00:30:14,205 - INFO - Saving engineered features for 2017 season
+2025-08-03 00:30:14,205 - INFO - Saving features for 2017 season (predicting 2018) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2017_predicting_2018.parquet
+2025-08-03 00:30:14,213 - INFO - Completed feature engineering for season 2017
+2025-08-03 00:30:14,213 - INFO - Processing season 2018...
+2025-08-03 00:30:14,213 - INFO - Engineering features for 2018 season to predict 2019
+2025-08-03 00:30:14,213 - INFO - Engineering features for 2018 season to predict 2019
+2025-08-03 00:30:14,213 - INFO - Loading raw data for 2019 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:30:14,217 - INFO - Successfully loaded actuals data for 2019 to create target variable.
+2025-08-03 00:30:14,217 - INFO - Loading raw data for 2017 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2017.parquet
+2025-08-03 00:30:14,220 - INFO - Loading raw data for 2018 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:30:14,223 - INFO - Converted 'birth_date' column to datetime for season 2018 in current_season_df
+2025-08-03 00:30:14,223 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,229 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,233 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,234 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,238 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,241 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,250 - INFO - Identified 0 rookies for 2019 season
+2025-08-03 00:30:14,250 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,250 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,250 - INFO - Applied baseline FPPG of 5.0 to 35 QB players with minimal data
+2025-08-03 00:30:14,250 - INFO - Applied baseline FPPG of 3.0 to 59 RB players with minimal data
+2025-08-03 00:30:14,251 - INFO - Applied baseline FPPG of 2.5 to 79 WR players with minimal data
+2025-08-03 00:30:14,251 - INFO - Applied baseline FPPG of 1.5 to 51 TE players with minimal data
+2025-08-03 00:30:14,252 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2019.
+2025-08-03 00:30:14,252 - INFO - Successfully engineered features for 566 players
+2025-08-03 00:30:14,253 - INFO - Saving engineered features for 2018 season
+2025-08-03 00:30:14,253 - INFO - Saving features for 2018 season (predicting 2019) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2018_predicting_2019.parquet
+2025-08-03 00:30:14,261 - INFO - Completed feature engineering for season 2018
+2025-08-03 00:30:14,261 - INFO - Processing season 2019...
+2025-08-03 00:30:14,261 - INFO - Engineering features for 2019 season to predict 2020
+2025-08-03 00:30:14,261 - INFO - Engineering features for 2019 season to predict 2020
+2025-08-03 00:30:14,261 - INFO - Loading raw data for 2020 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:30:14,264 - INFO - Successfully loaded actuals data for 2020 to create target variable.
+2025-08-03 00:30:14,264 - INFO - Loading raw data for 2018 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2018.parquet
+2025-08-03 00:30:14,267 - INFO - Loading raw data for 2019 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:30:14,270 - INFO - Converted 'birth_date' column to datetime for season 2019 in current_season_df
+2025-08-03 00:30:14,270 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,277 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,281 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,282 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,286 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,289 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,298 - INFO - Identified 0 rookies for 2020 season
+2025-08-03 00:30:14,298 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,298 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,299 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:30:14,299 - INFO - Applied baseline FPPG of 3.0 to 57 RB players with minimal data
+2025-08-03 00:30:14,299 - INFO - Applied baseline FPPG of 2.5 to 86 WR players with minimal data
+2025-08-03 00:30:14,299 - INFO - Applied baseline FPPG of 1.5 to 43 TE players with minimal data
+2025-08-03 00:30:14,301 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2020.
+2025-08-03 00:30:14,301 - INFO - Successfully engineered features for 567 players
+2025-08-03 00:30:14,301 - INFO - Saving engineered features for 2019 season
+2025-08-03 00:30:14,301 - INFO - Saving features for 2019 season (predicting 2020) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2019_predicting_2020.parquet
+2025-08-03 00:30:14,309 - INFO - Completed feature engineering for season 2019
+2025-08-03 00:30:14,309 - INFO - Processing season 2020...
+2025-08-03 00:30:14,309 - INFO - Engineering features for 2020 season to predict 2021
+2025-08-03 00:30:14,310 - INFO - Engineering features for 2020 season to predict 2021
+2025-08-03 00:30:14,310 - INFO - Loading raw data for 2021 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:30:14,312 - INFO - Successfully loaded actuals data for 2021 to create target variable.
+2025-08-03 00:30:14,312 - INFO - Loading raw data for 2019 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2019.parquet
+2025-08-03 00:30:14,315 - INFO - Loading raw data for 2020 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:30:14,318 - INFO - Converted 'birth_date' column to datetime for season 2020 in current_season_df
+2025-08-03 00:30:14,318 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,325 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,329 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,330 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,334 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,337 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,346 - INFO - Identified 0 rookies for 2021 season
+2025-08-03 00:30:14,346 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,346 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,347 - INFO - Applied baseline FPPG of 5.0 to 39 QB players with minimal data
+2025-08-03 00:30:14,347 - INFO - Applied baseline FPPG of 3.0 to 62 RB players with minimal data
+2025-08-03 00:30:14,347 - INFO - Applied baseline FPPG of 2.5 to 88 WR players with minimal data
+2025-08-03 00:30:14,347 - INFO - Applied baseline FPPG of 1.5 to 47 TE players with minimal data
+2025-08-03 00:30:14,349 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2021.
+2025-08-03 00:30:14,349 - INFO - Successfully engineered features for 595 players
+2025-08-03 00:30:14,350 - INFO - Saving engineered features for 2020 season
+2025-08-03 00:30:14,350 - INFO - Saving features for 2020 season (predicting 2021) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2020_predicting_2021.parquet
+2025-08-03 00:30:14,358 - INFO - Completed feature engineering for season 2020
+2025-08-03 00:30:14,358 - INFO - Processing season 2021...
+2025-08-03 00:30:14,358 - INFO - Engineering features for 2021 season to predict 2022
+2025-08-03 00:30:14,358 - INFO - Engineering features for 2021 season to predict 2022
+2025-08-03 00:30:14,358 - INFO - Loading raw data for 2022 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2022.parquet
+2025-08-03 00:30:14,361 - INFO - Successfully loaded actuals data for 2022 to create target variable.
+2025-08-03 00:30:14,361 - INFO - Loading raw data for 2020 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2020.parquet
+2025-08-03 00:30:14,364 - INFO - Loading raw data for 2021 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:30:14,367 - INFO - Converted 'birth_date' column to datetime for season 2021 in current_season_df
+2025-08-03 00:30:14,367 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,373 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,377 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,378 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,382 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,385 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,395 - INFO - Identified 0 rookies for 2022 season
+2025-08-03 00:30:14,395 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,395 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,396 - INFO - Applied baseline FPPG of 5.0 to 36 QB players with minimal data
+2025-08-03 00:30:14,396 - INFO - Applied baseline FPPG of 3.0 to 62 RB players with minimal data
+2025-08-03 00:30:14,396 - INFO - Applied baseline FPPG of 2.5 to 85 WR players with minimal data
+2025-08-03 00:30:14,396 - INFO - Applied baseline FPPG of 1.5 to 51 TE players with minimal data
+2025-08-03 00:30:14,398 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2022.
+2025-08-03 00:30:14,398 - INFO - Successfully engineered features for 611 players
+2025-08-03 00:30:14,399 - INFO - Saving engineered features for 2021 season
+2025-08-03 00:30:14,399 - INFO - Saving features for 2021 season (predicting 2022) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2021_predicting_2022.parquet
+2025-08-03 00:30:14,407 - INFO - Completed feature engineering for season 2021
+2025-08-03 00:30:14,407 - INFO - Processing season 2022...
+2025-08-03 00:30:14,407 - INFO - Engineering features for 2022 season to predict 2023
+2025-08-03 00:30:14,407 - INFO - Engineering features for 2022 season to predict 2023
+2025-08-03 00:30:14,407 - INFO - Loading raw data for 2023 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2023.parquet
+2025-08-03 00:30:14,410 - INFO - Successfully loaded actuals data for 2023 to create target variable.
+2025-08-03 00:30:14,410 - INFO - Loading raw data for 2021 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2021.parquet
+2025-08-03 00:30:14,413 - INFO - Loading raw data for 2022 season from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2022.parquet
+2025-08-03 00:30:14,416 - INFO - Converted 'birth_date' column to datetime for season 2022 in current_season_df
+2025-08-03 00:30:14,416 - INFO - Calculating per-game statistics
+2025-08-03 00:30:14,422 - INFO - Calculating efficiency metrics
+2025-08-03 00:30:14,427 - INFO - Calculating team-level aggregates
+2025-08-03 00:30:14,428 - INFO - Calculating usage metrics
+2025-08-03 00:30:14,432 - INFO - Creating lagged features from previous season
+2025-08-03 00:30:14,435 - INFO - Handling rookies for prediction
+2025-08-03 00:30:14,444 - INFO - Identified 0 rookies for 2023 season
+2025-08-03 00:30:14,444 - WARNING - 'draftround' column not found, cannot apply rookie projections based on draft capital
+2025-08-03 00:30:14,444 - INFO - Handling players with minimal data (less than 4 games)
+2025-08-03 00:30:14,445 - INFO - Applied baseline FPPG of 5.0 to 31 QB players with minimal data
+2025-08-03 00:30:14,445 - INFO - Applied baseline FPPG of 3.0 to 51 RB players with minimal data
+2025-08-03 00:30:14,445 - INFO - Applied baseline FPPG of 2.5 to 77 WR players with minimal data
+2025-08-03 00:30:14,445 - INFO - Applied baseline FPPG of 1.5 to 43 TE players with minimal data
+2025-08-03 00:30:14,447 - INFO - Successfully merged target variable 'next_season_fppg' for prediction season 2023.
+2025-08-03 00:30:14,447 - INFO - Successfully engineered features for 589 players
+2025-08-03 00:30:14,448 - INFO - Saving engineered features for 2022 season
+2025-08-03 00:30:14,448 - INFO - Saving features for 2022 season (predicting 2023) to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/processed/features_for_2022_predicting_2023.parquet
+2025-08-03 00:30:14,456 - INFO - Completed feature engineering for season 2022
+2025-08-03 00:30:14,456 - INFO - Completed engineering and saving features for all seasons. Saved 13 files.
+2025-08-03 00:30:14,456 - INFO - ✅ Feature engineering completed in 0.6 seconds
+2025-08-03 00:30:14,456 - INFO - ================================================================================
+2025-08-03 00:30:14,456 - INFO - STEP 4: Model Training (6 Positions)
+2025-08-03 00:30:14,456 - INFO - ================================================================================
+2025-08-03 00:30:23,784 - INFO - ✅ Model training completed in 9.3 seconds
+2025-08-03 00:30:23,784 - INFO - ✅ Trained models for QB, RB, WR, TE, K, DST positions
+2025-08-03 00:30:23,784 - INFO - ================================================================================
+2025-08-03 00:30:23,784 - INFO - STEP 5: Draft Ranking Generation
+2025-08-03 00:30:23,784 - INFO - ================================================================================
+2025-08-03 00:30:25,599 - INFO - ✅ Draft rankings generated in 1.8 seconds
+2025-08-03 00:30:25,599 - INFO - ✅ Generated 9 draft list files
+2025-08-03 00:30:25,599 - INFO -    📄 overall_rankings_20250803_003025.csv
+2025-08-03 00:30:25,599 - INFO -    📄 draft_cheatsheet_20250803_003025.txt
+2025-08-03 00:30:25,599 - INFO - ================================================================================
+2025-08-03 00:30:25,599 - INFO - PIPELINE SUMMARY
+2025-08-03 00:30:25,599 - INFO - ================================================================================
+2025-08-03 00:30:25,599 - INFO - ✅ Completed Steps: 5/5
+2025-08-03 00:30:25,599 - INFO - ⏱️  Total Runtime: 0.5 minutes
+2025-08-03 00:30:25,599 - INFO - 🎉 SUCCESS: Complete pipeline finished!
+2025-08-03 00:30:25,600 - INFO - 📋 Your draft rankings are ready!
+2025-08-03 00:30:25,600 - INFO - 
+2025-08-03 00:30:25,600 - INFO - 📁 Check these directories:
+2025-08-03 00:30:25,600 - INFO -    📄 data/draft_lists/ - CSV rankings and text cheatsheet
+2025-08-03 00:30:25,600 - INFO -    📊 plots/ - Visual draft board and model analysis
+2025-08-03 00:30:25,600 - INFO -    🤖 saved_models/ - Trained ML models
+2025-08-03 00:30:25,600 - INFO - 
+2025-08-03 00:30:25,600 - INFO - 🚀 Ready to dominate your fantasy draft!

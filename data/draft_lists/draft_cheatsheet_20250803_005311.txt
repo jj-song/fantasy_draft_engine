@@ -1,0 +1,253 @@
+================================================================================
+FANTASY FOOTBALL DRAFT CHEATSHEET
+Generated: 2025-08-03 00:53:11
+================================================================================
+
+TOP 50 OVERALL PLAYERS
+--------------------------------------------------------------------------------
+  1. CeeDee Lamb               WR   GB   40.26 pts
+  2. Tyreek Hill               WR   NE   40.04 pts
+  3. Justin Jefferson          WR   DAL  39.54 pts
+  4. Christian McCaffrey       RB   TB   45.06 pts
+  5. A.J. Brown                WR   BUF  37.00 pts
+  6. Jaylen Waddle             WR   DAL  36.88 pts
+  7. Patrick Mahomes           QB   GB   52.11 pts
+  8. Jahmyr Gibbs              RB   KC   44.48 pts
+  9. Josh Allen                QB   TB   51.79 pts
+ 10. Amon-Ra St. Brown         WR   DAL  36.42 pts
+ 11. Tony Pollard              RB   SF   44.12 pts
+ 12. Garrett Wilson            WR   SF   36.09 pts
+ 13. Jonathan Taylor           RB   DAL  43.77 pts
+ 14. Derrick Henry             RB   GB   43.54 pts
+ 15. Stefon Diggs              WR   NE   35.71 pts
+ 16. Davante Adams             WR   SF   35.36 pts
+ 17. Kenneth Walker            RB   TB   43.05 pts
+ 18. Bijan Robinson            RB   GB   43.02 pts
+ 19. Brandon Aiyuk             WR   KC   35.25 pts
+ 20. Lamar Jackson             QB   NE   50.41 pts
+ 21. Josh Jacobs               RB   SF   42.78 pts
+ 22. Alvin Kamara              RB   GB   42.40 pts
+ 23. Jalen Hurts               QB   SF   49.84 pts
+ 24. Drake London              WR   KC   34.25 pts
+ 25. Cooper Kupp               WR   SF   33.97 pts
+ 26. Dak Prescott              QB   GB   49.08 pts
+ 27. Ja'Marr Chase             WR   KC   33.68 pts
+ 28. WR Player 9               WR   SF   33.62 pts
+ 29. WR Player 100             WR   BUF  33.55 pts
+ 30. Chris Olave               WR   KC   33.51 pts
+ 31. WR Player 185             WR   TB   33.46 pts
+ 32. WR Player 25              WR   NE   33.39 pts
+ 33. Trevor Lawrence           QB   NE   48.61 pts
+ 34. WR Player 187             WR   TB   33.32 pts
+ 35. Nick Chubb                RB   DAL  41.02 pts
+ 36. WR Player 21              WR   BUF  33.27 pts
+ 37. Justin Fields             QB   NE   48.48 pts
+ 38. Joe Mixon                 RB   GB   40.87 pts
+ 39. Puka Nacua                WR   GB   33.11 pts
+ 40. RB Player 106             RB   GB   40.79 pts
+ 41. WR Player 19              WR   DAL  32.93 pts
+ 42. Tua Tagovailoa            QB   DAL  47.64 pts
+ 43. WR Player 151             WR   BUF  32.11 pts
+ 44. RB Player 88              RB   GB   39.78 pts
+ 45. WR Player 111             WR   NE   32.00 pts
+ 46. RB Player 159             RB   SF   39.55 pts
+ 47. Sam LaPorta               TE   BUF  29.64 pts
+ 48. Travis Kelce              TE   DAL  29.59 pts
+ 49. RB Player 52              RB   TB   39.25 pts
+ 50. Saquon Barkley            RB   BUF  39.23 pts
+
+TOP QB PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Patrick Mahomes           GB   52.11 pts
+  2. Josh Allen                TB   51.79 pts
+  3. Lamar Jackson             NE   50.41 pts
+  4. Jalen Hurts               SF   49.84 pts
+  5. Dak Prescott              GB   49.08 pts
+  6. Trevor Lawrence           NE   48.61 pts
+  7. Justin Fields             NE   48.48 pts
+  8. Tua Tagovailoa            DAL  47.64 pts
+  9. C.J. Stroud               SF   46.22 pts
+ 10. Jared Goff                SF   46.17 pts
+
+TIER 2 - STRONG STARTERS
+ 13. Anthony Richardson        BUF  43.91 pts
+ 14. QB Player 151             BUF  43.58 pts
+ 15. QB Player 192             TB   43.48 pts
+ 16. QB Player 86              DAL  43.00 pts
+ 17. Joe Burrow                BUF  42.92 pts
+ 18. QB Player 143             KC   42.40 pts
+ 19. QB Player 179             DAL  42.25 pts
+ 20. QB Player 118             TB   42.02 pts
+ 21. QB Player 116             NE   41.95 pts
+ 22. QB Player 70              DAL  41.62 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 30. QB Player 29              GB   38.27 pts
+ 31. QB Player 137             KC   37.77 pts
+ 32. QB Player 117             GB   37.75 pts
+ 33. QB Player 161             GB   37.64 pts
+ 34. QB Player 170             TB   37.62 pts
+ 35. QB Player 153             SF   37.46 pts
+ 36. QB Player 166             TB   37.29 pts
+ 37. QB Player 36              KC   37.22 pts
+ 38. QB Player 16              BUF  37.01 pts
+ 39. QB Player 132             NE   36.16 pts
+
+
+TOP RB PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Christian McCaffrey       TB   45.06 pts
+  2. Jahmyr Gibbs              KC   44.48 pts
+  3. Tony Pollard              SF   44.12 pts
+  4. Jonathan Taylor           DAL  43.77 pts
+  5. Derrick Henry             GB   43.54 pts
+  6. Kenneth Walker            TB   43.05 pts
+  7. Bijan Robinson            GB   43.02 pts
+  8. Josh Jacobs               SF   42.78 pts
+  9. Alvin Kamara              GB   42.40 pts
+ 10. Nick Chubb                DAL  41.02 pts
+
+TIER 2 - STRONG STARTERS
+ 23. RB Player 163             TB   38.20 pts
+ 24. RB Player 147             BUF  38.14 pts
+ 25. RB Player 82              BUF  37.67 pts
+ 26. RB Player 157             TB   37.54 pts
+ 27. RB Player 16              BUF  37.40 pts
+ 28. Breece Hall               KC   37.14 pts
+ 29. RB Player 179             DAL  37.08 pts
+ 30. RB Player 5               GB   36.86 pts
+ 31. RB Player 183             GB   36.77 pts
+ 32. RB Player 8               KC   36.73 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 46. RB Player 120             NE   33.65 pts
+ 47. RB Player 123             NE   33.61 pts
+ 48. RB Player 10              TB   33.60 pts
+ 49. RB Player 7               TB   33.16 pts
+ 50. RB Player 61              KC   33.13 pts
+ 51. RB Player 134             GB   33.09 pts
+ 52. RB Player 87              BUF  33.07 pts
+ 53. RB Player 158             BUF  32.92 pts
+ 54. RB Player 189             GB   32.75 pts
+ 55. RB Player 100             BUF  32.71 pts
+
+
+TOP WR PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. CeeDee Lamb               GB   40.26 pts
+  2. Tyreek Hill               NE   40.04 pts
+  3. Justin Jefferson          DAL  39.54 pts
+  4. A.J. Brown                BUF  37.00 pts
+  5. Jaylen Waddle             DAL  36.88 pts
+  6. Amon-Ra St. Brown         DAL  36.42 pts
+  7. Garrett Wilson            SF   36.09 pts
+  8. Stefon Diggs              NE   35.71 pts
+  9. Davante Adams             SF   35.36 pts
+ 10. Brandon Aiyuk             KC   35.25 pts
+
+TIER 2 - STRONG STARTERS
+ 12. Cooper Kupp               SF   33.97 pts
+ 13. Ja'Marr Chase             KC   33.68 pts
+ 14. WR Player 9               SF   33.62 pts
+ 15. WR Player 100             BUF  33.55 pts
+ 16. Chris Olave               KC   33.51 pts
+ 17. WR Player 185             TB   33.46 pts
+ 18. WR Player 25              NE   33.39 pts
+ 19. WR Player 187             TB   33.32 pts
+ 20. WR Player 21              BUF  33.27 pts
+ 21. Puka Nacua                GB   33.11 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 30. WR Player 132             NE   29.78 pts
+ 31. WR Player 53              GB   29.45 pts
+ 32. WR Player 72              DAL  29.26 pts
+ 33. WR Player 13              GB   28.15 pts
+ 34. WR Player 102             DAL  27.92 pts
+ 35. WR Player 46              TB   27.85 pts
+ 36. WR Player 65              GB   27.85 pts
+ 37. WR Player 36              KC   27.74 pts
+ 38. WR Player 2               GB   27.70 pts
+ 39. WR Player 163             TB   27.32 pts
+
+
+TOP TE PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Sam LaPorta               BUF  29.64 pts
+  2. Travis Kelce              DAL  29.59 pts
+  3. Mark Andrews              TB   28.71 pts
+  4. Evan Engram               TB   27.93 pts
+  5. T.J. Hockenson            GB   27.68 pts
+  6. Dallas Goedert            NE   27.66 pts
+  7. George Kittle             TB   27.63 pts
+  8. Jake Ferguson             KC   27.05 pts
+  9. Kyle Pitts                TB   26.74 pts
+ 10. Trey McBride              KC   26.54 pts
+
+TIER 2 - STRONG STARTERS
+ 16. Dalton Schultz            DAL  25.03 pts
+ 17. TE Player 122             TB   24.85 pts
+ 18. TE Player 53              GB   24.75 pts
+ 19. TE Player 4               SF   24.38 pts
+ 20. TE Player 46              TB   24.31 pts
+ 21. TE Player 143             KC   24.08 pts
+ 22. TE Player 153             SF   24.05 pts
+ 23. TE Player 148             GB   23.93 pts
+ 24. TE Player 82              BUF  23.83 pts
+ 25. TE Player 5               GB   23.34 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 30. TE Player 83              BUF  22.15 pts
+ 31. TE Player 199             GB   22.11 pts
+ 32. TE Player 144             NE   22.03 pts
+ 33. TE Player 179             DAL  22.02 pts
+ 34. TE Player 123             NE   21.92 pts
+ 35. TE Player 173             DAL  21.84 pts
+ 36. TE Player 38              DAL  21.67 pts
+ 37. TE Player 2               GB   20.86 pts
+ 38. TE Player 7               TB   20.75 pts
+ 39. TE Player 72              DAL  20.67 pts
+
+
+TOP K PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Tyler Bass                NE   16.22 pts
+  2. Harrison Butker           DAL  16.13 pts
+  3. Jake Moody                KC   15.87 pts
+  4. K Player 144              NE   15.41 pts
+  5. Younghoe Koo              GB   15.30 pts
+  6. Jake Elliott              SF   15.14 pts
+  7. Brandon Aubrey            BUF  14.89 pts
+  8. Cameron Dicker            TB   14.83 pts
+  9. Evan McPherson            BUF  14.56 pts
+ 10. Jason Myers               NE   14.38 pts
+
+TIER 2 - STRONG STARTERS
+ 16. K Player 11               SF   13.74 pts
+ 17. K Player 40               BUF  13.59 pts
+ 18. Justin Tucker             BUF  13.57 pts
+ 19. K Player 65               GB   13.53 pts
+ 20. K Player 179              DAL  13.48 pts
+ 21. Cairo Santos              SF   13.44 pts
+ 22. K Player 10               TB   13.34 pts
+ 23. K Player 183              GB   13.32 pts
+ 24. K Player 143              KC   13.10 pts
+ 25. K Player 112              DAL  13.05 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 37. K Player 173              DAL  11.96 pts
+ 38. K Player 20               BUF  11.95 pts
+ 39. K Player 136              TB   11.93 pts
+ 40. K Player 5                GB   11.90 pts
+ 41. K Player 26               DAL  11.86 pts
+ 42. K Player 72               DAL  11.67 pts
+ 43. K Player 134              GB   11.65 pts
+ 44. K Player 187              TB   11.58 pts
+ 45. K Player 140              TB   11.56 pts
+ 46. K Player 94               KC   11.45 pts
+
+

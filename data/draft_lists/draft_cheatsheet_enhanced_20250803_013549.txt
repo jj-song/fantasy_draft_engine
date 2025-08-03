@@ -1,0 +1,233 @@
+====================================================================================================
+🏈 FANTASY FOOTBALL DRAFT CHEATSHEET - VOR ANALYSIS EDITION
+Generated: 2025-08-03 01:35:49
+====================================================================================================
+
+📊 VALUE OVER REPLACEMENT (VOR) BREAKDOWN
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Position  Replacement    Scarcity   Top Player            Raw VOR  →  Adj VOR
+          Level          Mult       (Predicted Points)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+RB        RB30             1.5x      Christian McCaffrey  (36.8)  13.3  →  19.9
+TE        TE13             1.4x      Travis Kelce         (28.2)  13.4  →  18.7
+WR        WR30             1.2x      Justin Jefferson     (34.7)  14.5  →  17.4
+QB        QB13             0.9x      Patrick Mahomes      (47.7)  15.4  →  13.8
+
+🏆 TOP 50 OVERALL PLAYERS WITH VOR ANALYSIS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+RNK  PLAYER NAME             POS  TEAM  PROJ   RAW    MULT   ADJ    TIER
+                                       PTS    VOR    (x)    VOR
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  1. Christian McCaffrey     RB   SF    36.8   13.3   1.5x   19.9  ELITE
+  2. Austin Ekeler           RB   LAC   36.0   12.5   1.5x   18.8  ELITE
+  3. Travis Kelce            TE   KC    28.2   13.4   1.4x   18.7  ELITE
+  4. Joshua Jacobs           RB   LV    35.4   11.9   1.5x   17.9  PREMIUM
+  5. Justin Jefferson        WR   MIN   34.7   14.5   1.2x   17.4  PREMIUM
+  6. Tyreek Hill             WR   MIA   34.3   14.1   1.2x   16.9  PREMIUM
+  7. Davante Adams           WR   LV    33.7   13.5   1.2x   16.2  PREMIUM
+  8. Derrick Henry           RB   TEN   34.3   10.8   1.5x   16.2  PREMIUM
+  9. Arthur Brown            WR   PHI   32.5   12.2   1.2x   14.7  PREMIUM
+ 10. Patrick Mahomes         QB   KC    47.7   15.4   0.9x   13.8  SOLID
+ 11. Joshua Allen            QB   BUF   47.6   15.3   0.9x   13.7  SOLID
+ 12. Dalvin Cook             RB   MIN   32.5    9.0   1.5x   13.5  SOLID
+ 13. Stefon Diggs            WR   BUF   31.4   11.2   1.2x   13.4  SOLID
+ 14. Saquon Barkley          RB   NYG   32.4    8.9   1.5x   13.3  SOLID
+ 15. Joseph Burrow           QB   CIN   47.1   14.7   0.9x   13.3  SOLID
+ 16. Cedarian Lamb           WR   DAL   31.1   10.9   1.2x   13.1  SOLID
+ 17. George Kittle           TE   SF    23.5    8.7   1.4x   12.2  SOLID
+ 18. Amari Cooper            WR   CLE   30.1    9.8   1.2x   11.8  SOLID
+ 19. Jaylen Waddle           WR   MIA   29.8    9.6   1.2x   11.5  SOLID
+ 20. Nicholas Chubb          RB   CLE   31.1    7.6   1.5x   11.3  SOLID
+ 21. DeVonta Smith           WR   PHI   29.5    9.2   1.2x   11.1  SOLID
+ 22. Travis Etienne          RB   JAX   30.9    7.4   1.5x   11.1  SOLID
+ 23. Jamaal Williams         RB   DET   30.7    7.2   1.5x   10.8  SOLID
+ 24. Christian Kirk          WR   JAX   29.1    8.9   1.2x   10.7  SOLID
+ 25. Aaron Jones             RB   GB    30.3    6.8   1.5x   10.2  SOLID
+ 26. Miles Sanders           RB   PHI   30.0    6.5   1.5x    9.7  DEPTH
+ 27. Joe Mixon               RB   CIN   29.9    6.4   1.5x    9.7  DEPTH
+ 28. Amon-Ra St. Brown       WR   DET   28.3    8.0   1.2x    9.7  DEPTH
+ 29. Kirk Cousins            QB   MIN   42.8   10.4   0.9x    9.4  DEPTH
+ 30. Thomas Hockenson        TE   MIN   21.1    6.3   1.4x    8.9  DEPTH
+ 31. Michael Evans           WR   TB    27.2    6.9   1.2x    8.3  DEPTH
+ 32. Eugene Smith            QB   SEA   40.8    8.5   0.9x    7.7  DEPTH
+ 33. Tony Pollard            RB   DAL   28.5    5.0   1.5x    7.6  DEPTH
+ 34. Justin Herbert          QB   LAC   40.6    8.3   0.9x    7.5  DEPTH
+ 35. Jalen Hurts             QB   PHI   40.6    8.3   0.9x    7.5  DEPTH
+ 36. Ezekiel Elliott         RB   DAL   28.2    4.6   1.5x    7.0  DEPTH
+ 37. Ja'Marr Chase           WR   CIN   25.9    5.7   1.2x    6.8  DEPTH
+ 38. Tyler Lockett           WR   SEA   25.9    5.7   1.2x    6.8  DEPTH
+ 39. Thomas Brady            QB   TB    39.7    7.4   0.9x    6.6  DEPTH
+ 40. Brandon Aiyuk           WR   SF    25.3    5.0   1.2x    6.0  DEPTH
+ 41. Terry McLaurin          WR   WAS   25.3    5.0   1.2x    6.0  DEPTH
+ 42. James Conner            RB   ARI   27.4    3.9   1.5x    5.9  BENCH
+ 43. Jared Goff              QB   DET   38.9    6.5   0.9x    5.9  BENCH
+ 44. Alvin Kamara            RB   NO    27.3    3.8   1.5x    5.7  BENCH
+ 45. Tamurice Higgins        WR   CIN   25.0    4.8   1.2x    5.7  BENCH
+ 46. Rhamondre Stevenson     RB   NE    27.2    3.7   1.5x    5.5  BENCH
+ 47. Denniston Moore         WR   CAR   24.6    4.4   1.2x    5.2  BENCH
+ 48. Mark Andrews            TE   BAL   18.6    3.7   1.4x    5.2  BENCH
+ 49. Garrett Wilson          WR   NYJ   24.1    3.9   1.2x    4.7  BENCH
+ 50. Evan Engram             TE   JAX   18.0    3.2   1.4x    4.5  BENCH
+
+🎯 SIDE-BY-SIDE POSITIONAL COMPARISON BY TIERS
+====================================================================================================
+
+┌─ ELITE (VOR 18+) ────────────────────────────────────────────────────────────────────────────────┐
+│ RB                    │ WR                    │ TE                    │ QB                    │
+│ ──                    │ ──                    │ ──                    │ ──                    │
+│ Christian Mc 19.9     │                       │ Travis Kelce 18.7     │                       │ 
+│ Austin Ekele 18.8     │                       │                       │                       │ 
+└───────────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─ PREMIUM (VOR 14-18) ────────────────────────────────────────────────────────────────────────────┐
+│ RB                    │ WR                    │ TE                    │ QB                    │
+│ ──                    │ ──                    │ ──                    │ ──                    │
+│ Joshua Jacob 17.9     │ Justin Jeffe 17.4     │                       │                       │ 
+│ Derrick Henr 16.2     │ Tyreek Hill 16.9      │                       │                       │ 
+│                       │ Davante Adam 16.2     │                       │                       │ 
+│                       │ Arthur Brown 14.7     │                       │                       │ 
+└───────────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─ SOLID (VOR 10-14) ──────────────────────────────────────────────────────────────────────────────┐
+│ RB                    │ WR                    │ TE                    │ QB                    │
+│ ──                    │ ──                    │ ──                    │ ──                    │
+│ Dalvin Cook 13.5      │ Stefon Diggs 13.4     │ George Kittl 12.2     │ Patrick Maho 13.8     │ 
+│ Saquon Barkl 13.3     │ Cedarian Lam 13.1     │                       │ Joshua Allen 13.7     │ 
+│ Nicholas Chu 11.3     │ Amari Cooper 11.8     │                       │ Joseph Burro 13.3     │ 
+│ Travis Etien 11.1     │ Jaylen Waddl 11.5     │                       │                       │ 
+│ Jamaal Willi 10.8     │ DeVonta Smit 11.1     │                       │                       │ 
+│ Aaron Jones 10.2      │ Christian Ki 10.7     │                       │                       │ 
+└───────────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌─ DEPTH (VOR 6-10) ───────────────────────────────────────────────────────────────────────────────┐
+│ RB                    │ WR                    │ TE                    │ QB                    │
+│ ──                    │ ──                    │ ──                    │ ──                    │
+│ Miles Sander 9.7      │ Amon-Ra St.  9.7      │ Thomas Hocke 8.9      │ Kirk Cousins 9.4      │ 
+│ Joe Mixon 9.7         │ Michael Evan 8.3      │                       │ Eugene Smith 7.7      │ 
+│ Tony Pollard 7.6      │ Ja'Marr Chas 6.8      │                       │ Justin Herbe 7.5      │ 
+│ Ezekiel Elli 7.0      │ Tyler Locket 6.8      │                       │ Jalen Hurts 7.5       │ 
+│                       │ Brandon Aiyu 6.0      │                       │ Thomas Brady 6.6      │ 
+│                       │ Terry McLaur 6.0      │                       │                       │ 
+└───────────────────────────────────────────────────────────────────────────────────────────────┘
+
+🎲 DRAFT STRATEGY INSIGHTS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏆 ELITE TIER (Picks 1-8): Focus on RB/TE scarcity - these are league winners
+📈 PREMIUM TIER (Picks 9-20): Target position runs before they happen
+💡 SOLID TIER (Picks 21-40): Fill roster needs, avoid positional reaches
+🔍 DEPTH TIER (Picks 41+): Handcuffs, upside plays, and late-round fliers
+
+POSITIONAL STRATEGY:
+• RB: Draft 2 in first 4 rounds (injury insurance + high VOR)
+• WR: Target 3 before round 6 (consistent weekly floor)
+• TE: Elite (Kelce/top tier) or wait until round 8+ (huge VOR gap)
+• QB: No need to reach early, position has good depth
+
+VOR INSIGHTS:
+• Only 2 RBs in ELITE tier - extreme scarcity!
+• 0 WRs in ELITE tier - good top-end depth
+• TE position shows biggest VOR gap between elite and replacement
+• QB depth allows waiting - focus on skill positions early
+
+TOP QB PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Patrick Mahomes           KC   47.69 pts
+  2. Joshua Allen              BUF  47.58 pts
+  3. Joseph Burrow             CIN  47.06 pts
+  4. Kirk Cousins              MIN  42.76 pts
+  5. Eugene Smith              SEA  40.85 pts
+  6. Justin Herbert            LAC  40.64 pts
+  7. Jalen Hurts               PHI  40.63 pts
+
+TIER 2 - STRONG STARTERS
+  8. Thomas Brady              TB   39.68 pts
+  9. Jared Goff                DET  38.85 pts
+ 10. William Lawrence          JAX  37.21 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 11. Daniel Jones              NYG  32.64 pts
+ 12. Aaron Rodgers             GB   32.43 pts
+ 13. Derek Carr                LV   32.33 pts
+ 14. Tuanigamanuolepola Tagovailoa MIA  32.15 pts
+ 15. Justin Fields             CHI  31.95 pts
+ 16. Lamar Jackson             BAL  31.24 pts
+
+
+TOP RB PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Christian McCaffrey       SF   36.80 pts
+  2. Austin Ekeler             LAC  36.02 pts
+  3. Joshua Jacobs             LV   35.43 pts
+  4. Derrick Henry             TEN  34.28 pts
+  5. Dalvin Cook               MIN  32.51 pts
+  6. Saquon Barkley            NYG  32.39 pts
+
+TIER 2 - STRONG STARTERS
+  7. Nicholas Chubb            CLE  31.06 pts
+  8. Travis Etienne            JAX  30.89 pts
+  9. Jamaal Williams           DET  30.74 pts
+ 10. Aaron Jones               GB   30.33 pts
+ 11. Miles Sanders             PHI  29.97 pts
+ 12. Joe Mixon                 CIN  29.95 pts
+ 13. Tony Pollard              DAL  28.55 pts
+ 14. Ezekiel Elliott           DAL  28.16 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 15. James Conner              ARI  27.45 pts
+ 16. Alvin Kamara              NO   27.34 pts
+ 17. Rhamondre Stevenson       NE   27.18 pts
+ 18. Najee Harris              PIT  26.40 pts
+ 19. Devin Singletary          BUF  26.05 pts
+ 20. Kenneth Walker            SEA  25.67 pts
+ 21. David Montgomery          CHI  25.59 pts
+ 22. Algiers Dillon            GB   25.07 pts
+ 23. Latavius Murray           DEN  25.07 pts
+ 24. Jerick McKinnon           KC   25.01 pts
+
+
+TOP WR PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Justin Jefferson          MIN  34.70 pts
+  2. Tyreek Hill               MIA  34.31 pts
+  3. Davante Adams             LV   33.71 pts
+  4. Arthur Brown              PHI  32.46 pts
+  5. Stefon Diggs              BUF  31.44 pts
+  6. Cedarian Lamb             DAL  31.12 pts
+  7. Amari Cooper              CLE  30.06 pts
+  8. Jaylen Waddle             MIA  29.83 pts
+
+TIER 2 - STRONG STARTERS
+  9. DeVonta Smith             PHI  29.47 pts
+ 10. Christian Kirk            JAX  29.12 pts
+ 11. Amon-Ra St. Brown         DET  28.28 pts
+ 12. Michael Evans             TB   27.16 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+ 13. Ja'Marr Chase             CIN  25.89 pts
+ 14. Tyler Lockett             SEA  25.89 pts
+ 15. Brandon Aiyuk             SF   25.27 pts
+ 16. Terry McLaurin            WAS  25.25 pts
+ 17. Tamurice Higgins          CIN  25.00 pts
+ 18. Denniston Moore           CAR  24.60 pts
+ 19. Garrett Wilson            NYJ  24.13 pts
+ 20. DeKaylin Metcalf          SEA  23.37 pts
+ 21. Jerry Jeudy               DEN  23.29 pts
+ 22. Cooper Kupp               LA   23.16 pts
+
+
+TOP TE PLAYERS BY TIER
+--------------------------------------------------------------------------------
+TIER 1 - ELITE
+  1. Travis Kelce              KC   28.19 pts
+
+TIER 2 - STRONG STARTERS
+  2. George Kittle             SF   23.53 pts
+  3. Thomas Hockenson          MIN  21.14 pts
+
+TIER 3 - SOLID CONTRIBUTORS
+  4. Mark Andrews              BAL  18.55 pts
+
+
