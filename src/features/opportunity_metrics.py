@@ -127,9 +127,10 @@ class OpportunityMetricsCalculator:
         if self.pbp_data.empty:
             logger.warning("No play-by-play data available, skipping air yards calculations")
             # Add empty columns
-            player_data['air_yards'] = 0
+            player_data['total_air_yards'] = 0
             player_data['air_yards_share'] = 0
             player_data['adot'] = 0
+            player_data['yac_per_target'] = 0
             return player_data
         
         # Aggregate air yards by player
@@ -142,6 +143,15 @@ class OpportunityMetricsCalculator:
         air_yards_summary.columns = [
             'player_name', 'team', 'total_air_yards', 'adot', 'total_targets', 'receiving_yards'
         ]
+        
+        # Check if we have any data after aggregation
+        if air_yards_summary.empty:
+            logger.warning("No air yards data after aggregation, adding empty columns")
+            player_data['total_air_yards'] = 0
+            player_data['air_yards_share'] = 0
+            player_data['adot'] = 0
+            player_data['yac_per_target'] = 0
+            return player_data
         
         # Calculate team air yards totals
         team_air_yards = self.pbp_data.groupby('posteam')['air_yards'].sum().reset_index()
@@ -172,10 +182,13 @@ class OpportunityMetricsCalculator:
             how='left'
         )
         
-        # Fill missing values
+        # Fill missing values and ensure columns exist
         air_yards_cols = ['total_air_yards', 'air_yards_share', 'adot', 'yac_per_target']
         for col in air_yards_cols:
-            result[col] = result[col].fillna(0)
+            if col not in result.columns:
+                result[col] = 0  # Add missing column with default values
+            else:
+                result[col] = result[col].fillna(0)
         
         logger.info(f"Calculated air yards metrics for {len(result)} players")
         return result
@@ -340,9 +353,13 @@ class OpportunityMetricsCalculator:
         
         # Check what opportunity metrics already exist
         existing_metrics = [col for col in result.columns if col in [
-            'target_share', 'air_yards_share', 'wopr_x', 'wopr_y'
+            'target_share', 'air_yards_share', 'wopr_x', 'wopr_y', 'receiving_air_yards'
         ]]
         logger.info(f"Found existing opportunity metrics: {existing_metrics}")
+        
+        # Log available columns for debugging
+        air_yards_related = [col for col in result.columns if 'air' in col.lower()]
+        logger.info(f"Air yards related columns: {air_yards_related}")
         
         # Calculate missing metrics
         

@@ -90,8 +90,8 @@ class UsageAnalyticsCalculator:
         try:
             # Aggregate snap counts by player for the season
             snap_summary = self.snap_data.groupby(['player', 'team']).agg({
-                'offense': 'sum',  # Total offensive snaps
-                'percent': 'mean'  # Average snap percentage
+                'offense_snaps': 'sum',  # Total offensive snaps
+                'offense_pct': 'mean'  # Average snap percentage
             }).reset_index()
             
             snap_summary.columns = ['player_name', 'team', 'total_snaps', 'avg_snap_share']
@@ -223,8 +223,9 @@ class UsageAnalyticsCalculator:
             
             # Merge team totals
             route_data = player_targets.merge(
-                team_pass_plays.rename(columns={'posteam': 'team'}), 
-                on='team', 
+                team_pass_plays, 
+                left_on='posteam',
+                right_on='posteam',
                 how='left'
             )
             
@@ -238,8 +239,8 @@ class UsageAnalyticsCalculator:
             
             # Merge with player data
             result = player_data.merge(
-                route_data[['receiver_player_name', 'team', 'route_participation_rate']].rename(
-                    columns={'receiver_player_name': 'player_name'}
+                route_data[['receiver_player_name', 'posteam', 'route_participation_rate']].rename(
+                    columns={'receiver_player_name': 'player_name', 'posteam': 'team'}
                 ),
                 on=['player_name', 'team'],
                 how='left'
