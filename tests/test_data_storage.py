@@ -7,7 +7,13 @@ raw, cleaned, and feature-engineered data.
 
 import logging
 import pandas as pd
-from fantasy_football_ai_tool.src.data_storage import (
+import sys
+from pathlib import Path
+
+# Add project root to path
+sys.path.append(str(Path(__file__).parent.parent))
+
+from src.data_storage import (
     get_available_seasons,
     load_raw_data,
     load_cleaned_data,
