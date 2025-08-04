@@ -306,8 +306,8 @@ def predict_fantasy_points_baseline(df: pd.DataFrame, model, position: str, targ
     
     # Create feature mapping from our enhanced data to baseline model expectations
     feature_mapping = {
-        # Common mappings across positions
-        'age': 'age',
+        # Common mappings across positions - FIXED FOR RB COMPATIBILITY
+        'age': 'birth_date',  # Will be converted from birth_date to age
         'games_played': 'games',
         'games': 'games',
         
@@ -317,15 +317,18 @@ def predict_fantasy_points_baseline(df: pd.DataFrame, model, position: str, targ
         'passing_yards': 'passing_yards',
         'passing_tds': 'passing_tds',
         'interceptions': 'interceptions',
-        'rushing_attempts': 'carries',
+        'rushing_attempts': 'carries',  # For QB rushing
         'rushing_yards': 'rushing_yards', 
         'rushing_tds': 'rushing_tds',
         
-        # RB/WR/TE mappings
+        # RB/WR/TE mappings - FIXED MAPPING NAMES
         'targets': 'targets',
         'receptions': 'receptions',
         'receiving_yards': 'receiving_yards',
-        'receiving_tds': 'receiving_tds'
+        'receiving_tds': 'receiving_tds',
+        'rushing_attempts': 'carries',  # RB primary stat
+        'rushing_yards': 'rushing_yards',
+        'rushing_tds': 'rushing_tds'
     }
     
     # Build feature matrix with expected features
@@ -335,7 +338,24 @@ def predict_fantasy_points_baseline(df: pd.DataFrame, model, position: str, targ
         if expected_feature in feature_mapping:
             # Try to find the mapped column in our data
             mapped_col = feature_mapping[expected_feature]
-            if mapped_col in result_df.columns:
+            
+            # Special handling for age conversion from birth_date
+            if expected_feature == 'age' and mapped_col == 'birth_date':
+                if 'birth_date' in result_df.columns:
+                    try:
+                        # Convert birth_date to age
+                        current_year = 2025  # Prediction year
+                        birth_dates = pd.to_datetime(result_df['birth_date'], errors='coerce')
+                        ages = current_year - birth_dates.dt.year
+                        X[expected_feature] = ages.fillna(25)  # Default age for missing birth dates
+                        print(f"   ✅ Mapped {expected_feature} ← {mapped_col} (converted to age)")
+                    except Exception as e:
+                        print(f"   ⚠️ Age conversion failed: {e}, using default age 25")
+                        X[expected_feature] = 25
+                else:
+                    X[expected_feature] = 25  # Default age
+                    print(f"   ⚠️ Missing birth_date for age calculation, using default 25")
+            elif mapped_col in result_df.columns:
                 X[expected_feature] = result_df[mapped_col]
                 print(f"   ✅ Mapped {expected_feature} ← {mapped_col}")
             else:
@@ -370,14 +390,23 @@ def predict_fantasy_points_baseline(df: pd.DataFrame, model, position: str, targ
         # Make predictions with baseline model
         predictions = model.predict(X)
         
+        # CRITICAL FIX: Convert per-game predictions to seasonal totals
+        # Baseline models predict per-game values, but draft rankings expect seasonal totals
+        games_played = result_df['games'] if 'games' in result_df.columns else 16  # Default to 16 games
+        seasonal_predictions = predictions * games_played
+        
+        print(f"   🔄 Converting per-game to seasonal predictions:")
+        print(f"      Per-game range: {predictions.min():.1f} - {predictions.max():.1f}")
+        print(f"      Seasonal range: {seasonal_predictions.min():.1f} - {seasonal_predictions.max():.1f}")
+        
         # Add predictions to result (ensure consistent column naming)
-        result_df[target_col] = predictions
-        result_df['predicted_points'] = predictions  # Add consistent column name for VOR calculations
+        result_df[target_col] = seasonal_predictions
+        result_df['predicted_points'] = seasonal_predictions  # Add consistent column name for VOR calculations
         
         print(f"✅ Baseline prediction completed successfully")
-        print(f"   Predicted {len(predictions)} player fantasy points")
-        print(f"   Mean prediction: {np.mean(predictions):.2f}")
-        print(f"   Prediction range: {np.min(predictions):.2f} - {np.max(predictions):.2f}")
+        print(f"   Predicted {len(seasonal_predictions)} player fantasy points")
+        print(f"   Mean seasonal prediction: {np.mean(seasonal_predictions):.1f}")
+        print(f"   Seasonal prediction range: {np.min(seasonal_predictions):.1f} - {np.max(seasonal_predictions):.1f}")
         
         return result_df
         
@@ -888,9 +917,24 @@ def validate_predictions(df: pd.DataFrame, position: str) -> pd.DataFrame:
     
     if out_of_range.any():
         print(f"⚠️ WARNING: {out_of_range.sum()} predictions outside typical range ({min_val}-{max_val})")
-        # Clip to reasonable range
-        df['predicted_points'] = df['predicted_points'].clip(min_val, max_val)
-        print(f"   ✅ Clipped predictions to reasonable range")
+        
+        # Show problematic predictions before clipping for debugging
+        problematic = df[out_of_range]['predicted_points']
+        if len(problematic) > 0:
+            print(f"   📊 Problematic predictions: min={problematic.min():.2f}, max={problematic.max():.2f}")
+            # Show a few examples
+            examples = problematic.head(5).tolist()
+            print(f"   🔍 Examples: {[f'{x:.2f}' for x in examples]}")
+        
+        # For RB position, be more permissive with low values as they might be backups
+        if position == 'RB':
+            # Allow lower predictions for backup RBs, but set a floor at 10 points
+            df['predicted_points'] = df['predicted_points'].clip(10, max_val)
+            print(f"   ✅ Clipped RB predictions to range (10-{max_val}) - allowing backup RBs")
+        else:
+            # Clip to reasonable range for other positions
+            df['predicted_points'] = df['predicted_points'].clip(min_val, max_val)
+            print(f"   ✅ Clipped predictions to reasonable range")
     
     # Log summary statistics
     print(f"✅ VALIDATION COMPLETE:")
@@ -1586,7 +1630,8 @@ def main():
         result = predict_fantasy_points(df, model, position)
         
         # Handle fallback to baseline model
-        if result == "fallback_to_baseline":
+        # Check if result is a string (fallback case) rather than DataFrame (normal case)
+        if isinstance(result, str) and result == "fallback_to_baseline":
             print(f"🔄 LOADING BASELINE MODEL for {position}...")
             baseline_model = load_model_based_on_features(position, has_advanced_features=False)
             print(f"📋 Using baseline model trained on available features")

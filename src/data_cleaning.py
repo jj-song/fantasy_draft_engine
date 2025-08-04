@@ -14,7 +14,10 @@ from pathlib import Path
 
 # Add the project root to the path so we can import the config
 sys.path.append(str(Path(__file__).parent.parent))
-import config
+from src.config import get_config
+
+# Get configuration instance
+config_manager = get_config()
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -30,7 +33,7 @@ def load_raw_season_data(year):
     Returns:
         pandas.DataFrame: DataFrame containing raw player statistics for the specified season
     """
-    raw_data_dir = os.path.join(Path(__file__).parent.parent, config.RAW_DATA_DIR)
+    raw_data_dir = os.path.join(Path(__file__).parent.parent, config_manager.get('data.raw_data_dir', 'data/raw'))
     file_path = os.path.join(raw_data_dir, f"player_season_{year}.parquet")
     
     try:
@@ -290,7 +293,7 @@ def clean_season_data(year, positions=None):
         pandas.DataFrame: DataFrame containing cleaned player statistics for the specified season
     """
     if positions is None:
-        positions = config.POSITIONS
+        positions = config_manager.get('data.positions', ['QB', 'RB', 'WR', 'TE', 'K'])
     
     logger.info(f"Cleaning player statistics for {year} season for positions: {positions}")
     
@@ -347,7 +350,7 @@ def save_cleaned_data(df, year):
         str: Path to the saved file
     """
     # Create the processed data directory if it doesn't exist
-    processed_data_dir = os.path.join(Path(__file__).parent.parent, config.PROCESSED_DATA_DIR)
+    processed_data_dir = os.path.join(Path(__file__).parent.parent, config_manager.get('data.processed_data_dir', 'data/processed'))
     os.makedirs(processed_data_dir, exist_ok=True)
     
     # Define the output file path
@@ -376,11 +379,11 @@ def clean_and_save_historical_data(start_year=None, end_year=None, positions=Non
         list: List of paths to the saved files
     """
     if start_year is None:
-        start_year = config.DATA_START_YEAR
+        start_year = config_manager.get('data.data_start_year', 2010)
     if end_year is None:
         end_year = config.DATA_END_YEAR
     if positions is None:
-        positions = config.POSITIONS
+        positions = config_manager.get('data.positions', ['QB', 'RB', 'WR', 'TE', 'K'])
     
     logger.info(f"Cleaning and saving player statistics for seasons {start_year} to {end_year}")
     

@@ -149,6 +149,41 @@
 • `create_position_tiers()` - Group players by value tiers
 • `export_draft_cheatsheet()` - Generate printable rankings
 
+## CRITICAL LESSONS LEARNED - Model Feature Compatibility (August 4, 2025)
+
+### Issue: Running Backs Missing from Rankings
+**Root Cause**: Baseline model feature mapping mismatches and prediction scaling errors
+- Baseline models expected specific column names (`age`, `games_played`, `rushing_attempts`)
+- Current data pipeline generated different names (`birth_date`, `games`, `carries`)
+- Baseline models predicted per-game values but rankings expected seasonal totals
+- Validation function clipped low predictions to 50.0, making all RBs identical
+
+### Solution Applied
+1. **Enhanced Feature Mapping**: Added proper column name conversions
+   - `birth_date` → `age` (with year calculation)
+   - `games` → `games_played` (direct mapping)
+   - `carries` → `rushing_attempts` (RB-specific mapping)
+
+2. **Prediction Scaling**: Convert per-game to seasonal totals
+   ```python
+   seasonal_predictions = per_game_predictions * games_played
+   ```
+
+3. **Validation Adjustments**: Allow realistic lower bounds for backup players
+
+### Key Takeaways for Future Development
+- **ALWAYS validate model input/output compatibility** when updating data pipelines
+- **Test baseline model predictions** in isolation before integration
+- **Check prediction ranges** match expected seasonal vs per-game scales
+- **Consider position-specific validation rules** (backup vs starter expectations)
+- **Implement comprehensive logging** for feature mapping debugging
+
+### Testing Requirements
+- Unit tests for baseline model feature mapping
+- Integration tests for prediction scaling
+- Validation tests for all position prediction ranges
+- End-to-end tests for complete ranking generation
+
 ## Testing Requirements
 
 ### Model Validation
