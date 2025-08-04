@@ -762,8 +762,8 @@ def generate_draft_cheatsheet(overall_rankings: pd.DataFrame, position_rankings:
         if not overall_rankings.empty:
             top_50 = overall_rankings.head(50)
             
-            # Define tiers based on VOR
-            tier_cutoffs = [18, 14, 10, 6]  # Elite, Premium, Solid, Depth
+            # Define tiers based on VOR (adjusted for per-game projections)
+            tier_cutoffs = [12, 8, 5, 2]  # Elite, Premium, Solid, Depth
             tier_names = ["ELITE", "PREMIUM", "SOLID", "DEPTH", "BENCH"]
             
             for _, row in top_50.iterrows():
