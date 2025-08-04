@@ -205,8 +205,9 @@ def test_ranking_generation_real_players():
         from generate_draft_rankings import load_position_data
         
         # Test loading data for each position
-        import config
-        positions = ['QB', 'RB', 'WR', 'TE']
+        from src.config import get_config
+        config = get_config()
+        positions = config.get('data.core_positions', ['QB', 'RB', 'WR', 'TE'])
         
         all_real = True
         total_players = 0

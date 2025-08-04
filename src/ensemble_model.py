@@ -24,6 +24,7 @@ from datetime import datetime
 import config
 from src.modeling import RandomForestModel, LightGBMModel
 from src.dynamic_ensemble import DynamicEnsembleWeighter
+from src.utils.performance_metrics import PerformanceMetrics
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -155,9 +156,90 @@ class EnsembleFantasyModel:
         except Exception as e:
             raise ValueError(f"CRITICAL: LightGBM training failed for {self.position}: {str(e)}")
         
+        # Evaluate model performance if validation data provided
+        if X_val is not None and y_val is not None:
+            self._evaluate_model_performance(X_val, y_val)
+        
         self.is_trained = True
         logger.info(f"🎉 ENSEMBLE TRAINING COMPLETE: {self.position}")
         logger.info(f"   Total training time: {rf_train_time + lgb_train_time:.2f} seconds")
+    
+    def _evaluate_model_performance(self, X_val: pd.DataFrame, y_val: pd.Series) -> None:
+        """
+        Evaluate individual models and ensemble performance.
+        
+        Args:
+            X_val: Validation features
+            y_val: Validation targets
+        """
+        logger.info(f"📊 EVALUATING MODEL PERFORMANCE: {self.position}")
+        
+        # Initialize performance tracker
+        metrics_tracker = PerformanceMetrics(self.position)
+        
+        # Evaluate individual models
+        models_to_evaluate = {
+            'RandomForest': self.rf_model.model,
+            'LightGBM': self.lgb_model.model
+        }
+        
+        model_results = []
+        
+        for model_name, model in models_to_evaluate.items():
+            try:
+                result = metrics_tracker.evaluate_model_performance(
+                    model, X_val, y_val, model_name
+                )
+                model_results.append(result)
+            except Exception as e:
+                logger.warning(f"Could not evaluate {model_name}: {e}")
+        
+        # Evaluate ensemble
+        if len(model_results) >= 2:
+            try:
+                ensemble_predictions = self._make_ensemble_predictions(X_val)
+                ensemble_result = metrics_tracker.evaluate_model_performance(
+                    self, X_val, y_val, f"Ensemble_{self.position}"
+                )
+                model_results.append(ensemble_result)
+            except Exception as e:
+                logger.warning(f"Could not evaluate ensemble: {e}")
+        
+        # Create comparison and save results
+        if model_results:
+            comparison_df = metrics_tracker.compare_models(model_results)
+            
+            # Save metrics to file
+            logs_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'logs')
+            os.makedirs(logs_dir, exist_ok=True)
+            
+            metrics_file = os.path.join(logs_dir, f"ensemble_metrics_{self.position}.json")
+            metrics_tracker.save_metrics(metrics_file)
+            
+            # Log best performing model
+            if not comparison_df.empty:
+                best_model = comparison_df.iloc[0]
+                logger.info(f"🏆 BEST MODEL for {self.position}: {best_model['Model']}")
+                logger.info(f"   R² = {best_model['R²']:.4f}, RMSE = {best_model['RMSE']:.3f}")
+    
+    def _make_ensemble_predictions(self, X_test: pd.DataFrame) -> np.ndarray:
+        """
+        Make ensemble predictions (used for evaluation).
+        
+        Args:
+            X_test: Test features
+            
+        Returns:
+            Ensemble predictions
+        """
+        # Get individual predictions
+        rf_predictions = self.rf_model.predict(X_test)
+        lgb_predictions = self.lgb_model.predict(X_test)
+        
+        # Use default ensemble weights (60% LightGBM, 40% RF)
+        ensemble_predictions = (lgb_predictions * 0.6) + (rf_predictions * 0.4)
+        
+        return ensemble_predictions
     
     def predict(self, X_test: pd.DataFrame, player_data: Optional[pd.DataFrame] = None) -> np.ndarray:
         """

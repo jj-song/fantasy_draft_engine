@@ -27,9 +27,8 @@ import sys
 from datetime import datetime, timedelta
 import warnings
 
-# Add project root to path
-sys.path.append(str(Path(__file__).parent.parent.parent))
-import config
+# Import config using new system
+from src.config import get_config
 
 logger = logging.getLogger(__name__)
 
@@ -45,11 +44,101 @@ class ScheduleStrengthCalculator:
             current_season: Season year for calculations
             weeks_ahead: Number of weeks to look ahead for SOS
         """
-        self.current_season = current_season or config.CURRENT_SEASON
+        config = get_config()
+        self.current_season = current_season or config.get('data.data_end_year', 2024)
         self.weeks_ahead = weeks_ahead
         self.schedule_data = None
         self.defensive_rankings = None
         self.pace_data = None
+        
+    def _get_column_mapping(self, data: pd.DataFrame) -> Dict[str, Optional[str]]:
+        """
+        Get mapping of standard column names to actual column names in the data.
+        
+        Args:
+            data: DataFrame to examine
+            
+        Returns:
+            Dict mapping standard names to actual column names (None if not found)
+        """
+        available_cols = data.columns.tolist()
+        mapping = {}
+        
+        # Team columns
+        opponent_col = None
+        for col in ['opponent_team', 'opponent', 'opp_team', 'opposing_team']:
+            if col in available_cols:
+                opponent_col = col
+                break
+        mapping['opponent_team'] = opponent_col
+        
+        team_col = None
+        for col in ['team', 'recent_team', 'posteam', 'current_team']:
+            if col in available_cols:
+                team_col = col
+                break
+        mapping['team'] = team_col
+        
+        # Statistical columns
+        targets_col = None
+        for col in ['targets', 'receiving_targets', 'pass_targets']:
+            if col in available_cols:
+                targets_col = col
+                break
+        mapping['targets'] = targets_col
+        
+        carries_col = None
+        for col in ['carries', 'rushing_attempts', 'rush_att']:
+            if col in available_cols:
+                carries_col = col
+                break
+        mapping['carries'] = carries_col
+        
+        # Yardage columns
+        rush_yards_col = None
+        for col in ['rushing_yards', 'rush_yards', 'rushing_yds']:
+            if col in available_cols:
+                rush_yards_col = col
+                break
+        mapping['rushing_yards'] = rush_yards_col
+        
+        rec_yards_col = None
+        for col in ['receiving_yards', 'rec_yards', 'receiving_yds']:
+            if col in available_cols:
+                rec_yards_col = col
+                break
+        mapping['receiving_yards'] = rec_yards_col
+        
+        pass_yards_col = None
+        for col in ['passing_yards', 'pass_yards', 'passing_yds']:
+            if col in available_cols:
+                pass_yards_col = col
+                break
+        mapping['passing_yards'] = pass_yards_col
+        
+        # Touchdown columns
+        rush_tds_col = None
+        for col in ['rushing_tds', 'rush_tds', 'rushing_touchdowns']:
+            if col in available_cols:
+                rush_tds_col = col
+                break
+        mapping['rushing_tds'] = rush_tds_col
+        
+        rec_tds_col = None
+        for col in ['receiving_tds', 'rec_tds', 'receiving_touchdowns']:
+            if col in available_cols:
+                rec_tds_col = col
+                break
+        mapping['receiving_tds'] = rec_tds_col
+        
+        pass_tds_col = None
+        for col in ['passing_tds', 'pass_tds', 'passing_touchdowns']:
+            if col in available_cols:
+                pass_tds_col = col
+                break
+        mapping['passing_tds'] = pass_tds_col
+        
+        return mapping
         
     def load_schedule_data(self, seasons: List[int] = None) -> pd.DataFrame:
         """
@@ -175,8 +264,30 @@ class ScheduleStrengthCalculator:
             # Load weekly player data for defensive analysis
             weekly_data = nfl.import_weekly_data(seasons)
             
+            if weekly_data.empty:
+                logger.warning(f"No weekly data available for defensive rankings calculation")
+                return pd.DataFrame()
+            
             # Calculate fantasy points using Half-PPR scoring
             weekly_data['fantasy_points'] = self.calculate_fantasy_points(weekly_data)
+            
+            # ROBUST COLUMN MAPPING: Get actual column names from weekly data
+            col_mapping = self._get_column_mapping(weekly_data)
+            opponent_col = col_mapping['opponent_team']
+            targets_col = col_mapping['targets']
+            carries_col = col_mapping['carries']
+            rush_yards_col = col_mapping['rushing_yards']
+            rec_yards_col = col_mapping['receiving_yards']
+            pass_yards_col = col_mapping['passing_yards']
+            rush_tds_col = col_mapping['rushing_tds']
+            rec_tds_col = col_mapping['receiving_tds']
+            pass_tds_col = col_mapping['passing_tds']
+            
+            if not opponent_col:
+                logger.error("No opponent_team column found in weekly data for defensive rankings")
+                return pd.DataFrame()
+            
+            logger.info(f"Using column mapping for defensive rankings - opponent: {opponent_col}")
             
             # Create opponent-based defensive stats
             defensive_stats = []
@@ -187,28 +298,61 @@ class ScheduleStrengthCalculator:
                 if pos_data.empty:
                     continue
                 
-                # Group by opponent team and calculate average points allowed
-                opponent_stats = pos_data.groupby(['opponent_team', 'season', 'week']).agg({
-                    'fantasy_points': ['count', 'sum', 'mean', 'std'],
-                    'targets': 'sum',
-                    'carries': 'sum',
-                    'rushing_yards': 'sum',
-                    'receiving_yards': 'sum',
-                    'passing_yards': 'sum',
-                    'rushing_tds': 'sum',
-                    'receiving_tds': 'sum',
-                    'passing_tds': 'sum'
-                }).reset_index()
+                # Build aggregation dictionary with available columns
+                agg_dict = {
+                    'fantasy_points': ['count', 'sum', 'mean', 'std']
+                }
                 
-                # Flatten column names
-                opponent_stats.columns = [
-                    'team', 'season', 'week', f'{position.lower()}_games', 
-                    f'{position.lower()}_total_pts', f'{position.lower()}_avg_pts', f'{position.lower()}_std_pts',
-                    f'{position.lower()}_targets_allowed', f'{position.lower()}_carries_allowed',
-                    f'{position.lower()}_rush_yds_allowed', f'{position.lower()}_rec_yds_allowed',
-                    f'{position.lower()}_pass_yds_allowed', f'{position.lower()}_rush_tds_allowed',
-                    f'{position.lower()}_rec_tds_allowed', f'{position.lower()}_pass_tds_allowed'
-                ]
+                # Add columns that exist
+                if targets_col:
+                    agg_dict[targets_col] = 'sum'
+                if carries_col:
+                    agg_dict[carries_col] = 'sum'
+                if rush_yards_col:
+                    agg_dict[rush_yards_col] = 'sum'
+                if rec_yards_col:
+                    agg_dict[rec_yards_col] = 'sum'
+                if pass_yards_col:
+                    agg_dict[pass_yards_col] = 'sum'
+                if rush_tds_col:
+                    agg_dict[rush_tds_col] = 'sum'
+                if rec_tds_col:
+                    agg_dict[rec_tds_col] = 'sum'
+                if pass_tds_col:
+                    agg_dict[pass_tds_col] = 'sum'
+                
+                # Group by opponent team using mapped column name
+                opponent_stats = pos_data.groupby([opponent_col, 'season', 'week']).agg(agg_dict).reset_index()
+                
+                # DYNAMIC COLUMN NAMING: Create column names based on available data
+                new_columns = ['team', 'season', 'week', 
+                              f'{position.lower()}_games', 
+                              f'{position.lower()}_total_pts', 
+                              f'{position.lower()}_avg_pts', 
+                              f'{position.lower()}_std_pts']
+                
+                # Add column names for available stats
+                if targets_col:
+                    new_columns.append(f'{position.lower()}_targets_allowed')
+                if carries_col:
+                    new_columns.append(f'{position.lower()}_carries_allowed')
+                if rush_yards_col:
+                    new_columns.append(f'{position.lower()}_rush_yds_allowed')
+                if rec_yards_col:
+                    new_columns.append(f'{position.lower()}_rec_yds_allowed')
+                if pass_yards_col:
+                    new_columns.append(f'{position.lower()}_pass_yds_allowed')
+                if rush_tds_col:
+                    new_columns.append(f'{position.lower()}_rush_tds_allowed')
+                if rec_tds_col:
+                    new_columns.append(f'{position.lower()}_rec_tds_allowed')
+                if pass_tds_col:
+                    new_columns.append(f'{position.lower()}_pass_tds_allowed')
+                
+                # Ensure we don't have more column names than actual columns
+                opponent_stats.columns = new_columns[:len(opponent_stats.columns)]
+                
+                logger.info(f"Created {position} defensive stats with {len(opponent_stats.columns)} columns")
                 
                 defensive_stats.append(opponent_stats)
             
@@ -276,7 +420,7 @@ class ScheduleStrengthCalculator:
     
     def calculate_fantasy_points(self, weekly_data: pd.DataFrame) -> pd.Series:
         """
-        Calculate fantasy points using Half-PPR scoring.
+        Calculate fantasy points using Half-PPR scoring with robust column mapping.
         
         Args:
             weekly_data: DataFrame with weekly player stats
@@ -284,38 +428,83 @@ class ScheduleStrengthCalculator:
         Returns:
             Series with fantasy points calculated
         """
+        config = get_config()
+        fantasy_points = config.get('scoring.fantasy_points', {
+            'passing_yards': 0.04, 'passing_tds': 4, 'interceptions': -2,
+            'rushing_yards': 0.1, 'rushing_tds': 6, 'receptions': 0.5,
+            'receiving_yards': 0.1, 'receiving_tds': 6, 'fumbles_lost': -2,
+            'two_point_conversions': 2
+        })
+        
         points = pd.Series(0.0, index=weekly_data.index)
         
-        # Passing
-        if 'passing_yards' in weekly_data.columns:
-            points += weekly_data['passing_yards'].fillna(0) * config.FANTASY_POINTS['passing_yards']
-        if 'passing_tds' in weekly_data.columns:
-            points += weekly_data['passing_tds'].fillna(0) * config.FANTASY_POINTS['passing_tds']
-        if 'interceptions' in weekly_data.columns:
-            points += weekly_data['interceptions'].fillna(0) * config.FANTASY_POINTS['interceptions']
+        # ROBUST COLUMN MAPPING: Get actual column names
+        col_mapping = self._get_column_mapping(weekly_data)
+        available_cols = weekly_data.columns.tolist()
         
-        # Rushing
-        if 'rushing_yards' in weekly_data.columns:
-            points += weekly_data['rushing_yards'].fillna(0) * config.FANTASY_POINTS['rushing_yards']
-        if 'rushing_tds' in weekly_data.columns:
-            points += weekly_data['rushing_tds'].fillna(0) * config.FANTASY_POINTS['rushing_tds']
+        # Passing - use mapped column names
+        pass_yards_col = col_mapping.get('passing_yards')
+        if pass_yards_col:
+            points += weekly_data[pass_yards_col].fillna(0) * fantasy_points['passing_yards']
         
-        # Receiving
-        if 'receptions' in weekly_data.columns:
-            points += weekly_data['receptions'].fillna(0) * config.FANTASY_POINTS['receptions']
-        if 'receiving_yards' in weekly_data.columns:
-            points += weekly_data['receiving_yards'].fillna(0) * config.FANTASY_POINTS['receiving_yards']
-        if 'receiving_tds' in weekly_data.columns:
-            points += weekly_data['receiving_tds'].fillna(0) * config.FANTASY_POINTS['receiving_tds']
+        pass_tds_col = col_mapping.get('passing_tds')
+        if pass_tds_col:
+            points += weekly_data[pass_tds_col].fillna(0) * fantasy_points['passing_tds']
+            
+        # Interceptions (check multiple variants)
+        int_col = None
+        for col in ['interceptions', 'ints', 'passing_ints']:
+            if col in available_cols:
+                int_col = col
+                break
+        if int_col:
+            points += weekly_data[int_col].fillna(0) * fantasy_points['interceptions']
         
-        # Fumbles
-        if 'fumbles_lost' in weekly_data.columns:
-            points += weekly_data['fumbles_lost'].fillna(0) * config.FANTASY_POINTS['fumbles_lost']
+        # Rushing - use mapped column names
+        rush_yards_col = col_mapping.get('rushing_yards')
+        if rush_yards_col:
+            points += weekly_data[rush_yards_col].fillna(0) * fantasy_points['rushing_yards']
+            
+        rush_tds_col = col_mapping.get('rushing_tds')
+        if rush_tds_col:
+            points += weekly_data[rush_tds_col].fillna(0) * fantasy_points['rushing_tds']
         
-        # Two point conversions
-        if 'two_point_conversions' in weekly_data.columns:
-            points += weekly_data['two_point_conversions'].fillna(0) * config.FANTASY_POINTS['two_point_conversions']
+        # Receiving - handle multiple column variants
+        rec_col = None
+        for col in ['receptions', 'rec', 'catches']:
+            if col in available_cols:
+                rec_col = col
+                break
+        if rec_col:
+            points += weekly_data[rec_col].fillna(0) * fantasy_points['receptions']
+            
+        rec_yards_col = col_mapping.get('receiving_yards')
+        if rec_yards_col:
+            points += weekly_data[rec_yards_col].fillna(0) * fantasy_points['receiving_yards']
+            
+        rec_tds_col = col_mapping.get('receiving_tds')
+        if rec_tds_col:
+            points += weekly_data[rec_tds_col].fillna(0) * fantasy_points['receiving_tds']
         
+        # Fumbles - check multiple variants
+        fumbles_col = None
+        for col in ['fumbles_lost', 'fumbles', 'lost_fumbles']:
+            if col in available_cols:
+                fumbles_col = col
+                break
+        if fumbles_col:
+            points += weekly_data[fumbles_col].fillna(0) * fantasy_points['fumbles_lost']
+        
+        # Two point conversions - check multiple variants
+        two_pt_col = None
+        for col in ['two_point_conversions', '2pt', 'two_pt_conv']:
+            if col in available_cols:
+                two_pt_col = col
+                break
+        if two_pt_col:
+            points += weekly_data[two_pt_col].fillna(0) * fantasy_points['two_point_conversions']
+        
+        logger.info(f"Calculated fantasy points using available columns from weekly data")
         return points
     
     def calculate_pace_adjustments(self, seasons: List[int] = None) -> pd.DataFrame:
@@ -338,10 +527,19 @@ class ScheduleStrengthCalculator:
             pbp_data = nfl.import_pbp_data(seasons)
             
             # Filter to regular plays only
+            # ROBUST COLUMN CHECKING: Check for two_minute_warning column
+            available_cols = pbp_data.columns.tolist()
+            two_min_filter = True  # Default to no filter if column doesn't exist
+            
+            if 'two_minute_warning' in available_cols:
+                two_min_filter = ~pbp_data['two_minute_warning'].fillna(False)
+            else:
+                logger.info("two_minute_warning column not found, skipping two-minute filter")
+            
             pace_plays = pbp_data[
                 (pbp_data['play_type'].isin(['pass', 'run'])) &
                 (pbp_data['down'].notna()) &
-                (~pbp_data['two_minute_warning'].fillna(False)) &
+                two_min_filter &
                 (~pbp_data['timeout_team'].fillna('').ne(''))
             ].copy()
             
@@ -747,7 +945,8 @@ def get_league_sos_rankings(
         DataFrame with SOS rankings for all teams
     """
     if season is None:
-        season = config.CURRENT_SEASON
+        config = get_config()
+        season = config.get('data.data_end_year', 2024)
     
     logger.info(f"Calculating league-wide SOS rankings for {position}")
     

@@ -95,6 +95,10 @@ class UsageAnalyticsCalculator:
                 logger.warning(f"No snap count data available for {self.season}")
                 return pd.DataFrame()
             
+            # CRITICAL FIX: Ensure player_name column exists for joining
+            from src.data_storage import ensure_player_name_column
+            snap_counts = ensure_player_name_column(snap_counts)
+            
             logger.info(f"Loaded snap counts for {len(snap_counts)} player-week records")
             self.snap_data = snap_counts
             return snap_counts
@@ -131,22 +135,41 @@ class UsageAnalyticsCalculator:
             available_cols = self.snap_data.columns.tolist()
             logger.info(f"Available snap data columns: {available_cols}")
             
-            # Use available columns with fallbacks
+            # ENHANCED SNAP COLUMN DETECTION: More comprehensive column matching
             snap_col = None
             pct_col = None
             player_col = None
             team_col = None
             
-            # Find the right columns
-            for col in available_cols:
-                if 'snap' in col.lower() and 'offense' in col.lower():
-                    snap_col = col
-                elif 'pct' in col.lower() or 'percentage' in col.lower():
-                    pct_col = col
-                elif col.lower() in ['player', 'player_name', 'full_name']:
-                    player_col = col
-                elif col.lower() in ['team', 'recent_team', 'posteam']:
-                    team_col = col
+            # Find snap count columns (try multiple variants)
+            snap_candidates = ['offense_snaps', 'offensive_snaps', 'snaps_offense', 'total_snaps', 'snaps']
+            for candidate in snap_candidates:
+                if candidate in available_cols:
+                    snap_col = candidate
+                    break
+            
+            # Find snap percentage columns (try multiple variants)
+            pct_candidates = ['offense_pct', 'offensive_pct', 'snap_pct', 'snap_percentage', 'pct_snaps']
+            for candidate in pct_candidates:
+                if candidate in available_cols:
+                    pct_col = candidate
+                    break
+            
+            # Find player name columns (try multiple variants)
+            player_candidates = ['player_name', 'player', 'full_name', 'name', 'display_name']
+            for candidate in player_candidates:
+                if candidate in available_cols:
+                    player_col = candidate
+                    break
+            
+            # Find team columns (try multiple variants)
+            team_candidates = ['team', 'recent_team', 'posteam', 'current_team', 'club']
+            for candidate in team_candidates:
+                if candidate in available_cols:
+                    team_col = candidate
+                    break
+            
+            logger.info(f"Snap data column mapping - snaps: {snap_col}, pct: {pct_col}, player: {player_col}, team: {team_col}")
             
             if not all([player_col, team_col]):
                 logger.warning("Missing required columns for snap aggregation")
@@ -184,54 +207,82 @@ class UsageAnalyticsCalculator:
             # Aggregate snap counts by player for the season
             snap_summary = self.snap_data.groupby([player_col, team_col]).agg(agg_dict).reset_index()
             
-            # Rename columns to standard names
-            new_cols = [player_col, team_col]
+            # ENHANCED COLUMN RENAMING: Create standardized column names
+            rename_mapping = {player_col: 'player_name', team_col: 'team'}
             if snap_col:
-                new_cols.append('total_snaps')
+                rename_mapping[snap_col] = 'total_snaps'
             if pct_col:
-                new_cols.append('avg_snap_share')
+                rename_mapping[pct_col] = 'avg_snap_share'
             
-            snap_summary.columns = new_cols[:len(snap_summary.columns)]
+            snap_summary = snap_summary.rename(columns=rename_mapping)
             
-            # Convert snap share to decimal (if it's in percentage form)
-            if snap_summary['avg_snap_share'].max() > 1:
-                snap_summary['avg_snap_share'] = snap_summary['avg_snap_share'] / 100
+            # ROBUST SNAP SHARE CONVERSION: Handle different percentage formats
+            if 'avg_snap_share' in snap_summary.columns:
+                # Check if values are in percentage form (>1) and convert to decimal
+                max_pct = snap_summary['avg_snap_share'].max()
+                if max_pct > 1:
+                    logger.info(f"Converting snap share from percentage to decimal (max value: {max_pct})")
+                    snap_summary['avg_snap_share'] = snap_summary['avg_snap_share'] / 100
+                
+                # Ensure snap share is bounded between 0 and 1
+                snap_summary['avg_snap_share'] = snap_summary['avg_snap_share'].clip(0, 1)
+            else:
+                # If no snap share data, create a default column
+                snap_summary['avg_snap_share'] = 0
             
-            # Calculate snaps per game using correct column names
+            # ENHANCED MERGING: Calculate snaps per game with robust column handling
             player_name_col = required_cols_mapping['player_name']
-            team_col = required_cols_mapping['team']
+            player_team_col = required_cols_mapping['team']
             games_col = required_cols_mapping['games']
             
-            if games_col and games_col in player_data.columns:
-                merge_cols = [player_name_col, team_col, games_col]
-                snap_summary = snap_summary.merge(
-                    player_data[merge_cols].rename(columns={
+            # Add default snaps per game column
+            if 'total_snaps' in snap_summary.columns:
+                if games_col and games_col in player_data.columns:
+                    logger.info(f"Calculating snaps per game using games column: {games_col}")
+                    # Merge games data for calculation
+                    games_data = player_data[[player_name_col, player_team_col, games_col]].rename(columns={
                         player_name_col: 'player_name',
-                        team_col: 'team',
+                        player_team_col: 'team',
                         games_col: 'games'
-                    }), 
-                    on=['player_name', 'team'], 
+                    })
+                    
+                    snap_summary = snap_summary.merge(games_data, on=['player_name', 'team'], how='left')
+                    
+                    snap_summary['snaps_per_game'] = np.where(
+                        snap_summary['games'].fillna(0) > 0,
+                        snap_summary['total_snaps'] / snap_summary['games'],
+                        0
+                    )
+                else:
+                    logger.warning(f"No games column ({games_col}) found for snaps per game calculation")
+                    snap_summary['snaps_per_game'] = 0
+            else:
+                logger.warning("No total_snaps column found, setting snaps_per_game to 0")
+                snap_summary['snaps_per_game'] = 0
+            
+            # ROBUST MERGING: Merge with player data using flexible column names
+            if player_name_col and player_team_col:
+                merge_columns = ['player_name', 'team', 'total_snaps', 'avg_snap_share', 'snaps_per_game']
+                # Only include columns that actually exist
+                available_merge_cols = [col for col in merge_columns if col in snap_summary.columns]
+                
+                result = player_data.merge(
+                    snap_summary[available_merge_cols].rename(columns={
+                        'player_name': player_name_col,
+                        'team': player_team_col
+                    }),
+                    on=[player_name_col, player_team_col],
                     how='left'
                 )
                 
-                snap_summary['snaps_per_game'] = np.where(
-                    snap_summary['games'] > 0,
-                    snap_summary['total_snaps'] / snap_summary['games'],
-                    0
-                )
+                logger.info(f"Successfully merged snap data using columns: {available_merge_cols}")
             else:
-                # No games data available, set snaps per game to 0
-                snap_summary['snaps_per_game'] = 0
-            
-            # Merge with player data using correct column names
-            result = player_data.merge(
-                snap_summary[['player_name', 'team', 'total_snaps', 'avg_snap_share', 'snaps_per_game']].rename(columns={
-                    'player_name': player_name_col,
-                    'team': team_col
-                }),
-                on=[player_name_col, team_col],
-                how='left'
-            )
+                logger.error(f"Cannot merge snap data - missing player_name ({player_name_col}) or team ({player_team_col}) columns")
+                result = player_data.copy()
+                # Add empty columns
+                result['total_snaps'] = 0
+                result['avg_snap_share'] = 0
+                result['snaps_per_game'] = 0
             
             # Fill missing values
             snap_columns = ['total_snaps', 'avg_snap_share', 'snaps_per_game']
@@ -319,6 +370,9 @@ class UsageAnalyticsCalculator:
             # Load play-by-play data for route analysis
             if self.pbp_data is None:
                 pbp = nfl.import_pbp_data([self.season])
+                # CRITICAL FIX: Ensure player_name column exists for joining
+                from src.data_storage import ensure_player_name_column
+                pbp = ensure_player_name_column(pbp)
                 self.pbp_data = pbp[pbp['play_type'] == 'pass'].copy()
             
             if self.pbp_data.empty:
@@ -397,6 +451,9 @@ class UsageAnalyticsCalculator:
             # Load play-by-play data if not already loaded
             if self.pbp_data is None:
                 pbp = nfl.import_pbp_data([self.season])
+                # CRITICAL FIX: Ensure player_name column exists for joining
+                from src.data_storage import ensure_player_name_column
+                pbp = ensure_player_name_column(pbp)
                 self.pbp_data = pbp.copy()
             
             if self.pbp_data.empty:
@@ -409,20 +466,57 @@ class UsageAnalyticsCalculator:
             
             result = player_data.copy()
             
-            # Red zone usage (already calculated in opportunity_metrics, but add share)
-            red_zone_plays = self.pbp_data[self.pbp_data['yardline_100'] <= 20].copy()
+            # ROBUST COLUMN CHECKING: Find available column names
+            available_cols = self.pbp_data.columns.tolist()
             
-            # Goal line usage (5 yards and closer)
-            goal_line_plays = self.pbp_data[self.pbp_data['yardline_100'] <= 5].copy()
+            # Find yardline column (can be yardline_100, yardline, field_position, etc.)
+            yardline_col = None
+            for col in ['yardline_100', 'yardline', 'yard_line', 'field_position']:
+                if col in available_cols:
+                    yardline_col = col
+                    break
+            
+            # Find quarter/time columns
+            quarter_col = None
+            time_col = None
+            for col in ['qtr', 'quarter', 'period']:
+                if col in available_cols:
+                    quarter_col = col
+                    break
+            for col in ['quarter_seconds_remaining', 'game_seconds_remaining', 'time_remaining']:
+                if col in available_cols:
+                    time_col = col
+                    break
+            
+            # Red zone usage (20 yards and closer)
+            if yardline_col:
+                red_zone_plays = self.pbp_data[self.pbp_data[yardline_col] <= 20].copy()
+            else:
+                logger.warning("No yardline column found for red zone calculations")
+                red_zone_plays = pd.DataFrame()
+            
+            # Goal line usage (5 yards and closer)  
+            if yardline_col:
+                goal_line_plays = self.pbp_data[self.pbp_data[yardline_col] <= 5].copy()
+            else:
+                goal_line_plays = pd.DataFrame()
             
             # Third down usage
-            third_down_plays = self.pbp_data[self.pbp_data['down'] == 3].copy()
+            if 'down' in available_cols:
+                third_down_plays = self.pbp_data[self.pbp_data['down'] == 3].copy()
+            else:
+                logger.warning("No 'down' column found for third down calculations")
+                third_down_plays = pd.DataFrame()
             
             # Two-minute drill usage (last 2 minutes of each half)
-            two_min_plays = self.pbp_data[
-                ((self.pbp_data['qtr'] == 2) & (self.pbp_data['quarter_seconds_remaining'] <= 120)) |
-                ((self.pbp_data['qtr'] == 4) & (self.pbp_data['quarter_seconds_remaining'] <= 120))
-            ].copy()
+            if quarter_col and time_col:
+                two_min_plays = self.pbp_data[
+                    ((self.pbp_data[quarter_col] == 2) & (self.pbp_data[time_col] <= 120)) |
+                    ((self.pbp_data[quarter_col] == 4) & (self.pbp_data[time_col] <= 120))
+                ].copy()
+            else:
+                logger.warning(f"Missing time columns for two-minute drill: quarter_col={quarter_col}, time_col={time_col}")
+                two_min_plays = pd.DataFrame()
             
             # Calculate usage rates for each situation
             situations = {

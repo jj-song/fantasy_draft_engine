@@ -22,11 +22,13 @@ from datetime import datetime
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
-from src.data_storage import load_raw_data, save_features_data
 
-# Add the project root to the path so we can import the config
-sys.path.append(str(Path(__file__).parent.parent))
-import config
+# Add the project root to the path so we can import modules
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from src.data_storage import load_raw_data, save_features_data
+from src.config import get_config
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -157,6 +159,9 @@ def combine_position_features_safely(position_dfs: List[pd.DataFrame]) -> pd.Dat
             else:
                 logger.info(f"   ✅ {pos}: {actual_count} players (no loss)")
     
+    # Clean feature contamination before checking
+    combined_df = clean_position_contamination(combined_df, position_specific_features)
+    
     # Log feature contamination check
     check_feature_contamination(combined_df, position_specific_features)
     
@@ -183,16 +188,18 @@ def identify_position_specific_features(all_columns: List[str]) -> Dict[str, Lis
         'universal': []  # Features relevant to all positions
     }
     
-    # QB-specific patterns
+    # QB-specific patterns (truly QB-only features)
     qb_patterns = [
         'passing_', 'completion_', 'interception_', 'sack', 'quarterback_',
-        'qb_', 'air_yards_per_attempt', 'passer_rating', 'passing_td_percentage'
+        'qb_', 'air_yards_per_attempt', 'passer_rating', 'passing_td_percentage',
+        'dropback', 'pocket_time', 'qb_rating', 'qb_efficiency'
     ]
     
-    # RB-specific patterns
+    # RB-specific patterns (truly RB-only features - exclude basic rushing which QBs can have)
     rb_patterns = [
-        'rushing_', 'carry', 'carries', 'yards_per_carry', 'goal_line_carries',
-        'workhorse_', 'rb_', 'early_down_rate', 'passing_down_rate', 'rb_age_factor'
+        'workhorse_', 'rb_', 'early_down_rate', 'passing_down_rate', 'rb_age_factor',
+        'committee_back', 'goal_line_back', 'third_down_back', 'pass_catching_back',
+        'rb_role', 'rb_workload', 'handoff_', 'between_tackles'
     ]
     
     # WR-specific patterns
@@ -215,7 +222,10 @@ def identify_position_specific_features(all_columns: List[str]) -> Dict[str, Lis
     universal_patterns = [
         'player_', 'season', 'team', 'position', 'games', 'fantasy_points',
         'age', 'experience', 'draft', 'height', 'weight', 'college',
-        'next_', 'sos_', 'schedule', 'dome', 'altitude', 'weather', 'matchup'
+        'next_', 'sos_', 'schedule', 'dome', 'altitude', 'weather', 'matchup',
+        # Basic rushing stats that both QBs and RBs can have
+        'rushing_', 'carry', 'carries', 'yards_per_carry', 'rushing_attempts',
+        'rushing_yards', 'rushing_touchdowns', 'rushing_tds'
     ]
     
     for col in all_columns:
@@ -284,6 +294,76 @@ def get_default_value_for_column(col: str, positions: List[str], position_featur
     # Default to 0.0 for numeric columns
     else:
         return 0.0
+
+
+def clean_position_contamination(df: pd.DataFrame, position_features: Dict[str, List[str]]) -> pd.DataFrame:
+    """
+    Clean position-specific feature contamination by setting irrelevant features to 0.
+    
+    This ensures that:
+    - RBs don't have QB passing stats
+    - QBs don't have RB-specific features
+    - etc.
+    
+    Args:
+        df: Combined DataFrame to clean
+        position_features: Dictionary of position-specific feature categories
+        
+    Returns:
+        Cleaned DataFrame
+    """
+    logger.info("🧹 CLEANING POSITION-SPECIFIC FEATURE CONTAMINATION")
+    
+    if 'position' not in df.columns:
+        logger.warning("Cannot clean contamination - no position column")
+        return df
+    
+    df_clean = df.copy()
+    total_cleaned = 0
+    
+    for position in df_clean['position'].unique():
+        # Get mask for this position
+        pos_mask = df_clean['position'] == position
+        
+        # Determine which features should be zero for this position
+        if position == 'QB':
+            # QBs shouldn't have RB/WR/TE specific features
+            features_to_zero = (position_features.get('RB_specific', []) + 
+                              position_features.get('WR_specific', []) + 
+                              position_features.get('TE_specific', []))
+        elif position == 'RB':
+            # RBs shouldn't have QB specific features  
+            qb_features = position_features.get('QB_specific', [])
+            # Zero out all QB-specific features for RBs
+            features_to_zero = qb_features
+        elif position == 'WR':
+            # WRs shouldn't have QB-specific or RB-specific features
+            qb_features = position_features.get('QB_specific', [])
+            rb_features = position_features.get('RB_specific', [])
+            # Zero out all QB and RB specific features for WRs
+            features_to_zero = qb_features + rb_features + position_features.get('TE_specific', [])
+        elif position == 'TE':
+            # TEs shouldn't have QB/RB/WR specific features
+            qb_features = position_features.get('QB_specific', [])
+            # Zero out all QB, RB, and WR specific features for TEs
+            features_to_zero = (qb_features + 
+                              position_features.get('RB_specific', []) + 
+                              position_features.get('WR_specific', []))
+        else:
+            continue
+        
+        # Zero out irrelevant features for this position
+        for feature in features_to_zero:
+            if feature in df_clean.columns:
+                # Count non-zero values before cleaning
+                non_zero_before = (df_clean.loc[pos_mask, feature] != 0).sum()
+                if non_zero_before > 0:
+                    df_clean.loc[pos_mask, feature] = 0.0
+                    total_cleaned += non_zero_before
+                    logger.debug(f"   Cleaned {non_zero_before} non-zero values in '{feature}' for {position}")
+    
+    logger.info(f"✅ Cleaned {total_cleaned} total contaminated values across all positions")
+    return df_clean
 
 
 def check_feature_contamination(df: pd.DataFrame, position_features: Dict[str, List[str]]) -> None:
@@ -754,6 +834,9 @@ def handle_rookies(df, prediction_season, historical_data):
     """
     logger.info("Handling rookies for prediction")
     
+    # Get config for this function
+    config = get_config()
+    
     # Make a copy to avoid modifying the original DataFrame
     df_features = df.copy()
     
@@ -776,12 +859,12 @@ def handle_rookies(df, prediction_season, historical_data):
     # Apply rookie projections based on draft round and position
     if 'draftround' in df_features.columns:
         # For each position and draft round, apply the configured baseline FPPG
-        for position in config.POSITIONS:
+        for position in config.get('data.positions', ['QB', 'RB', 'WR', 'TE']):
             pos_mask = (df_features['position'] == position) & rookies
             
             for draft_round in range(1, 8):  # Draft rounds 1-7
                 # Get the configured baseline FPPG for this position and draft round
-                baseline_fppg = config.ROOKIE_BASELINE_FPPG.get(position, {}).get(draft_round, 1.0)
+                baseline_fppg = config.get('league.rookie_baseline_fppg', {}).get(position, {}).get(draft_round, 1.0)
                 
                 # Apply the baseline FPPG to rookies of this position and draft round
                 round_mask = pos_mask & (df_features['draftround'] == draft_round)
@@ -789,7 +872,7 @@ def handle_rookies(df, prediction_season, historical_data):
             
             # Handle UDFAs (draft round > 7 or NaN)
             udfa_mask = pos_mask & ((df_features['draftround'] > 7) | df_features['draftround'].isna())
-            df_features.loc[udfa_mask, 'projected_fppg'] = config.ROOKIE_BASELINE_FPPG.get(position, {}).get('UDFA', 1.0)
+            df_features.loc[udfa_mask, 'projected_fppg'] = config.get('league.rookie_baseline_fppg', {}).get(position, {}).get('UDFA', 1.0)
     else:
         logger.warning("'draftround' column not found, cannot apply rookie projections based on draft capital")
     
@@ -808,6 +891,9 @@ def handle_minimal_data_players(df, min_games=4):
         pandas.DataFrame: DataFrame with minimal data handling applied
     """
     logger.info(f"Handling players with minimal data (less than {min_games} games)")
+    
+    # Get config for this function
+    config = get_config()
     
     # Make a copy to avoid modifying the original DataFrame
     df_features = df.copy()
@@ -830,9 +916,9 @@ def handle_minimal_data_players(df, min_games=4):
         minimal_data_mask = (df_features['experience'] > 0) & (df_features[games_col] < min_games)
         
         # Apply baseline FPPG for minimal data players based on position
-        for position in config.POSITIONS:
+        for position in config.get('data.positions', ['QB', 'RB', 'WR', 'TE']):
             pos_mask = minimal_data_mask & (df_features['position'] == position)
-            baseline_fppg = config.MINIMAL_DATA_BASELINE_FPPG.get(position, 1.0)
+            baseline_fppg = config.get('league.minimal_data_baseline_fppg', {}).get(position, 1.0)
             
             df_features.loc[pos_mask, 'projected_fppg'] = baseline_fppg
             
@@ -840,9 +926,9 @@ def handle_minimal_data_players(df, min_games=4):
     else:
         logger.warning("No games played column found for minimal data handling")
         # Apply baseline FPPG for all players based on position as a fallback
-        for position in config.POSITIONS:
+        for position in config.get('data.positions', ['QB', 'RB', 'WR', 'TE']):
             pos_mask = df_features['position'] == position
-            baseline_fppg = config.MINIMAL_DATA_BASELINE_FPPG.get(position, 1.0)
+            baseline_fppg = config.get('league.minimal_data_baseline_fppg', {}).get(position, 1.0)
             
             # Only apply to players without a projected_fppg value
             if 'projected_fppg' in df_features.columns:
@@ -883,6 +969,9 @@ def engineer_features_for_season(
     Returns:
         pandas.DataFrame: DataFrame with engineered features (traditional + enhanced if enabled)
     """
+    # Initialize config at function start to avoid scope issues
+    config = get_config()
+    
     logger.info(f"🏗️ FEATURE ENGINEERING START: {target_season} → {target_season+1}")
     logger.info("=" * 80)
     logger.info(f"📊 Configuration:")
@@ -1264,23 +1353,23 @@ def engineer_features_for_season(
     
     # --- Add target variable ---
     if next_season_actuals_df is not None and not next_season_actuals_df.empty:
-        points_col_name = config.FANTASY_POINTS_COLUMNS.get(config.DEFAULT_SCORING_SYSTEM, 'fantasy_points_ppr')
+        points_col_name = config.get('scoring.fantasy_points_columns', {}).get(config.get('scoring.default_system', 'ppr'), 'fantasy_points_ppr')
         
         # Ensure required columns exist in next_season_actuals_df
         if points_col_name in next_season_actuals_df.columns and 'games' in next_season_actuals_df.columns and 'player_id' in next_season_actuals_df.columns:
             target_df_prep = next_season_actuals_df[['player_id', points_col_name, 'games']].copy()
             target_df_prep['games_for_fppg'] = target_df_prep['games'].replace(0, np.nan)
-            target_df_prep[config.TARGET_VARIABLE] = target_df_prep[points_col_name] / target_df_prep['games_for_fppg']
-            target_df_to_merge = target_df_prep[['player_id', config.TARGET_VARIABLE]]
+            target_df_prep[config.get('data.target_variable', 'fantasy_points_ppr')] = target_df_prep[points_col_name] / target_df_prep['games_for_fppg']
+            target_df_to_merge = target_df_prep[['player_id', config.get('data.target_variable', 'fantasy_points_ppr')]]
             df_features = pd.merge(df_features, target_df_to_merge, on='player_id', how='left')
-            logger.info(f"Successfully merged target variable '{config.TARGET_VARIABLE}' for prediction season {prediction_season}.")
+            logger.info(f"Successfully merged target variable '{config.get('data.target_variable', 'fantasy_points_ppr')}' for prediction season {prediction_season}.")
         else:
             missing_cols_actuals = [col for col in ['player_id', points_col_name, 'games'] if col not in next_season_actuals_df.columns]
-            logger.warning(f"Required columns ({missing_cols_actuals}) not found in actuals data for {prediction_season}. Target variable '{config.TARGET_VARIABLE}' will be NaN.")
-            df_features[config.TARGET_VARIABLE] = np.nan
+            logger.warning(f"Required columns ({missing_cols_actuals}) not found in actuals data for {prediction_season}. Target variable '{config.get('data.target_variable', 'fantasy_points_ppr')}' will be NaN.")
+            df_features[config.get('data.target_variable', 'fantasy_points_ppr')] = np.nan
     else:
-        logger.info(f"No actuals data available for {prediction_season}. Target variable '{config.TARGET_VARIABLE}' will be NaN.")
-        df_features[config.TARGET_VARIABLE] = np.nan
+        logger.info(f"No actuals data available for {prediction_season}. Target variable '{config.get('data.target_variable', 'fantasy_points_ppr')}' will be NaN.")
+        df_features[config.get('data.target_variable', 'fantasy_points_ppr')] = np.nan
     # --- End of target variable addition ---
 
     # Add metadata columns
@@ -1508,9 +1597,9 @@ def engineer_and_save_features(
     Engineer and save features for a range of seasons with optional enhancements.
     
     Args:
-        start_year (int, optional): The first season to engineer features for. Defaults to config.DATA_START_YEAR.
-        end_year (int, optional): The last season to engineer features for. Defaults to config.DATA_END_YEAR-1.
-        positions (list, optional): List of positions to include. Defaults to config.POSITIONS.
+        start_year (int, optional): The first season to engineer features for. Defaults to config.get('data.data_start_year', 2010).
+        end_year (int, optional): The last season to engineer features for. Defaults to config.get('data.data_end_year', 2024)-1.
+        positions (list, optional): List of positions to include. Defaults to config.get('data.positions', ['QB', 'RB', 'WR', 'TE']).
         include_matchup_intelligence (bool): Include Phase 2 matchup intelligence features
         include_position_specific_features (bool): Include advanced position-specific features  
         weeks_ahead_sos (int): Number of weeks ahead to analyze for strength of schedule
@@ -1518,13 +1607,14 @@ def engineer_and_save_features(
     Returns:
         list: List of paths to the saved files
     """
+    config = get_config()
     if start_year is None:
-        start_year = config.DATA_START_YEAR
+        start_year = config.get('data.data_start_year', 2010)
     if end_year is None:
         # End one year before the last available year since we need the next year for prediction
-        end_year = config.DATA_END_YEAR - 1
+        end_year = config.get('data.data_end_year', 2024) - 1
     if positions is None:
-        positions = config.POSITIONS
+        positions = config.get('data.positions', ['QB', 'RB', 'WR', 'TE'])
     
     logger.info(f"Engineering and saving features for seasons {start_year} to {end_year}")
     logger.info(f"Matchup intelligence: {include_matchup_intelligence}, Position-specific: {include_position_specific_features}")
@@ -1595,12 +1685,13 @@ def create_matchup_adjusted_projections(
     
     try:
         # Configure matchup integrator
+        config = get_config()
         matchup_config = MatchupFeatureConfig(
             include_schedule_strength=True,
             include_environmental_factors=True,
             include_situational_adjustments=True,
             weeks_ahead_sos=len(weeks_to_analyze),
-            season_for_features=config.CURRENT_SEASON,
+            season_for_features=config.get('data.current_season', 2025),
             cache_matchup_data=True
         )
         
