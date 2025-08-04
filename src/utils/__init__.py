@@ -1,14 +1,21 @@
-# Import functions from utils.py
+# Direct import from utils.py to avoid circular imports
+import os
 import sys
+import importlib.util
 from pathlib import Path
 
-# Add src directory to path to import utils.py
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add the src directory to the path
+src_dir = Path(__file__).parent.parent
+utils_file = src_dir / 'utils.py'
 
-try:
-    import utils
-    from utils import calculate_fantasy_points_0_5_ppr
+if utils_file.exists():
+    # Execute the utils.py file directly
+    spec = importlib.util.spec_from_file_location("src_utils", utils_file)
+    src_utils = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(src_utils)
+    
+    # Import the specific function
+    calculate_fantasy_points_0_5_ppr = src_utils.calculate_fantasy_points_0_5_ppr
     __all__ = ['calculate_fantasy_points_0_5_ppr']
-except ImportError:
-    # If utils.py doesn't exist, define empty exports
+else:
     __all__ = []

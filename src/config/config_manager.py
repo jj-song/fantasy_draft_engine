@@ -17,8 +17,14 @@ from .model_config import ModelConfig
 from .position_config import PositionConfig
 from .scoring_config import ScoringConfig
 
-from ..core.error_handling import ConfigurationError
-from ..core.logging_config import get_logger
+# Use absolute imports to avoid relative import issues
+import sys
+from pathlib import Path
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root / 'src'))
+
+from src.core.error_handling import ConfigurationError
+from src.core.logging_config import get_logger
 
 
 class ConfigManager:

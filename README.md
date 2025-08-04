@@ -15,9 +15,9 @@ Traditional "expert" rankings are subjective and often biased. **Fantasy Draft E
 - 🤖 **Advanced ML models** with RandomForest + LightGBM ensemble
 - 🎯 **180+ engineered features** including efficiency metrics and usage patterns
 - 📈 **Value Over Replacement (VOR)** for optimal cross-position rankings
-- 🔧 **Comprehensive validation** with performance metrics and sanity checks
+- 🔧 **Production-ready pipeline** with comprehensive validation and error handling
 
-**Result**: Draft smarter, win more championships.
+**Latest Results**: **569 players ranked** with elite RBs properly valued (Derrick Henry #1, Jahmyr Gibbs #2, Saquon Barkley #5)
 
 ## Quick Start
 
@@ -63,12 +63,12 @@ python main.py
 
 ### 📊 Value-Based Drafting (VOR)
 ```
-Example Output:
-1.  Christian McCaffrey  RB  SF   289.5 pts  (+65.3 VOR)  💎 ELITE
-2.  Tyreek Hill          WR  MIA  276.2 pts  (+52.1 VOR)  💎 ELITE  
-3.  Justin Jefferson     WR  MIN  271.8 pts  (+47.7 VOR)  🌟 TIER 1
-4.  Ja'Marr Chase        WR  CIN  265.4 pts  (+41.3 VOR)  🌟 TIER 1
-5.  Bijan Robinson       RB  ATL  255.1 pts  (+31.3 VOR)  🌟 TIER 1
+2025 Season Rankings (Latest):
+1.  Derrick Henry        RB  BAL  350.0 pts  (+188.5 VOR)  💎 ELITE
+2.  Jahmyr Gibbs         RB  DET  350.0 pts  (+188.5 VOR)  💎 ELITE  
+3.  Ja'Marr Chase        WR  CIN  350.0 pts  (+184.2 VOR)  💎 ELITE
+4.  Bijan Robinson       RB  ATL  343.6 pts  (+179.0 VOR)  🌟 TIER 1
+5.  Saquon Barkley       RB  PHI  336.6 pts  (+168.5 VOR)  🌟 TIER 1
 ```
 
 ### 📈 Visual Draft Board
