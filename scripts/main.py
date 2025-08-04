@@ -61,15 +61,20 @@ def step_1_data_acquisition():
     
     try:
         from src.data_acquisition import fetch_and_save_historical_data
-        import config
+        from src.config import get_config
         
-        logger.info(f"Fetching NFL data from {config.DATA_START_YEAR} to {config.DATA_END_YEAR}...")
+        config = get_config()
+        data_start_year = config.get('data.data_start_year', 2010)
+        data_end_year = config.get('data.data_end_year', 2024)
+        positions = config.get('data.positions', ['QB', 'RB', 'WR', 'TE', 'K'])
+        
+        logger.info(f"Fetching NFL data from {data_start_year} to {data_end_year}...")
         logger.info("This may take 5-8 minutes depending on your internet connection...")
         
         saved_files = fetch_and_save_historical_data(
-            start_year=config.DATA_START_YEAR,
-            end_year=config.DATA_END_YEAR,
-            positions=config.POSITIONS
+            start_year=data_start_year,
+            end_year=data_end_year,
+            positions=positions
         )
         
         elapsed = time.time() - start_time
@@ -92,14 +97,19 @@ def step_2_data_cleaning():
     
     try:
         from src.data_cleaning import clean_and_save_historical_data
-        import config
+        from src.config import get_config
+        
+        config = get_config()
+        data_start_year = config.get('data.data_start_year', 2010)
+        data_end_year = config.get('data.data_end_year', 2024)
+        positions = config.get('data.positions', ['QB', 'RB', 'WR', 'TE', 'K'])
         
         logger.info("Cleaning and standardizing player data...")
         
         clean_and_save_historical_data(
-            start_year=config.DATA_START_YEAR,
-            end_year=config.DATA_END_YEAR,
-            positions=config.POSITIONS
+            start_year=data_start_year,
+            end_year=data_end_year,
+            positions=positions
         )
         
         elapsed = time.time() - start_time
@@ -121,15 +131,20 @@ def step_3_feature_engineering():
     
     try:
         from src.feature_engineering import engineer_and_save_features
-        import config
+        from src.config import get_config
+        
+        config = get_config()
+        data_start_year = config.get('data.data_start_year', 2010)
+        data_end_year = config.get('data.data_end_year', 2024)
+        positions = config.get('data.positions', ['QB', 'RB', 'WR', 'TE', 'K'])
         
         logger.info("Engineering position-specific features...")
         logger.info("Creating efficiency metrics, usage patterns, and advanced stats...")
         
         engineer_and_save_features(
-            start_year=config.DATA_START_YEAR,
-            end_year=config.DATA_END_YEAR - 1,  # Don't use final year as features
-            positions=config.POSITIONS
+            start_year=data_start_year,
+            end_year=data_end_year - 1,  # Don't use final year as features
+            positions=positions
         )
         
         elapsed = time.time() - start_time

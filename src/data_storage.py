@@ -17,6 +17,59 @@ from pathlib import Path
 # Set up logging
 logger = logging.getLogger(__name__)
 
+def ensure_player_name_column(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Ensure player_name column exists in DataFrame, creating it from first_name + last_name if needed.
+    
+    This is a critical function for data consistency throughout the pipeline.
+    Many downstream components expect a 'player_name' column for joining and analysis.
+    
+    Args:
+        df: DataFrame to check and potentially modify
+        
+    Returns:
+        DataFrame with guaranteed player_name column
+    """
+    if df.empty:
+        return df
+        
+    # If player_name already exists, ensure it's properly formatted
+    if 'player_name' in df.columns:
+        # Clean up any NaN or empty values
+        df['player_name'] = df['player_name'].fillna('Unknown Player').astype(str)
+        df['player_name'] = df['player_name'].str.strip()
+        # Replace any empty strings with 'Unknown Player'
+        df.loc[df['player_name'] == '', 'player_name'] = 'Unknown Player'
+        return df
+    
+    # Create player_name from first_name and last_name
+    if 'first_name' in df.columns and 'last_name' in df.columns:
+        first_name = df['first_name'].fillna('').astype(str).str.strip()
+        last_name = df['last_name'].fillna('').astype(str).str.strip()
+        
+        # Combine names with proper spacing
+        df['player_name'] = (first_name + ' ' + last_name).str.strip()
+        
+        # Handle cases where both names are empty
+        df.loc[df['player_name'] == '', 'player_name'] = 'Unknown Player'
+        
+        logger.info(f"Created player_name column for {len(df)} players")
+        return df
+    
+    # Fallback: look for alternative name columns
+    name_candidates = ['player', 'full_name', 'name', 'display_name']
+    for candidate in name_candidates:
+        if candidate in df.columns:
+            df['player_name'] = df[candidate].fillna('Unknown Player').astype(str).str.strip()
+            df.loc[df['player_name'] == '', 'player_name'] = 'Unknown Player'
+            logger.info(f"Created player_name column from '{candidate}' for {len(df)} players")
+            return df
+    
+    # Last resort: create generic player names
+    df['player_name'] = [f'Player_{i+1}' for i in range(len(df))]
+    logger.warning(f"No name columns found, created generic player_name for {len(df)} players")
+    return df
+
 def get_data_directory(data_type="raw"):
     """
     Get the path to a specific data directory.
@@ -104,9 +157,8 @@ def load_raw_data(season, file_prefix="player_season"):
         df = pd.read_parquet(file_path)
         
         # Create player_name column from first_name and last_name if it doesn't exist
-        if 'player_name' not in df.columns and 'first_name' in df.columns and 'last_name' in df.columns:
-            df['player_name'] = df['first_name'].astype(str) + ' ' + df['last_name'].astype(str)
-            logger.info(f"Created player_name column for {len(df)} players")
+        df = ensure_player_name_column(df)
+        
         
         return df
     except FileNotFoundError:

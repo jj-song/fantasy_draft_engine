@@ -12,9 +12,12 @@ import nfl_data_py as nfl
 import sys
 from pathlib import Path
 
-# Add the project root to the path so we can import the config
-sys.path.append(str(Path(__file__).parent.parent))
-import config
+# Add project root to path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from src.data_storage import ensure_player_name_column
+from src.config import get_config
 
 # Configure logging
 logging.basicConfig(
@@ -34,13 +37,14 @@ def fetch_player_season_stats(year, positions=None):
     
     Args:
         year (int): The NFL season year to fetch data for
-        positions (list, optional): List of positions to include. Defaults to config.POSITIONS.
+        positions (list, optional): List of positions to include. Defaults to ['QB', 'RB', 'WR', 'TE', 'K'].
     
     Returns:
         pandas.DataFrame: DataFrame containing player statistics for the specified season
     """
     if positions is None:
-        positions = config.POSITIONS
+        config = get_config()
+        positions = config.get('data.positions', ['QB', 'RB', 'WR', 'TE', 'K'])
         
     logger.info(f"Fetching player statistics for {year} season for positions: {positions}")
     
@@ -74,14 +78,94 @@ def fetch_player_season_stats(year, positions=None):
         else:
             weekly_agg = pd.DataFrame()
         
+        # ENHANCED DATA ACQUISITION: Fetch play-by-play data for advanced features
+        logger.info(f"Fetching play-by-play data for {year} season...")
+        try:
+            pbp_data = nfl.import_pbp_data([year])
+            
+            if not pbp_data.empty:
+                # Ensure player_name column exists for joining
+                pbp_data = ensure_player_name_column(pbp_data)
+                
+                logger.info(f"Loaded {len(pbp_data)} play-by-play records for {year}")
+                
+                # Extract advanced receiving metrics from play-by-play
+                pbp_receiving = pbp_data[
+                    (pbp_data['play_type'] == 'pass') & 
+                    (pbp_data['receiver_player_name'].notna()) &
+                    (pbp_data['air_yards'].notna())
+                ].copy()
+                
+                if not pbp_receiving.empty:
+                    # Calculate advanced receiving metrics per player
+                    pbp_agg = pbp_receiving.groupby('receiver_player_name').agg({
+                        'air_yards': ['mean', 'sum', 'count'],
+                        'yards_after_catch': ['mean', 'sum'],
+                        'epa': 'mean',
+                        'cp': 'mean',  # Completion probability (contested catch indicator)
+                        'play_id': 'count'  # Total targets
+                    }).reset_index()
+                    
+                    # Flatten column names
+                    pbp_agg.columns = [
+                        'player_name',
+                        'air_yards_per_target', 'total_air_yards', 'total_targets_pbp',
+                        'yac_per_reception', 'total_yac',
+                        'epa_per_target',
+                        'avg_completion_probability',
+                        'pbp_target_count'
+                    ]
+                    
+                    logger.info(f"Calculated advanced receiving metrics for {len(pbp_agg)} players")
+                else:
+                    pbp_agg = pd.DataFrame()
+            else:
+                pbp_agg = pd.DataFrame()
+        except Exception as e:
+            logger.warning(f"Could not fetch play-by-play data for {year}: {e}")
+            pbp_agg = pd.DataFrame()
+        
+        # ENHANCED DATA ACQUISITION: Fetch snap count data for usage metrics
+        logger.info(f"Fetching snap count data for {year} season...")
+        try:
+            snap_data = nfl.import_snap_counts([year])
+            
+            if not snap_data.empty:
+                # Ensure player_name column exists for joining
+                snap_data = ensure_player_name_column(snap_data)
+                
+                logger.info(f"Loaded {len(snap_data)} snap count records for {year}")
+                
+                # Aggregate snap counts by player for the season
+                snap_agg = snap_data.groupby('player_name').agg({
+                    'offense_snaps': 'sum',
+                    'offense_pct': 'mean',
+                    'defense_snaps': 'sum', 
+                    'defense_pct': 'mean'
+                }).reset_index()
+                
+                snap_agg.columns = [
+                    'player_name',
+                    'total_offense_snaps', 'avg_offense_snap_pct',
+                    'total_defense_snaps', 'avg_defense_snap_pct'
+                ]
+                
+                logger.info(f"Calculated snap metrics for {len(snap_agg)} players")
+            else:
+                snap_agg = pd.DataFrame()
+        except Exception as e:
+            logger.warning(f"Could not fetch snap count data for {year}: {e}")
+            snap_agg = pd.DataFrame()
+        
         # Fetch player information
         player_info = nfl.import_players()
         
         # Get roster information for the year to get accurate team data
         try:
             rosters = nfl.import_seasonal_rosters([year])
-        except:
-            logger.warning(f"Could not fetch roster data for {year}, using player info only")
+        except Exception as e:
+            logger.warning(f"Could not fetch roster data for {year}: {str(e)}")
+            logger.debug(f"Roster fetch error details: {type(e).__name__}")
             rosters = pd.DataFrame()
         
         logger.info(f"Successfully fetched raw data for {year} season")
@@ -151,6 +235,34 @@ def fetch_player_season_stats(year, positions=None):
                 merged_stats['position'] = merged_stats['position'].fillna(merged_stats['position_info'])
                 merged_stats.drop('position_info', axis=1, inplace=True, errors='ignore')
             
+            # ENHANCED MERGING: Add play-by-play data if available
+            if not pbp_agg.empty:
+                # Ensure player_name exists in merged_stats for joining
+                merged_stats = ensure_player_name_column(merged_stats)
+                
+                logger.info(f"Merging play-by-play data: {len(pbp_agg)} players with advanced metrics")
+                merged_stats = pd.merge(
+                    merged_stats,
+                    pbp_agg,
+                    on='player_name',
+                    how='left'
+                )
+                logger.info(f"Successfully merged play-by-play data")
+            
+            # ENHANCED MERGING: Add snap count data if available  
+            if not snap_agg.empty:
+                # Ensure player_name exists in merged_stats for joining
+                merged_stats = ensure_player_name_column(merged_stats)
+                
+                logger.info(f"Merging snap count data: {len(snap_agg)} players with snap metrics")
+                merged_stats = pd.merge(
+                    merged_stats,
+                    snap_agg,
+                    on='player_name',
+                    how='left'
+                )
+                logger.info(f"Successfully merged snap count data")
+            
             # Filter for players in the specified positions
             merged_stats = merged_stats[merged_stats['position'].isin(positions)]
             
@@ -178,7 +290,8 @@ def save_player_season_stats(df, year):
         str: Path to the saved file
     """
     # Create the raw data directory if it doesn't exist
-    raw_data_dir = os.path.join(Path(__file__).parent.parent, config.RAW_DATA_DIR)
+    config = get_config()
+    raw_data_dir = os.path.join(Path(__file__).parent.parent, config.get('paths.raw_data_dir', 'data/raw'))
     os.makedirs(raw_data_dir, exist_ok=True)
     
     # Define the output file path
@@ -199,19 +312,20 @@ def fetch_and_save_historical_data(start_year=None, end_year=None, positions=Non
     Fetch and save player statistics for a range of seasons.
     
     Args:
-        start_year (int, optional): The first season to fetch data for. Defaults to config.DATA_START_YEAR.
-        end_year (int, optional): The last season to fetch data for. Defaults to config.DATA_END_YEAR.
-        positions (list, optional): List of positions to include. Defaults to config.POSITIONS.
+        start_year (int, optional): The first season to fetch data for. Defaults to 2010.
+        end_year (int, optional): The last season to fetch data for. Defaults to 2024.
+        positions (list, optional): List of positions to include. Defaults to ['QB', 'RB', 'WR', 'TE', 'K'].
     
     Returns:
         list: List of paths to the saved files
     """
+    config = get_config()
     if start_year is None:
-        start_year = config.DATA_START_YEAR
+        start_year = config.get('data.data_start_year', 2010)
     if end_year is None:
-        end_year = config.DATA_END_YEAR
+        end_year = config.get('data.data_end_year', 2024)
     if positions is None:
-        positions = config.POSITIONS
+        positions = config.get('data.positions', ['QB', 'RB', 'WR', 'TE', 'K'])
     
     logger.info(f"Fetching and saving player statistics for seasons {start_year} to {end_year}")
     

@@ -2,22 +2,73 @@
 Feature engineering for quarterback (QB) position.
 
 This module contains functions for generating QB-specific features from raw player data.
+
+MIGRATION NOTICE: This module has been refactored to use the new QBFeatureEngineer class
+from qb_features_v2.py. The original functions are preserved for backward compatibility
+but now delegate to the new implementation that eliminates code duplication and uses
+centralized utilities.
 """
 
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Optional, Union
 
+# Import the new implementation
+try:
+    from .qb_features_v2 import QBFeatureEngineer, engineer_qb_features as new_engineer_qb_features
+    _has_new_implementation = True
+except ImportError:
+    _has_new_implementation = False
+    
 
-def _get_qb_column_mapping(df: pd.DataFrame) -> Dict[str, Optional[str]]:
+def engineer_qb_features(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Get mapping of standard QB column names to actual column names in the data.
+    Generate QB-specific features from player data.
+    
+    This function now delegates to the new QBFeatureEngineer class while maintaining
+    backward compatibility with existing code.
     
     Args:
-        df: DataFrame to examine
+        df: DataFrame containing QB player data
         
     Returns:
-        Dict mapping standard names to actual column names (None if not found)
+        DataFrame with QB-specific features added
+    """
+    if _has_new_implementation:
+        # Use the new refactored implementation
+        return new_engineer_qb_features(df)
+    else:
+        # Fallback to legacy implementation if new one is not available
+        return _legacy_engineer_qb_features(df)
+
+
+def _legacy_engineer_qb_features(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Legacy QB feature engineering implementation.
+    
+    This is the original implementation preserved as a fallback.
+    """
+    # Make a copy to avoid modifying the original dataframe
+    df_qb = df.copy()
+    
+    # Only keep QBs
+    df_qb = df_qb[df_qb['position'] == 'QB']
+    
+    if df_qb.empty:
+        return df_qb
+    
+    # Calculate efficiency metrics
+    df_qb = _legacy_calculate_qb_efficiency_metrics(df_qb)
+    
+    # Calculate per-game averages
+    df_qb = _legacy_calculate_qb_per_game_metrics(df_qb)
+    
+    return df_qb
+
+
+def _legacy_get_qb_column_mapping(df: pd.DataFrame) -> Dict[str, Optional[str]]:
+    """
+    Legacy implementation: Get mapping of standard QB column names to actual column names.
     """
     available_cols = df.columns.tolist()
     mapping = {}
@@ -65,49 +116,14 @@ def _get_qb_column_mapping(df: pd.DataFrame) -> Dict[str, Optional[str]]:
     return mapping
 
 
-def engineer_qb_features(df: pd.DataFrame) -> pd.DataFrame:
+def _legacy_calculate_qb_efficiency_metrics(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Generate QB-specific features from player data.
-    
-    Args:
-        df: DataFrame containing QB player data
-        
-    Returns:
-        DataFrame with QB-specific features added
+    Legacy implementation: Calculate QB efficiency metrics.
     """
-    # Make a copy to avoid modifying the original dataframe
-    df_qb = df.copy()
-    
-    # Only keep QBs
-    df_qb = df_qb[df_qb['position'] == 'QB']
-    
-    if df_qb.empty:
-        return df_qb
-    
-    # Calculate efficiency metrics
-    df_qb = calculate_qb_efficiency_metrics(df_qb)
-    
-    # Calculate per-game averages
-    df_qb = calculate_qb_per_game_metrics(df_qb)
-    
-    return df_qb
-
-
-def calculate_qb_efficiency_metrics(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Calculate QB efficiency metrics.
-    
-    Args:
-        df: DataFrame containing QB player data
-        
-    Returns:
-        DataFrame with QB efficiency metrics added
-    """
-    # Make a copy to avoid modifying the original dataframe
     df = df.copy()
     
     # Get column mappings for QB stats
-    col_mapping = _get_qb_column_mapping(df)
+    col_mapping = _legacy_get_qb_column_mapping(df)
     
     # If we don't have the required columns, return empty metrics
     if not col_mapping['passing_attempts']:
@@ -168,26 +184,19 @@ def calculate_qb_efficiency_metrics(df: pd.DataFrame) -> pd.DataFrame:
         df['interception_percentage'] = 0
     
     # Passer rating (simplified formula)
-    df['passer_rating'] = calculate_passer_rating(df)
+    df['passer_rating'] = _legacy_calculate_passer_rating(df)
     
     return df
 
 
-def calculate_qb_per_game_metrics(df: pd.DataFrame) -> pd.DataFrame:
+def _legacy_calculate_qb_per_game_metrics(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Calculate QB per-game metrics.
-    
-    Args:
-        df: DataFrame containing QB player data
-        
-    Returns:
-        DataFrame with QB per-game metrics added
+    Legacy implementation: Calculate QB per-game metrics.
     """
-    # Make a copy to avoid modifying the original dataframe
     df = df.copy()
     
     # Get column mappings
-    col_mapping = _get_qb_column_mapping(df)
+    col_mapping = _legacy_get_qb_column_mapping(df)
     
     # Find games played column
     games_col = None
@@ -249,15 +258,9 @@ def calculate_qb_per_game_metrics(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def calculate_passer_rating(df: pd.DataFrame) -> pd.Series:
+def _legacy_calculate_passer_rating(df: pd.DataFrame) -> pd.Series:
     """
-    Calculate NFL passer rating.
-    
-    Args:
-        df: DataFrame containing QB player data
-        
-    Returns:
-        Series with passer rating values
+    Legacy implementation: Calculate NFL passer rating.
     """
     # Initialize with zeros
     passer_rating = pd.Series(0, index=df.index)
@@ -278,3 +281,31 @@ def calculate_passer_rating(df: pd.DataFrame) -> pd.Series:
     passer_rating.loc[mask] = ((a + b + c + d) / 6) * 100
     
     return passer_rating
+
+
+# Legacy function aliases for backward compatibility
+def calculate_qb_efficiency_metrics(df: pd.DataFrame) -> pd.DataFrame:
+    """Backward compatibility alias."""
+    if _has_new_implementation:
+        engineer = QBFeatureEngineer()
+        return engineer._calculate_efficiency_metrics(df)
+    else:
+        return _legacy_calculate_qb_efficiency_metrics(df)
+
+
+def calculate_qb_per_game_metrics(df: pd.DataFrame) -> pd.DataFrame:
+    """Backward compatibility alias."""
+    if _has_new_implementation:
+        engineer = QBFeatureEngineer()
+        return engineer._calculate_per_game_metrics(df)
+    else:
+        return _legacy_calculate_qb_per_game_metrics(df)
+
+
+def calculate_passer_rating(df: pd.DataFrame) -> pd.Series:
+    """Backward compatibility alias."""
+    if _has_new_implementation:
+        engineer = QBFeatureEngineer()
+        return engineer._calculate_passer_rating(df)
+    else:
+        return _legacy_calculate_passer_rating(df)

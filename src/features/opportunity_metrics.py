@@ -41,6 +41,67 @@ class OpportunityMetricsCalculator:
         self.target_data = None
         self.team_totals = None
         
+    def _get_column_mapping(self, data: pd.DataFrame) -> Dict[str, Optional[str]]:
+        """
+        Get mapping of standard column names to actual column names in the data.
+        
+        Args:
+            data: DataFrame to examine
+            
+        Returns:
+            Dict mapping standard names to actual column names (None if not found)
+        """
+        available_cols = data.columns.tolist()
+        mapping = {}
+        
+        # Player name columns
+        receiver_col = None
+        for col in ['receiver_player_name', 'receiver', 'target_player', 'receiving_player']:
+            if col in available_cols:
+                receiver_col = col
+                break
+        mapping['receiver_player_name'] = receiver_col
+        
+        rusher_col = None
+        for col in ['rusher_player_name', 'rusher', 'rushing_player']:
+            if col in available_cols:
+                rusher_col = col
+                break
+        mapping['rusher_player_name'] = rusher_col
+        
+        # Team columns
+        team_col = None
+        for col in ['posteam', 'team', 'offense_team', 'pos_team']:
+            if col in available_cols:
+                team_col = col
+                break
+        mapping['posteam'] = team_col
+        
+        # Yardage columns
+        air_yards_col = None
+        for col in ['air_yards', 'intended_air_yards', 'air_distance']:
+            if col in available_cols:
+                air_yards_col = col
+                break
+        mapping['air_yards'] = air_yards_col
+        
+        receiving_yards_col = None
+        for col in ['receiving_yards', 'yards_gained', 'yards']:
+            if col in available_cols:
+                receiving_yards_col = col
+                break
+        mapping['receiving_yards'] = receiving_yards_col
+        
+        # Play type column
+        play_type_col = None
+        for col in ['play_type', 'type', 'play_category']:
+            if col in available_cols:
+                play_type_col = col
+                break
+        mapping['play_type'] = play_type_col
+        
+        return mapping
+        
     def load_play_by_play_data(self) -> pd.DataFrame:
         """
         Load play-by-play data for air yards calculations.
@@ -54,14 +115,35 @@ class OpportunityMetricsCalculator:
             # Load play-by-play data from nfl_data_py
             pbp = nfl.import_pbp_data([self.season])
             
-            # Filter to passing plays only
+            if pbp.empty:
+                logger.warning(f"No play-by-play data returned for {self.season}")
+                return pd.DataFrame()
+            
+            # CRITICAL FIX: Ensure player_name column exists for joining
+            from src.data_storage import ensure_player_name_column
+            pbp = ensure_player_name_column(pbp)
+            
+            # ROBUST COLUMN MAPPING: Get actual column names
+            col_mapping = self._get_column_mapping(pbp)
+            play_type_col = col_mapping['play_type']
+            air_yards_col = col_mapping['air_yards']
+            receiver_col = col_mapping['receiver_player_name']
+            
+            if not all([play_type_col, air_yards_col, receiver_col]):
+                logger.error(f"Missing critical PBP columns - play_type: {play_type_col}, air_yards: {air_yards_col}, receiver: {receiver_col}")
+                logger.error(f"Available columns: {pbp.columns.tolist()}")
+                return pd.DataFrame()
+            
+            # Filter to passing plays only using mapped column names
             passing_plays = pbp[
-                (pbp['play_type'] == 'pass') & 
-                (pbp['air_yards'].notna()) &
-                (pbp['receiver_player_name'].notna())
+                (pbp[play_type_col] == 'pass') & 
+                (pbp[air_yards_col].notna()) &
+                (pbp[receiver_col].notna())
             ].copy()
             
-            logger.info(f"Loaded {len(passing_plays)} passing plays")
+            logger.info(f"Loaded {len(passing_plays)} passing plays with column mapping")
+            logger.info(f"Using columns - play_type: {play_type_col}, air_yards: {air_yards_col}, receiver: {receiver_col}")
+            
             self.pbp_data = passing_plays
             return passing_plays
             
@@ -133,16 +215,41 @@ class OpportunityMetricsCalculator:
             player_data['yac_per_target'] = 0
             return player_data
         
-        # Aggregate air yards by player
-        air_yards_summary = self.pbp_data.groupby(['receiver_player_name', 'posteam']).agg({
-            'air_yards': ['sum', 'mean', 'count'],
-            'receiving_yards': 'sum'
-        }).reset_index()
+        # ROBUST COLUMN MAPPING: Get actual column names from PBP data
+        col_mapping = self._get_column_mapping(self.pbp_data)
+        receiver_col = col_mapping['receiver_player_name']
+        team_col = col_mapping['posteam']
+        air_yards_col = col_mapping['air_yards']
+        receiving_yards_col = col_mapping['receiving_yards']
         
-        # Flatten column names
-        air_yards_summary.columns = [
-            'player_name', 'team', 'total_air_yards', 'adot', 'total_targets', 'receiving_yards'
-        ]
+        if not all([receiver_col, team_col, air_yards_col]):
+            logger.error(f"Missing required columns for air yards calculation - receiver: {receiver_col}, team: {team_col}, air_yards: {air_yards_col}")
+            # Add empty columns and return
+            player_data['total_air_yards'] = 0
+            player_data['air_yards_share'] = 0
+            player_data['adot'] = 0
+            player_data['yac_per_target'] = 0
+            return player_data
+        
+        # Aggregate air yards by player using mapped column names
+        agg_dict = {
+            air_yards_col: ['sum', 'mean', 'count']
+        }
+        if receiving_yards_col:
+            agg_dict[receiving_yards_col] = 'sum'
+        
+        air_yards_summary = self.pbp_data.groupby([receiver_col, team_col]).agg(agg_dict).reset_index()
+        
+        # Flatten column names with fallback for missing receiving yards
+        if receiving_yards_col:
+            air_yards_summary.columns = [
+                'player_name', 'team', 'total_air_yards', 'adot', 'total_targets', 'receiving_yards'
+            ]
+        else:
+            air_yards_summary.columns = [
+                'player_name', 'team', 'total_air_yards', 'adot', 'total_targets'
+            ]
+            air_yards_summary['receiving_yards'] = 0  # Default to 0 if no receiving yards column
         
         # Check if we have any data after aggregation
         if air_yards_summary.empty:
@@ -153,8 +260,8 @@ class OpportunityMetricsCalculator:
             player_data['yac_per_target'] = 0
             return player_data
         
-        # Calculate team air yards totals
-        team_air_yards = self.pbp_data.groupby('posteam')['air_yards'].sum().reset_index()
+        # Calculate team air yards totals using mapped column names
+        team_air_yards = self.pbp_data.groupby(team_col)[air_yards_col].sum().reset_index()
         team_air_yards.columns = ['team', 'team_total_air_yards']
         
         # Merge team totals
@@ -175,10 +282,28 @@ class OpportunityMetricsCalculator:
             0
         )
         
-        # Merge with player data
+        # Merge with player data using flexible column matching
+        player_data_cols = self._get_column_mapping(player_data)
+        player_name_col = player_data_cols.get('player_name', 'player_name')  # Default to 'player_name'
+        player_team_col = player_data_cols.get('team', 'team')  # Default to 'team'
+        
+        # Check if required columns exist in player_data
+        if player_name_col not in player_data.columns or player_team_col not in player_data.columns:
+            logger.warning(f"Cannot merge air yards data - player_data missing columns: {player_name_col}, {player_team_col}")
+            # Add empty columns and return
+            player_data['total_air_yards'] = 0
+            player_data['air_yards_share'] = 0
+            player_data['adot'] = 0
+            player_data['yac_per_target'] = 0
+            return player_data
+        
+        # Merge with actual column names
         result = player_data.merge(
-            air_yards_summary[['player_name', 'team', 'total_air_yards', 'air_yards_share', 'adot', 'yac_per_target']],
-            on=['player_name', 'team'],
+            air_yards_summary[['player_name', 'team', 'total_air_yards', 'air_yards_share', 'adot', 'yac_per_target']].rename(columns={
+                'player_name': player_name_col,
+                'team': player_team_col
+            }),
+            on=[player_name_col, player_team_col],
             how='left'
         )
         
@@ -251,34 +376,92 @@ class OpportunityMetricsCalculator:
             return player_data
         
         try:
-            # Filter to red zone plays (20 yards or less from goal line)
-            red_zone_plays = self.pbp_data[self.pbp_data['yardline_100'] <= 20].copy()
+            # ROBUST COLUMN CHECKING: Find yardline column for red zone calculations
+            available_cols = self.pbp_data.columns.tolist()
+            yardline_col = None
+            for col in ['yardline_100', 'yardline', 'yard_line', 'field_position']:
+                if col in available_cols:
+                    yardline_col = col
+                    break
             
-            # Red zone targets (passing plays)
-            rz_targets = red_zone_plays[
-                (red_zone_plays['play_type'] == 'pass') &
-                (red_zone_plays['receiver_player_name'].notna())
-            ].groupby(['receiver_player_name', 'posteam']).size().reset_index(name='red_zone_targets')
+            if yardline_col:
+                # Filter to red zone plays (20 yards or less from goal line)
+                red_zone_plays = self.pbp_data[self.pbp_data[yardline_col] <= 20].copy()
+                
+                if not red_zone_plays.empty:
+                    # ROBUST COLUMN MAPPING: Get actual column names for red zone calculations
+                    rz_col_mapping = self._get_column_mapping(red_zone_plays)
+                    play_type_col = rz_col_mapping['play_type']
+                    receiver_col = rz_col_mapping['receiver_player_name']
+                    rusher_col = rz_col_mapping['rusher_player_name']
+                    team_col = rz_col_mapping['posteam']
+                    
+                    # Red zone targets (passing plays)
+                    if play_type_col and receiver_col and team_col:
+                        rz_targets = red_zone_plays[
+                            (red_zone_plays[play_type_col] == 'pass') &
+                            (red_zone_plays[receiver_col].notna())
+                        ].groupby([receiver_col, team_col]).size().reset_index(name='red_zone_targets')
+                        rz_targets.columns = ['player_name', 'team', 'red_zone_targets']
+                    else:
+                        logger.warning(f"Missing columns for red zone targets - play_type: {play_type_col}, receiver: {receiver_col}, team: {team_col}")
+                        rz_targets = pd.DataFrame()
+                    
+                    # Red zone carries (rushing plays) 
+                    if play_type_col and rusher_col and team_col:
+                        rz_carries = red_zone_plays[
+                            (red_zone_plays[play_type_col] == 'run') &
+                            (red_zone_plays[rusher_col].notna())
+                        ].groupby([rusher_col, team_col]).size().reset_index(name='red_zone_carries')
+                        rz_carries.columns = ['player_name', 'team', 'red_zone_carries']
+                    else:
+                        logger.warning(f"Missing columns for red zone carries - play_type: {play_type_col}, rusher: {rusher_col}, team: {team_col}")
+                        rz_carries = pd.DataFrame()
+                else:
+                    logger.info("No red zone plays found in filtered data")
+                    rz_targets = pd.DataFrame()
+                    rz_carries = pd.DataFrame()
+            else:
+                logger.warning("No yardline column found for red zone calculations, skipping red zone opportunities")
+                red_zone_plays = pd.DataFrame()
+                rz_targets = pd.DataFrame()
+                rz_carries = pd.DataFrame()
             
-            # Red zone carries (rushing plays) 
-            rz_carries = red_zone_plays[
-                (red_zone_plays['play_type'] == 'run') &
-                (red_zone_plays['rusher_player_name'].notna())
-            ].groupby(['rusher_player_name', 'posteam']).size().reset_index(name='red_zone_carries')
+            # Get player data column mapping for merging
+            player_cols_mapping = self._get_column_mapping(player_data)
+            player_name_col = player_cols_mapping.get('player_name', 'player_name')
+            player_team_col = player_cols_mapping.get('team', 'team')
             
-            # Merge red zone targets
-            result = player_data.merge(
-                rz_targets.rename(columns={'receiver_player_name': 'player_name', 'posteam': 'team'}),
-                on=['player_name', 'team'],
-                how='left'
-            )
+            # Check if required columns exist in player_data
+            if player_name_col not in player_data.columns or player_team_col not in player_data.columns:
+                logger.warning(f"Cannot merge red zone data - player_data missing columns: {player_name_col}, {player_team_col}")
+                # Add empty columns and return
+                player_data['red_zone_targets'] = 0
+                player_data['red_zone_carries'] = 0
+                player_data['red_zone_opportunities'] = 0
+                return player_data
             
-            # Merge red zone carries  
-            result = result.merge(
-                rz_carries.rename(columns={'rusher_player_name': 'player_name', 'posteam': 'team'}),
-                on=['player_name', 'team'],
-                how='left'
-            )
+            result = player_data.copy()
+            
+            # Merge red zone targets if available
+            if not rz_targets.empty:
+                result = result.merge(
+                    rz_targets.rename(columns={'player_name': player_name_col, 'team': player_team_col}),
+                    on=[player_name_col, player_team_col],
+                    how='left'
+                )
+            else:
+                result['red_zone_targets'] = 0
+            
+            # Merge red zone carries if available
+            if not rz_carries.empty:
+                result = result.merge(
+                    rz_carries.rename(columns={'player_name': player_name_col, 'team': player_team_col}),
+                    on=[player_name_col, player_team_col],
+                    how='left'
+                )
+            else:
+                result['red_zone_carries'] = 0
             
             # Fill missing values and calculate total opportunities
             result['red_zone_targets'] = result['red_zone_targets'].fillna(0)

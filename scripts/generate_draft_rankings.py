@@ -60,7 +60,7 @@ def load_position_data(
     sys.path.insert(0, os.path.join(project_root, 'src'))
     from current_data_pipeline import create_current_inference_dataset
     from feature_engineering import engineer_features_for_season
-    import config
+    from src.config import get_config
     
     print(f"Loading current data for {position} with updated team assignments...")
     
@@ -77,15 +77,17 @@ def load_position_data(
                 print(f"   📊 SOS analysis weeks ahead: {weeks_ahead_sos}")
                 
                 # Use the correct target season for feature engineering (2024 data to predict 2025)
-                target_season = config.INFERENCE_DATA_YEAR  # 2024
+                config = get_config()
+                target_season = config.get('data.inference_data_year', 2024)  # 2024
                 
                 print(f"   📅 Engineering features using {target_season} data to predict {target_season + 1}")
                 
                 # NO TRY/CATCH - Let it fail if feature engineering fails
+                # CRITICAL FIX: Use legacy feature engineering (models were trained on this)
                 df_engineered = engineer_features_for_season(
                     target_season,
                     include_matchup_intelligence=include_matchup_intelligence,
-                    include_position_specific_features=True,  # Always enable position-specific features for enhanced data
+                    include_position_specific_features=False,  # Use legacy features that models expect
                     weeks_ahead_sos=weeks_ahead_sos
                 )
                 
@@ -147,7 +149,8 @@ def load_position_data(
         else:
             # Fallback to historical feature engineering
             print(f"⚠️ No current data available for {position}, falling back to historical data")
-            most_recent_year = config.TRAINING_DATA_END_YEAR  # Use 2023 for training
+            config = get_config()
+            most_recent_year = config.get('data.training_data_end_year', 2023)  # Use 2023 for training
             
             df = engineer_features_for_season(
                 most_recent_year,
@@ -273,6 +276,120 @@ def load_model(position: str, model_type: str = 'ensemble') -> object:
     else:
         raise FileNotFoundError(f"CRITICAL: Model for {position} ({model_type}) not found at {model_path}")
 
+def predict_fantasy_points_baseline(df: pd.DataFrame, model, position: str, target_col: str = 'fantasy_points_per_game') -> pd.DataFrame:
+    """
+    Generate predictions using baseline model with proper feature mapping.
+    
+    Args:
+        df: DataFrame with player data
+        model: Trained baseline model object
+        position: Player position
+        target_col: Target column to predict
+    
+    Returns:
+        DataFrame with predictions added
+    """
+    print(f"🤖 BASELINE PREDICTION START: {position}")
+    print("=" * 60)
+    print(f"Input data shape: {df.shape}")
+    print(f"Players to predict: {len(df)}")
+    
+    if model is None:
+        raise ValueError(f"CRITICAL: No baseline model provided for {position}")
+
+    # Create working copy
+    result_df = df.copy()
+    
+    # Get expected features from model
+    expected_features = model.feature_names_in_ if hasattr(model, 'feature_names_in_') else []
+    print(f"📋 Baseline model expects {len(expected_features)} features: {list(expected_features)}")
+    
+    # Create feature mapping from our enhanced data to baseline model expectations
+    feature_mapping = {
+        # Common mappings across positions
+        'age': 'age',
+        'games_played': 'games',
+        'games': 'games',
+        
+        # QB mappings
+        'passing_attempts': 'passing_attempts',
+        'passing_completions': 'completions', 
+        'passing_yards': 'passing_yards',
+        'passing_tds': 'passing_tds',
+        'interceptions': 'interceptions',
+        'rushing_attempts': 'carries',
+        'rushing_yards': 'rushing_yards', 
+        'rushing_tds': 'rushing_tds',
+        
+        # RB/WR/TE mappings
+        'targets': 'targets',
+        'receptions': 'receptions',
+        'receiving_yards': 'receiving_yards',
+        'receiving_tds': 'receiving_tds'
+    }
+    
+    # Build feature matrix with expected features
+    X = pd.DataFrame(index=result_df.index)
+    
+    for expected_feature in expected_features:
+        if expected_feature in feature_mapping:
+            # Try to find the mapped column in our data
+            mapped_col = feature_mapping[expected_feature]
+            if mapped_col in result_df.columns:
+                X[expected_feature] = result_df[mapped_col]
+                print(f"   ✅ Mapped {expected_feature} ← {mapped_col}")
+            else:
+                # Try alternative column names
+                alt_names = [mapped_col + 's', mapped_col.replace('_', ''), mapped_col + '_total']
+                found = False
+                for alt_name in alt_names:
+                    if alt_name in result_df.columns:
+                        X[expected_feature] = result_df[alt_name]
+                        print(f"   ✅ Mapped {expected_feature} ← {alt_name} (alternative)")
+                        found = True
+                        break
+                if not found:
+                    X[expected_feature] = 0
+                    print(f"   ⚠️ Missing {expected_feature}, using 0")
+        else:
+            # Direct column name match
+            if expected_feature in result_df.columns:
+                X[expected_feature] = result_df[expected_feature]
+                print(f"   ✅ Direct match {expected_feature}")
+            else:
+                X[expected_feature] = 0
+                print(f"   ⚠️ Missing {expected_feature}, using 0")
+    
+    # Handle missing values and ensure numeric
+    X = X.fillna(0).astype(float)
+    
+    print(f"   Final feature matrix: {X.shape}")
+    print(f"   Features: {list(X.columns)}")
+    
+    try:
+        # Make predictions with baseline model
+        predictions = model.predict(X)
+        
+        # Add predictions to result (ensure consistent column naming)
+        result_df[target_col] = predictions
+        result_df['predicted_points'] = predictions  # Add consistent column name for VOR calculations
+        
+        print(f"✅ Baseline prediction completed successfully")
+        print(f"   Predicted {len(predictions)} player fantasy points")
+        print(f"   Mean prediction: {np.mean(predictions):.2f}")
+        print(f"   Prediction range: {np.min(predictions):.2f} - {np.max(predictions):.2f}")
+        
+        return result_df
+        
+    except Exception as e:
+        print(f"❌ Baseline prediction failed: {str(e)}")
+        print(f"   Model expected features: {list(expected_features)}")
+        print(f"   Provided features: {list(X.columns)}")
+        # Return dataframe with zero predictions as fallback
+        result_df[target_col] = 0.0
+        return result_df
+
+
 def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: str = 'fantasy_points_per_game') -> pd.DataFrame:
     """
     Generate predictions using the trained ensemble model with comprehensive logging.
@@ -370,28 +487,145 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
     
     # Map current column names to expected model column names
     print("🔄 Mapping feature names to match model expectations...")
+    
+    # COMPREHENSIVE MAPPING: New feature engineering names → Legacy model names
     column_mapping = {
-        'attempts': 'passing_attempts',
-        'completions': 'passing_completions', 
-        'carries': 'rushing_attempts',
-        'games': 'games_played',
-        'receiving_yards': 'rec_yards',
-        'rushing_yards': 'rush_yards',
-        'passing_yards': 'pass_yards',
-        'receiving_touchdowns': 'rec_tds',
-        'rushing_touchdowns': 'rush_tds',
-        'passing_touchdowns': 'pass_tds'
+        # Basic stats mapping (reverse direction - new names to legacy names)
+        'passing_attempts': 'attempts',
+        'passing_completions': 'completions', 
+        'rushing_attempts': 'carries',
+        'games_played': 'games',
+        'rec_yards': 'receiving_yards',
+        'rush_yards': 'rushing_yards', 
+        'pass_yards': 'passing_yards',
+        'rec_tds': 'receiving_touchdowns',
+        'rush_tds': 'rushing_touchdowns',
+        'pass_tds': 'passing_touchdowns',
+        
+        # Position-specific feature mappings
+        'qb_efficiency': 'efficiency_rating',
+        'yards_per_attempt': 'ya_per_att',
+        'passer_rating': 'qb_rating',
+        'touchdown_percentage': 'passing_td_percentage',
+        'interception_percentage': 'int_percentage',
+        
+        # Advanced metrics mapping
+        'air_yards_dominance': 'air_yards_share',
+        'air_yards_efficiency': 'air_yards_per_target',
+        'target_quality': 'target_efficiency_score',
+        'usage_sustainability': 'usage_ceiling',
+        'snap_share_tier': 'avg_snap_share',
+        'player_tier': 'fantasy_relevance_score',
+        
+        # Receiving metrics
+        'catch_rate': 'reception_rate',
+        'yards_per_reception': 'ypr',
+        'yards_per_target': 'ypt',
+        'touchdowns_per_reception': 'td_per_reception', 
+        'touchdowns_per_target': 'td_per_target',
+        'target_share': 'tgt_share',
+        
+        # Rushing metrics - FIX BACKWARDS MAPPING
+        'carries_pg': 'carries_per_game', 
+        'rush_ypg': 'rushing_yards_per_game',
+        'rush_td_pg': 'rushing_tds_per_game',
+        'ypc': 'yards_per_carry',
+        
+        # Team context
+        'team_passing_attempts': 'team_attempts',
+        'team_rushing_attempts': 'team_carries',
+        'team_passing_touchdowns': 'team_passing_tds',
+        'team_rushing_touchdowns': 'team_rushing_tds',
+        
+        # Environmental (these should already match)
+        'birth_date': 'age',  # Convert birth_date to age if needed
+        'draft_round': 'draftround',
+        
+        # Remove problematic features that don't map
+        'college': None,  # Will be dropped
+        'draft_club': None,  # Will be dropped
+        'first_name': None,  # Will be dropped
+        'last_name': None,  # Will be dropped
+        'feature_engineering_version': None  # Will be dropped
     }
     
-    # Apply column mapping
+    # Apply column mapping and handle drops
     mapped_count = 0
+    dropped_count = 0
+    
     for old_name, new_name in column_mapping.items():
         if old_name in X.columns:
-            X = X.rename(columns={old_name: new_name})
-            mapped_count += 1
+            if new_name is None:
+                # Drop columns that don't map to model features
+                X = X.drop(columns=[old_name])
+                dropped_count += 1
+            else:
+                # Rename columns to match model expectations
+                X = X.rename(columns={old_name: new_name})
+                mapped_count += 1
     
     if mapped_count > 0:
         print(f"   Mapped {mapped_count} column names to match model expectations")
+    if dropped_count > 0:
+        print(f"   Dropped {dropped_count} unmappable columns")
+    
+    # Special handling for birth_date to age conversion if needed
+    if 'birth_date' in X.columns:
+        try:
+            current_year = 2025  # Prediction year
+            X['age'] = current_year - pd.to_datetime(X['birth_date']).dt.year
+            X = X.drop(columns=['birth_date'])
+            print(f"   Converted birth_date to age")
+        except Exception as e:
+            print(f"   Warning: Could not convert birth_date to age: {e}")
+            X = X.drop(columns=['birth_date'])
+    
+    print(f"   Final feature set: {len(X.columns)} columns")
+    
+    # CRITICAL: Validate feature compatibility and FAIL HARD if missing
+    print(f"🔍 Validating feature compatibility with {position} ensemble model...")
+    
+    try:
+        # Load model to get expected features
+        import joblib
+        model_path = f"saved_models/{position}_ensemble_model.joblib"
+        model_dict = joblib.load(model_path)
+        expected_features = model_dict['rf_model'].model.feature_names_in_
+        
+        print(f"   Model expects: {len(expected_features)} features")
+        print(f"   Data provides: {len(X.columns)} features")
+        
+        # Find missing and extra features
+        provided_features = set(X.columns)
+        expected_features_set = set(expected_features)
+        
+        missing_features = expected_features_set - provided_features
+        extra_features = provided_features - expected_features_set
+        
+        print(f"   Missing: {len(missing_features)} | Extra: {len(extra_features)} | Matching: {len(expected_features_set & provided_features)}")
+        
+        if missing_features:
+            print(f"❌ CRITICAL FAILURE: {position} model missing {len(missing_features)} required features:")
+            for i, feature in enumerate(sorted(missing_features)[:10]):  # Show first 10
+                print(f"     {i+1:2d}. {feature}")
+            if len(missing_features) > 10:
+                print(f"     ... and {len(missing_features) - 10} more")
+                
+            print(f"🔧 Available features that might map:")
+            for feature in sorted(extra_features)[:5]:  # Show first 5 extra
+                print(f"     • {feature}")
+            
+            print(f"⚠️ ENSEMBLE MODEL INCOMPATIBLE: {position} ensemble model requires {len(missing_features)} missing features.")
+            print(f"🔄 FALLING BACK TO BASELINE MODEL: Using baseline model trained on available features.")
+            return "fallback_to_baseline"
+        else:
+            print(f"✅ All required features present for {position} model")
+            
+    except Exception as e:
+        if "missing features" in str(e) or "HARD FAILURE" in str(e):
+            raise  # Re-raise critical failures
+        else:
+            print(f"⚠️ Warning: Could not validate features: {e}")
     
     # Make predictions with ensemble model
     print(f"🎯 Starting ensemble prediction...")
@@ -442,7 +676,29 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
         if np.any(np.isnan(predictions)):
             raise ValueError("Model predictions contain NaN values")
         
-        df['predicted_points'] = predictions
+        # CRITICAL FIX: Convert seasonal model predictions to per-game averages
+        # Models were trained on seasonal totals but VOR expects per-game values
+        games_col = None
+        for col in df.columns:
+            if col.lower() in ['games', 'games_played', 'g', 'gp']:
+                games_col = col
+                break
+        
+        # FIXED: Models predict per-game values, need to scale to seasonal projections
+        # For draft rankings, we want full season projections (17 games)
+        GAMES_IN_SEASON = 17
+        
+        if target_col == 'fantasy_points_per_game':
+            # Models trained on per-game data, scale up to season projections
+            df['predicted_points'] = predictions * GAMES_IN_SEASON
+            print(f"   ✅ SCALE FIX: Converted per-game predictions to seasonal projections (×{GAMES_IN_SEASON})")
+            print(f"   📊 Per-game - Mean: {predictions.mean():.1f}, Range: {predictions.min():.1f}-{predictions.max():.1f}")
+            print(f"   📊 Season total - Mean: {df['predicted_points'].mean():.1f}, Range: {df['predicted_points'].min():.1f}-{df['predicted_points'].max():.1f}")
+        else:
+            # Predictions are already seasonal totals
+            df['predicted_points'] = predictions
+            print(f"   ✅ Using seasonal predictions as-is")
+            print(f"   📊 Season total - Mean: {df['predicted_points'].mean():.1f}, Range: {df['predicted_points'].min():.1f}-{df['predicted_points'].max():.1f}")
         
         print(f"📊 PREDICTION SUMMARY:")
         print(f"   Predictions generated: {len(predictions)}")
@@ -466,40 +722,25 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
         
         if 'fantasy_points_ppr' in df.columns:
             print(f"   🔄 Falling back to historical fantasy points for {position}")
-            if games_col and games_col in df.columns:
-                # Convert seasonal totals to per-game averages
-                df['predicted_points'] = np.where(
-                    df[games_col] > 0,
-                    df['fantasy_points_ppr'] / df[games_col],
-                    0
-                )
-                print(f"   ✅ Converted seasonal totals to per-game averages for {len(df)} {position} players")
-                avg_predicted = df['predicted_points'].mean()
-                print(f"   📊 Average per-game prediction: {avg_predicted:.1f} points")
-            else:
-                print(f"   ⚠️ No games data available, using seasonal totals")
-                df['predicted_points'] = df['fantasy_points_ppr']
+            # For draft rankings, we want seasonal totals
+            df['predicted_points'] = df['fantasy_points_ppr']
+            print(f"   ✅ Using seasonal fantasy point totals for {len(df)} {position} players")
+            avg_predicted = df['predicted_points'].mean()
+            print(f"   📊 Average seasonal prediction: {avg_predicted:.1f} points")
         elif 'fantasy_points' in df.columns:
             print(f"   🔄 Falling back to historical fantasy points for {position}")
-            if games_col and games_col in df.columns:
-                # Convert seasonal totals to per-game averages
-                df['predicted_points'] = np.where(
-                    df[games_col] > 0,
-                    df['fantasy_points'] / df[games_col],
-                    0
-                )
-                print(f"   ✅ Converted seasonal totals to per-game averages for {len(df)} {position} players")
-                avg_predicted = df['predicted_points'].mean()
-                print(f"   📊 Average per-game prediction: {avg_predicted:.1f} points")
-            else:
-                print(f"   ⚠️ No games data available, using seasonal totals")
-                df['predicted_points'] = df['fantasy_points']
+            # For draft rankings, we want seasonal totals
+            df['predicted_points'] = df['fantasy_points']
+            print(f"   ✅ Using seasonal fantasy point totals for {len(df)} {position} players")
+            avg_predicted = df['predicted_points'].mean()
+            print(f"   📊 Average seasonal prediction: {avg_predicted:.1f} points")
         else:
-            # If no fantasy points available, assign baseline values based on position
+            # If no fantasy points available, assign baseline seasonal values based on position
             print(f"   ⚠️ No historical fantasy points available, assigning position-based baseline values")
-            baseline_values = {'QB': 15.0, 'RB': 10.0, 'WR': 8.0, 'TE': 6.0, 'K': 8.0, 'DST': 8.0}
-            df['predicted_points'] = baseline_values.get(position, 5.0)
-            print(f"   📊 Assigned baseline value of {baseline_values.get(position, 5.0)} points for {position}")
+            # Baseline seasonal totals (17 games)
+            baseline_values = {'QB': 255.0, 'RB': 170.0, 'WR': 136.0, 'TE': 102.0, 'K': 136.0, 'DST': 136.0}
+            df['predicted_points'] = baseline_values.get(position, 85.0)
+            print(f"   📊 Assigned baseline seasonal value of {baseline_values.get(position, 85.0)} points for {position}")
         
         print(f"✅ FALLBACK PREDICTION COMPLETE: {position}")
     
@@ -527,11 +768,12 @@ def calculate_value_over_replacement(
         Dictionary of DataFrames with adjusted VOR added
     """
     # Import VOR configuration from config
-    import config
+    from src.config import get_config
     
+    config = get_config()
     # Use improved replacement levels and scarcity multipliers
-    replacement_levels = config.VOR_REPLACEMENT_LEVELS
-    scarcity_multipliers = config.VOR_SCARCITY_MULTIPLIERS
+    replacement_levels = config.get('league.vor_replacement_levels', {'QB': 13, 'RB': 30, 'WR': 30, 'TE': 13, 'K': 12, 'DST': 12})
+    scarcity_multipliers = config.get('league.vor_scarcity_multipliers', {'QB': 1.0, 'RB': 1.5, 'WR': 1.2, 'TE': 1.4, 'K': 0.8, 'DST': 0.9})
     
     result = {}
     
@@ -598,6 +840,107 @@ def calculate_value_over_replacement(
         print()
         
     return result
+
+
+def validate_predictions(df: pd.DataFrame, position: str) -> pd.DataFrame:
+    """
+    Validate and fix prediction issues like identical values and unrealistic ranges.
+    
+    Args:
+        df: DataFrame with predicted_points column
+        position: Player position
+        
+    Returns:
+        DataFrame with validated predictions
+    """
+    print(f"\n🔍 VALIDATING PREDICTIONS FOR {position}")
+    
+    # Check for identical predictions
+    value_counts = df['predicted_points'].value_counts()
+    duplicates = value_counts[value_counts > 1]
+    
+    if len(duplicates) > 0:
+        print(f"⚠️ WARNING: Found {len(duplicates)} duplicate prediction values")
+        for value, count in duplicates.head(5).items():
+            print(f"   - {value:.2f} points appears {count} times")
+        
+        # Add small random noise to break ties (0.01-0.10 points)
+        duplicate_mask = df['predicted_points'].isin(duplicates.index)
+        noise = np.random.uniform(0.01, 0.10, size=duplicate_mask.sum())
+        df.loc[duplicate_mask, 'predicted_points'] += noise
+        print(f"   ✅ Added small random noise to {duplicate_mask.sum()} duplicate predictions")
+    
+    # Round to reasonable precision (1 decimal place)
+    df['predicted_points'] = df['predicted_points'].round(1)
+    
+    # Validate ranges by position (seasonal totals)
+    position_ranges = {
+        'QB': (150, 450),    # QBs typically 150-450 points
+        'RB': (50, 350),     # RBs typically 50-350 points  
+        'WR': (50, 350),     # WRs typically 50-350 points
+        'TE': (30, 250),     # TEs typically 30-250 points
+        'K': (80, 180),      # Kickers typically 80-180 points
+        'DST': (80, 200)     # Defenses typically 80-200 points
+    }
+    
+    min_val, max_val = position_ranges.get(position, (0, 500))
+    out_of_range = (df['predicted_points'] < min_val) | (df['predicted_points'] > max_val)
+    
+    if out_of_range.any():
+        print(f"⚠️ WARNING: {out_of_range.sum()} predictions outside typical range ({min_val}-{max_val})")
+        # Clip to reasonable range
+        df['predicted_points'] = df['predicted_points'].clip(min_val, max_val)
+        print(f"   ✅ Clipped predictions to reasonable range")
+    
+    # Log summary statistics
+    print(f"✅ VALIDATION COMPLETE:")
+    print(f"   Mean: {df['predicted_points'].mean():.1f} points")
+    print(f"   Range: {df['predicted_points'].min():.1f} - {df['predicted_points'].max():.1f} points")
+    print(f"   Std Dev: {df['predicted_points'].std():.1f} points")
+    
+    return df
+
+
+def validate_overall_rankings(overall_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Validate that overall rankings make fantasy football sense.
+    
+    Args:
+        overall_df: DataFrame with overall rankings
+        
+    Returns:
+        DataFrame with validated rankings
+    """
+    print("\n🔍 VALIDATING OVERALL RANKINGS")
+    
+    # Check position distribution in top 20
+    top_20 = overall_df.head(20)
+    position_counts = top_20['position'].value_counts()
+    
+    print("📊 Top 20 Position Distribution:")
+    for pos, count in position_counts.items():
+        print(f"   {pos}: {count} players")
+    
+    # Warning if no RBs in top 5
+    top_5_positions = overall_df.head(5)['position'].tolist()
+    if 'RB' not in top_5_positions:
+        print("⚠️ WARNING: No RBs in top 5 picks - unusual for fantasy drafts!")
+    
+    # Warning if too many of one position in top 10
+    top_10 = overall_df.head(10)
+    top_10_counts = top_10['position'].value_counts()
+    for pos, count in top_10_counts.items():
+        if count >= 6:
+            print(f"⚠️ WARNING: {count} {pos}s in top 10 - seems unbalanced!")
+    
+    # Check if at least 2 RBs in top 10 (typical)
+    rb_count_top10 = top_10_counts.get('RB', 0)
+    if rb_count_top10 < 2:
+        print(f"⚠️ WARNING: Only {rb_count_top10} RBs in top 10 - RBs are typically more valuable")
+    
+    print("✅ Overall rankings validation complete")
+    return overall_df
+
 
 def create_overall_rankings(
     df_by_pos: Dict[str, pd.DataFrame], 
@@ -721,7 +1064,7 @@ def generate_draft_cheatsheet(overall_rankings: pd.DataFrame, position_rankings:
     cheatsheet_file = f'{rankings_dir}/draft_cheatsheet_enhanced_{timestamp}.txt'
     
     # Import config for VOR analysis
-    import config
+    from src.config import get_config
     
     with open(cheatsheet_file, 'w') as f:
         f.write("="*100 + "\n")
@@ -736,8 +1079,9 @@ def generate_draft_cheatsheet(overall_rankings: pd.DataFrame, position_rankings:
         f.write("          Level          Mult       (Predicted Points)\n")
         f.write("─" * 100 + "\n")
         
-        replacement_levels = config.VOR_REPLACEMENT_LEVELS
-        scarcity_multipliers = config.VOR_SCARCITY_MULTIPLIERS
+        config = get_config()
+        replacement_levels = config.get('league.vor_replacement_levels', {'QB': 13, 'RB': 30, 'WR': 30, 'TE': 13, 'K': 12, 'DST': 12})
+        scarcity_multipliers = config.get('league.vor_scarcity_multipliers', {'QB': 1.0, 'RB': 1.5, 'WR': 1.2, 'TE': 1.4, 'K': 0.8, 'DST': 0.9})
         
         for pos in ['RB', 'TE', 'WR', 'QB']:
             if pos in position_rankings and not position_rankings[pos].empty:
@@ -930,8 +1274,10 @@ def create_visual_draft_board(overall_rankings: pd.DataFrame, position_rankings:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     
     # Import config for VOR analysis
-    import config
-    scarcity_multipliers = config.VOR_SCARCITY_MULTIPLIERS
+    from src.config import get_config
+    
+    config = get_config()
+    scarcity_multipliers = config.get('league.vor_scarcity_multipliers', {'QB': 1.0, 'RB': 1.5, 'WR': 1.2, 'TE': 1.4, 'K': 0.8, 'DST': 0.9})
     
     # Create Figure 1: VOR Bubble Chart
     plt.style.use('default')
@@ -1173,7 +1519,7 @@ def main():
     
     # Import config and current data pipeline
     sys.path.insert(0, str(project_root))
-    import config
+    from src.config import get_config
     from src.current_data_pipeline import validate_current_data_freshness, print_team_movement_report
     
     # Validate data freshness
@@ -1189,16 +1535,22 @@ def main():
             print(f"   💡 {rec}")
     
     # Show team movements
-    print(f"\n🔄 Team Movement Analysis ({config.TRAINING_DATA_END_YEAR} → {config.INFERENCE_DATA_YEAR}):")
+    config = get_config()
+    training_end_year = config.get('data.training_data_end_year', 2023)
+    inference_year = config.get('data.inference_data_year', 2024)
+    current_season = config.get('data.current_season', 2025)
+    core_positions = config.get('data.core_positions', ['QB', 'RB', 'WR', 'TE'])
+    
+    print(f"\n🔄 Team Movement Analysis ({training_end_year} → {inference_year}):")
     try:
         print_team_movement_report()
     except Exception as e:
         print(f"   ⚠️ Could not generate movement report: {e}")
     
-    print(f"\n🎯 Generating rankings for {config.CURRENT_SEASON} season...")
+    print(f"\n🎯 Generating rankings for {current_season} season...")
     
     # Use core positions that have real data + K (DST will be handled separately later)
-    positions = config.CORE_POSITIONS + ['K']
+    positions = core_positions + ['K']
     
     # Store data by position
     df_by_pos = {}
@@ -1230,8 +1582,21 @@ def main():
             print(f"📋 Using baseline model for {position} (limited features detected: {len(df.columns)} total)")
             model = load_model_based_on_features(position, has_advanced_features=False)
         
-        # Make predictions
-        df = predict_fantasy_points(df, model, position)
+        # Make predictions (with fallback handling)
+        result = predict_fantasy_points(df, model, position)
+        
+        # Handle fallback to baseline model
+        if result == "fallback_to_baseline":
+            print(f"🔄 LOADING BASELINE MODEL for {position}...")
+            baseline_model = load_model_based_on_features(position, has_advanced_features=False)
+            print(f"📋 Using baseline model trained on available features")
+            df = predict_fantasy_points_baseline(df, baseline_model, position)
+            # Validate baseline predictions too
+            df = validate_predictions(df, position)
+        else:
+            df = result
+            # Validate predictions before continuing
+            df = validate_predictions(df, position)
         
         # LOG FEATURE VALIDATION FOR THIS POSITION
         print(f"📊 Feature Validation for {position}:")
@@ -1272,6 +1637,9 @@ def main():
         df_by_pos_vor,
         use_schedule_adjusted_vor=args.include_matchup_intelligence
     )
+    
+    # Validate the overall rankings
+    overall_rankings = validate_overall_rankings(overall_rankings)
     
     # Create position-specific rankings
     position_rankings = create_position_rankings(df_by_pos_vor)

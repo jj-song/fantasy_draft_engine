@@ -22,11 +22,16 @@ def test_vor_configuration():
     print("TEST 1: VOR Configuration Validation")
     print("=" * 60)
     
-    import config
+    from src.config import get_config
+    config = get_config()
     
     # Test replacement levels
-    replacement_levels = config.VOR_REPLACEMENT_LEVELS
-    scarcity_multipliers = config.VOR_SCARCITY_MULTIPLIERS
+    replacement_levels = config.get('league.vor_replacement_levels', {
+        'QB': 13, 'RB': 30, 'WR': 30, 'TE': 13, 'K': 12, 'DST': 12
+    })
+    scarcity_multipliers = config.get('league.vor_scarcity_multipliers', {
+        'QB': 1.0, 'RB': 1.5, 'WR': 1.2, 'TE': 1.4, 'K': 0.8, 'DST': 0.9
+    })
     
     print("Replacement Levels:")
     for pos, level in replacement_levels.items():

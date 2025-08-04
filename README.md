@@ -1,6 +1,6 @@
 # Fantasy Draft Engine 🏈
 
-**AI-powered fantasy football draft rankings that outperform expert consensus by 15-20%** using machine learning, 300+ engineered features, and data from 2010-2023.
+**AI-powered fantasy football draft rankings** using machine learning, 180+ engineered features, and comprehensive NFL data from 2010-2024.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![ML Models](https://img.shields.io/badge/ML-RandomForest%20%2B%20LightGBM-green.svg)](https://lightgbm.readthedocs.io/)
@@ -11,11 +11,11 @@
 
 Traditional "expert" rankings are subjective and often biased. **Fantasy Draft Engine** uses:
 
-- 📊 **14 years of NFL data** (2010-2023) for robust predictions
-- 🤖 **Advanced ML models** achieving 65-72% R² accuracy by position
-- 🎯 **300+ engineered features** including efficiency metrics and usage patterns
+- 📊 **15 years of NFL data** (2010-2024) for robust predictions  
+- 🤖 **Advanced ML models** with RandomForest + LightGBM ensemble
+- 🎯 **180+ engineered features** including efficiency metrics and usage patterns
 - 📈 **Value Over Replacement (VOR)** for optimal cross-position rankings
-- 🔄 **Real-time adjustments** for injuries, weather, and matchups (coming soon)
+- 🔧 **Comprehensive validation** with performance metrics and sanity checks
 
 **Result**: Draft smarter, win more championships.
 
@@ -45,8 +45,8 @@ open data/draft_lists/draft_cheatsheet_*.txt
 python main.py
 
 # This will:
-# 1. Fetch data from 2010-2023 (5 min)
-# 2. Engineer 300+ features (3 min)
+# 1. Fetch data from 2010-2024 (5 min)
+# 2. Engineer 180+ features (3 min)  
 # 3. Train position-specific models (10 min)
 # 4. Generate draft rankings (30 sec)
 ```

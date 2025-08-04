@@ -29,9 +29,8 @@ import json
 import os
 from dataclasses import dataclass
 
-# Add project root to path
-sys.path.append(str(Path(__file__).parent.parent.parent))
-import config
+# Import config using new system
+from src.config import get_config
 
 logger = logging.getLogger(__name__)
 

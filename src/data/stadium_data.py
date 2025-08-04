@@ -25,9 +25,8 @@ from typing import Dict, List, Optional, Tuple
 from pathlib import Path
 import sys
 
-# Add project root to path
-sys.path.append(str(Path(__file__).parent.parent.parent))
-import config
+# Import config using new system
+from src.config import get_config
 
 logger = logging.getLogger(__name__)
 

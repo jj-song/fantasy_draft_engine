@@ -6,6 +6,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
 
+import src.utils
 from src.utils import calculate_fantasy_points_0_5_ppr
 
 def test_calculate_fantasy_points_all_zero():
