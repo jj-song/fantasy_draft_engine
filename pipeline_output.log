@@ -1,0 +1,418 @@
+Raw data file not found: /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2025.parquet
+Raw data for prediction season 2025 not found. Target variable will be NaN.
+Error calculating snap metrics: 'player_name'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error in QB feature engineering: 'passing_attempts'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating pace adjustments: 'two_minute_warning'
+Raw data file not found: /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2025.parquet
+Raw data for prediction season 2025 not found. Target variable will be NaN.
+Error calculating snap metrics: 'player_name'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error in QB feature engineering: 'passing_attempts'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating pace adjustments: 'two_minute_warning'
+Raw data file not found: /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2025.parquet
+Raw data for prediction season 2025 not found. Target variable will be NaN.
+Error calculating snap metrics: 'player_name'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error in QB feature engineering: 'passing_attempts'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating pace adjustments: 'two_minute_warning'
+🏈 Fantasy Football Draft Rankings Generator
+============================================================
+📊 Matchup Intelligence: ✅ ENABLED
+🔧 Position-Specific Features: ✅ ENABLED
+📅 SOS Analysis Weeks: 4
+============================================================
+
+🎯 Generating fantasy football draft rankings with current data...
+
+📊 Data Freshness Check:
+   Current year: 2025
+   Using data from: 2024
+   Status: current
+
+🔄 Team Movement Analysis (2023 → 2024):
+
+🔄 NOTABLE TEAM MOVEMENTS (2023 → 2024)
+================================================================================
+Joe Flacco                QB  CLE  → IND 
+Anthony Brown             QB  BAL  → BUF 
+Sam Howell                QB  WAS  → SEA 
+Jacoby Brissett           QB  WAS  → NE  
+PJ Walker                 QB  CLE  → SEA 
+Zach Wilson               QB  NYJ  → DEN 
+Mac Jones                 QB  NE   → JAX 
+Justin Fields             QB  CHI  → PIT 
+Ian Book                  QB  KC   → PHI 
+Ben DiNucci               QB  DEN  → NO  
+Jake Luton                QB  CAR  → LV  
+Mitchell Trubisky         QB  PIT  → BUF 
+Jake Fromm                QB  WAS  → DET 
+Tyler Huntley             QB  BAL  → MIA 
+Joshua Dobbs              QB  MIN  → SF  
+Nathan Peterman           QB  CHI  → ATL 
+Daniel Jones              QB  NYG  → MIN 
+Tim Boyle                 QB  HOU  → NYG 
+Drew Lock                 QB  SEA  → NYG 
+Gardner Minshew           QB  IND  → LV  
+... and 293 more movements
+
+Total movements tracked: 939
+Fantasy-relevant movements: 313
+
+🎯 Generating rankings for 2025 season...
+Loading current data for QB with updated team assignments...
+✅ Loaded 78 current QB players with updated teams
+   🔧 Applying feature engineering with matchup intelligence
+   📊 SOS analysis weeks ahead: 4
+   📅 Engineering features using 2024 data to predict 2025
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+Downcasting floats.
+2023 done.
+Downcasting floats.
+Downcasting floats.
+   ✅ Feature engineering successful: 426 players, 241 features
+   📊 Found 78 QB players in engineered features
+   ✅ Updated QB player team assignments to current rosters
+   🎯 Matchup features found: 28
+   📈 Opportunity features found: 11
+   🔍 Sample matchup features: ['next_4w_sos_rating', 'next_4w_sos_tier', 'next_4w_tough_matchups']
+✅ Applied enhanced feature engineering to 78 QB players
+Loading QB advanced_engineering model from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/saved_models/QB_advanced_engineering_model.joblib
+🔍 Validating features for QB model prediction:
+   Input data shape: (78, 240)
+   🎯 Matchup features: 28
+   📈 Opportunity features: 12
+   📊 Usage features: 6
+   🔍 Sample matchup features: ['next_4w_sos_rating', 'next_4w_sos_tier', 'next_4w_tough_matchups']
+   🔍 Sample opportunity features: ['passing_air_yards', 'receiving_air_yards', 'target_share']
+Successfully generated predictions for QB
+📊 Feature Validation for QB:
+   • Total Features: 241
+   • Opportunity Features: 12
+   • Usage Features: 6
+   • Position-Specific: 12
+Loading current data for RB with updated team assignments...
+✅ Loaded 145 current RB players with updated teams
+   🔧 Applying feature engineering with matchup intelligence
+   📊 SOS analysis weeks ahead: 4
+   📅 Engineering features using 2024 data to predict 2025
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+Downcasting floats.
+2023 done.
+Downcasting floats.
+Downcasting floats.
+   ✅ Feature engineering successful: 426 players, 241 features
+   📊 Found 2 RB players in engineered features
+⚠️ Feature engineering failed (Can only compare identically-labeled Series objects), using basic features
+   Full error: Traceback (most recent call last):
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/scripts/generate_draft_rankings.py", line 106, in load_position_data
+    position_engineered = update_data_with_current_teams(position_engineered, current_rosters)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/src/current_data_pipeline.py", line 157, in update_data_with_current_teams
+    team_changes = (data_df['team'] != updated_data['team']).sum()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/ops/common.py", line 72, in new_method
+    return method(self, other)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/arraylike.py", line 46, in __ne__
+    return self._cmp_method(other, operator.ne)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/series.py", line 6237, in _cmp_method
+    raise ValueError("Can only compare identically-labeled Series objects")
+ValueError: Can only compare identically-labeled Series objects
+
+Loading RB advanced_engineering model from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/saved_models/RB_advanced_engineering_model.joblib
+🔍 Validating features for RB model prediction:
+   Input data shape: (145, 61)
+   🎯 Matchup features: 0
+   📈 Opportunity features: 6
+   📊 Usage features: 0
+   🔍 Sample opportunity features: ['passing_air_yards', 'receiving_air_yards', 'target_share']
+Successfully generated predictions for RB
+📊 Feature Validation for RB:
+   • Total Features: 62
+   • Opportunity Features: 6
+   • Usage Features: 0
+   • Position-Specific: 0
+   • Target Share: 131/145 players have values (avg: 0.654)
+Loading current data for WR with updated team assignments...
+✅ Loaded 227 current WR players with updated teams
+   🔧 Applying feature engineering with matchup intelligence
+   📊 SOS analysis weeks ahead: 4
+   📅 Engineering features using 2024 data to predict 2025
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+Downcasting floats.
+2023 done.
+Downcasting floats.
+Downcasting floats.
+   ✅ Feature engineering successful: 426 players, 241 features
+   📊 Found 227 WR players in engineered features
+⚠️ Feature engineering failed (Can only compare identically-labeled Series objects), using basic features
+   Full error: Traceback (most recent call last):
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/scripts/generate_draft_rankings.py", line 106, in load_position_data
+    position_engineered = update_data_with_current_teams(position_engineered, current_rosters)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/src/current_data_pipeline.py", line 157, in update_data_with_current_teams
+    team_changes = (data_df['team'] != updated_data['team']).sum()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/ops/common.py", line 72, in new_method
+    return method(self, other)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/arraylike.py", line 46, in __ne__
+    return self._cmp_method(other, operator.ne)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/series.py", line 6237, in _cmp_method
+    raise ValueError("Can only compare identically-labeled Series objects")
+ValueError: Can only compare identically-labeled Series objects
+
+Loading WR advanced_engineering model from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/saved_models/WR_advanced_engineering_model.joblib
+🔍 Validating features for WR model prediction:
+   Input data shape: (227, 61)
+   🎯 Matchup features: 0
+   📈 Opportunity features: 6
+   📊 Usage features: 0
+Raw data file not found: /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/raw/player_season_2025.parquet
+Raw data for prediction season 2025 not found. Target variable will be NaN.
+Error calculating snap metrics: 'player_name'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error in QB feature engineering: 'passing_attempts'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating pace adjustments: 'two_minute_warning'
+Error calculating snap metrics: 'player_name'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error in QB feature engineering: 'passing_attempts'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating snap metrics: 'player_name'
+Error calculating route participation: 'route_participation_rate'
+Error calculating situational usage: 'red_zone_usage'
+Error calculating pace adjustments: 'two_minute_warning'
+/Users/jihoonsong/Documents/projects/fantasy_draft_engine/scripts/generate_draft_rankings.py:802: UserWarning: Glyph 127944 (\N{AMERICAN FOOTBALL}) missing from current font.
+  plt.tight_layout()
+/Users/jihoonsong/Documents/projects/fantasy_draft_engine/scripts/generate_draft_rankings.py:806: UserWarning: Glyph 127944 (\N{AMERICAN FOOTBALL}) missing from current font.
+  plt.savefig(plot_file_enhanced, dpi=300, bbox_inches='tight')
+   🔍 Sample opportunity features: ['passing_air_yards', 'receiving_air_yards', 'target_share']
+Successfully generated predictions for WR
+📊 Feature Validation for WR:
+   • Total Features: 62
+   • Opportunity Features: 6
+   • Usage Features: 0
+   • Position-Specific: 0
+   • Target Share: 223/227 players have values (avg: 1.442)
+Loading current data for TE with updated team assignments...
+✅ Loaded 119 current TE players with updated teams
+   🔧 Applying feature engineering with matchup intelligence
+   📊 SOS analysis weeks ahead: 4
+   📅 Engineering features using 2024 data to predict 2025
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+Downcasting floats.
+2023 done.
+Downcasting floats.
+Downcasting floats.
+   ✅ Feature engineering successful: 426 players, 241 features
+   📊 Found 119 TE players in engineered features
+⚠️ Feature engineering failed (Can only compare identically-labeled Series objects), using basic features
+   Full error: Traceback (most recent call last):
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/scripts/generate_draft_rankings.py", line 106, in load_position_data
+    position_engineered = update_data_with_current_teams(position_engineered, current_rosters)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jihoonsong/Documents/projects/fantasy_draft_engine/src/current_data_pipeline.py", line 157, in update_data_with_current_teams
+    team_changes = (data_df['team'] != updated_data['team']).sum()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/ops/common.py", line 72, in new_method
+    return method(self, other)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/arraylike.py", line 46, in __ne__
+    return self._cmp_method(other, operator.ne)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/lib/python3.11/site-packages/pandas/core/series.py", line 6237, in _cmp_method
+    raise ValueError("Can only compare identically-labeled Series objects")
+ValueError: Can only compare identically-labeled Series objects
+
+Loading TE advanced_engineering model from /Users/jihoonsong/Documents/projects/fantasy_draft_engine/saved_models/TE_advanced_engineering_model.joblib
+🔍 Validating features for TE model prediction:
+   Input data shape: (119, 61)
+   🎯 Matchup features: 0
+   📈 Opportunity features: 6
+   📊 Usage features: 0
+   🔍 Sample opportunity features: ['passing_air_yards', 'receiving_air_yards', 'target_share']
+Successfully generated predictions for TE
+📊 Feature Validation for TE:
+   • Total Features: 62
+   • Opportunity Features: 6
+   • Usage Features: 0
+   • Position-Specific: 0
+   • Target Share: 119/119 players have values (avg: 1.018)
+Loading current data for K with updated team assignments...
+⚠️ No current data available for K, falling back to historical data
+2023 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+2024 done.
+Downcasting floats.
+Downcasting floats.
+2022 done.
+Downcasting floats.
+Downcasting floats.
+⚠️ No K players found in historical data
+⚠️ No data available for K, skipping...
+
+🔢 VOR Calculation Summary:
+==================================================
+   📊 Applied schedule adjustments for QB (avg: -0.015)
+QB:
+  Replacement level: 13 (#13: 35.6 pts)
+  Scarcity multiplier: 0.9x
+  Top player: Lamar Jackson (46.8 pts)
+  Raw VOR: 11.1 → Adjusted VOR: 10.0 → Schedule-Adj VOR: 9.7
+
+   ⚠️ No SOS data available for RB, using regular VOR
+RB:
+  Replacement level: 30 (#30: 23.3 pts)
+  Scarcity multiplier: 1.5x
+  Top player: Jahmyr Gibbs (37.8 pts)
+  Raw VOR: 14.4 → Adjusted VOR: 21.6 → Schedule-Adj VOR: 21.6
+
+   ⚠️ No SOS data available for WR, using regular VOR
+WR:
+  Replacement level: 30 (#30: 21.0 pts)
+  Scarcity multiplier: 1.2x
+  Top player: Ja'Marr Chase (37.6 pts)
+  Raw VOR: 16.6 → Adjusted VOR: 19.9 → Schedule-Adj VOR: 19.9
+
+   ⚠️ No SOS data available for TE, using regular VOR
+TE:
+  Replacement level: 13 (#13: 15.8 pts)
+  Scarcity multiplier: 1.4x
+  Top player: Brock Bowers (24.6 pts)
+  Raw VOR: 8.8 → Adjusted VOR: 12.3 → Schedule-Adj VOR: 12.3
+
+🎯 Using schedule-adjusted VOR for overall rankings
+Saved overall rankings to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/draft_lists/overall_rankings_20250803_190432.csv
+✅ Contains 569 players with real NFL names
+Draft cheatsheet saved to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/draft_lists/draft_cheatsheet_enhanced_20250803_190432.txt
+Enhanced draft board saved to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/draft_lists/draft_board_enhanced_20250803_190432.png
+VOR tier heatmap saved to /Users/jihoonsong/Documents/projects/fantasy_draft_engine/data/draft_lists/vor_tier_heatmap_20250803_190432.png
+
+============================================================
+🎯 DRAFT RANKINGS GENERATION COMPLETE!
+============================================================
+📊 Features Used:
+   ✅ Phase 2 Matchup Intelligence
+   ✅ Schedule Strength Analysis (4 weeks)
+   ✅ Environmental Factors (weather, altitude, domes)
+   ✅ Situational Adjustments (venue effects)
+   ✅ Schedule-Adjusted VOR Rankings
+   ✅ Advanced Position-Specific Features
+
+📈 Rankings Generated:
+   Total Players: 569
+   Matchup Features: 0
+   VOR Method: Schedule-Adjusted
+
+🎉 Ready for your fantasy draft!

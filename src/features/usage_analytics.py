@@ -39,6 +39,45 @@ class UsageAnalyticsCalculator:
         self.snap_data = None
         self.pbp_data = None
         
+    def _get_column_mapping(self, data: pd.DataFrame) -> Dict[str, Optional[str]]:
+        """
+        Get mapping of standard column names to actual column names in the data.
+        
+        Args:
+            data: DataFrame to examine
+            
+        Returns:
+            Dict mapping standard names to actual column names (None if not found)
+        """
+        available_cols = data.columns.tolist()
+        mapping = {}
+        
+        # Player name column
+        player_name_col = None
+        for col in available_cols:
+            if col.lower() in ['player_name', 'full_name', 'player', 'name']:
+                player_name_col = col
+                break
+        mapping['player_name'] = player_name_col
+        
+        # Team column
+        team_col = None
+        for col in available_cols:
+            if col.lower() in ['team', 'recent_team', 'posteam', 'current_team']:
+                team_col = col
+                break
+        mapping['team'] = team_col
+        
+        # Games column
+        games_col = None
+        for col in available_cols:
+            if col.lower() in ['games', 'games_played', 'g']:
+                games_col = col
+                break
+        mapping['games'] = games_col
+        
+        return mapping
+        
     def load_snap_count_data(self) -> pd.DataFrame:
         """
         Load snap count data from nfl_data_py.
@@ -88,35 +127,109 @@ class UsageAnalyticsCalculator:
             return player_data
         
         try:
-            # Aggregate snap counts by player for the season
-            snap_summary = self.snap_data.groupby(['player', 'team']).agg({
-                'offense_snaps': 'sum',  # Total offensive snaps
-                'offense_pct': 'mean'  # Average snap percentage
-            }).reset_index()
+            # Check what columns are actually available
+            available_cols = self.snap_data.columns.tolist()
+            logger.info(f"Available snap data columns: {available_cols}")
             
-            snap_summary.columns = ['player_name', 'team', 'total_snaps', 'avg_snap_share']
+            # Use available columns with fallbacks
+            snap_col = None
+            pct_col = None
+            player_col = None
+            team_col = None
+            
+            # Find the right columns
+            for col in available_cols:
+                if 'snap' in col.lower() and 'offense' in col.lower():
+                    snap_col = col
+                elif 'pct' in col.lower() or 'percentage' in col.lower():
+                    pct_col = col
+                elif col.lower() in ['player', 'player_name', 'full_name']:
+                    player_col = col
+                elif col.lower() in ['team', 'recent_team', 'posteam']:
+                    team_col = col
+            
+            if not all([player_col, team_col]):
+                logger.warning("Missing required columns for snap aggregation")
+                # Add empty columns and return
+                player_data['total_snaps'] = 0
+                player_data['snap_share'] = 0
+                player_data['snaps_per_game'] = 0
+                return player_data
+            
+            # Validate player_data has required columns
+            required_cols_mapping = self._get_column_mapping(player_data)
+            if not required_cols_mapping['player_name'] or not required_cols_mapping['team']:
+                logger.warning("Player data missing required columns (player_name, team)")
+                # Add empty columns and return
+                player_data['total_snaps'] = 0
+                player_data['snap_share'] = 0
+                player_data['snaps_per_game'] = 0
+                return player_data
+            
+            # Aggregate with available columns
+            agg_dict = {}
+            if snap_col:
+                agg_dict[snap_col] = 'sum'
+            if pct_col:
+                agg_dict[pct_col] = 'mean'
+            
+            if not agg_dict:
+                logger.warning("No usable snap columns found")
+                # Add empty columns and return
+                player_data['total_snaps'] = 0
+                player_data['snap_share'] = 0  
+                player_data['snaps_per_game'] = 0
+                return player_data
+            
+            # Aggregate snap counts by player for the season
+            snap_summary = self.snap_data.groupby([player_col, team_col]).agg(agg_dict).reset_index()
+            
+            # Rename columns to standard names
+            new_cols = [player_col, team_col]
+            if snap_col:
+                new_cols.append('total_snaps')
+            if pct_col:
+                new_cols.append('avg_snap_share')
+            
+            snap_summary.columns = new_cols[:len(snap_summary.columns)]
             
             # Convert snap share to decimal (if it's in percentage form)
             if snap_summary['avg_snap_share'].max() > 1:
                 snap_summary['avg_snap_share'] = snap_summary['avg_snap_share'] / 100
             
-            # Calculate snaps per game
-            snap_summary = snap_summary.merge(
-                player_data[['player_name', 'team', 'games']], 
-                on=['player_name', 'team'], 
-                how='left'
-            )
+            # Calculate snaps per game using correct column names
+            player_name_col = required_cols_mapping['player_name']
+            team_col = required_cols_mapping['team']
+            games_col = required_cols_mapping['games']
             
-            snap_summary['snaps_per_game'] = np.where(
-                snap_summary['games'] > 0,
-                snap_summary['total_snaps'] / snap_summary['games'],
-                0
-            )
+            if games_col and games_col in player_data.columns:
+                merge_cols = [player_name_col, team_col, games_col]
+                snap_summary = snap_summary.merge(
+                    player_data[merge_cols].rename(columns={
+                        player_name_col: 'player_name',
+                        team_col: 'team',
+                        games_col: 'games'
+                    }), 
+                    on=['player_name', 'team'], 
+                    how='left'
+                )
+                
+                snap_summary['snaps_per_game'] = np.where(
+                    snap_summary['games'] > 0,
+                    snap_summary['total_snaps'] / snap_summary['games'],
+                    0
+                )
+            else:
+                # No games data available, set snaps per game to 0
+                snap_summary['snaps_per_game'] = 0
             
-            # Merge with player data
+            # Merge with player data using correct column names
             result = player_data.merge(
-                snap_summary[['player_name', 'team', 'total_snaps', 'avg_snap_share', 'snaps_per_game']],
-                on=['player_name', 'team'],
+                snap_summary[['player_name', 'team', 'total_snaps', 'avg_snap_share', 'snaps_per_game']].rename(columns={
+                    'player_name': player_name_col,
+                    'team': team_col
+                }),
+                on=[player_name_col, team_col],
                 how='left'
             )
             
@@ -237,16 +350,28 @@ class UsageAnalyticsCalculator:
                 0, 1
             )
             
-            # Merge with player data
-            result = player_data.merge(
-                route_data[['receiver_player_name', 'posteam', 'route_participation_rate']].rename(
-                    columns={'receiver_player_name': 'player_name', 'posteam': 'team'}
-                ),
-                on=['player_name', 'team'],
-                how='left'
-            )
+            # Merge with player data using correct column names
+            cols_mapping = self._get_column_mapping(player_data)
+            player_name_col = cols_mapping['player_name']
+            team_col = cols_mapping['team']
             
-            result['route_participation_advanced'] = result['route_participation_rate'].fillna(0)
+            if player_name_col and team_col:
+                result = player_data.merge(
+                    route_data[['receiver_player_name', 'posteam', 'route_participation_rate']].rename(
+                        columns={'receiver_player_name': player_name_col, 'posteam': team_col}
+                    ),
+                    on=[player_name_col, team_col],
+                    how='left'
+                )
+                
+                result['route_participation_advanced'] = result['route_participation_rate'].fillna(0)
+                # Clean up temporary column
+                if 'route_participation_rate' in result.columns:
+                    result = result.drop(columns=['route_participation_rate'])
+            else:
+                logger.warning("Cannot merge route participation - missing player_name or team columns")
+                player_data['route_participation_advanced'] = 0
+                result = player_data
             
             logger.info(f"Calculated advanced route participation for {len(result)} players")
             return result
@@ -329,14 +454,25 @@ class UsageAnalyticsCalculator:
                     
                     total_usage[situation_name] = total_usage[f'{situation_name}_targets'] + total_usage[f'{situation_name}_carries']
                     
-                    # Merge with result
-                    result = result.merge(
-                        total_usage[['player_name', 'posteam', situation_name]].rename(columns={'posteam': 'team'}),
-                        on=['player_name', 'team'],
-                        how='left'
-                    )
+                    # Merge with result using correct column names
+                    cols_mapping = self._get_column_mapping(result)
+                    player_name_col = cols_mapping['player_name']
+                    team_col = cols_mapping['team']
                     
-                    result[situation_name] = result[situation_name].fillna(0)
+                    if player_name_col and team_col:
+                        result = result.merge(
+                            total_usage[['player_name', 'posteam', situation_name]].rename(columns={
+                                'player_name': player_name_col, 
+                                'posteam': team_col
+                            }),
+                            on=[player_name_col, team_col],
+                            how='left'
+                        )
+                        
+                        result[situation_name] = result[situation_name].fillna(0)
+                    else:
+                        logger.warning(f"Cannot merge {situation_name} - missing player_name or team columns")
+                        result[situation_name] = 0
                 else:
                     result[situation_name] = 0
             

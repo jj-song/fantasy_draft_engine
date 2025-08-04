@@ -64,40 +64,54 @@ class ScheduleStrengthCalculator:
         if seasons is None:
             seasons = [self.current_season]
             
-        logger.info(f"Loading schedule data for seasons: {seasons}")
+        logger.info(f"🗓️  LOADING SCHEDULE DATA")
+        logger.info(f"   Seasons requested: {seasons}")
         
         try:
             schedules = nfl.import_schedules(seasons)
             
+            if schedules.empty:
+                logger.error(f"❌ SCHEDULE LOAD FAILED: No schedule data returned for seasons {seasons}")
+                return pd.DataFrame()
+            
+            logger.info(f"✅ Schedule data loaded successfully: {len(schedules)} games")
+            logger.info(f"   Seasons found: {sorted(schedules['season'].unique())}")
+            logger.info(f"   Weeks available: {sorted(schedules['week'].unique())}")
+            
+            # Validate we have the expected teams
+            teams_found = set(schedules['home_team'].unique()) | set(schedules['away_team'].unique())
+            logger.info(f"   Teams in schedule: {len(teams_found)} - {sorted(list(teams_found))[:5]}...")
+            
             # Clean and standardize schedule data
-            schedules = schedules.rename(columns={
-                'game_id': 'game_id',
-                'season': 'season',
-                'game_type': 'game_type',
-                'week': 'week',
-                'gameday': 'game_date',
-                'weekday': 'day_of_week',
-                'gametime': 'game_time',
-                'away_team': 'away_team',
-                'away_score': 'away_score',
-                'home_team': 'home_team',
-                'home_score': 'home_score',
-                'location': 'location',
-                'result': 'result',
-                'total': 'total_points',
-                'overtime': 'overtime',
-                'old_game_id': 'old_game_id',
-                'gsis': 'gsis',
-                'nfl_detail_id': 'nfl_detail_id',
-                'pfr': 'pfr',
-                'pff': 'pff',
-                'espn': 'espn',
-                'ftn': 'ftn',
-                'away_rest': 'away_rest',
-                'home_rest': 'home_rest',
-                'away_moneyline': 'away_moneyline',
-                'home_moneyline': 'home_moneyline',
-                'spread_line': 'spread_line',
+            try:
+                schedules_clean = schedules.rename(columns={
+                    'game_id': 'game_id',
+                    'season': 'season',
+                    'game_type': 'game_type',
+                    'week': 'week',
+                    'gameday': 'game_date',
+                    'weekday': 'day_of_week',
+                    'gametime': 'game_time',
+                    'away_team': 'away_team',
+                    'away_score': 'away_score',
+                    'home_team': 'home_team',
+                    'home_score': 'home_score',
+                    'location': 'location',
+                    'result': 'result',
+                    'total': 'total_points',
+                    'overtime': 'overtime',
+                    'old_game_id': 'old_game_id',
+                    'gsis': 'gsis',
+                    'nfl_detail_id': 'nfl_detail_id',
+                    'pfr': 'pfr',
+                    'pff': 'pff',
+                    'espn': 'espn',
+                    'ftn': 'ftn',
+                    'away_rest': 'away_rest',
+                    'home_rest': 'home_rest',
+                    'away_moneyline': 'away_moneyline',
+                    'home_moneyline': 'home_moneyline',
+                    'spread_line': 'spread_line',
                 'away_spread_odds': 'away_spread_odds',
                 'home_spread_odds': 'home_spread_odds',
                 'total_line': 'total_line',
@@ -108,24 +122,36 @@ class ScheduleStrengthCalculator:
                 'surface': 'field_surface',
                 'temp': 'temperature',
                 'wind': 'wind_speed'
-            })
-            
-            # Filter to regular season games only
-            schedules = schedules[schedules['game_type'] == 'REG'].copy()
-            
-            # Add rest advantages
-            schedules['away_rest_advantage'] = schedules['away_rest'] - 7
-            schedules['home_rest_advantage'] = schedules['home_rest'] - 7
-            
-            # Add primetime indicators
-            schedules['is_primetime'] = schedules['day_of_week'].isin(['Thursday', 'Sunday Night', 'Monday'])
-            
-            self.schedule_data = schedules
-            logger.info(f"Loaded {len(schedules)} schedule records")
-            return schedules
+                })
+                
+                logger.info(f"✅ Column standardization successful")
+                
+                # Filter to regular season games only
+                reg_season_games = schedules_clean[schedules_clean['game_type'] == 'REG'].copy()
+                logger.info(f"   Regular season games: {len(reg_season_games)}")
+                
+                # Add derived fields
+                reg_season_games['away_rest_advantage'] = reg_season_games['away_rest'] - 7
+                reg_season_games['home_rest_advantage'] = reg_season_games['home_rest'] - 7
+                
+                # Add primetime indicators  
+                reg_season_games['is_primetime'] = reg_season_games['day_of_week'].isin(['Thursday', 'Sunday Night', 'Monday'])
+                
+                self.schedule_data = reg_season_games
+                logger.info(f"✅ Schedule data processing complete: {len(reg_season_games)} games")
+                return reg_season_games
+                
+            except Exception as column_error:
+                logger.error(f"❌ Column processing failed: {column_error}")
+                logger.warning(f"   Using raw schedule data instead")
+                self.schedule_data = schedules
+                return schedules
             
         except Exception as e:
-            logger.error(f"Error loading schedule data: {e}")
+            logger.error(f"❌ SCHEDULE DATA LOAD FAILED: {e}")
+            logger.error(f"   This will cause SOS calculations to fail")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
             return pd.DataFrame()
     
     def calculate_defensive_rankings(self, seasons: List[int] = None, window_size: int = 8) -> pd.DataFrame:
@@ -433,6 +459,37 @@ class ScheduleStrengthCalculator:
             logger.error(f"Error calculating rest advantages: {e}")
             return pd.DataFrame()
     
+    def _get_fallback_sos_metrics(self, team: str, position: str) -> Dict[str, float]:
+        """
+        Generate fallback SOS metrics when primary calculation fails.
+        
+        Args:
+            team: Team abbreviation
+            position: Position
+            
+        Returns:
+            Dictionary with fallback SOS metrics (neutral/average values)
+        """
+        logger.info(f"🔧 GENERATING FALLBACK SOS METRICS for {team} {position}")
+        
+        # Return neutral/average SOS metrics
+        fallback_metrics = {
+            'sos_rating': 0.0,          # Neutral schedule strength
+            'recent_sos_rating': 0.0,   # Neutral recent strength
+            'total_games': 4,           # Assume standard 4-week window
+            'tough_matchups': 1,        # Assume 1 tough matchup
+            'easy_matchups': 1,         # Assume 1 easy matchup
+            'home_games': 2,            # Assume even home/away split
+            'away_games': 2,
+            'home_game_pct': 0.5,
+            'avg_opponent_def_rating': 0.0,  # League average
+            'sos_tier': 'Average',      # Middle tier
+            'rest_advantage': 0.0       # No rest advantage
+        }
+        
+        logger.info(f"   ✅ Using fallback SOS rating: {fallback_metrics['sos_rating']}")
+        return fallback_metrics
+    
     def calculate_strength_of_schedule(
         self, 
         team: str, 
@@ -457,16 +514,40 @@ class ScheduleStrengthCalculator:
         if season is None:
             season = self.current_season
             
+        logger.info(f"🎯 CALCULATING SOS")
+        logger.info(f"   Team: {team}, Position: {position}")
+        logger.info(f"   Season: {season}, Weeks: {start_week}-{end_week}")
+        
         # Load required data if not already loaded
         if self.schedule_data is None:
-            self.load_schedule_data([season])
+            logger.info(f"   Loading schedule data for season {season}")
+            try:
+                self.load_schedule_data([season])
+                if self.schedule_data is None or self.schedule_data.empty:
+                    logger.error(f"❌ Schedule data load failed for season {season}")
+                    return self._get_fallback_sos_metrics(team, position)
+                else:
+                    logger.info(f"   ✅ Schedule data loaded: {len(self.schedule_data)} games")
+            except Exception as e:
+                logger.error(f"❌ Schedule data load error: {e}")
+                return self._get_fallback_sos_metrics(team, position)
         
         if self.defensive_rankings is None:
-            self.calculate_defensive_rankings()
+            logger.info(f"   Loading defensive rankings")
+            try:
+                self.calculate_defensive_rankings()
+                if self.defensive_rankings is None or self.defensive_rankings.empty:
+                    logger.error(f"❌ Defensive rankings calculation failed")
+                    return self._get_fallback_sos_metrics(team, position)
+                else:
+                    logger.info(f"   ✅ Defensive rankings loaded: {len(self.defensive_rankings)} records")
+            except Exception as e:
+                logger.error(f"❌ Defensive rankings error: {e}")
+                return self._get_fallback_sos_metrics(team, position)
         
         if self.schedule_data is None or self.schedule_data.empty:
-            logger.warning(f"No schedule data available for SOS calculation")
-            return {}
+            logger.error(f"❌ No schedule data available for SOS calculation")
+            return self._get_fallback_sos_metrics(team, position)
         
         try:
             # Get team's upcoming schedule
@@ -478,8 +559,10 @@ class ScheduleStrengthCalculator:
             ].copy()
             
             if team_schedule.empty:
-                logger.warning(f"No schedule found for team {team} in weeks {start_week}-{end_week}")
-                return {}
+                logger.error(f"❌ No schedule found for team {team} in weeks {start_week}-{end_week}")
+                logger.error(f"   Available teams in schedule: {sorted(set(self.schedule_data['home_team'].unique()) | set(self.schedule_data['away_team'].unique()))}")
+                logger.error(f"   Available weeks: {sorted(self.schedule_data['week'].unique())}")
+                return self._get_fallback_sos_metrics(team, position)
             
             # Identify opponents
             team_schedule['opponent'] = np.where(
@@ -541,18 +624,24 @@ class ScheduleStrengthCalculator:
                         'sos_tier': self._categorize_sos(sos_rating)
                     }
                     
-                    logger.info(f"Calculated SOS for {team} {position}: {sos_rating:.3f} ({sos_metrics['sos_tier']})")
+                    logger.info(f"✅ SOS CALCULATION SUCCESSFUL")
+                    logger.info(f"   {team} {position} SOS Rating: {sos_rating:.3f} ({sos_metrics['sos_tier']})")
+                    logger.info(f"   Games: {len(team_schedule)} | Tough: {tough_matchups} | Easy: {easy_matchups}")
+                    logger.info(f"   Home: {home_games} | Away: {away_games}")
                     return sos_metrics
                 else:
-                    logger.warning(f"No defensive rating data available for position {position}")
-                    return {}
+                    logger.error(f"❌ No defensive rating column '{def_rating_col}' found")
+                    logger.error(f"   Available columns: {list(team_schedule.columns)}")
+                    return self._get_fallback_sos_metrics(team, position)
             else:
-                logger.warning("No defensive rankings data available")
-                return {}
+                logger.error(f"❌ No defensive rankings data available for SOS calculation")
+                return self._get_fallback_sos_metrics(team, position)
                 
         except Exception as e:
-            logger.error(f"Error calculating SOS for {team} {position}: {e}")
-            return {}
+            logger.error(f"❌ SOS CALCULATION FAILED for {team} {position}: {e}")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
+            return self._get_fallback_sos_metrics(team, position)
     
     def _categorize_sos(self, sos_rating: float) -> str:
         """Categorize SOS rating into tiers."""

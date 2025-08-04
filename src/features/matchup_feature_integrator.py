@@ -94,38 +94,105 @@ class MatchupFeatureIntegrator:
         Returns:
             DataFrame with matchup features added
         """
+        logger.info(f"🎯 INTEGRATING MATCHUP FEATURES")
+        logger.info(f"   Input data shape: {player_features_df.shape}")
+        logger.info(f"   Columns available: {len(player_features_df.columns)}")
+        
         if weeks_to_analyze is None:
             weeks_to_analyze = list(range(1, self.config.weeks_ahead_sos + 1))
         
-        logger.info(f"Integrating matchup features for {len(player_features_df)} players")
+        logger.info(f"   Weeks to analyze: {weeks_to_analyze}")
+        logger.info(f"   Season for features: {self.season}")
         
-        # Make a copy to avoid modifying original data
-        enhanced_df = player_features_df.copy()
+        try:
+            # Make a copy to avoid modifying original data
+            enhanced_df = player_features_df.copy()
+            
+            # Ensure required columns exist
+            required_cols = ['player_id', 'position', 'team']
+            missing_cols = [col for col in required_cols if col not in enhanced_df.columns]
+            if missing_cols:
+                logger.error(f"❌ Required columns missing: {missing_cols}")
+                logger.error(f"   Available columns: {list(enhanced_df.columns[:10])}...")  # Show first 10
+                return enhanced_df
+            
+            logger.info(f"   ✅ Required columns found: {required_cols}")
+            
+            # Validate data format
+            logger.info(f"   Validating data format...")
+            teams_found = enhanced_df['team'].dropna().unique()
+            positions_found = enhanced_df['position'].dropna().unique()
+            logger.info(f"   Teams in data: {len(teams_found)} - {sorted(teams_found)}")
+            logger.info(f"   Positions in data: {len(positions_found)} - {sorted(positions_found)}")
+            
+            if len(teams_found) == 0:
+                logger.error(f"❌ No valid teams found in data")
+                return enhanced_df
+            
+            if len(positions_found) == 0:
+                logger.error(f"❌ No valid positions found in data")
+                return enhanced_df
         
-        # Ensure required columns exist
-        required_cols = ['player_id', 'position', 'team']
-        missing_cols = [col for col in required_cols if col not in enhanced_df.columns]
-        if missing_cols:
-            logger.error(f"Required columns missing: {missing_cols}")
+            # Add schedule strength features
+            if self.config.include_schedule_strength:
+                logger.info(f"   Adding schedule strength features...")
+                try:
+                    enhanced_df = self._add_schedule_strength_features(enhanced_df, weeks_to_analyze)
+                    logger.info(f"   ✅ Schedule strength features added successfully")
+                except Exception as e:
+                    logger.error(f"   ❌ Schedule strength features failed: {e}")
+                    import traceback
+                    logger.error(f"   Full traceback: {traceback.format_exc()}")
+            else:
+                logger.info(f"   Schedule strength features disabled")
+            
+            # Add environmental features
+            if self.config.include_environmental_factors:
+                logger.info(f"   Adding environmental features...")
+                try:
+                    enhanced_df = self._add_environmental_features(enhanced_df, weeks_to_analyze)
+                    logger.info(f"   ✅ Environmental features added successfully")
+                except Exception as e:
+                    logger.error(f"   ❌ Environmental features failed: {e}")
+                    import traceback
+                    logger.error(f"   Full traceback: {traceback.format_exc()}")
+            else:
+                logger.info(f"   Environmental features disabled")
+            
+            # Add situational features
+            if self.config.include_situational_adjustments:
+                logger.info(f"   Adding situational features...")
+                try:
+                    enhanced_df = self._add_situational_features(enhanced_df, weeks_to_analyze)
+                    logger.info(f"   ✅ Situational features added successfully")
+                except Exception as e:
+                    logger.error(f"   ❌ Situational features failed: {e}")
+                    import traceback
+                    logger.error(f"   Full traceback: {traceback.format_exc()}")
+            else:
+                logger.info(f"   Situational features disabled")
+            
+            # Add derived matchup metrics
+            logger.info(f"   Adding derived matchup metrics...")
+            try:
+                enhanced_df = self._add_derived_matchup_metrics(enhanced_df)
+                logger.info(f"   ✅ Derived matchup metrics added successfully")
+            except Exception as e:
+                logger.error(f"   ❌ Derived matchup metrics failed: {e}")
+                import traceback
+                logger.error(f"   Full traceback: {traceback.format_exc()}")
+            
+            logger.info(f"✅ MATCHUP FEATURES INTEGRATION COMPLETE")
+            logger.info(f"   Input columns: {len(player_features_df.columns)}")
+            logger.info(f"   Output columns: {len(enhanced_df.columns)}")
+            logger.info(f"   Features added: {len(enhanced_df.columns) - len(player_features_df.columns)}")
             return enhanced_df
-        
-        # Add schedule strength features
-        if self.config.include_schedule_strength:
-            enhanced_df = self._add_schedule_strength_features(enhanced_df, weeks_to_analyze)
-        
-        # Add environmental features
-        if self.config.include_environmental_factors:
-            enhanced_df = self._add_environmental_features(enhanced_df, weeks_to_analyze)
-        
-        # Add situational features
-        if self.config.include_situational_adjustments:
-            enhanced_df = self._add_situational_features(enhanced_df, weeks_to_analyze)
-        
-        # Add derived matchup metrics
-        enhanced_df = self._add_derived_matchup_metrics(enhanced_df)
-        
-        logger.info(f"Successfully integrated matchup features. Total columns: {len(enhanced_df.columns)}")
-        return enhanced_df
+            
+        except Exception as e:
+            logger.error(f"❌ MATCHUP FEATURE INTEGRATION FAILED: {e}")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
+            return player_features_df  # Return original data if integration fails
     
     def _add_schedule_strength_features(
         self, 
@@ -133,65 +200,93 @@ class MatchupFeatureIntegrator:
         weeks: List[int]
     ) -> pd.DataFrame:
         """Add schedule strength features for each player."""
-        logger.info("Adding schedule strength features")
+        logger.info("📊 ADDING SCHEDULE STRENGTH FEATURES")
+        logger.info(f"   Weeks to analyze: {weeks}")
+        logger.info(f"   Season: {self.season}")
         
-        result = df.copy()
-        
-        # Initialize SOS columns
-        sos_columns = [
-            'sos_rating', 'sos_tier', 'tough_matchups', 'easy_matchups',
-            'home_game_pct', 'avg_opponent_def_rating'
-        ]
-        
-        for col in sos_columns:
-            result[f'next_{self.config.weeks_ahead_sos}w_{col}'] = np.nan
-        
-        # Calculate SOS for each team-position combination
-        unique_team_positions = result[['team', 'position']].drop_duplicates()
-        
-        for _, row in unique_team_positions.iterrows():
-            team = row['team']
-            position = row['position']
+        try:
+            result = df.copy()
             
-            try:
-                # Get SOS metrics for this team-position combination
-                sos_metrics = self.sos_calculator.calculate_strength_of_schedule(
-                    team=team,
-                    position=position,
-                    start_week=min(weeks),
-                    end_week=max(weeks),
-                    season=self.season
-                )
+            # Initialize SOS columns
+            sos_columns = [
+                'sos_rating', 'sos_tier', 'tough_matchups', 'easy_matchups',
+                'home_game_pct', 'avg_opponent_def_rating'
+            ]
+            
+            logger.info(f"   Initializing {len(sos_columns)} SOS columns...")
+            for col in sos_columns:
+                result[f'next_{self.config.weeks_ahead_sos}w_{col}'] = np.nan
+            
+            # Calculate SOS for each team-position combination
+            unique_team_positions = result[['team', 'position']].drop_duplicates()
+            logger.info(f"   Found {len(unique_team_positions)} unique team-position combinations")
+            
+            successful_calculations = 0
+            failed_calculations = 0
+            
+            for idx, row in unique_team_positions.iterrows():
+                team = row['team']
+                position = row['position']
                 
-                if sos_metrics:
-                    # Apply SOS metrics to all players of this team-position
-                    mask = (result['team'] == team) & (result['position'] == position)
+                try:
+                    logger.info(f"   Calculating SOS for {team} {position}...")
+                    # Get SOS metrics for this team-position combination
+                    sos_metrics = self.sos_calculator.calculate_strength_of_schedule(
+                        team=team,
+                        position=position,
+                        start_week=min(weeks),
+                        end_week=max(weeks),
+                        season=self.season
+                    )
                     
-                    for metric, value in sos_metrics.items():
-                        col_name = f'next_{self.config.weeks_ahead_sos}w_{metric}'
-                        if col_name in result.columns:
-                            result.loc[mask, col_name] = value
-                            
-                    logger.debug(f"Added SOS features for {team} {position}: {sos_metrics.get('sos_rating', 0):.3f}")
-                
-            except Exception as e:
-                logger.warning(f"Could not calculate SOS for {team} {position}: {e}")
-                continue
-        
-        # Add SOS tier encodings for ML models
-        if f'next_{self.config.weeks_ahead_sos}w_sos_tier' in result.columns:
-            tier_encoding = {
-                'Very Easy': 2,
-                'Easy': 1, 
-                'Average': 0,
-                'Difficult': -1,
-                'Very Difficult': -2
-            }
-            result[f'next_{self.config.weeks_ahead_sos}w_sos_tier_encoded'] = (
-                result[f'next_{self.config.weeks_ahead_sos}w_sos_tier'].map(tier_encoding).fillna(0)
-            )
-        
-        return result
+                    if sos_metrics:
+                        # Apply SOS metrics to all players of this team-position
+                        mask = (result['team'] == team) & (result['position'] == position)
+                        players_affected = mask.sum()
+                        
+                        logger.info(f"     ✅ SOS calculated: {sos_metrics.get('sos_rating', 0):.3f} ({sos_metrics.get('sos_tier', 'Unknown')})")
+                        logger.info(f"     Applying to {players_affected} players...")
+                        
+                        for metric, value in sos_metrics.items():
+                            col_name = f'next_{self.config.weeks_ahead_sos}w_{metric}'
+                            if col_name in result.columns:
+                                result.loc[mask, col_name] = value
+                        
+                        successful_calculations += 1
+                    else:
+                        logger.warning(f"     ⚠️  No SOS metrics returned for {team} {position}")
+                        failed_calculations += 1
+                    
+                except Exception as e:
+                    logger.error(f"     ❌ SOS calculation failed for {team} {position}: {e}")
+                    failed_calculations += 1
+                    continue
+            
+            logger.info(f"   ✅ Schedule strength features complete")
+            logger.info(f"   Successful: {successful_calculations}, Failed: {failed_calculations}")
+            
+            # Add SOS tier encodings for ML models
+            logger.info(f"   Adding SOS tier encodings...")
+            if f'next_{self.config.weeks_ahead_sos}w_sos_tier' in result.columns:
+                tier_encoding = {
+                    'Very Easy': 2,
+                    'Easy': 1, 
+                    'Average': 0,
+                    'Difficult': -1,
+                    'Very Difficult': -2
+                }
+                result[f'next_{self.config.weeks_ahead_sos}w_sos_tier_encoded'] = (
+                    result[f'next_{self.config.weeks_ahead_sos}w_sos_tier'].map(tier_encoding).fillna(0)
+                )
+                logger.info(f"   ✅ SOS tier encodings added")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"❌ Schedule strength features failed: {e}")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
+            return df
     
     def _add_environmental_features(
         self, 
@@ -199,46 +294,79 @@ class MatchupFeatureIntegrator:
         weeks: List[int]
     ) -> pd.DataFrame:
         """Add environmental and venue features."""
-        logger.info("Adding environmental features")
+        logger.info("🌍 ADDING ENVIRONMENTAL FEATURES")
+        logger.info(f"   Weeks to analyze: {weeks}")
         
-        result = df.copy()
-        
-        # Initialize environmental columns
-        env_columns = [
-            'home_games_pct', 'dome_games_pct', 'high_altitude_games_pct',
-            'cold_weather_games_pct', 'avg_venue_factor', 'travel_impact_factor'
-        ]
-        
-        for col in env_columns:
-            result[f'next_{self.config.weeks_ahead_sos}w_{col}'] = np.nan
-        
-        # Calculate environmental factors for each team
-        unique_teams = result['team'].unique()
-        
-        for team in unique_teams:
-            try:
-                # Get team's upcoming schedule
-                team_env_metrics = self._calculate_team_environmental_metrics(
-                    team, weeks
-                )
-                
-                if team_env_metrics:
-                    # Apply to all players on this team
-                    team_mask = result['team'] == team
+        try:
+            result = df.copy()
+            
+            # Initialize environmental columns
+            env_columns = [
+                'home_games_pct', 'dome_games_pct', 'high_altitude_games_pct',
+                'cold_weather_games_pct', 'avg_venue_factor', 'travel_impact_factor'
+            ]
+            
+            logger.info(f"   Initializing {len(env_columns)} environmental columns...")
+            for col in env_columns:
+                result[f'next_{self.config.weeks_ahead_sos}w_{col}'] = np.nan
+            
+            # Calculate environmental factors for each team
+            unique_teams = result['team'].unique()
+            logger.info(f"   Found {len(unique_teams)} unique teams")
+            
+            successful_teams = 0
+            failed_teams = 0
+            
+            for team in unique_teams:
+                try:
+                    logger.info(f"   Calculating environmental factors for {team}...")
+                    # Get team's upcoming schedule
+                    team_env_metrics = self._calculate_team_environmental_metrics(
+                        team, weeks
+                    )
                     
-                    for metric, value in team_env_metrics.items():
-                        col_name = f'next_{self.config.weeks_ahead_sos}w_{metric}'
-                        if col_name in result.columns:
-                            result.loc[team_mask, col_name] = value
-                
+                    if team_env_metrics:
+                        # Apply to all players on this team
+                        team_mask = result['team'] == team
+                        players_affected = team_mask.sum()
+                        
+                        logger.info(f"     ✅ Environmental factors calculated for {team}")
+                        logger.info(f"     Dome games: {team_env_metrics.get('dome_games_pct', 0):.1%}")
+                        logger.info(f"     Home games: {team_env_metrics.get('home_games_pct', 0):.1%}")
+                        logger.info(f"     Applying to {players_affected} players...")
+                        
+                        for metric, value in team_env_metrics.items():
+                            col_name = f'next_{self.config.weeks_ahead_sos}w_{metric}'
+                            if col_name in result.columns:
+                                result.loc[team_mask, col_name] = value
+                        
+                        successful_teams += 1
+                    else:
+                        logger.warning(f"     ⚠️  No environmental metrics returned for {team}")
+                        failed_teams += 1
+                    
+                except Exception as e:
+                    logger.error(f"     ❌ Environmental calculation failed for {team}: {e}")
+                    failed_teams += 1
+                    continue
+            
+            logger.info(f"   Environmental factors complete: {successful_teams} successful, {failed_teams} failed")
+            
+            # Add position-specific environmental adjustments
+            logger.info(f"   Adding position-specific environmental adjustments...")
+            try:
+                result = self._add_position_specific_environmental_features(result)
+                logger.info(f"   ✅ Position-specific environmental features added")
             except Exception as e:
-                logger.warning(f"Could not calculate environmental factors for {team}: {e}")
-                continue
-        
-        # Add position-specific environmental adjustments
-        result = self._add_position_specific_environmental_features(result)
-        
-        return result
+                logger.error(f"   ❌ Position-specific environmental features failed: {e}")
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"❌ Environmental features failed: {e}")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
+            return df
     
     def _calculate_team_environmental_metrics(
         self, 
@@ -246,97 +374,118 @@ class MatchupFeatureIntegrator:
         weeks: List[int]
     ) -> Dict[str, float]:
         """Calculate environmental metrics for a team's upcoming schedule."""
+        logger.info(f"       🌍 Calculating environmental metrics for {team}")
+        logger.info(f"       Weeks: {weeks}, Season: {self.season}")
         
-        # Load schedule data if not already loaded
-        if self.sos_calculator.schedule_data is None:
-            self.sos_calculator.load_schedule_data([self.season])
-        
-        if self.sos_calculator.schedule_data is None or self.sos_calculator.schedule_data.empty:
-            return {}
-        
-        # Get team's schedule for the specified weeks
-        schedule = self.sos_calculator.schedule_data
-        team_schedule = schedule[
-            (schedule['season'] == self.season) &
-            (schedule['week'].isin(weeks)) &
-            ((schedule['away_team'] == team) | (schedule['home_team'] == team))
-        ].copy()
-        
-        if team_schedule.empty:
-            return {}
-        
-        # Determine home/away status
-        team_schedule['is_home'] = team_schedule['home_team'] == team
-        team_schedule['venue_team'] = np.where(
-            team_schedule['is_home'],
-            team_schedule['home_team'],
-            team_schedule['home_team']  # Venue is always home team's stadium
-        )
-        
-        # Get stadium info for each game
-        env_metrics = {
-            'home_games_pct': team_schedule['is_home'].mean(),
-            'dome_games_pct': 0.0,
-            'high_altitude_games_pct': 0.0,
-            'cold_weather_games_pct': 0.0,
-            'avg_venue_factor': 1.0,
-            'travel_impact_factor': 1.0
-        }
-        
-        # Calculate environmental factors for each game
-        dome_games = 0
-        high_altitude_games = 0
-        cold_weather_games = 0
-        venue_factors = []
-        travel_impacts = []
-        
-        for _, game in team_schedule.iterrows():
-            venue_team = game['venue_team']
-            is_home = game['is_home']
+        try:
+            # Load schedule data if not already loaded
+            if self.sos_calculator.schedule_data is None:
+                logger.info(f"       Loading schedule data for season {self.season}...")
+                self.sos_calculator.load_schedule_data([self.season])
             
-            # Get stadium info
-            stadium_info = self.stadium_database.get_stadium_info(venue_team)
-            if stadium_info:
-                # Dome games
-                if stadium_info['is_dome']:
-                    dome_games += 1
-                
-                # High altitude (>3000 feet)
-                if stadium_info['altitude'] > 3000:
-                    high_altitude_games += 1
-                
-                # Cold weather teams (approximation based on geography)
-                cold_weather_teams = ['BUF', 'GB', 'CHI', 'DET', 'MIN', 'NE', 'NYG', 'NYJ', 'PIT', 'CLE']
-                if venue_team in cold_weather_teams:
-                    cold_weather_games += 1
-                
-                # Venue factor (dome advantage, altitude, etc.)
-                venue_factor = 1.0
-                if stadium_info['is_dome']:
-                    venue_factor += 0.02  # Slight offensive boost
-                if stadium_info['altitude'] > 3000:
-                    venue_factor += 0.01  # Slight boost for some positions
-                
-                venue_factors.append(venue_factor)
+            if self.sos_calculator.schedule_data is None or self.sos_calculator.schedule_data.empty:
+                logger.error(f"       ❌ No schedule data available")
+                return {}
             
-            # Travel impact (simplified)
-            if not is_home:
-                travel_impacts.append(0.98)  # Slight penalty for away games
-            else:
-                travel_impacts.append(1.0)
+            # Get team's schedule for the specified weeks
+            schedule = self.sos_calculator.schedule_data
+            team_schedule = schedule[
+                (schedule['season'] == self.season) &
+                (schedule['week'].isin(weeks)) &
+                ((schedule['away_team'] == team) | (schedule['home_team'] == team))
+            ].copy()
+            
+            if team_schedule.empty:
+                logger.warning(f"       ⚠️  No schedule found for {team} in weeks {weeks}")
+                logger.warning(f"       Available teams: {sorted(set(schedule['home_team'].unique()) | set(schedule['away_team'].unique()))}")
+                return {}
+                
+            logger.info(f"       ✅ Found {len(team_schedule)} games for {team}")
         
-        # Calculate averages
-        total_games = len(team_schedule)
-        if total_games > 0:
-            env_metrics.update({
-                'dome_games_pct': dome_games / total_games,
-                'high_altitude_games_pct': high_altitude_games / total_games,
-                'cold_weather_games_pct': cold_weather_games / total_games,
-                'avg_venue_factor': np.mean(venue_factors) if venue_factors else 1.0,
-                'travel_impact_factor': np.mean(travel_impacts) if travel_impacts else 1.0
-            })
+            # Determine home/away status
+            team_schedule['is_home'] = team_schedule['home_team'] == team
+            team_schedule['venue_team'] = np.where(
+                team_schedule['is_home'],
+                team_schedule['home_team'],
+                team_schedule['home_team']  # Venue is always home team's stadium
+            )
+            
+            # Get stadium info for each game
+            env_metrics = {
+                'home_games_pct': team_schedule['is_home'].mean(),
+                'dome_games_pct': 0.0,
+                'high_altitude_games_pct': 0.0,
+                'cold_weather_games_pct': 0.0,
+                'avg_venue_factor': 1.0,
+                'travel_impact_factor': 1.0
+            }
+            logger.info(f"       Home games: {env_metrics['home_games_pct']:.1%}")
+            
+            # Calculate environmental factors for each game
+            dome_games = 0
+            high_altitude_games = 0
+            cold_weather_games = 0
+            venue_factors = []
+            travel_impacts = []
+            
+            for _, game in team_schedule.iterrows():
+                venue_team = game['venue_team']
+                is_home = game['is_home']
+                
+                # Get stadium info
+                stadium_info = self.stadium_database.get_stadium_info(venue_team)
+                if stadium_info:
+                    # Dome games
+                    if stadium_info['is_dome']:
+                        dome_games += 1
+                    
+                    # High altitude (>3000 feet)
+                    if stadium_info['altitude'] > 3000:
+                        high_altitude_games += 1
+                    
+                    # Cold weather teams (approximation based on geography)
+                    cold_weather_teams = ['BUF', 'GB', 'CHI', 'DET', 'MIN', 'NE', 'NYG', 'NYJ', 'PIT', 'CLE']
+                    if venue_team in cold_weather_teams:
+                        cold_weather_games += 1
+                    
+                    # Venue factor (dome advantage, altitude, etc.)
+                    venue_factor = 1.0
+                    if stadium_info['is_dome']:
+                        venue_factor += 0.02  # Slight offensive boost
+                    if stadium_info['altitude'] > 3000:
+                        venue_factor += 0.01  # Slight boost for some positions
+                    
+                    venue_factors.append(venue_factor)
+                
+                # Travel impact (simplified)
+                if not is_home:
+                    travel_impacts.append(0.98)  # Slight penalty for away games
+                else:
+                    travel_impacts.append(1.0)
         
-        return env_metrics
+            # Calculate averages
+            total_games = len(team_schedule)
+            if total_games > 0:
+                env_metrics.update({
+                    'dome_games_pct': dome_games / total_games,
+                    'high_altitude_games_pct': high_altitude_games / total_games,
+                    'cold_weather_games_pct': cold_weather_games / total_games,
+                    'avg_venue_factor': np.mean(venue_factors) if venue_factors else 1.0,
+                    'travel_impact_factor': np.mean(travel_impacts) if travel_impacts else 1.0
+                })
+                
+                logger.info(f"       ✅ Environmental metrics calculated:")
+                logger.info(f"       Dome games: {env_metrics['dome_games_pct']:.1%}")
+                logger.info(f"       High altitude: {env_metrics['high_altitude_games_pct']:.1%}")
+                logger.info(f"       Cold weather: {env_metrics['cold_weather_games_pct']:.1%}")
+            
+            return env_metrics
+            
+        except Exception as e:
+            logger.error(f"       ❌ Environmental metrics calculation failed: {e}")
+            import traceback
+            logger.error(f"       Full traceback: {traceback.format_exc()}")
+            return {}
     
     def _add_position_specific_environmental_features(self, df: pd.DataFrame) -> pd.DataFrame:
         """Add position-specific environmental adjustments."""

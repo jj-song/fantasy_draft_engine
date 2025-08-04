@@ -81,61 +81,72 @@ class WeatherIntegrator:
     
     def load_stadium_data(self) -> None:
         """Load NFL stadium information."""
+        logger.info(f"🏟️  LOADING STADIUM DATA")
         
-        # NFL Stadium data (2024 season)
-        stadiums = [
-            StadiumInfo("State Farm Stadium", "ARI", "Glendale", "AZ", True, True, 1086, "grass", "MST", 63400),
-            StadiumInfo("Mercedes-Benz Stadium", "ATL", "Atlanta", "GA", True, True, 1050, "turf", "EST", 71000),
-            StadiumInfo("M&T Bank Stadium", "BAL", "Baltimore", "MD", False, False, 54, "grass", "EST", 71008),
-            StadiumInfo("Highmark Stadium", "BUF", "Orchard Park", "NY", False, False, 648, "turf", "EST", 71608),
-            StadiumInfo("Bank of America Stadium", "CAR", "Charlotte", "NC", False, False, 750, "grass", "EST", 75523),
-            StadiumInfo("Soldier Field", "CHI", "Chicago", "IL", False, False, 597, "grass", "CST", 61500),
-            StadiumInfo("Paycor Stadium", "CIN", "Cincinnati", "OH", False, False, 550, "turf", "EST", 65515),
-            StadiumInfo("Cleveland Browns Stadium", "CLE", "Cleveland", "OH", False, False, 653, "grass", "EST", 67431),
-            StadiumInfo("AT&T Stadium", "DAL", "Arlington", "TX", True, True, 551, "turf", "CST", 80000),
-            StadiumInfo("Empower Field at Mile High", "DEN", "Denver", "CO", False, False, 5280, "grass", "MST", 76125),
-            StadiumInfo("Ford Field", "DET", "Detroit", "MI", True, False, 585, "turf", "EST", 65000),
-            StadiumInfo("Lambeau Field", "GB", "Green Bay", "WI", False, False, 640, "grass", "CST", 81441),
-            StadiumInfo("NRG Stadium", "HOU", "Houston", "TX", True, True, 40, "turf", "CST", 72220),
-            StadiumInfo("Lucas Oil Stadium", "IND", "Indianapolis", "IN", True, True, 715, "turf", "EST", 67000),
-            StadiumInfo("TIAA Bank Field", "JAX", "Jacksonville", "FL", False, False, 10, "grass", "EST", 67428),
-            StadiumInfo("Arrowhead Stadium", "KC", "Kansas City", "MO", False, False, 909, "grass", "CST", 76416),
-            StadiumInfo("Allegiant Stadium", "LV", "Las Vegas", "NV", True, False, 2001, "grass", "PST", 65000),
-            StadiumInfo("SoFi Stadium", "LAC", "Los Angeles", "CA", True, False, 86, "turf", "PST", 70240),
-            StadiumInfo("SoFi Stadium", "LAR", "Los Angeles", "CA", True, False, 86, "turf", "PST", 70240),
-            StadiumInfo("Hard Rock Stadium", "MIA", "Miami Gardens", "FL", False, True, 7, "grass", "EST", 65326),
-            StadiumInfo("U.S. Bank Stadium", "MIN", "Minneapolis", "MN", True, False, 840, "turf", "CST", 66860),
-            StadiumInfo("Gillette Stadium", "NE", "Foxborough", "MA", False, False, 95, "turf", "EST", 65878),
-            StadiumInfo("Caesars Superdome", "NO", "New Orleans", "LA", True, False, 3, "turf", "CST", 73208),
-            StadiumInfo("MetLife Stadium", "NYG", "East Rutherford", "NJ", False, False, 7, "turf", "EST", 82500),
-            StadiumInfo("MetLife Stadium", "NYJ", "East Rutherford", "NJ", False, False, 7, "turf", "EST", 82500),
-            StadiumInfo("Lincoln Financial Field", "PHI", "Philadelphia", "PA", False, False, 56, "grass", "EST", 69596),
-            StadiumInfo("Acrisure Stadium", "PIT", "Pittsburgh", "PA", False, False, 1223, "grass", "EST", 68400),
-            StadiumInfo("Lumen Field", "SEA", "Seattle", "WA", False, True, 56, "turf", "PST", 69000),
-            StadiumInfo("Levi's Stadium", "SF", "Santa Clara", "CA", False, False, 43, "grass", "PST", 68500),
-            StadiumInfo("Raymond James Stadium", "TB", "Tampa", "FL", False, False, 26, "grass", "EST", 65890),
-            StadiumInfo("Nissan Stadium", "TEN", "Nashville", "TN", False, False, 597, "grass", "CST", 69143),
-            StadiumInfo("Commanders Field", "WAS", "Landover", "MD", False, False, 79, "grass", "EST", 82000),
-        ]
+        try:
+            # NFL Stadium data (2024 season)
+            stadiums = [
+                StadiumInfo("State Farm Stadium", "ARI", "Glendale", "AZ", True, True, 1086, "grass", "MST", 63400),
+                StadiumInfo("Mercedes-Benz Stadium", "ATL", "Atlanta", "GA", True, True, 1050, "turf", "EST", 71000),
+                StadiumInfo("M&T Bank Stadium", "BAL", "Baltimore", "MD", False, False, 54, "grass", "EST", 71008),
+                StadiumInfo("Highmark Stadium", "BUF", "Orchard Park", "NY", False, False, 648, "turf", "EST", 71608),
+                StadiumInfo("Bank of America Stadium", "CAR", "Charlotte", "NC", False, False, 750, "grass", "EST", 75523),
+                StadiumInfo("Soldier Field", "CHI", "Chicago", "IL", False, False, 597, "grass", "CST", 61500),
+                StadiumInfo("Paycor Stadium", "CIN", "Cincinnati", "OH", False, False, 550, "turf", "EST", 65515),
+                StadiumInfo("Cleveland Browns Stadium", "CLE", "Cleveland", "OH", False, False, 653, "grass", "EST", 67431),
+                StadiumInfo("AT&T Stadium", "DAL", "Arlington", "TX", True, True, 551, "turf", "CST", 80000),
+                StadiumInfo("Empower Field at Mile High", "DEN", "Denver", "CO", False, False, 5280, "grass", "MST", 76125),
+                StadiumInfo("Ford Field", "DET", "Detroit", "MI", True, False, 585, "turf", "EST", 65000),
+                StadiumInfo("Lambeau Field", "GB", "Green Bay", "WI", False, False, 640, "grass", "CST", 81441),
+                StadiumInfo("NRG Stadium", "HOU", "Houston", "TX", True, True, 40, "turf", "CST", 72220),
+                StadiumInfo("Lucas Oil Stadium", "IND", "Indianapolis", "IN", True, True, 715, "turf", "EST", 67000),
+                StadiumInfo("TIAA Bank Field", "JAX", "Jacksonville", "FL", False, False, 10, "grass", "EST", 67428),
+                StadiumInfo("Arrowhead Stadium", "KC", "Kansas City", "MO", False, False, 909, "grass", "CST", 76416),
+                StadiumInfo("Allegiant Stadium", "LV", "Las Vegas", "NV", True, False, 2001, "grass", "PST", 65000),
+                StadiumInfo("SoFi Stadium", "LAC", "Los Angeles", "CA", True, False, 86, "turf", "PST", 70240),
+                StadiumInfo("SoFi Stadium", "LAR", "Los Angeles", "CA", True, False, 86, "turf", "PST", 70240),
+                StadiumInfo("Hard Rock Stadium", "MIA", "Miami Gardens", "FL", False, True, 7, "grass", "EST", 65326),
+                StadiumInfo("U.S. Bank Stadium", "MIN", "Minneapolis", "MN", True, False, 840, "turf", "CST", 66860),
+                StadiumInfo("Gillette Stadium", "NE", "Foxborough", "MA", False, False, 95, "turf", "EST", 65878),
+                StadiumInfo("Caesars Superdome", "NO", "New Orleans", "LA", True, False, 3, "turf", "CST", 73208),
+                StadiumInfo("MetLife Stadium", "NYG", "East Rutherford", "NJ", False, False, 7, "turf", "EST", 82500),
+                StadiumInfo("MetLife Stadium", "NYJ", "East Rutherford", "NJ", False, False, 7, "turf", "EST", 82500),
+                StadiumInfo("Lincoln Financial Field", "PHI", "Philadelphia", "PA", False, False, 56, "grass", "EST", 69596),
+                StadiumInfo("Acrisure Stadium", "PIT", "Pittsburgh", "PA", False, False, 1223, "grass", "EST", 68400),
+                StadiumInfo("Lumen Field", "SEA", "Seattle", "WA", False, True, 56, "turf", "PST", 69000),
+                StadiumInfo("Levi's Stadium", "SF", "Santa Clara", "CA", False, False, 43, "grass", "PST", 68500),
+                StadiumInfo("Raymond James Stadium", "TB", "Tampa", "FL", False, False, 26, "grass", "EST", 65890),
+                StadiumInfo("Nissan Stadium", "TEN", "Nashville", "TN", False, False, 597, "grass", "CST", 69143),
+                StadiumInfo("Commanders Field", "WAS", "Landover", "MD", False, False, 79, "grass", "EST", 82000),
+            ]
         
-        # Convert to DataFrame for easier manipulation
-        self.stadium_data = pd.DataFrame([
-            {
-                'team': s.team,
-                'stadium_name': s.name,
-                'city': s.city,
-                'state': s.state,
-                'is_dome': s.is_dome,
-                'has_retractable_roof': s.has_retractable_roof,
-                'altitude': s.altitude,
-                'field_surface': s.field_surface,
-                'time_zone': s.time_zone,
-                'capacity': s.capacity
-            }
-            for s in stadiums
-        ])
-        
-        logger.info(f"Loaded stadium data for {len(self.stadium_data)} teams")
+            # Convert to DataFrame for easier manipulation
+            self.stadium_data = pd.DataFrame([
+                {
+                    'team': s.team,
+                    'stadium_name': s.name,
+                    'city': s.city,
+                    'state': s.state,
+                    'is_dome': s.is_dome,
+                    'has_retractable_roof': s.has_retractable_roof,
+                    'altitude': s.altitude,
+                    'field_surface': s.field_surface,
+                    'time_zone': s.time_zone,
+                    'capacity': s.capacity
+                }
+                for s in stadiums
+            ])
+            
+            logger.info(f"✅ Stadium data loaded successfully: {len(self.stadium_data)} teams")
+            logger.info(f"   Teams: {sorted(self.stadium_data['team'].unique())}")
+            logger.info(f"   Domes: {len(self.stadium_data[self.stadium_data['is_dome']])} stadiums")
+            logger.info(f"   High altitude (>3000ft): {len(self.stadium_data[self.stadium_data['altitude'] > 3000])} stadiums")
+            
+        except Exception as e:
+            logger.error(f"❌ STADIUM DATA LOAD FAILED: {e}")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
+            self.stadium_data = pd.DataFrame()  # Empty DataFrame as fallback
     
     def get_weather_forecast(
         self, 
@@ -156,8 +167,12 @@ class WeatherIntegrator:
         Returns:
             WeatherConditions object or None if unavailable
         """
+        logger.info(f"🌤️  FETCHING WEATHER FORECAST")
+        logger.info(f"   Location: {city}, {state}")
+        logger.info(f"   Game Date: {game_date.strftime('%Y-%m-%d %H:%M')}")
+        
         if not self.api_key:
-            logger.warning("No weather API key available. Using historical averages.")
+            logger.warning("❌ No weather API key available. Using historical averages.")
             return self._get_historical_weather_average(city, state, game_date)
         
         # Create cache key
@@ -167,6 +182,7 @@ class WeatherIntegrator:
             return self.weather_cache[cache_key]
         
         try:
+            logger.info(f"   Attempting API weather fetch...")
             # Using OpenWeatherMap API (example)
             base_url = "http://api.openweathermap.org/data/2.5/forecast"
             params = {
@@ -180,6 +196,7 @@ class WeatherIntegrator:
             response.raise_for_status()
             
             data = response.json()
+            logger.info(f"   ✅ Weather API response received")
             
             # Find forecast closest to game time
             game_timestamp = int(game_date.timestamp())
@@ -206,13 +223,24 @@ class WeatherIntegrator:
                     conditions=closest_forecast['weather'][0]['description']
                 )
                 
+                logger.info(f"   ✅ Weather forecast parsed successfully")
+                logger.info(f"   Temperature: {weather.temperature:.1f}°F")
+                logger.info(f"   Wind: {weather.wind_speed:.1f} mph {weather.wind_direction}")
+                logger.info(f"   Conditions: {weather.conditions}")
+                
                 if use_cache:
                     self.weather_cache[cache_key] = weather
                 
                 return weather
+            else:
+                logger.error(f"❌ No suitable forecast found for game time")
+                return self._get_historical_weather_average(city, state, game_date)
                 
         except Exception as e:
-            logger.warning(f"Could not fetch weather for {city}, {state}: {e}")
+            logger.error(f"❌ Weather API fetch failed for {city}, {state}: {e}")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
+            logger.info(f"   Falling back to historical weather averages")
             return self._get_historical_weather_average(city, state, game_date)
         
         return None
@@ -224,34 +252,54 @@ class WeatherIntegrator:
         game_date: datetime
     ) -> WeatherConditions:
         """Get historical weather averages as fallback."""
+        logger.info(f"🔧 GENERATING HISTORICAL WEATHER AVERAGE")
+        logger.info(f"   Location: {city}, {state}")
+        logger.info(f"   Date: {game_date.strftime('%Y-%m-%d')} (Month: {game_date.month})")
         
-        # Simplified historical averages by region and month
-        month = game_date.month
+        try:
+            # Simplified historical averages by region and month
+            month = game_date.month
+            
+            # Regional weather patterns (very simplified)
+            if state in ['FL', 'CA', 'AZ', 'TX', 'LA']:  # Warm weather states
+                base_temp = 75 - (abs(month - 7) * 3)  # Peak in July
+                wind_speed = 8
+                precipitation = 0.1 if month in [6, 7, 8, 9] else 0.0
+            elif state in ['WI', 'MN', 'NY', 'MA', 'PA', 'OH', 'MI']:  # Cold weather states
+                base_temp = 45 - (abs(month - 7) * 8)  # Much colder
+                wind_speed = 12
+                precipitation = 0.0
+            else:  # Moderate climate
+                base_temp = 60 - (abs(month - 7) * 5)
+                wind_speed = 10
+                precipitation = 0.0
         
-        # Regional weather patterns (very simplified)
-        if state in ['FL', 'CA', 'AZ', 'TX', 'LA']:  # Warm weather states
-            base_temp = 75 - (abs(month - 7) * 3)  # Peak in July
-            wind_speed = 8
-            precipitation = 0.1 if month in [6, 7, 8, 9] else 0.0
-        elif state in ['WI', 'MN', 'NY', 'MA', 'PA', 'OH', 'MI']:  # Cold weather states
-            base_temp = 45 - (abs(month - 7) * 8)  # Much colder
-            wind_speed = 12
-            precipitation = 0.0
-        else:  # Moderate climate
-            base_temp = 60 - (abs(month - 7) * 5)
-            wind_speed = 10
-            precipitation = 0.0
-        
-        return WeatherConditions(
-            temperature=max(20, base_temp),  # Don't go below 20°F
-            wind_speed=wind_speed,
-            wind_direction='Variable',
-            precipitation=precipitation,
-            humidity=60,
-            pressure=29.92,
-            visibility=10,
-            conditions='Historical Average'
-        )
+            weather = WeatherConditions(
+                temperature=max(20, base_temp),  # Don't go below 20°F
+                wind_speed=wind_speed,
+                wind_direction='Variable',
+                precipitation=precipitation,
+                humidity=60,
+                pressure=29.92,
+                visibility=10,
+                conditions='Historical Average'
+            )
+            
+            logger.info(f"   ✅ Historical weather generated successfully")
+            logger.info(f"   Temperature: {weather.temperature:.1f}°F")
+            logger.info(f"   Wind: {weather.wind_speed:.1f} mph")
+            logger.info(f"   Precipitation: {weather.precipitation} inches")
+            
+            return weather
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to generate historical weather: {e}")
+            # Return very basic fallback weather
+            return WeatherConditions(
+                temperature=50.0, wind_speed=8.0, wind_direction='Variable',
+                precipitation=0.0, humidity=60, pressure=29.92,
+                visibility=10, conditions='Default Fallback'
+            )
     
     def _degrees_to_direction(self, degrees: float) -> str:
         """Convert wind direction from degrees to cardinal direction."""
@@ -279,7 +327,13 @@ class WeatherIntegrator:
         Returns:
             Dictionary with impact factors (1.0 = no impact)
         """
+        logger.info(f"🌦️  CALCULATING WEATHER IMPACT")
+        logger.info(f"   Position: {position}")
+        logger.info(f"   Is Dome: {is_dome}")
+        logger.info(f"   Weather: {weather.temperature:.1f}°F, {weather.wind_speed:.1f}mph wind, {weather.precipitation}\" precip")
+        
         if is_dome:
+            logger.info(f"   ✅ Dome game - no weather impact")
             # Dome games are not affected by weather
             return {
                 'overall_impact': 1.0,
@@ -335,6 +389,10 @@ class WeatherIntegrator:
             impacts['position_impact'] = impacts['kicking_impact']
         else:
             impacts['position_impact'] = impacts['overall_impact']
+        
+        logger.info(f"   ✅ Weather impact calculated: {impacts['position_impact']:.3f}x")
+        logger.info(f"   Passing: {impacts['passing_impact']:.3f}, Rushing: {impacts['rushing_impact']:.3f}")
+        logger.info(f"   Kicking: {impacts['kicking_impact']:.3f}, Fumble Risk: {impacts['fumble_risk']:.3f}")
         
         return impacts
     
@@ -438,12 +496,25 @@ class WeatherIntegrator:
         Returns:
             Dictionary with all environmental factors
         """
-        if self.stadium_data is None:
-            logger.warning("No stadium data loaded")
+        logger.info(f"🌍 GETTING COMPREHENSIVE ENVIRONMENTAL FACTORS")
+        logger.info(f"   Game: {away_team} @ {home_team}")
+        logger.info(f"   Date: {game_date.strftime('%Y-%m-%d %H:%M')}")
+        logger.info(f"   Fetch Weather: {get_weather}")
+        
+        if self.stadium_data is None or self.stadium_data.empty:
+            logger.error(f"❌ No stadium data loaded")
             return {}
         
         try:
-            home_stadium = self.stadium_data[self.stadium_data['team'] == home_team].iloc[0]
+            # Find home team stadium
+            home_stadium_df = self.stadium_data[self.stadium_data['team'] == home_team]
+            if home_stadium_df.empty:
+                logger.error(f"❌ No stadium data found for team {home_team}")
+                logger.error(f"   Available teams: {sorted(self.stadium_data['team'].unique())}")
+                return {}
+            
+            home_stadium = home_stadium_df.iloc[0]
+            logger.info(f"   ✅ Found stadium: {home_stadium['stadium_name']}")
             
             factors = {
                 'stadium_info': {
@@ -457,6 +528,7 @@ class WeatherIntegrator:
             
             # Weather (if not dome and requested)
             if get_weather and not home_stadium['is_dome']:
+                logger.info(f"   Getting weather for outdoor stadium...")
                 weather = self.get_weather_forecast(
                     home_stadium['city'], 
                     home_stadium['state'], 
@@ -466,36 +538,53 @@ class WeatherIntegrator:
                     factors['weather'] = weather
                     
                     # Calculate weather impacts for each position
+                    logger.info(f"   Calculating weather impacts for all positions...")
                     factors['weather_impacts'] = {}
                     for position in ['QB', 'RB', 'WR', 'TE', 'K']:
                         factors['weather_impacts'][position] = self.calculate_weather_impact(
                             weather, position, home_stadium['is_dome']
                         )
+                    logger.info(f"   ✅ Weather impacts calculated for {len(factors['weather_impacts'])} positions")
+                else:
+                    logger.warning(f"   ⚠️  No weather data available")
+            elif home_stadium['is_dome']:
+                logger.info(f"   Dome stadium - skipping weather")
+            else:
+                logger.info(f"   Weather fetch disabled")
             
             # Altitude adjustments
+            logger.info(f"   Calculating altitude adjustments (altitude: {home_stadium['altitude']} ft)...")
             factors['altitude_adjustments'] = {}
             for position in ['QB', 'RB', 'WR', 'TE', 'K']:
                 factors['altitude_adjustments'][position] = self.calculate_altitude_adjustment(
                     home_stadium['altitude'], position
                 )
+            logger.info(f"   ✅ Altitude adjustments calculated")
             
             # Travel impacts
+            logger.info(f"   Calculating travel impacts...")
             home_impact, away_impact = self.calculate_travel_impact(home_team, away_team, game_date)
             factors['travel_impacts'] = {
                 'home_team_impact': home_impact,
                 'away_team_impact': away_impact
             }
+            logger.info(f"   ✅ Travel impacts: Home {home_impact:.3f}x, Away {away_impact:.3f}x")
             
             # Surface impact (grass vs turf injury rates)
             factors['surface_impact'] = {
                 'injury_risk_modifier': 1.1 if home_stadium['field_surface'] == 'turf' else 1.0,
                 'speed_modifier': 1.02 if home_stadium['field_surface'] == 'turf' else 1.0  # Turf slightly faster
             }
+            logger.info(f"   ✅ Surface impact calculated ({home_stadium['field_surface']})")
             
+            logger.info(f"✅ ENVIRONMENTAL FACTORS COMPLETE")
+            logger.info(f"   Factors generated: {list(factors.keys())}")
             return factors
             
         except Exception as e:
-            logger.error(f"Error getting environmental factors: {e}")
+            logger.error(f"❌ ENVIRONMENTAL FACTORS FAILED: {e}")
+            import traceback
+            logger.error(f"   Full traceback: {traceback.format_exc()}")
             return {}
     
     def apply_environmental_adjustments(

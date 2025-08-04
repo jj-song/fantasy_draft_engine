@@ -12,6 +12,8 @@ import logging
 from datetime import datetime
 import sys
 from pathlib import Path
+import unicodedata
+import re
 
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -19,6 +21,58 @@ import config
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+
+def sanitize_text_for_json(text):
+    """
+    Sanitize text to ensure it can be properly JSON serialized.
+    
+    Args:
+        text: Input text that may contain problematic Unicode characters
+        
+    Returns:
+        Clean text safe for JSON serialization
+    """
+    if pd.isna(text) or text is None:
+        return ""
+    
+    # Convert to string if not already
+    text = str(text)
+    
+    # Normalize Unicode characters
+    text = unicodedata.normalize('NFKD', text)
+    
+    # Remove or replace problematic characters
+    # Replace high surrogates and other problematic Unicode
+    text = re.sub(r'[\ud800-\udfff]', '', text)  # Remove surrogate pairs
+    text = re.sub(r'[^\x00-\x7F]', '', text)     # Remove non-ASCII characters
+    
+    # Clean up any resulting double spaces
+    text = re.sub(r'\s+', ' ', text).strip()
+    
+    return text
+
+
+def sanitize_dataframe_for_json(df):
+    """
+    Sanitize all text columns in a DataFrame for JSON serialization.
+    
+    Args:
+        df: Input DataFrame
+        
+    Returns:
+        DataFrame with sanitized text columns
+    """
+    df_clean = df.copy()
+    
+    # Find text columns
+    text_columns = df_clean.select_dtypes(include=['object']).columns
+    
+    for col in text_columns:
+        logger.debug(f"Sanitizing column: {col}")
+        df_clean[col] = df_clean[col].apply(sanitize_text_for_json)
+    
+    return df_clean
 
 def get_current_roster_assignments(year=None):
     """
@@ -46,6 +100,9 @@ def get_current_roster_assignments(year=None):
         current_rosters = rosters[['player_id', 'team', 'position', 'player_name']].copy()
         current_rosters = current_rosters.drop_duplicates(subset=['player_id'], keep='last')  # Keep most recent entry
         current_rosters = current_rosters.rename(columns={'team': 'current_team'})
+        
+        # Sanitize text data to prevent JSON encoding issues
+        current_rosters = sanitize_dataframe_for_json(current_rosters)
         
         logger.info(f"Successfully loaded {len(current_rosters)} current roster assignments")
         
@@ -152,10 +209,25 @@ def update_data_with_current_teams(data_df, current_rosters_df):
             updated_data = updated_data.drop(columns=[col for col in updated_data.columns 
                                                     if col.endswith('_old') or col.endswith('_current')])
         
-        # Count updates
+        # Count updates with proper DataFrame alignment
         if 'team' in data_df.columns:
-            team_changes = (data_df['team'] != updated_data['team']).sum()
-            logger.info(f"Updated {team_changes} player team assignments")
+            logger.info(f"🔍 Comparing team assignments: original={len(data_df)} vs updated={len(updated_data)} players")
+            
+            # Ensure we're comparing the same players by aligning on player_id
+            if len(data_df) != len(updated_data):
+                raise ValueError(f"CRITICAL ERROR: DataFrame length mismatch after merge. "
+                               f"Original: {len(data_df)}, Updated: {len(updated_data)}. "
+                               f"This indicates data pipeline failure - players were lost during team assignment update.")
+            
+            # Create aligned comparison using the same index
+            original_teams = data_df.set_index('player_id')['team'] if 'player_id' in data_df.columns else data_df['team']
+            updated_teams = updated_data.set_index('player_id')['team'] if 'player_id' in updated_data.columns else updated_data['team']
+            
+            # Align the series for comparison
+            aligned_original, aligned_updated = original_teams.align(updated_teams, join='inner', fill_value='UNKNOWN')
+            
+            team_changes = (aligned_original != aligned_updated).sum()
+            logger.info(f"✅ Team comparison successful: {team_changes} team changes detected")
         
         return updated_data
     
@@ -260,6 +332,9 @@ def create_current_inference_dataset(position=None):
         after_dedup = len(updated_data)
         if before_dedup != after_dedup:
             logger.warning(f"Removed {before_dedup - after_dedup} duplicate player_ids")
+    
+    # Sanitize text data to prevent JSON encoding issues
+    updated_data = sanitize_dataframe_for_json(updated_data)
     
     logger.info(f"Created current inference dataset: {len(updated_data)} records")
     return updated_data

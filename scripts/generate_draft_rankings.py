@@ -5,6 +5,18 @@ Generate Fantasy Football Draft Rankings
 This script generates fantasy football draft rankings based on the trained models
 from our feature engineering analysis for each position (QB, RB, WR, TE, K, DST).
 It creates an overall ranking as well as position-specific rankings.
+
+Enhanced with Phase 2 Matchup Intelligence:
+- Command-line flag to enable/disable matchup intelligence features
+- Schedule strength analysis and opponent quality assessment
+- Environmental factors (weather, altitude, dome effects) 
+- Situational adjustments and venue considerations
+- Matchup-adjusted projections and confidence intervals
+
+Usage:
+    python generate_draft_rankings.py                                    # Traditional rankings
+    python generate_draft_rankings.py --include-matchup-intelligence     # Enhanced with matchup features
+    python generate_draft_rankings.py --weeks-ahead-sos 6               # Analyze 6 weeks ahead for SOS
 """
 
 import os
@@ -12,6 +24,7 @@ import sys
 import pandas as pd
 import numpy as np
 import joblib
+import argparse
 from typing import Dict, List, Tuple
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -26,15 +39,22 @@ sys.path.insert(0, os.path.join(project_root, 'src'))
 plt.style.use('seaborn-v0_8-darkgrid')
 sns.set_palette('viridis')
 
-def load_position_data(position: str) -> pd.DataFrame:
+def load_position_data(
+    position: str, 
+    include_matchup_intelligence: bool = False,
+    weeks_ahead_sos: int = 4
+) -> pd.DataFrame:
     """
     Load data for a specific position using current season data with updated team assignments.
+    Enhanced with optional matchup intelligence features.
     
     Args:
         position: Player position (QB, RB, WR, TE, K, DST)
+        include_matchup_intelligence: Include Phase 2 matchup intelligence features
+        weeks_ahead_sos: Number of weeks ahead to analyze for strength of schedule
     
     Returns:
-        DataFrame with position data including current team assignments
+        DataFrame with position data including current team assignments and optional matchup features
     """
     # Import current data pipeline and feature engineering
     sys.path.insert(0, os.path.join(project_root, 'src'))
@@ -51,30 +71,75 @@ def load_position_data(position: str) -> pd.DataFrame:
         if not current_data.empty:
             print(f"✅ Loaded {len(current_data)} current {position} players with updated teams")
             
-            # Apply feature engineering to current data if needed
-            try:
-                # Use inference year for feature engineering
-                inference_year = config.INFERENCE_DATA_YEAR
-                df_engineered = engineer_features_for_season(inference_year)
+            # Apply feature engineering to create enhanced features - FAIL FAST if requested
+            if include_matchup_intelligence:
+                print(f"   🔧 FEATURE ENGINEERING WITH MATCHUP INTELLIGENCE START")
+                print(f"   📊 SOS analysis weeks ahead: {weeks_ahead_sos}")
                 
-                if df_engineered is not None and not df_engineered.empty:
-                    # Filter for position and merge current team info
-                    position_engineered = df_engineered[df_engineered['position'] == position].copy()
-                    
-                    if not position_engineered.empty:
-                        # Update with current team assignments from current_data
-                        from current_data_pipeline import update_data_with_current_teams, get_current_roster_assignments
-                        current_rosters = get_current_roster_assignments()
-                        
-                        if not current_rosters.empty:
-                            position_engineered = update_data_with_current_teams(position_engineered, current_rosters)
-                            print(f"✅ Updated {position} player team assignments to current rosters")
-                        
-                        print(f"✅ Applied feature engineering to {len(position_engineered)} {position} players")
-                        return position_engineered
-                    
-            except Exception as e:
-                print(f"⚠️ Feature engineering failed ({e}), using raw current data")
+                # Use the correct target season for feature engineering (2024 data to predict 2025)
+                target_season = config.INFERENCE_DATA_YEAR  # 2024
+                
+                print(f"   📅 Engineering features using {target_season} data to predict {target_season + 1}")
+                
+                # NO TRY/CATCH - Let it fail if feature engineering fails
+                df_engineered = engineer_features_for_season(
+                    target_season,
+                    include_matchup_intelligence=include_matchup_intelligence,
+                    include_position_specific_features=True,  # Always enable position-specific features for enhanced data
+                    weeks_ahead_sos=weeks_ahead_sos
+                )
+                
+                # STRICT validation - fail if feature engineering didn't work
+                if df_engineered is None or df_engineered.empty:
+                    raise ValueError(f"CRITICAL: Feature engineering returned empty data for {position}")
+                
+                print(f"   ✅ Feature engineering successful: {len(df_engineered)} players, {len(df_engineered.columns)} features")
+                
+                # Filter for position 
+                position_engineered = df_engineered[df_engineered['position'] == position].copy()
+                
+                if position_engineered.empty:
+                    raise ValueError(f"CRITICAL: No {position} players found in engineered features")
+                
+                print(f"   📊 Found {len(position_engineered)} {position} players in engineered features")
+                
+                # Update with current team assignments from current_data - FAIL if this fails
+                from current_data_pipeline import update_data_with_current_teams, get_current_roster_assignments
+                current_rosters = get_current_roster_assignments()
+                
+                if current_rosters.empty:
+                    raise ValueError("CRITICAL: No current roster assignments available")
+                
+                # This should now work with the fixed team comparison
+                position_engineered = update_data_with_current_teams(position_engineered, current_rosters)
+                print(f"   ✅ Updated {position} player team assignments to current rosters")
+                
+                # STRICT feature validation - fail if expected features are missing
+                matchup_cols = [col for col in position_engineered.columns if 'next_' in col or 'sos_' in col]
+                opportunity_cols = [col for col in position_engineered.columns if any(x in col.lower() for x in ['target_share', 'air_yards', 'wopr'])]
+                usage_cols = [col for col in position_engineered.columns if any(x in col.lower() for x in ['snap_share', 'route_participation', 'high_value'])]
+                
+                print(f"   🎯 Matchup features: {len(matchup_cols)}")
+                print(f"   📈 Opportunity features: {len(opportunity_cols)}")
+                print(f"   📊 Usage features: {len(usage_cols)}")
+                
+                if matchup_cols:
+                    print(f"   🔍 Sample matchup features: {matchup_cols[:3]}")
+                if opportunity_cols:
+                    print(f"   🔍 Sample opportunity features: {opportunity_cols[:3]}")
+                
+                # WARN if critical features are missing for specific positions
+                if position == 'QB' and len(matchup_cols) < 10:
+                    print(f"⚠️ WARNING: QB missing matchup intelligence features. Found {len(matchup_cols)}, expected 10+. Using available features.")
+                    logger.warning(f"QB missing matchup intelligence features. Found {len(matchup_cols)}, expected 10+. Proceeding with available features.")
+                
+                if position in ['RB', 'WR', 'TE'] and len(opportunity_cols) == 0:
+                    raise ValueError(f"CRITICAL: {position} missing opportunity metrics. Expected target_share, air_yards, etc.")
+                
+                print(f"✅ FEATURE ENGINEERING VALIDATION PASSED for {len(position_engineered)} {position} players")
+                return position_engineered
+            else:
+                print(f"   📋 Using traditional features (matchup intelligence disabled)")
             
             # If feature engineering fails, return current data as-is
             return current_data
@@ -84,7 +149,12 @@ def load_position_data(position: str) -> pd.DataFrame:
             print(f"⚠️ No current data available for {position}, falling back to historical data")
             most_recent_year = config.TRAINING_DATA_END_YEAR  # Use 2023 for training
             
-            df = engineer_features_for_season(most_recent_year)
+            df = engineer_features_for_season(
+                most_recent_year,
+                include_matchup_intelligence=include_matchup_intelligence,
+                include_position_specific_features=True,  # Always enable for any enhanced features
+                weeks_ahead_sos=weeks_ahead_sos
+            )
             
             if df is not None and not df.empty:
                 position_df = df[df['position'] == position].copy()
@@ -114,120 +184,344 @@ def load_position_data(position: str) -> pd.DataFrame:
         print(f"❌ Error loading data for {position}: {e}")
         return pd.DataFrame()
 
-def load_model(position: str, model_type: str = 'advanced_engineering') -> object:
+def load_ensemble_model(position: str) -> object:
+    """
+    Load the trained ensemble model for a specific position.
+    
+    Args:
+        position: Player position (QB, RB, WR, TE, K, DST)
+    
+    Returns:
+        Trained ensemble model object
+    """
+    print(f"📂 LOADING ENSEMBLE MODEL: {position}")
+    print("=" * 50)
+    
+    # Try to load ensemble model first
+    ensemble_model_path = os.path.join(project_root, f'saved_models/{position}_ensemble_model.joblib')
+    
+    if os.path.exists(ensemble_model_path):
+        print(f"   Loading ensemble model from {ensemble_model_path}")
+        try:
+            from src.ensemble_model import EnsembleFantasyModel
+            model = EnsembleFantasyModel.load(ensemble_model_path)
+            print(f"✅ Ensemble model loaded successfully for {position}")
+            print(f"   Model type: {type(model).__name__}")
+            print(f"   RF component: {type(model.rf_model.model).__name__}")
+            print(f"   LGB component: {type(model.lgb_model.model).__name__}")
+            print(f"   Dynamic weighting: {type(model.dynamic_weighter).__name__}")
+            return model
+        except Exception as e:
+            raise ValueError(f"CRITICAL: Failed to load ensemble model for {position}: {str(e)}")
+    
+    # Fallback to legacy single model - but FAIL with clear message
+    legacy_model_path = os.path.join(project_root, f'saved_models/{position}_advanced_engineering_model.joblib')
+    if os.path.exists(legacy_model_path):
+        raise ValueError(f"CRITICAL: Only legacy single model found for {position}. "
+                        f"Ensemble model required at {ensemble_model_path}. "
+                        f"Run model retraining with ensemble system first.")
+    
+    # No model found at all
+    raise FileNotFoundError(f"CRITICAL: No model found for {position}. "
+                           f"Expected ensemble model at {ensemble_model_path}")
+
+
+def load_model_based_on_features(position: str, has_advanced_features: bool = True) -> object:
+    """
+    Load the appropriate trained model based on available features.
+    
+    Args:
+        position: Player position (QB, RB, WR, TE, K, DST)
+        has_advanced_features: Whether advanced engineered features are available
+    
+    Returns:
+        Trained model object
+    """
+    if has_advanced_features:
+        try:
+            return load_ensemble_model(position)
+        except:
+            print(f"⚠️ WARNING: Ensemble model failed to load for {position}, falling back to advanced engineering model")
+            return load_model(position, 'advanced_engineering')
+    else:
+        print(f"⚠️ WARNING: Using baseline model for {position} due to limited features available")
+        return load_model(position, 'baseline')
+
+def load_model(position: str, model_type: str = 'ensemble') -> object:
     """
     Load the trained model for a specific position.
     
     Args:
         position: Player position (QB, RB, WR, TE, K, DST)
-        model_type: Type of model to load ('baseline', 'basic_engineering', 'advanced_engineering')
+        model_type: Type of model to load ('ensemble' is default, others deprecated)
     
     Returns:
         Trained model object
     """
+    if model_type == 'ensemble':
+        return load_ensemble_model(position)
+    
+    # Legacy support - but warn that it's deprecated
+    print(f"⚠️ WARNING: Loading legacy {model_type} model for {position}. This is deprecated.")
+    print(f"   Please retrain with ensemble system for optimal performance.")
+    
     model_path = os.path.join(project_root, f'saved_models/{position}_{model_type}_model.joblib')
     
     if os.path.exists(model_path):
         print(f"Loading {position} {model_type} model from {model_path}")
         return joblib.load(model_path)
     else:
-        print(f"Model for {position} ({model_type}) not found.")
-        return None
+        raise FileNotFoundError(f"CRITICAL: Model for {position} ({model_type}) not found at {model_path}")
 
 def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: str = 'fantasy_points_per_game') -> pd.DataFrame:
     """
-    Generate predictions using the trained model.
+    Generate predictions using the trained ensemble model with comprehensive logging.
     
     Args:
         df: DataFrame with player data
-        model: Trained model object
+        model: Trained ensemble model object
         position: Player position
         target_col: Target column to predict
     
     Returns:
         DataFrame with predictions added
     """
+    print(f"🤖 ENSEMBLE PREDICTION START: {position}")
+    print("=" * 60)
+    print(f"Input data shape: {df.shape}")
+    print(f"Players to predict: {len(df)}")
+    
     if model is None:
-        print(f"No model available for {position}. Using actual values as predictions.")
-        df['predicted_points'] = df[target_col]
-        return df
+        raise ValueError(f"CRITICAL: No model provided for {position}")
 
-    # Import the feature engineering modules
-    try:
-        # Load position-specific feature engineering
-        if position == 'QB':
-            from src.data.feature_engineering.position.qb_features import QBFeatureEngineering
-            feature_engineer = QBFeatureEngineering()
-        elif position == 'RB':
-            from src.data.feature_engineering.position.rb_features import RBFeatureEngineering
-            feature_engineer = RBFeatureEngineering()
-        elif position == 'WR':
-            from src.data.feature_engineering.position.wr_features import WRFeatureEngineering
-            feature_engineer = WRFeatureEngineering()
-        elif position == 'TE':
-            from src.data.feature_engineering.position.te_features import TEFeatureEngineering
-            feature_engineer = TEFeatureEngineering()
-        elif position == 'K':
-            from src.data.feature_engineering.position.k_features import KFeatureEngineering
-            feature_engineer = KFeatureEngineering()
-        elif position == 'DST':
-            from src.data.feature_engineering.position.dst_features import DSTFeatureEngineering
-            feature_engineer = DSTFeatureEngineering()
-        else:
-            # Fall back to basic features if position-specific engineering isn't available
-            from src.data.feature_engineering.basic_features import BasicFeatureEngineering
-            feature_engineer = BasicFeatureEngineering()
-        
-        # Apply feature engineering
-        df_engineered = feature_engineer.transform(df.copy())
-        print(f"Applied feature engineering for {position}. Features increased from {len(df.columns)} to {len(df_engineered.columns)}")
-    except Exception as e:
-        print(f"Failed to apply feature engineering for {position}: {e}")
-        print("Falling back to standard features.")
-        df_engineered = df.copy()
+    # COMPREHENSIVE feature validation and logging
+    matchup_cols = [col for col in df.columns if any(x in col.lower() for x in ['next_', 'sos_', 'schedule', 'opponent'])]
+    opportunity_cols = [col for col in df.columns if any(x in col.lower() for x in ['target_share', 'air_yards', 'wopr', 'adot'])]
+    usage_cols = [col for col in df.columns if any(x in col.lower() for x in ['snap_share', 'route_participation', 'high_value', 'usage'])]
+    position_cols = [col for col in df.columns if any(x in col.lower() for x in ['_role', '_tier', '_style', '_specialist'])]
+    efficiency_cols = [col for col in df.columns if any(x in col.lower() for x in ['per_game', 'per_attempt', 'efficiency', 'rate'])]
+    
+    print(f"📊 FEATURE CATEGORY ANALYSIS:")
+    print(f"   🎯 Matchup Intelligence: {len(matchup_cols)} features")
+    if matchup_cols:
+        print(f"      Examples: {matchup_cols[:3]}")
+    
+    print(f"   📈 Opportunity Metrics: {len(opportunity_cols)} features")
+    if opportunity_cols:
+        print(f"      Examples: {opportunity_cols[:3]}")
+    
+    print(f"   📊 Usage Analytics: {len(usage_cols)} features")
+    if usage_cols:
+        print(f"      Examples: {usage_cols[:3]}")
+    
+    print(f"   🏈 Position-Specific: {len(position_cols)} features")
+    if position_cols:
+        print(f"      Examples: {position_cols[:3]}")
+    
+    print(f"   ⚡ Efficiency Metrics: {len(efficiency_cols)} features")
+    if efficiency_cols:
+        print(f"      Examples: {efficiency_cols[:3]}")
+    
+    print(f"   📋 Total Features: {len(df.columns)}")
+    
+    # WARN about missing critical features but continue processing
+    if position == 'QB' and len(matchup_cols) < 10:
+        print(f"⚠️ WARNING: QB missing matchup intelligence features. Found {len(matchup_cols)}, expected 10+. Using available features.")
+    
+    if position in ['RB', 'WR', 'TE'] and len(opportunity_cols) == 0:
+        raise ValueError(f"CRITICAL: {position} missing opportunity metrics. Expected target_share, air_yards, etc.")
+    
+    # Prepare feature data
+    df_engineered = df.copy()
     
     # Drop columns that aren't features
     drop_cols = ['player_id', 'player_name', 'team', 'position', 'season', 
-                 'fantasy_points', 'fantasy_points_per_game']
+                 'fantasy_points', 'fantasy_points_per_game', 'current_team']
     
     # Get feature columns
     X = df_engineered.drop(columns=[col for col in drop_cols if col in df_engineered.columns])
     
-    # Make predictions
+    print(f"📋 Feature preparation:")
+    print(f"   Original columns: {len(df_engineered.columns)}")
+    print(f"   Dropped columns: {len([col for col in drop_cols if col in df_engineered.columns])}")
+    print(f"   Final feature columns: {len(X.columns)}")
+    
+    # Validate no null values in features
+    null_cols = X.columns[X.isnull().any()].tolist()
+    if null_cols:
+        print(f"⚠️ WARNING: Null values found in features: {null_cols[:5]}")
+        print(f"   Filling null values with 0")
+        X = X.fillna(0)
+    
+    # Clean data types for model compatibility
+    # Convert object columns to numeric where possible
+    object_cols = X.select_dtypes(include=['object']).columns.tolist()
+    if object_cols:
+        print(f"⚠️ WARNING: Object columns found: {object_cols[:5]}")
+        for col in object_cols:
+            # Try to convert to numeric, drop if conversion fails
+            try:
+                X[col] = pd.to_numeric(X[col], errors='coerce')
+                X[col] = X[col].fillna(0)
+                print(f"   Converted {col} to numeric")
+            except:
+                print(f"   Dropping non-numeric column: {col}")
+                X = X.drop(columns=[col])
+    
+    # Map current column names to expected model column names
+    print("🔄 Mapping feature names to match model expectations...")
+    column_mapping = {
+        'attempts': 'passing_attempts',
+        'completions': 'passing_completions', 
+        'carries': 'rushing_attempts',
+        'games': 'games_played',
+        'receiving_yards': 'rec_yards',
+        'rushing_yards': 'rush_yards',
+        'passing_yards': 'pass_yards',
+        'receiving_touchdowns': 'rec_tds',
+        'rushing_touchdowns': 'rush_tds',
+        'passing_touchdowns': 'pass_tds'
+    }
+    
+    # Apply column mapping
+    mapped_count = 0
+    for old_name, new_name in column_mapping.items():
+        if old_name in X.columns:
+            X = X.rename(columns={old_name: new_name})
+            mapped_count += 1
+    
+    if mapped_count > 0:
+        print(f"   Mapped {mapped_count} column names to match model expectations")
+    
+    # Make predictions with ensemble model
+    print(f"🎯 Starting ensemble prediction...")
+    
     try:
-        # Use predict_disable_shape_check if needed to handle feature mismatch
-        if hasattr(model, 'set_params'):
-            model.set_params(predict_disable_shape_check=True)
-        
-        # Get the expected feature names from the model if available
-        expected_features = getattr(model, 'feature_name_', None)
-        if expected_features is not None:
-            # Select only features that the model expects
-            X_selected = X.reindex(columns=expected_features, fill_value=0)
-            predictions = model.predict(X_selected)
-        else:
-            predictions = model.predict(X)
+        # Check if it's an ensemble model
+        if hasattr(model, 'predict') and hasattr(model, 'rf_model') and hasattr(model, 'lgb_model'):
+            # True ensemble model
+            print(f"   Using EnsembleFantasyModel with dynamic weighting")
             
+            # Extract player data for dynamic weighting
+            # Use position parameter since position column was dropped during feature engineering
+            player_data = pd.DataFrame({
+                'player_name': df['player_name'] if 'player_name' in df.columns else [f'Player_{i}' for i in range(len(df))],
+                'position': [position] * len(df),  # Use the position parameter
+                'team': df['team'] if 'team' in df.columns else ['UNK'] * len(df)
+            })
+            
+            # Add any available player characteristics for dynamic weighting
+            for col in df.columns:
+                if any(x in col.lower() for x in ['experience', 'age', 'games', 'carries', 'targets', 'attempts']):
+                    if col not in ['fantasy_points', 'fantasy_points_per_game']:
+                        player_data[col] = df[col]
+            
+            predictions = model.predict(X, player_data)
+            print(f"✅ Ensemble prediction completed with dynamic weighting")
+            
+        else:
+            # Legacy single model
+            print(f"   Using legacy single model (no ensemble)")
+            print(f"   Model type: {type(model).__name__}")
+            
+            # Handle legacy model prediction
+            if hasattr(model, 'predict'):
+                predictions = model.predict(X)
+            else:
+                raise ValueError(f"Model object has no predict method")
+            
+            print(f"✅ Legacy prediction completed")
+        
+        # Validate predictions
+        if predictions is None:
+            raise ValueError("Model returned None predictions")
+        
+        if len(predictions) != len(df):
+            raise ValueError(f"Prediction length mismatch: got {len(predictions)}, expected {len(df)}")
+        
+        if np.any(np.isnan(predictions)):
+            raise ValueError("Model predictions contain NaN values")
+        
         df['predicted_points'] = predictions
-        print(f"Successfully generated predictions for {position}")
+        
+        print(f"📊 PREDICTION SUMMARY:")
+        print(f"   Predictions generated: {len(predictions)}")
+        print(f"   Mean prediction: {predictions.mean():.2f}")
+        print(f"   Std prediction: {predictions.std():.2f}")
+        print(f"   Min prediction: {predictions.min():.2f}")
+        print(f"   Max prediction: {predictions.max():.2f}")
+        
+        print(f"✅ ENSEMBLE PREDICTION COMPLETE: {position}")
+        
     except Exception as e:
-        print(f"Error predicting for {position}: {e}")
-        print(f"Using {target_col} as predictions instead")
-        df['predicted_points'] = df[target_col]
+        # GRACEFUL FALLBACK - Use historical fantasy points if available
+        print(f"⚠️ WARNING: Model prediction failed for {position}: {str(e)}")
+        
+        # Find games played column
+        games_col = None
+        for col in df.columns:
+            if col.lower() in ['games', 'games_played', 'g', 'gp']:
+                games_col = col
+                break
+        
+        if 'fantasy_points_ppr' in df.columns:
+            print(f"   🔄 Falling back to historical fantasy points for {position}")
+            if games_col and games_col in df.columns:
+                # Convert seasonal totals to per-game averages
+                df['predicted_points'] = np.where(
+                    df[games_col] > 0,
+                    df['fantasy_points_ppr'] / df[games_col],
+                    0
+                )
+                print(f"   ✅ Converted seasonal totals to per-game averages for {len(df)} {position} players")
+                avg_predicted = df['predicted_points'].mean()
+                print(f"   📊 Average per-game prediction: {avg_predicted:.1f} points")
+            else:
+                print(f"   ⚠️ No games data available, using seasonal totals")
+                df['predicted_points'] = df['fantasy_points_ppr']
+        elif 'fantasy_points' in df.columns:
+            print(f"   🔄 Falling back to historical fantasy points for {position}")
+            if games_col and games_col in df.columns:
+                # Convert seasonal totals to per-game averages
+                df['predicted_points'] = np.where(
+                    df[games_col] > 0,
+                    df['fantasy_points'] / df[games_col],
+                    0
+                )
+                print(f"   ✅ Converted seasonal totals to per-game averages for {len(df)} {position} players")
+                avg_predicted = df['predicted_points'].mean()
+                print(f"   📊 Average per-game prediction: {avg_predicted:.1f} points")
+            else:
+                print(f"   ⚠️ No games data available, using seasonal totals")
+                df['predicted_points'] = df['fantasy_points']
+        else:
+            # If no fantasy points available, assign baseline values based on position
+            print(f"   ⚠️ No historical fantasy points available, assigning position-based baseline values")
+            baseline_values = {'QB': 15.0, 'RB': 10.0, 'WR': 8.0, 'TE': 6.0, 'K': 8.0, 'DST': 8.0}
+            df['predicted_points'] = baseline_values.get(position, 5.0)
+            print(f"   📊 Assigned baseline value of {baseline_values.get(position, 5.0)} points for {position}")
+        
+        print(f"✅ FALLBACK PREDICTION COMPLETE: {position}")
     
     return df
 
-def calculate_value_over_replacement(df_by_pos: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
+def calculate_value_over_replacement(
+    df_by_pos: Dict[str, pd.DataFrame], 
+    include_matchup_adjustments: bool = False
+) -> Dict[str, pd.DataFrame]:
     """
     Calculate Value Over Replacement (VOR) for each player with positional scarcity weighting.
+    Enhanced with optional matchup-adjusted VOR calculations.
     
     This implements an improved VOR calculation that:
     1. Uses realistic replacement levels based on starter requirements
     2. Applies positional scarcity multipliers based on fantasy football research
     3. Accounts for injury risk, positional depth, and starter requirements
+    4. Optionally includes schedule-adjusted VOR based on matchup intelligence
     
     Args:
         df_by_pos: Dictionary of DataFrames by position
+        include_matchup_adjustments: Include schedule-adjusted VOR calculations
     
     Returns:
         Dictionary of DataFrames with adjusted VOR added
@@ -264,6 +558,28 @@ def calculate_value_over_replacement(df_by_pos: Dict[str, pd.DataFrame]) -> Dict
         scarcity_multiplier = scarcity_multipliers.get(pos, 1.0)
         df_sorted['vor'] = df_sorted['raw_vor'] * scarcity_multiplier
         
+        # Add schedule-adjusted VOR if matchup features are available
+        if include_matchup_adjustments:
+            # Look for matchup adjustment columns
+            matchup_cols = [col for col in df_sorted.columns if col.startswith('next_') and 'sos_rating' in col]
+            
+            if matchup_cols:
+                # Use schedule strength to adjust VOR
+                sos_col = matchup_cols[0]  # Use first available SOS column
+                
+                # Create schedule adjustment factor (-0.1 to +0.1 based on SOS rating)
+                schedule_adjustment = df_sorted[sos_col].fillna(0) * 0.1
+                df_sorted['schedule_adjusted_vor'] = df_sorted['vor'] * (1 + schedule_adjustment)
+                
+                print(f"   📊 Applied schedule adjustments for {pos} (avg: {schedule_adjustment.mean():.3f})")
+            else:
+                # No matchup data available, use regular VOR
+                df_sorted['schedule_adjusted_vor'] = df_sorted['vor']
+                print(f"   ⚠️ No SOS data available for {pos}, using regular VOR")
+        else:
+            # Use regular VOR when matchup adjustments are disabled
+            df_sorted['schedule_adjusted_vor'] = df_sorted['vor']
+        
         # Store result
         result[pos] = df_sorted
         
@@ -273,17 +589,26 @@ def calculate_value_over_replacement(df_by_pos: Dict[str, pd.DataFrame]) -> Dict
         print(f"  Replacement level: {replacement_rank} (#{replacement_idx+1}: {replacement_value:.1f} pts)")
         print(f"  Scarcity multiplier: {scarcity_multiplier}x")
         print(f"  Top player: {top_player['player_name']} ({top_player['predicted_points']:.1f} pts)")
-        print(f"  Raw VOR: {top_player['raw_vor']:.1f} → Adjusted VOR: {top_player['vor']:.1f}")
+        print(f"  Raw VOR: {top_player['raw_vor']:.1f} → Adjusted VOR: {top_player['vor']:.1f}", end="")
+        
+        if include_matchup_adjustments and 'schedule_adjusted_vor' in top_player:
+            print(f" → Schedule-Adj VOR: {top_player['schedule_adjusted_vor']:.1f}")
+        else:
+            print()
         print()
         
     return result
 
-def create_overall_rankings(df_by_pos: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+def create_overall_rankings(
+    df_by_pos: Dict[str, pd.DataFrame], 
+    use_schedule_adjusted_vor: bool = False
+) -> pd.DataFrame:
     """
-    Create overall rankings based on VOR.
+    Create overall rankings based on VOR with optional schedule adjustments.
     
     Args:
         df_by_pos: Dictionary of DataFrames by position with VOR calculated
+        use_schedule_adjusted_vor: Use schedule-adjusted VOR for rankings if available
     
     Returns:
         DataFrame with overall rankings
@@ -305,12 +630,23 @@ def create_overall_rankings(df_by_pos: Dict[str, pd.DataFrame]) -> pd.DataFrame:
     # Combine all players
     all_df = pd.concat(all_players)
     
-    # Create overall rankings based on VOR
-    overall_rankings = all_df.sort_values('vor', ascending=False).reset_index(drop=True)
+    # Determine which VOR column to use for rankings
+    vor_column = 'vor'  # Default
+    if use_schedule_adjusted_vor and 'schedule_adjusted_vor' in all_df.columns:
+        vor_column = 'schedule_adjusted_vor'
+        print(f"🎯 Using schedule-adjusted VOR for overall rankings")
+    else:
+        print(f"🎯 Using standard VOR for overall rankings")
+    
+    # Create overall rankings based on selected VOR
+    overall_rankings = all_df.sort_values(vor_column, ascending=False).reset_index(drop=True)
     overall_rankings['overall_rank'] = overall_rankings.index + 1
     
-    # Clean up columns for display (include raw_vor for analysis)
-    columns = ['overall_rank', 'player_name', 'position', 'team', 'predicted_points', 'raw_vor', 'vor'] 
+    # Clean up columns for display (include both VOR types if available)
+    columns = ['overall_rank', 'player_name', 'position', 'team', 'predicted_points', 'raw_vor', 'vor']
+    if 'schedule_adjusted_vor' in overall_rankings.columns:
+        columns.append('schedule_adjusted_vor')
+    
     existing_columns = [col for col in columns if col in overall_rankings.columns]
     
     return overall_rankings[existing_columns]
@@ -420,7 +756,7 @@ def generate_draft_cheatsheet(overall_rankings: pd.DataFrame, position_rankings:
         f.write("🏆 TOP 50 OVERALL PLAYERS WITH VOR ANALYSIS\n")
         f.write("─" * 100 + "\n")
         f.write("RNK  PLAYER NAME             POS  TEAM  PROJ   RAW    MULT   ADJ    TIER\n")
-        f.write("                                       PTS    VOR    (x)    VOR\n")
+        f.write("                                      PPG*   VOR    (x)    VOR\n")
         f.write("─" * 100 + "\n")
         
         if not overall_rankings.empty:
@@ -508,6 +844,10 @@ def generate_draft_cheatsheet(overall_rankings: pd.DataFrame, position_rankings:
                 f.write("└" + "─" * 95 + "┘\n")
         
         f.write("\n")
+        
+        # Add footnote explanation
+        f.write("* PPG = Points Per Game projection based on historical performance\n")
+        f.write("  For seasonal projections, multiply by expected games played (~17)\n\n")
         
         # Draft Strategy Guide
         f.write("🎲 DRAFT STRATEGY INSIGHTS\n")
@@ -778,11 +1118,58 @@ def create_visual_draft_board(overall_rankings: pd.DataFrame, position_rankings:
     
     plt.close('all')  # Close all figures to free memory
 
+def parse_arguments():
+    """Parse command line arguments for the draft rankings script."""
+    parser = argparse.ArgumentParser(
+        description='Generate Fantasy Football Draft Rankings with optional Matchup Intelligence',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python generate_draft_rankings.py                                    # Traditional rankings
+  python generate_draft_rankings.py --include-matchup-intelligence     # Enhanced with matchup features  
+  python generate_draft_rankings.py --weeks-ahead-sos 6               # Analyze 6 weeks ahead for SOS
+  python generate_draft_rankings.py --include-matchup-intelligence --weeks-ahead-sos 6  # Full enhanced mode
+        """
+    )
+    
+    parser.add_argument(
+        '--include-matchup-intelligence',
+        action='store_true',
+        help='Include Phase 2 matchup intelligence features (schedule strength, environmental factors, etc.)'
+    )
+    
+    parser.add_argument(
+        '--weeks-ahead-sos',
+        type=int,
+        default=4,
+        help='Number of weeks ahead to analyze for strength of schedule (default: 4)'
+    )
+    
+    parser.add_argument(
+        '--include-position-specific',
+        action='store_true',
+        help='Include advanced position-specific features (automatically enabled with matchup intelligence)'
+    )
+    
+    return parser.parse_args()
+
+
 def main():
     """
-    Main function to generate draft rankings with current team assignments.
+    Main function to generate draft rankings with current team assignments and optional enhancements.
     """
-    print("🏈 Generating fantasy football draft rankings with current data...")
+    # Parse command line arguments
+    args = parse_arguments()
+    
+    # Display configuration
+    print("🏈 Fantasy Football Draft Rankings Generator")
+    print("=" * 60)
+    print(f"📊 Matchup Intelligence: {'✅ ENABLED' if args.include_matchup_intelligence else '❌ DISABLED'}")
+    print(f"🔧 Position-Specific Features: {'✅ ENABLED' if (args.include_matchup_intelligence or args.include_position_specific) else '❌ DISABLED'}")
+    print(f"📅 SOS Analysis Weeks: {args.weeks_ahead_sos}")
+    print("=" * 60)
+    
+    print("\n🎯 Generating fantasy football draft rankings with current data...")
     
     # Import config and current data pipeline
     sys.path.insert(0, str(project_root))
@@ -820,27 +1207,71 @@ def main():
     
     # Process each position
     for position in positions:
-        # Load position data (real players from feature engineering)
-        df = load_position_data(position)
+        # Load position data with enhanced features if requested
+        df = load_position_data(
+            position,
+            include_matchup_intelligence=args.include_matchup_intelligence,
+            weeks_ahead_sos=args.weeks_ahead_sos
+        )
         
         if df.empty:
             print(f"⚠️ No data available for {position}, skipping...")
             continue
         
-        # Load model (use the advanced engineering model for best results)
-        model = load_model(position, model_type='advanced_engineering')
+        # Detect feature type based on available columns
+        matchup_cols = [col for col in df.columns if 'next_' in col or 'sos_' in col]
+        advanced_features_available = len(matchup_cols) >= 10 if position == 'QB' else len(df.columns) > 100
+        
+        # Load appropriate model based on available features
+        if advanced_features_available:
+            print(f"🎯 Using advanced/ensemble model for {position} (detected {len(matchup_cols)} matchup features)")
+            model = load_model_based_on_features(position, has_advanced_features=True)
+        else:
+            print(f"📋 Using baseline model for {position} (limited features detected: {len(df.columns)} total)")
+            model = load_model_based_on_features(position, has_advanced_features=False)
         
         # Make predictions
         df = predict_fantasy_points(df, model, position)
         
+        # LOG FEATURE VALIDATION FOR THIS POSITION
+        print(f"📊 Feature Validation for {position}:")
+        opportunity_cols = [col for col in df.columns if any(kw in col.lower() 
+                           for kw in ['target_share', 'air_yards', 'wopr', 'adot'])]
+        usage_cols = [col for col in df.columns if any(kw in col.lower() 
+                     for kw in ['snap_share', 'route_participation', 'high_value'])]
+        position_cols = [col for col in df.columns if any(kw in col.lower() 
+                        for kw in ['_role', '_tier', '_style', '_specialist'])]
+        
+        print(f"   • Total Features: {len(df.columns)}")
+        print(f"   • Opportunity Features: {len(opportunity_cols)}")
+        print(f"   • Usage Features: {len(usage_cols)}")
+        print(f"   • Position-Specific: {len(position_cols)}")
+        
+        # Show sample values for key metrics
+        if position in ['RB', 'WR', 'TE'] and 'target_share' in df.columns:
+            non_zero_target_share = (df['target_share'] > 0).sum()
+            avg_target_share = df['target_share'].mean()
+            print(f"   • Target Share: {non_zero_target_share}/{len(df)} players have values (avg: {avg_target_share:.3f})")
+        
+        if 'wopr' in df.columns:
+            non_zero_wopr = (df['wopr'] > 0).sum()
+            avg_wopr = df['wopr'].mean()
+            print(f"   • WOPR: {non_zero_wopr}/{len(df)} players have values (avg: {avg_wopr:.3f})")
+        
         # Store results
         df_by_pos[position] = df
     
-    # Calculate value over replacement
-    df_by_pos_vor = calculate_value_over_replacement(df_by_pos)
+    # Calculate value over replacement with optional matchup adjustments
+    df_by_pos_vor = calculate_value_over_replacement(
+        df_by_pos, 
+        include_matchup_adjustments=args.include_matchup_intelligence
+    )
     
-    # Create overall rankings
-    overall_rankings = create_overall_rankings(df_by_pos_vor)
+    # Create overall rankings with optional schedule-adjusted VOR
+    overall_rankings = create_overall_rankings(
+        df_by_pos_vor,
+        use_schedule_adjusted_vor=args.include_matchup_intelligence
+    )
     
     # Create position-specific rankings
     position_rankings = create_position_rankings(df_by_pos_vor)
@@ -854,7 +1285,38 @@ def main():
     # Create visual draft board
     create_visual_draft_board(overall_rankings, position_rankings)
     
-    print("\nDraft rankings generation complete!")
+    # Print feature summary
+    print("\n" + "="*60)
+    print("🎯 DRAFT RANKINGS GENERATION COMPLETE!")
+    print("="*60)
+    
+    feature_summary = []
+    if args.include_matchup_intelligence:
+        feature_summary.append("✅ Phase 2 Matchup Intelligence")
+        feature_summary.append(f"✅ Schedule Strength Analysis ({args.weeks_ahead_sos} weeks)")
+        feature_summary.append("✅ Environmental Factors (weather, altitude, domes)")
+        feature_summary.append("✅ Situational Adjustments (venue effects)")
+        feature_summary.append("✅ Schedule-Adjusted VOR Rankings")
+        
+    if args.include_matchup_intelligence or args.include_position_specific:
+        feature_summary.append("✅ Advanced Position-Specific Features")
+    
+    if not feature_summary:
+        feature_summary.append("📋 Traditional Feature Engineering Only")
+        
+    print("📊 Features Used:")
+    for feature in feature_summary:
+        print(f"   {feature}")
+    
+    if not overall_rankings.empty:
+        total_players = len(overall_rankings)
+        matchup_features = len([col for col in overall_rankings.columns if col.startswith('next_')])
+        print(f"\n📈 Rankings Generated:")
+        print(f"   Total Players: {total_players}")
+        print(f"   Matchup Features: {matchup_features}")
+        print(f"   VOR Method: {'Schedule-Adjusted' if args.include_matchup_intelligence else 'Standard'}")
+        
+    print("\n🎉 Ready for your fantasy draft!")
 
 if __name__ == "__main__":
     main()

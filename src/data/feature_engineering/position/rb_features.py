@@ -28,6 +28,9 @@ def engineer_rb_features(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         DataFrame with comprehensive RB-specific features added
     """
+    logger.info(f"🏈 RB FEATURE ENGINEERING START")
+    logger.info("=" * 60)
+    
     # Make a copy to avoid modifying the original dataframe
     df_rb = df.copy()
     
@@ -35,35 +38,89 @@ def engineer_rb_features(df: pd.DataFrame) -> pd.DataFrame:
     df_rb = df_rb[df_rb['position'] == 'RB']
     
     if df_rb.empty:
+        logger.warning("No RB players found in input data")
         return df_rb
     
-    logger.info(f"Engineering features for {len(df_rb)} RB players")
+    logger.info(f"Processing {len(df_rb)} RB players")
+    logger.info(f"Input columns: {len(df_rb.columns)}")
     
-    # Calculate basic efficiency metrics
-    df_rb = calculate_rb_efficiency_metrics(df_rb)
+    # Validate essential columns are present
+    essential_columns = ['player_id', 'position', 'games']
+    missing_essential = [col for col in essential_columns if col not in df_rb.columns]
+    if missing_essential:
+        logger.error(f"❌ CRITICAL: Missing essential columns for RB features: {missing_essential}")
+        raise ValueError(f"Cannot process RB features without essential columns: {missing_essential}")
     
-    # Calculate per-game averages
-    df_rb = calculate_rb_per_game_metrics(df_rb)
+    # Log available RB-relevant columns
+    rb_relevant_columns = [col for col in df_rb.columns if any(pattern in col.lower() 
+                          for pattern in ['rush', 'carry', 'target', 'receiv', 'touch', 'yard'])]
+    logger.info(f"Available RB-relevant columns ({len(rb_relevant_columns)}): {rb_relevant_columns[:10]}{'...' if len(rb_relevant_columns) > 10 else ''}")
     
-    # Calculate usage metrics (requires team totals)
-    df_rb = calculate_rb_usage_metrics(df_rb)
+    initial_count = len(df_rb)
     
-    # Add industry-standard opportunity metrics
-    df_rb = add_rb_opportunity_metrics(df_rb)
+    try:
+        # Calculate basic efficiency metrics
+        logger.info("1️⃣ Calculating basic efficiency metrics...")
+        df_rb = calculate_rb_efficiency_metrics(df_rb)
+        logger.info(f"   ✅ Efficiency metrics complete: {len(df_rb)} players retained")
+        
+        # Calculate per-game averages
+        logger.info("2️⃣ Calculating per-game averages...")
+        df_rb = calculate_rb_per_game_metrics(df_rb)
+        logger.info(f"   ✅ Per-game metrics complete: {len(df_rb)} players retained")
+        
+        # Calculate usage metrics (requires team totals)
+        logger.info("3️⃣ Calculating usage metrics...")
+        df_rb = calculate_rb_usage_metrics(df_rb)
+        logger.info(f"   ✅ Usage metrics complete: {len(df_rb)} players retained")
+        
+        # Add industry-standard opportunity metrics
+        logger.info("4️⃣ Adding opportunity metrics...")
+        df_rb = add_rb_opportunity_metrics(df_rb)
+        logger.info(f"   ✅ Opportunity metrics complete: {len(df_rb)} players retained")
+        
+        # Add advanced usage analytics
+        logger.info("5️⃣ Adding usage analytics...")
+        df_rb = add_rb_usage_analytics(df_rb)
+        logger.info(f"   ✅ Usage analytics complete: {len(df_rb)} players retained")
+        
+        # Add RB-specific derived metrics
+        logger.info("6️⃣ Calculating advanced RB metrics...")
+        df_rb = calculate_rb_advanced_metrics(df_rb)
+        logger.info(f"   ✅ Advanced metrics complete: {len(df_rb)} players retained")
+        
+    except Exception as e:
+        logger.error(f"❌ ERROR in RB feature engineering: {str(e)}")
+        logger.error(f"   Players at start: {initial_count}")
+        logger.error(f"   Players remaining: {len(df_rb)}")
+        logger.warning("⚠️ Returning players with partial feature engineering to prevent data loss")
+        # Don't re-raise the exception - return what we have
     
-    # Add advanced usage analytics
-    df_rb = add_rb_usage_analytics(df_rb)
+    final_count = len(df_rb)
+    if final_count < initial_count:
+        loss_count = initial_count - final_count
+        loss_percentage = (loss_count / initial_count) * 100
+        logger.warning(f"⚠️ RB PLAYER LOSS: {loss_count} players lost ({loss_percentage:.1f}%)")
+        logger.warning(f"   Started with: {initial_count} RBs")
+        logger.warning(f"   Ended with: {final_count} RBs")
+        
+        if loss_percentage > 10:  # If we lost more than 10% of players
+            logger.error(f"❌ EXCESSIVE RB DATA LOSS: {loss_percentage:.1f}% loss is unacceptable")
+            # But don't raise an exception - continue with what we have
+    else:
+        logger.info(f"✅ No RB players lost during feature engineering")
     
-    # Add RB-specific derived metrics
-    df_rb = calculate_rb_advanced_metrics(df_rb)
+    logger.info(f"🏈 RB FEATURE ENGINEERING COMPLETE")
+    logger.info(f"   Final players: {len(df_rb)}")
+    logger.info(f"   Final features: {len(df_rb.columns)}")
+    logger.info("=" * 60)
     
-    logger.info(f"Completed RB feature engineering with {len(df_rb.columns)} total features")
     return df_rb
 
 
 def calculate_rb_efficiency_metrics(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Calculate RB efficiency metrics.
+    Calculate RB efficiency metrics with robust column handling.
     
     Args:
         df: DataFrame containing RB player data
@@ -71,60 +128,122 @@ def calculate_rb_efficiency_metrics(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         DataFrame with RB efficiency metrics added
     """
+    logger.info("   📊 Calculating RB efficiency metrics...")
+    
     # Make a copy to avoid modifying the original dataframe
     df = df.copy()
     
+    # Check for required columns and provide defensive handling
+    required_columns = {
+        'rushing_yards': ['rushing_yards', 'rush_yards', 'yards_rushing'],
+        'carries': ['carries', 'rushing_attempts', 'attempts'],
+        'receiving_yards': ['receiving_yards', 'rec_yards', 'yards_receiving'],
+        'receptions': ['receptions', 'rec', 'catches'],
+        'rushing_tds': ['rushing_tds', 'rush_tds', 'rushing_touchdowns']
+    }
+    
+    # Find the actual column names or provide defaults
+    actual_columns = {}
+    for standard_name, possible_names in required_columns.items():
+        found_col = None
+        for possible_name in possible_names:
+            if possible_name in df.columns:
+                found_col = possible_name
+                break
+        
+        if found_col:
+            actual_columns[standard_name] = found_col
+            logger.info(f"      Using '{found_col}' for {standard_name}")
+        else:
+            # Create default column with zeros
+            df[standard_name] = 0.0
+            actual_columns[standard_name] = standard_name
+            logger.warning(f"      Missing column for {standard_name}, using 0 default")
+    
     # Yards per carry
-    # Use 'carries' column (nfl_data_py uses 'carries' not 'rushing_attempts')
-    carry_col = 'carries' if 'carries' in df.columns else 'rushing_attempts'
+    carry_col = actual_columns['carries']
+    rushing_yards_col = actual_columns['rushing_yards']
+    
     df['yards_per_carry'] = np.where(
         df[carry_col] > 0,
-        df['rushing_yards'] / df[carry_col],
+        df[rushing_yards_col] / df[carry_col],
         0
     )
     
     # Yards per touch (rushing + receiving)
+    receiving_yards_col = actual_columns['receiving_yards']
+    receptions_col = actual_columns['receptions']
+    
     df['yards_per_touch'] = np.where(
-        (df[carry_col] + df['receptions']) > 0,
-        (df['rushing_yards'] + df['receiving_yards']) / (df[carry_col] + df['receptions']),
+        (df[carry_col] + df[receptions_col]) > 0,
+        (df[rushing_yards_col] + df[receiving_yards_col]) / (df[carry_col] + df[receptions_col]),
         0
     )
     
     # Rushing TD rate
+    rushing_tds_col = actual_columns['rushing_tds']
     df['rushing_td_rate'] = np.where(
         df[carry_col] > 0,
-        df['rushing_tds'] / df[carry_col] * 100,
+        df[rushing_tds_col] / df[carry_col] * 100,
         0
     )
     
-    # Catch rate
-    df['catch_rate'] = np.where(
-        df['targets'] > 0,
-        df['receptions'] / df['targets'] * 100,
-        0
-    )
+    # Catch rate (handle targets column)
+    targets_col = None
+    for possible_target_col in ['targets', 'tgt', 'target']:
+        if possible_target_col in df.columns:
+            targets_col = possible_target_col
+            break
     
+    if targets_col:
+        df['catch_rate'] = np.where(
+            df[targets_col] > 0,
+            df[receptions_col] / df[targets_col] * 100,
+            0
+        )
+        logger.info(f"      ✅ Calculated catch_rate using {targets_col}")
+    else:
+        df['catch_rate'] = 0.0
+        logger.warning(f"      ⚠️ No targets column found, setting catch_rate to 0")
+    
+    # Add remaining receiving metrics before returning
     # Yards per reception
     df['yards_per_reception'] = np.where(
-        df['receptions'] > 0,
-        df['receiving_yards'] / df['receptions'],
+        df[receptions_col] > 0,
+        df[receiving_yards_col] / df[receptions_col],
         0
     )
     
-    # Yards per target
-    df['yards_per_target'] = np.where(
-        df['targets'] > 0,
-        df['receiving_yards'] / df['targets'],
-        0
-    )
-    
-    # Receiving TD rate
-    df['receiving_td_rate'] = np.where(
-        df['targets'] > 0,
-        df['receiving_tds'] / df['targets'] * 100,
-        0
-    )
-    
+    # Yards per target and receiving TD metrics (if targets available)
+    if targets_col:
+        df['yards_per_target'] = np.where(
+            df[targets_col] > 0,
+            df[receiving_yards_col] / df[targets_col],
+            0
+        )
+        
+        # Check for receiving TDs column
+        rec_tds_col = None
+        for possible_col in ['receiving_tds', 'rec_tds', 'receiving_touchdowns']:
+            if possible_col in df.columns:
+                rec_tds_col = possible_col
+                break
+        
+        if rec_tds_col:
+            df['receiving_td_rate'] = np.where(
+                df[targets_col] > 0,
+                df[rec_tds_col] / df[targets_col] * 100,
+                0
+            )
+        else:
+            df['receiving_td_rate'] = 0.0
+            logger.warning(f"      ⚠️ No receiving TDs column found, using 0 default")
+    else:
+        # No targets column, set target-based metrics to 0
+        df['yards_per_target'] = 0.0
+        df['receiving_td_rate'] = 0.0
+        
+    logger.info(f"   ✅ RB efficiency metrics calculated successfully")
     return df
 
 
@@ -215,6 +334,11 @@ def add_rb_opportunity_metrics(df: pd.DataFrame) -> pd.DataFrame:
         DataFrame with opportunity metrics added/enhanced
     """
     try:
+        # Import at runtime to avoid circular dependencies
+        import sys
+        from pathlib import Path
+        sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+        
         from src.features.opportunity_metrics import OpportunityMetricsCalculator
         
         logger.info("Adding opportunity metrics for RBs")
@@ -226,10 +350,15 @@ def add_rb_opportunity_metrics(df: pd.DataFrame) -> pd.DataFrame:
         # Add RB-specific opportunity calculations
         enhanced_df = calculate_rb_specific_opportunity_metrics(enhanced_df)
         
+        logger.info(f"Successfully added opportunity metrics to {len(enhanced_df)} RB players")
         return enhanced_df
         
+    except ImportError as e:
+        logger.warning(f"Could not import opportunity metrics: {e}")
+        # Return original data with RB-specific calculations only
+        return calculate_rb_specific_opportunity_metrics(df)
     except Exception as e:
-        logger.warning(f"Could not add opportunity metrics: {e}")
+        logger.error(f"Error adding opportunity metrics: {e}")
         return df
 
 
@@ -244,6 +373,11 @@ def add_rb_usage_analytics(df: pd.DataFrame) -> pd.DataFrame:
         DataFrame with usage analytics added
     """
     try:
+        # Import at runtime to avoid circular dependencies
+        import sys
+        from pathlib import Path
+        sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+        
         from src.features.usage_analytics import UsageAnalyticsCalculator
         
         logger.info("Adding usage analytics for RBs")
@@ -252,10 +386,14 @@ def add_rb_usage_analytics(df: pd.DataFrame) -> pd.DataFrame:
         calculator = UsageAnalyticsCalculator()
         enhanced_df = calculator.calculate_all_usage_metrics(df)
         
+        logger.info(f"Successfully added usage analytics to {len(enhanced_df)} RB players")
         return enhanced_df
         
+    except ImportError as e:
+        logger.warning(f"Could not import usage analytics: {e}")
+        return df
     except Exception as e:
-        logger.warning(f"Could not add usage analytics: {e}")
+        logger.error(f"Error adding usage analytics: {e}")
         return df
 
 

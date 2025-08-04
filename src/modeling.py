@@ -26,13 +26,20 @@ class BaseModel:
 
 
 class RandomForestModel(BaseModel):
-    """Random Forest Regressor model."""
+    """Random Forest Regressor model with optimized hyperparameters."""
     def __init__(self, model_params=None):
         super().__init__(model_params)
+        # Optimized default parameters based on fantasy football data analysis
         default_rf_params = {
-            'n_estimators': 100,  # A common default
+            'n_estimators': 300,        # Increased from 100 for better stability
+            'max_depth': 12,            # Prevent overfitting while allowing complexity
+            'min_samples_split': 5,     # Better generalization 
+            'min_samples_leaf': 2,      # Smoother predictions
+            'max_features': 'sqrt',     # Optimal feature sampling
+            'bootstrap': True,          # Enable bootstrap sampling
+            'oob_score': True,         # Out-of-bag score for validation
             'random_state': 42,
-            'n_jobs': -1  # Use all available cores
+            'n_jobs': -1
         }
         # User-provided params override defaults
         merged_params = {**default_rf_params, **self.model_params}
@@ -51,22 +58,29 @@ class RandomForestModel(BaseModel):
 
 
 class LightGBMModel(BaseModel):
-    """LightGBM Regressor model."""
+    """LightGBM Regressor model with optimized hyperparameters."""
     def __init__(self, model_params=None):
         super().__init__(model_params)
-        # Default LightGBM parameters, can be overridden by model_params
+        # Optimized LightGBM parameters based on fantasy football data analysis
         default_lgbm_params = {
-            'objective': 'regression_l1', # MAE, as RMSE can be sensitive to outliers
-            'metric': 'rmse', # Evaluation metric
-            'n_estimators': 1000,
-            'learning_rate': 0.05,
-            'feature_fraction': 0.8,
-            'bagging_fraction': 0.8,
-            'bagging_freq': 1,
-            'verbose': -1,
-            'n_jobs': -1,
-            'seed': 42,
-            'boosting_type': 'gbdt',
+            'objective': 'regression_l1',    # MAE objective for robustness to outliers
+            'metric': 'rmse',               # RMSE for evaluation
+            'boosting_type': 'gbdt',        # Gradient boosting decision tree
+            'n_estimators': 1000,           # High number with early stopping
+            'learning_rate': 0.08,          # Optimized from 0.05 for better performance
+            'num_leaves': 64,               # Balanced complexity (2^6)
+            'max_depth': 8,                 # Prevent overfitting while allowing depth
+            'min_data_in_leaf': 30,         # Ensure stable leaf predictions
+            'feature_fraction': 0.75,       # Feature subsampling for robustness
+            'bagging_fraction': 0.85,       # Row subsampling for generalization
+            'bagging_freq': 1,              # Enable bagging every iteration
+            'lambda_l1': 0.1,               # L1 regularization
+            'lambda_l2': 0.1,               # L2 regularization
+            'min_gain_to_split': 0.02,      # Minimum gain for splits
+            'verbose': -1,                  # Suppress output
+            'n_jobs': -1,                   # Use all cores
+            'seed': 42,                     # Reproducibility
+            'force_col_wise': True,         # Optimize memory usage
         }
         # Merge default with user-provided params, user params take precedence
         merged_params = {**default_lgbm_params, **self.model_params}

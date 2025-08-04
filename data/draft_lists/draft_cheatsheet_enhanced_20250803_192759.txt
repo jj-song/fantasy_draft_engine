@@ -1,6 +1,6 @@
 ====================================================================================================
 🏈 FANTASY FOOTBALL DRAFT CHEATSHEET - VOR ANALYSIS EDITION
-Generated: 2025-08-03 14:24:35
+Generated: 2025-08-03 19:27:59
 ====================================================================================================
 
 📊 VALUE OVER REPLACEMENT (VOR) BREAKDOWN
@@ -11,7 +11,7 @@ Position  Replacement    Scarcity   Top Player            Raw VOR  →  Adj VOR
 RB        RB30             1.5x      Jahmyr Gibbs         (37.8)  14.4  →  21.6
 TE        TE13             1.4x      Brock Bowers         (24.6)  8.8  →  12.3
 WR        WR30             1.2x      Ja'Marr Chase        (37.6)  16.6  →  19.9
-QB        QB13             0.9x      Lamar Jackson        (46.7)  11.1  →  10.0
+QB        QB13             0.9x      Lamar Jackson        (46.8)  11.1  →  10.0
 
 🏆 TOP 50 OVERALL PLAYERS WITH VOR ANALYSIS
 ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -42,21 +42,21 @@ RNK  PLAYER NAME             POS  TEAM  PROJ   RAW    MULT   ADJ    TIER
  22. Jonathan Taylor         RB   IND   30.6    7.2   1.5x   10.8  SOLID
  23. Trey McBride            TE   ARI   23.5    7.7   1.4x   10.8  SOLID
  24. Garrett Wilson          WR   NYJ   29.5    8.5   1.2x   10.2  SOLID
- 25. Lamar Jackson           QB   BAL   46.7   11.1   0.9x   10.0  SOLID
- 26. Baker Mayfield          QB   TB    46.5   11.0   0.9x    9.9  DEPTH
- 27. Courtland Sutton        WR   DEN   29.1    8.1   1.2x    9.7  DEPTH
+ 25. Baker Mayfield          QB   TB    46.6   11.0   0.9x    9.9  DEPTH
+ 26. Courtland Sutton        WR   DEN   29.1    8.1   1.2x    9.7  DEPTH
+ 27. Lamar Jackson           QB   BAL   46.8   11.1   0.9x   10.0  SOLID
  28. Alvin Kamara            RB   NO    29.8    6.5   1.5x    9.7  DEPTH
  29. Ladd McConkey           WR   LAC   29.0    8.1   1.2x    9.7  DEPTH
  30. A.J. Brown              WR   PHI   28.9    7.9   1.2x    9.5  DEPTH
- 31. Joe Burrow              QB   CIN   45.7   10.2   0.9x    9.1  DEPTH
+ 31. Joe Burrow              QB   CIN   45.9   10.2   0.9x    9.2  DEPTH
  32. Breece Hall             RB   NYJ   29.3    5.9   1.5x    8.9  DEPTH
  33. Chuba Hubbard           RB   CAR   29.2    5.8   1.5x    8.8  DEPTH
  34. Jaxon Smith-Njigba      WR   SEA   28.0    7.1   1.2x    8.5  DEPTH
  35. Chase Brown             RB   CIN   28.9    5.6   1.5x    8.4  DEPTH
  36. CeeDee Lamb             WR   DAL   27.8    6.8   1.2x    8.2  DEPTH
  37. James Conner            RB   ARI   28.0    4.6   1.5x    6.9  DEPTH
- 38. Jared Goff              QB   DET   42.9    7.3   0.9x    6.6  DEPTH
- 39. Mark Andrews            TE   BAL   20.3    4.5   1.4x    6.3  DEPTH
+ 38. Mark Andrews            TE   BAL   20.3    4.5   1.4x    6.3  DEPTH
+ 39. Jared Goff              QB   DET   42.9    7.2   0.9x    6.5  DEPTH
  40. Jordan Addison          WR   MIN   25.9    4.9   1.2x    5.9  BENCH
  41. Mike Evans              WR   TB    25.7    4.8   1.2x    5.7  BENCH
  42. Tee Higgins             WR   CIN   25.7    4.7   1.2x    5.6  BENCH
@@ -104,8 +104,8 @@ RNK  PLAYER NAME             POS  TEAM  PROJ   RAW    MULT   ADJ    TIER
 │ RB                    │ WR                    │ TE                    │ QB                    │
 │ ──                    │ ──                    │ ──                    │ ──                    │
 │ Alvin Kamara 9.7      │ Courtland Su 9.7      │ Mark Andrews 6.3      │ Baker Mayfie 9.9      │ 
-│ Breece Hall 8.9       │ Ladd McConke 9.7      │                       │ Joe Burrow 9.1        │ 
-│ Chuba Hubbar 8.8      │ A.J. Brown 9.5        │                       │ Jared Goff 6.6        │ 
+│ Breece Hall 8.9       │ Ladd McConke 9.7      │                       │ Joe Burrow 9.2        │ 
+│ Chuba Hubbar 8.8      │ A.J. Brown 9.5        │                       │ Jared Goff 6.5        │ 
 │ Chase Brown 8.4       │ Jaxon Smith- 8.5      │                       │                       │ 
 │ James Conner 6.9      │ CeeDee Lamb 8.2       │                       │                       │ 
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -132,28 +132,28 @@ VOR INSIGHTS:
 TOP QB PLAYERS BY TIER
 --------------------------------------------------------------------------------
 TIER 1 - ELITE
-  1. Lamar Jackson             BAL  46.72 pts
-  2. Baker Mayfield            TB   46.53 pts
-  3. Joe Burrow                CIN  45.73 pts
+  1. Lamar Jackson             BAL  46.78 pts
+  2. Baker Mayfield            TB   46.63 pts
+  3. Joe Burrow                CIN  45.87 pts
   4. Jared Goff                DET  42.88 pts
-  5. Sam Darnold               MIN  40.61 pts
-  6. Josh Allen                BUF  39.76 pts
+  5. Sam Darnold               MIN  40.72 pts
 
 TIER 2 - STRONG STARTERS
-  7. Jayden Daniels            WAS  38.73 pts
-  8. Geno Smith                SEA  37.73 pts
-  9. Kyler Murray              ARI  36.98 pts
- 10. Patrick Mahomes           KC   36.08 pts
- 11. Bo Nix                    DEN  36.04 pts
- 12. Justin Herbert            LAC  35.64 pts
- 13. Brock Purdy               SF   35.58 pts
+  6. Josh Allen                BUF  39.72 pts
+  7. Jayden Daniels            WAS  38.82 pts
+  8. Geno Smith                SEA  37.80 pts
+  9. Kyler Murray              ARI  37.03 pts
+ 10. Patrick Mahomes           KC   36.15 pts
+ 11. Bo Nix                    DEN  36.11 pts
+ 12. Justin Herbert            LAC  35.70 pts
+ 13. Brock Purdy               SF   35.65 pts
 
 TIER 3 - SOLID CONTRIBUTORS
- 14. Jalen Hurts               PHI  34.90 pts
+ 14. Jalen Hurts               PHI  34.87 pts
  15. Aaron Rodgers             NYJ  34.35 pts
- 16. Caleb Williams            CHI  34.14 pts
+ 16. Caleb Williams            CHI  34.21 pts
  17. Jordan Love               GB   32.08 pts
- 18. C.J. Stroud               HOU  31.90 pts
+ 18. C.J. Stroud               HOU  32.00 pts
  19. Matthew Stafford          LA   30.78 pts
  20. Kirk Cousins              ATL  30.61 pts
 
