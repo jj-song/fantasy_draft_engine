@@ -1,0 +1,1208 @@
+{
+  "WR": {
+    "position": "WR",
+    "player_count": 50,
+    "total_features": 114,
+    "validation_summary": {
+      "basic_quality": {
+        "total_columns": 114,
+        "total_rows": 50,
+        "missing_data": {
+          "route_participation_rate": 50
+        },
+        "data_types": {
+          "player_id": "object",
+          "season": "int64",
+          "season_type": "object",
+          "completions": "int32",
+          "attempts": "int32",
+          "passing_yards": "float64",
+          "passing_tds": "int32",
+          "interceptions": "float64",
+          "sacks": "float64",
+          "sack_yards": "float64",
+          "sack_fumbles": "int32",
+          "sack_fumbles_lost": "int32",
+          "passing_air_yards": "float64",
+          "passing_yards_after_catch": "float64",
+          "passing_first_downs": "float64",
+          "passing_epa": "float64",
+          "passing_2pt_conversions": "int32",
+          "pacr": "float64",
+          "dakota": "float64",
+          "carries": "int32",
+          "rushing_yards": "float64",
+          "rushing_tds": "int32",
+          "rushing_fumbles": "float64",
+          "rushing_fumbles_lost": "float64",
+          "rushing_first_downs": "float64",
+          "rushing_epa": "float64",
+          "rushing_2pt_conversions": "int32",
+          "receptions": "int32",
+          "targets": "int32",
+          "receiving_yards": "float64",
+          "receiving_tds": "int32",
+          "receiving_fumbles": "float64",
+          "receiving_fumbles_lost": "float64",
+          "receiving_air_yards": "float64",
+          "receiving_yards_after_catch": "float64",
+          "receiving_first_downs": "float64",
+          "receiving_epa": "float64",
+          "receiving_2pt_conversions": "int32",
+          "racr": "float64",
+          "target_share": "float64",
+          "air_yards_share": "float64",
+          "wopr_x": "float64",
+          "special_teams_tds": "float64",
+          "fantasy_points": "float64",
+          "fantasy_points_ppr": "float64",
+          "games": "int64",
+          "tgt_sh": "float64",
+          "ay_sh": "float64",
+          "yac_sh": "float64",
+          "wopr_y": "float64",
+          "ry_sh": "float64",
+          "rtd_sh": "float64",
+          "rfd_sh": "float64",
+          "rtdfd_sh": "float64",
+          "dom": "float64",
+          "w8dom": "float64",
+          "yptmpa": "float64",
+          "ppr_sh": "float64",
+          "player_name": "object",
+          "position": "object",
+          "team": "object",
+          "catch_rate": "float64",
+          "yards_per_reception": "float64",
+          "yards_per_target": "float64",
+          "td_per_target": "float64",
+          "td_per_reception": "float64",
+          "targets_per_game": "float64",
+          "receptions_per_game": "float64",
+          "receiving_yards_per_game": "float64",
+          "receiving_tds_per_game": "float64",
+          "yac_per_game": "float64",
+          "rushing_attempts_per_game": "float64",
+          "rushing_yards_per_game": "float64",
+          "rushing_tds_per_game": "float64",
+          "reception_share": "float64",
+          "red_zone_target_share": "float64",
+          "adot": "float64",
+          "wopr_enhanced": "float64",
+          "red_zone_targets": "float64",
+          "red_zone_carries": "float64",
+          "red_zone_opportunities": "float64",
+          "yac": "float64",
+          "yac_per_target": "float64",
+          "high_value_touches": "float64",
+          "route_participation": "float64",
+          "air_yards_per_target": "float64",
+          "team_total_targets": "int32",
+          "team_target_market_share": "float64",
+          "deep_target_indicator": "int64",
+          "deep_target_rate": "float64",
+          "short_target_rate": "float64",
+          "intermediate_target_rate": "float64",
+          "contested_catch_rate": "float64",
+          "total_snaps": "float64",
+          "avg_snap_share": "float64",
+          "snaps_per_game": "float64",
+          "targets_per_snap": "float64",
+          "carries_per_snap": "float64",
+          "fantasy_points_per_snap": "float64",
+          "total_touches": "int32",
+          "touches_per_snap": "float64",
+          "utilization_rate": "float64",
+          "route_participation_rate": "float64",
+          "route_participation_advanced": "float64",
+          "red_zone_usage": "float64",
+          "goal_line_usage": "float64",
+          "third_down_usage": "float64",
+          "two_minute_usage": "float64",
+          "air_yards_dominance": "object",
+          "target_efficiency_score": "float64",
+          "fantasy_relevance_score": "float64",
+          "red_zone_threat_level": "object",
+          "snap_rate_tier": "object",
+          "usage_ceiling": "float64"
+        },
+        "duplicates": "0",
+        "status": "pass"
+      },
+      "opportunity_metrics": {
+        "metrics_found": [
+          "target_share",
+          "air_yards_share",
+          "wopr_enhanced",
+          "adot",
+          "yac_per_target",
+          "red_zone_opportunities",
+          "targets_per_game",
+          "air_yards_per_target"
+        ],
+        "range_checks": {
+          "target_share": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "air_yards_share": {
+            "min_found": 0.026865671641791045,
+            "max_found": 7.704617053823575,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 30,
+            "valid": "False"
+          },
+          "wopr_enhanced": {
+            "min_found": 0.008548168249660785,
+            "max_found": 2.451469062580228,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 12,
+            "valid": "False"
+          },
+          "adot": {
+            "min_found": 4.608695652173913,
+            "max_found": 23.5,
+            "expected_min": -5,
+            "expected_max": 25,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "yac_per_target": {
+            "min_found": -20.5,
+            "max_found": 3.5483870967741935,
+            "expected_min": 0,
+            "expected_max": 20,
+            "invalid_count": 41,
+            "valid": "False"
+          },
+          "red_zone_opportunities": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 50,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "targets_per_game": {
+            "min_found": 1.0,
+            "max_found": 10.071428571428571,
+            "expected_min": 0,
+            "expected_max": 20,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "air_yards_per_target": {
+            "min_found": 4.608695652173913,
+            "max_found": 23.5,
+            "expected_min": -5,
+            "expected_max": 25,
+            "invalid_count": 0,
+            "valid": "True"
+          }
+        },
+        "invalid_values": {
+          "air_yards_share": "30",
+          "wopr_enhanced": "12",
+          "yac_per_target": "41"
+        },
+        "status": "warning"
+      },
+      "usage_metrics": {
+        "metrics_found": [
+          "avg_snap_share",
+          "total_snaps",
+          "snaps_per_game",
+          "targets_per_snap",
+          "carries_per_snap",
+          "touches_per_snap",
+          "fantasy_points_per_snap",
+          "utilization_rate",
+          "route_participation_advanced"
+        ],
+        "range_checks": {
+          "avg_snap_share": {
+            "min_found": 0.0,
+            "max_found": 0.9081818181818182,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "total_snaps": {
+            "min_found": 0.0,
+            "max_found": 994.0,
+            "expected_min": 0,
+            "expected_max": 2000,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "snaps_per_game": {
+            "min_found": 0.0,
+            "max_found": 61.166666666666664,
+            "expected_min": 0,
+            "expected_max": 100,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "targets_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.2664576802507837,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "carries_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.014925373134328358,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "touches_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.2664576802507837,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "fantasy_points_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.39299674267100976,
+            "expected_min": 0,
+            "expected_max": 2,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "utilization_rate": {
+            "min_found": 0.0,
+            "max_found": 26.64576802507837,
+            "expected_min": 0,
+            "expected_max": 100,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "route_participation_advanced": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          }
+        },
+        "invalid_values": {},
+        "status": "pass"
+      },
+      "WR_specific": {
+        "position": "WR",
+        "specific_metrics": [
+          "deep_target_rate",
+          "contested_catch_rate",
+          "fantasy_relevance_score",
+          "air_yards_dominance",
+          "snap_rate_tier"
+        ],
+        "validations": {
+          "deep_target_rate": {
+            "type": "numeric",
+            "valid": "True",
+            "invalid_count": 0
+          },
+          "contested_catch_rate": {
+            "type": "numeric",
+            "valid": "True",
+            "invalid_count": 0
+          },
+          "fantasy_relevance_score": {
+            "type": "numeric",
+            "valid": "True",
+            "invalid_count": 0
+          },
+          "air_yards_dominance": {
+            "type": "categorical",
+            "valid": "True",
+            "invalid_count": 0,
+            "unique_values": [
+              "High",
+              "Medium",
+              "Low"
+            ]
+          },
+          "snap_rate_tier": {
+            "type": "categorical",
+            "valid": "True",
+            "invalid_count": 0,
+            "unique_values": [
+              "High",
+              "Elite",
+              "Low",
+              "Medium"
+            ]
+          }
+        },
+        "status": "pass"
+      },
+      "feature_completeness": {
+        "expected_categories": [
+          "basic_stats",
+          "efficiency_metrics",
+          "per_game_metrics",
+          "opportunity_metrics",
+          "usage_analytics",
+          "advanced_metrics"
+        ],
+        "missing_categories": [],
+        "feature_counts": {
+          "basic_stats": {
+            "expected": 4,
+            "present": 4,
+            "percentage": 100.0
+          },
+          "efficiency_metrics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "per_game_metrics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "opportunity_metrics": {
+            "expected": 4,
+            "present": 3,
+            "percentage": 75.0
+          },
+          "usage_analytics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "advanced_metrics": {
+            "expected": 2,
+            "present": 2,
+            "percentage": 100.0
+          }
+        },
+        "completeness_score": 94.73684210526315,
+        "status": "pass"
+      },
+      "consistency": {
+        "consistency_checks": [
+          {
+            "check": "target_share_consistency",
+            "high_share_high_targets": 0,
+            "low_share_low_targets": 21,
+            "status": "pass"
+          }
+        ],
+        "inconsistencies": [],
+        "status": "pass"
+      }
+    },
+    "errors": [],
+    "warnings": [],
+    "recommendations": [
+      "Some opportunity metrics have values outside expected ranges. Review data processing."
+    ],
+    "overall_status": "warning"
+  },
+  "TE": {
+    "position": "TE",
+    "player_count": 50,
+    "total_features": 114,
+    "validation_summary": {
+      "basic_quality": {
+        "total_columns": 114,
+        "total_rows": 50,
+        "missing_data": {
+          "rtd_sh": 2,
+          "dom": 2,
+          "w8dom": 2,
+          "route_participation_rate": 50
+        },
+        "data_types": {
+          "player_id": "object",
+          "season": "int64",
+          "season_type": "object",
+          "completions": "int32",
+          "attempts": "int32",
+          "passing_yards": "float64",
+          "passing_tds": "int32",
+          "interceptions": "float64",
+          "sacks": "float64",
+          "sack_yards": "float64",
+          "sack_fumbles": "int32",
+          "sack_fumbles_lost": "int32",
+          "passing_air_yards": "float64",
+          "passing_yards_after_catch": "float64",
+          "passing_first_downs": "float64",
+          "passing_epa": "float64",
+          "passing_2pt_conversions": "int32",
+          "pacr": "float64",
+          "dakota": "float64",
+          "carries": "int32",
+          "rushing_yards": "float64",
+          "rushing_tds": "int32",
+          "rushing_fumbles": "float64",
+          "rushing_fumbles_lost": "float64",
+          "rushing_first_downs": "float64",
+          "rushing_epa": "float64",
+          "rushing_2pt_conversions": "int32",
+          "receptions": "int32",
+          "targets": "int32",
+          "receiving_yards": "float64",
+          "receiving_tds": "int32",
+          "receiving_fumbles": "float64",
+          "receiving_fumbles_lost": "float64",
+          "receiving_air_yards": "float64",
+          "receiving_yards_after_catch": "float64",
+          "receiving_first_downs": "float64",
+          "receiving_epa": "float64",
+          "receiving_2pt_conversions": "int32",
+          "racr": "float64",
+          "target_share": "float64",
+          "air_yards_share": "float64",
+          "wopr_x": "float64",
+          "special_teams_tds": "float64",
+          "fantasy_points": "float64",
+          "fantasy_points_ppr": "float64",
+          "games": "int64",
+          "tgt_sh": "float64",
+          "ay_sh": "float64",
+          "yac_sh": "float64",
+          "wopr_y": "float64",
+          "ry_sh": "float64",
+          "rtd_sh": "float64",
+          "rfd_sh": "float64",
+          "rtdfd_sh": "float64",
+          "dom": "float64",
+          "w8dom": "float64",
+          "yptmpa": "float64",
+          "ppr_sh": "float64",
+          "player_name": "object",
+          "position": "object",
+          "team": "object",
+          "catch_rate": "float64",
+          "yards_per_reception": "float64",
+          "yards_per_target": "float64",
+          "td_per_target": "float64",
+          "td_per_reception": "float64",
+          "targets_per_game": "float64",
+          "receptions_per_game": "float64",
+          "receiving_yards_per_game": "float64",
+          "receiving_tds_per_game": "float64",
+          "yac_per_game": "float64",
+          "reception_share": "float64",
+          "red_zone_target_share": "float64",
+          "adot": "float64",
+          "wopr_enhanced": "float64",
+          "red_zone_targets": "float64",
+          "red_zone_carries": "float64",
+          "red_zone_opportunities": "float64",
+          "yac": "float64",
+          "yac_per_target": "float64",
+          "high_value_touches": "float64",
+          "route_participation": "float64",
+          "air_yards_per_target": "float64",
+          "team_total_targets": "int32",
+          "team_target_market_share": "float64",
+          "seam_route_indicator": "int64",
+          "seam_route_rate": "int64",
+          "short_target_rate": "float64",
+          "intermediate_target_rate": "float64",
+          "deep_target_rate": "float64",
+          "inline_usage_estimate": "float64",
+          "slot_usage_estimate": "float64",
+          "contested_catch_rate": "float64",
+          "total_snaps": "float64",
+          "avg_snap_share": "float64",
+          "snaps_per_game": "float64",
+          "targets_per_snap": "float64",
+          "carries_per_snap": "float64",
+          "fantasy_points_per_snap": "float64",
+          "total_touches": "int32",
+          "touches_per_snap": "float64",
+          "utilization_rate": "float64",
+          "route_participation_rate": "float64",
+          "route_participation_advanced": "float64",
+          "red_zone_usage": "float64",
+          "goal_line_usage": "float64",
+          "third_down_usage": "float64",
+          "two_minute_usage": "float64",
+          "te_role": "object",
+          "target_efficiency_score": "float64",
+          "fantasy_relevance_score": "float64",
+          "red_zone_value_tier": "object",
+          "snap_utilization_tier": "object",
+          "usage_ceiling": "float64"
+        },
+        "duplicates": "0",
+        "status": "pass"
+      },
+      "opportunity_metrics": {
+        "metrics_found": [
+          "target_share",
+          "air_yards_share",
+          "wopr_enhanced",
+          "adot",
+          "yac_per_target",
+          "red_zone_opportunities",
+          "targets_per_game",
+          "air_yards_per_target"
+        ],
+        "range_checks": {
+          "target_share": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "air_yards_share": {
+            "min_found": 0.00423728813559322,
+            "max_found": 4.033710576953776,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 22,
+            "valid": "False"
+          },
+          "wopr_enhanced": {
+            "min_found": 0.001348228043143297,
+            "max_found": 1.2834533653943831,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 1,
+            "valid": "False"
+          },
+          "adot": {
+            "min_found": 0.6666666666666666,
+            "max_found": 16.0,
+            "expected_min": -5,
+            "expected_max": 25,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "yac_per_target": {
+            "min_found": -16.0,
+            "max_found": 5.65,
+            "expected_min": 0,
+            "expected_max": 20,
+            "invalid_count": 13,
+            "valid": "False"
+          },
+          "red_zone_opportunities": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 50,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "targets_per_game": {
+            "min_found": 1.0,
+            "max_found": 8.818181818181818,
+            "expected_min": 0,
+            "expected_max": 20,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "air_yards_per_target": {
+            "min_found": 0.6666666666666666,
+            "max_found": 16.0,
+            "expected_min": -5,
+            "expected_max": 25,
+            "invalid_count": 0,
+            "valid": "True"
+          }
+        },
+        "invalid_values": {
+          "air_yards_share": "22",
+          "wopr_enhanced": "1",
+          "yac_per_target": "13"
+        },
+        "status": "warning"
+      },
+      "usage_metrics": {
+        "metrics_found": [
+          "avg_snap_share",
+          "total_snaps",
+          "snaps_per_game",
+          "targets_per_snap",
+          "carries_per_snap",
+          "touches_per_snap",
+          "fantasy_points_per_snap",
+          "utilization_rate",
+          "route_participation_advanced"
+        ],
+        "range_checks": {
+          "avg_snap_share": {
+            "min_found": 0.0,
+            "max_found": 0.8723529411764706,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "total_snaps": {
+            "min_found": 0.0,
+            "max_found": 1093.0,
+            "expected_min": 0,
+            "expected_max": 2000,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "snaps_per_game": {
+            "min_found": 0.0,
+            "max_found": 220.0,
+            "expected_min": 0,
+            "expected_max": 100,
+            "invalid_count": 3,
+            "valid": "False"
+          },
+          "targets_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.19327731092436976,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "carries_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.17333333333333334,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "touches_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.3111111111111111,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "fantasy_points_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.45484444444444444,
+            "expected_min": 0,
+            "expected_max": 2,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "utilization_rate": {
+            "min_found": 0.0,
+            "max_found": 31.11111111111111,
+            "expected_min": 0,
+            "expected_max": 100,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "route_participation_advanced": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          }
+        },
+        "invalid_values": {
+          "snaps_per_game": "3"
+        },
+        "status": "warning"
+      },
+      "TE_specific": {
+        "position": "TE",
+        "specific_metrics": [
+          "seam_route_rate",
+          "inline_usage_estimate",
+          "slot_usage_estimate",
+          "te_role",
+          "red_zone_value_tier"
+        ],
+        "validations": {},
+        "status": "pass"
+      },
+      "feature_completeness": {
+        "expected_categories": [
+          "basic_stats",
+          "efficiency_metrics",
+          "per_game_metrics",
+          "opportunity_metrics",
+          "usage_analytics",
+          "advanced_metrics"
+        ],
+        "missing_categories": [],
+        "feature_counts": {
+          "basic_stats": {
+            "expected": 4,
+            "present": 4,
+            "percentage": 100.0
+          },
+          "efficiency_metrics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "per_game_metrics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "opportunity_metrics": {
+            "expected": 4,
+            "present": 3,
+            "percentage": 75.0
+          },
+          "usage_analytics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "advanced_metrics": {
+            "expected": 2,
+            "present": 2,
+            "percentage": 100.0
+          }
+        },
+        "completeness_score": 94.73684210526315,
+        "status": "pass"
+      },
+      "consistency": {
+        "consistency_checks": [
+          {
+            "check": "target_share_consistency",
+            "high_share_high_targets": 0,
+            "low_share_low_targets": 28,
+            "status": "pass"
+          }
+        ],
+        "inconsistencies": [],
+        "status": "pass"
+      }
+    },
+    "errors": [],
+    "warnings": [],
+    "recommendations": [
+      "Some opportunity metrics have values outside expected ranges. Review data processing."
+    ],
+    "overall_status": "warning"
+  },
+  "RB": {
+    "position": "RB",
+    "player_count": 50,
+    "total_features": 126,
+    "validation_summary": {
+      "basic_quality": {
+        "total_columns": 126,
+        "total_rows": 50,
+        "missing_data": {
+          "route_participation_rate": 50
+        },
+        "data_types": {
+          "player_id": "object",
+          "season": "int64",
+          "season_type": "object",
+          "completions": "int32",
+          "attempts": "int32",
+          "passing_yards": "float64",
+          "passing_tds": "int32",
+          "interceptions": "float64",
+          "sacks": "float64",
+          "sack_yards": "float64",
+          "sack_fumbles": "int32",
+          "sack_fumbles_lost": "int32",
+          "passing_air_yards": "float64",
+          "passing_yards_after_catch": "float64",
+          "passing_first_downs": "float64",
+          "passing_epa": "float64",
+          "passing_2pt_conversions": "int32",
+          "pacr": "float64",
+          "dakota": "float64",
+          "carries": "int32",
+          "rushing_yards": "float64",
+          "rushing_tds": "int32",
+          "rushing_fumbles": "float64",
+          "rushing_fumbles_lost": "float64",
+          "rushing_first_downs": "float64",
+          "rushing_epa": "float64",
+          "rushing_2pt_conversions": "int32",
+          "receptions": "int32",
+          "targets": "int32",
+          "receiving_yards": "float64",
+          "receiving_tds": "int32",
+          "receiving_fumbles": "float64",
+          "receiving_fumbles_lost": "float64",
+          "receiving_air_yards": "float64",
+          "receiving_yards_after_catch": "float64",
+          "receiving_first_downs": "float64",
+          "receiving_epa": "float64",
+          "receiving_2pt_conversions": "int32",
+          "racr": "float64",
+          "target_share": "float64",
+          "air_yards_share": "float64",
+          "wopr_x": "float64",
+          "special_teams_tds": "float64",
+          "fantasy_points": "float64",
+          "fantasy_points_ppr": "float64",
+          "games": "int64",
+          "tgt_sh": "float64",
+          "ay_sh": "float64",
+          "yac_sh": "float64",
+          "wopr_y": "float64",
+          "ry_sh": "float64",
+          "rtd_sh": "float64",
+          "rfd_sh": "float64",
+          "rtdfd_sh": "float64",
+          "dom": "float64",
+          "w8dom": "float64",
+          "yptmpa": "float64",
+          "ppr_sh": "float64",
+          "player_name": "object",
+          "position": "object",
+          "team": "object",
+          "yards_per_carry": "float64",
+          "yards_per_touch": "float64",
+          "rushing_td_rate": "float64",
+          "catch_rate": "float64",
+          "yards_per_reception": "float64",
+          "yards_per_target": "float64",
+          "receiving_td_rate": "float64",
+          "rushing_attempts_per_game": "float64",
+          "rushing_yards_per_game": "float64",
+          "rushing_tds_per_game": "float64",
+          "targets_per_game": "float64",
+          "receptions_per_game": "float64",
+          "receiving_yards_per_game": "float64",
+          "receiving_tds_per_game": "float64",
+          "touches_per_game": "float64",
+          "total_yards_per_game": "float64",
+          "total_tds_per_game": "float64",
+          "team_rush_attempt_share": "float64",
+          "team_target_share": "float64",
+          "team_touch_share": "float64",
+          "red_zone_opportunity_share": "float64",
+          "adot": "float64",
+          "wopr_enhanced": "float64",
+          "red_zone_targets": "float64",
+          "red_zone_carries": "float64",
+          "red_zone_opportunities": "float64",
+          "yac": "float64",
+          "yac_per_target": "float64",
+          "high_value_touches": "float64",
+          "route_participation": "float64",
+          "air_yards_per_target": "float64",
+          "team_total_targets": "int32",
+          "team_target_market_share": "float64",
+          "goal_line_carries": "float64",
+          "goal_line_carry_rate": "float64",
+          "early_down_rate": "float64",
+          "passing_down_rate": "float64",
+          "fantasy_points_per_touch": "float64",
+          "workhorse_indicator": "int64",
+          "pass_catching_back": "int64",
+          "short_yardage_specialist": "int64",
+          "receiving_versatility": "object",
+          "total_snaps": "float64",
+          "avg_snap_share": "float64",
+          "snaps_per_game": "float64",
+          "targets_per_snap": "float64",
+          "carries_per_snap": "float64",
+          "fantasy_points_per_snap": "float64",
+          "total_touches": "int32",
+          "touches_per_snap": "float64",
+          "utilization_rate": "float64",
+          "route_participation_rate": "float64",
+          "route_participation_advanced": "float64",
+          "red_zone_usage": "float64",
+          "goal_line_usage": "float64",
+          "third_down_usage": "float64",
+          "two_minute_usage": "float64",
+          "rb_role": "object",
+          "touch_efficiency_score": "float64",
+          "fantasy_upside_score": "float64",
+          "red_zone_value_tier": "object",
+          "snap_share_tier": "object",
+          "injury_risk_tier": "object",
+          "usage_sustainability": "object",
+          "opportunity_ceiling": "float64"
+        },
+        "duplicates": "0",
+        "status": "pass"
+      },
+      "opportunity_metrics": {
+        "metrics_found": [
+          "target_share",
+          "air_yards_share",
+          "wopr_enhanced",
+          "adot",
+          "yac_per_target",
+          "red_zone_opportunities",
+          "targets_per_game",
+          "air_yards_per_target"
+        ],
+        "range_checks": {
+          "target_share": {
+            "min_found": 0.0,
+            "max_found": 2.978429999348596,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 16,
+            "valid": "False"
+          },
+          "air_yards_share": {
+            "min_found": -0.5807225182146292,
+            "max_found": 0.8829654931226564,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 24,
+            "valid": "False"
+          },
+          "wopr_enhanced": {
+            "min_found": 0.0,
+            "max_found": 2.137282544374839,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 7,
+            "valid": "False"
+          },
+          "adot": {
+            "min_found": -4.666666666666667,
+            "max_found": 10.5,
+            "expected_min": -5,
+            "expected_max": 25,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "yac_per_target": {
+            "min_found": -10.5,
+            "max_found": 13.0,
+            "expected_min": 0,
+            "expected_max": 20,
+            "invalid_count": 2,
+            "valid": "False"
+          },
+          "red_zone_opportunities": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 50,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "targets_per_game": {
+            "min_found": 0.0,
+            "max_found": 6.357142857142857,
+            "expected_min": 0,
+            "expected_max": 20,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "air_yards_per_target": {
+            "min_found": -4.666666666666667,
+            "max_found": 10.5,
+            "expected_min": -5,
+            "expected_max": 25,
+            "invalid_count": 0,
+            "valid": "True"
+          }
+        },
+        "invalid_values": {
+          "target_share": "16",
+          "air_yards_share": "24",
+          "wopr_enhanced": "7",
+          "yac_per_target": "2"
+        },
+        "status": "warning"
+      },
+      "usage_metrics": {
+        "metrics_found": [
+          "avg_snap_share",
+          "total_snaps",
+          "snaps_per_game",
+          "targets_per_snap",
+          "carries_per_snap",
+          "touches_per_snap",
+          "fantasy_points_per_snap",
+          "utilization_rate",
+          "route_participation_advanced"
+        ],
+        "range_checks": {
+          "avg_snap_share": {
+            "min_found": 0.0,
+            "max_found": 0.8028571428571428,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "total_snaps": {
+            "min_found": 0.0,
+            "max_found": 1020.0,
+            "expected_min": 0,
+            "expected_max": 2000,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "snaps_per_game": {
+            "min_found": 0.0,
+            "max_found": 99.0,
+            "expected_min": 0,
+            "expected_max": 100,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "targets_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.13884555382215288,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "carries_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.8,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "touches_per_snap": {
+            "min_found": 0.0,
+            "max_found": 0.8,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "fantasy_points_per_snap": {
+            "min_found": 0.0,
+            "max_found": 2.3,
+            "expected_min": 0,
+            "expected_max": 2,
+            "invalid_count": 1,
+            "valid": "False"
+          },
+          "utilization_rate": {
+            "min_found": 0.0,
+            "max_found": 80.0,
+            "expected_min": 0,
+            "expected_max": 100,
+            "invalid_count": 0,
+            "valid": "True"
+          },
+          "route_participation_advanced": {
+            "min_found": 0.0,
+            "max_found": 0.0,
+            "expected_min": 0,
+            "expected_max": 1,
+            "invalid_count": 0,
+            "valid": "True"
+          }
+        },
+        "invalid_values": {
+          "fantasy_points_per_snap": "1"
+        },
+        "status": "warning"
+      },
+      "RB_specific": {
+        "position": "RB",
+        "specific_metrics": [
+          "goal_line_carry_rate",
+          "early_down_rate",
+          "passing_down_rate",
+          "workhorse_indicator",
+          "pass_catching_back",
+          "rb_role",
+          "usage_sustainability"
+        ],
+        "validations": {},
+        "status": "pass"
+      },
+      "feature_completeness": {
+        "expected_categories": [
+          "basic_stats",
+          "efficiency_metrics",
+          "per_game_metrics",
+          "opportunity_metrics",
+          "usage_analytics"
+        ],
+        "missing_categories": [
+          "advanced_metrics"
+        ],
+        "feature_counts": {
+          "basic_stats": {
+            "expected": 4,
+            "present": 4,
+            "percentage": 100.0
+          },
+          "efficiency_metrics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "per_game_metrics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "opportunity_metrics": {
+            "expected": 4,
+            "present": 3,
+            "percentage": 75.0
+          },
+          "usage_analytics": {
+            "expected": 3,
+            "present": 3,
+            "percentage": 100.0
+          },
+          "advanced_metrics": {
+            "expected": 2,
+            "present": 0,
+            "percentage": 0.0
+          }
+        },
+        "completeness_score": 84.21052631578947,
+        "status": "pass"
+      },
+      "consistency": {
+        "consistency_checks": [
+          {
+            "check": "target_share_consistency",
+            "high_share_high_targets": 0,
+            "low_share_low_targets": 8,
+            "status": "pass"
+          },
+          {
+            "check": "snap_usage_consistency",
+            "high_snaps_low_targets": 2,
+            "note": "Likely blocking/special teams players",
+            "status": "pass"
+          }
+        ],
+        "inconsistencies": [],
+        "status": "pass"
+      }
+    },
+    "errors": [],
+    "warnings": [],
+    "recommendations": [
+      "Some opportunity metrics have values outside expected ranges. Review data processing."
+    ],
+    "overall_status": "warning"
+  }
+}

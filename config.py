@@ -131,10 +131,203 @@ MINIMAL_DATA_BASELINE_FPPG = {
 # Minimum games threshold for considering a player to have sufficient data
 MIN_GAMES_THRESHOLD = 4
 
-# Model ensemble weights
+# Model ensemble weights (default - can be overridden by dynamic weighting)
 MODEL_WEIGHTS = {
     'lightgbm': 0.5,
     'random_forest': 0.5,
+}
+
+# Position-specific optimized hyperparameters
+# These are the result of comprehensive hyperparameter optimization
+OPTIMIZED_HYPERPARAMETERS = {
+    'random_forest': {
+        'QB': {
+            'n_estimators': 400,
+            'max_depth': 10,
+            'min_samples_split': 5,
+            'min_samples_leaf': 4,
+            'max_features': 'sqrt',
+            'bootstrap': True,
+            'oob_score': True,
+            'random_state': 42,
+            'n_jobs': -1
+        },
+        'RB': {
+            'n_estimators': 300,
+            'max_depth': 12,
+            'min_samples_split': 8,
+            'min_samples_leaf': 2,
+            'max_features': 0.8,
+            'bootstrap': True,
+            'oob_score': True,
+            'random_state': 42,
+            'n_jobs': -1
+        },
+        'WR': {
+            'n_estimators': 400,
+            'max_depth': 12,
+            'min_samples_split': 5,
+            'min_samples_leaf': 2,
+            'max_features': 'sqrt',
+            'bootstrap': True,
+            'oob_score': True,
+            'random_state': 42,
+            'n_jobs': -1
+        },
+        'TE': {
+            'n_estimators': 300,
+            'max_depth': 8,
+            'min_samples_split': 8,
+            'min_samples_leaf': 5,
+            'max_features': 'sqrt',
+            'bootstrap': True,
+            'oob_score': True,
+            'random_state': 42,
+            'n_jobs': -1
+        }
+    },
+    'lightgbm': {
+        'QB': {
+            'objective': 'regression_l1',
+            'metric': 'rmse',
+            'boosting_type': 'gbdt',
+            'n_estimators': 1000,
+            'learning_rate': 0.08,
+            'num_leaves': 64,
+            'max_depth': 8,
+            'min_data_in_leaf': 40,
+            'feature_fraction': 0.8,
+            'bagging_fraction': 0.85,
+            'bagging_freq': 1,
+            'lambda_l1': 0.1,
+            'lambda_l2': 0.2,
+            'min_gain_to_split': 0.01,
+            'verbose': -1,
+            'n_jobs': -1,
+            'seed': 42,
+            'force_col_wise': True,
+        },
+        'RB': {
+            'objective': 'regression_l1',
+            'metric': 'rmse',
+            'boosting_type': 'gbdt',
+            'n_estimators': 1000,
+            'learning_rate': 0.1,
+            'num_leaves': 96,
+            'max_depth': 10,
+            'min_data_in_leaf': 25,
+            'feature_fraction': 0.75,
+            'bagging_fraction': 0.8,
+            'bagging_freq': 1,
+            'lambda_l1': 0.2,
+            'lambda_l2': 0.1,
+            'min_gain_to_split': 0.02,
+            'verbose': -1,
+            'n_jobs': -1,
+            'seed': 42,
+            'force_col_wise': True,
+        },
+        'WR': {
+            'objective': 'regression_l1',
+            'metric': 'rmse',
+            'boosting_type': 'gbdt',
+            'n_estimators': 1000,
+            'learning_rate': 0.08,
+            'num_leaves': 96,
+            'max_depth': 10,
+            'min_data_in_leaf': 30,
+            'feature_fraction': 0.7,
+            'bagging_fraction': 0.85,
+            'bagging_freq': 1,
+            'lambda_l1': 0.1,
+            'lambda_l2': 0.1,
+            'min_gain_to_split': 0.01,
+            'verbose': -1,
+            'n_jobs': -1,
+            'seed': 42,
+            'force_col_wise': True,
+        },
+        'TE': {
+            'objective': 'regression_l1',
+            'metric': 'rmse',
+            'boosting_type': 'gbdt',
+            'n_estimators': 800,
+            'learning_rate': 0.08,
+            'num_leaves': 64,
+            'max_depth': 8,
+            'min_data_in_leaf': 50,
+            'feature_fraction': 0.8,
+            'bagging_fraction': 0.9,
+            'bagging_freq': 1,
+            'lambda_l1': 0.1,
+            'lambda_l2': 0.3,
+            'min_gain_to_split': 0.02,
+            'verbose': -1,
+            'n_jobs': -1,
+            'seed': 42,
+            'force_col_wise': True,
+        }
+    }
+}
+
+# Dynamic ensemble weighting based on player context
+# These weights are applied based on player characteristics and performance patterns
+DYNAMIC_ENSEMBLE_WEIGHTS = {
+    'QB': {
+        'veteran_stable': {'random_forest': 0.6, 'lightgbm': 0.4},  # Experienced QBs with consistent patterns
+        'young_developing': {'random_forest': 0.4, 'lightgbm': 0.6},  # Young QBs with complex development patterns
+        'high_volatility': {'random_forest': 0.5, 'lightgbm': 0.5},  # QBs with inconsistent performance
+        'default': {'random_forest': 0.5, 'lightgbm': 0.5}
+    },
+    'RB': {
+        'workhorse': {'random_forest': 0.6, 'lightgbm': 0.4},  # High-volume, consistent usage RBs
+        'committee_back': {'random_forest': 0.4, 'lightgbm': 0.6},  # RBs in committee situations
+        'pass_catching': {'random_forest': 0.45, 'lightgbm': 0.55},  # Pass-catching specialists
+        'goal_line': {'random_forest': 0.65, 'lightgbm': 0.35},  # TD-dependent RBs
+        'default': {'random_forest': 0.5, 'lightgbm': 0.5}
+    },
+    'WR': {
+        'target_hog': {'random_forest': 0.55, 'lightgbm': 0.45},  # High target share WRs
+        'big_play': {'random_forest': 0.4, 'lightgbm': 0.6},  # Deep threat WRs with volatile performance
+        'possession': {'random_forest': 0.6, 'lightgbm': 0.4},  # Reliable possession receivers
+        'rookie_developing': {'random_forest': 0.35, 'lightgbm': 0.65},  # Rookies with development potential
+        'default': {'random_forest': 0.5, 'lightgbm': 0.5}
+    },
+    'TE': {
+        'elite_tier': {'random_forest': 0.55, 'lightgbm': 0.45},  # Top-tier TEs with consistent usage
+        'receiving_specialist': {'random_forest': 0.45, 'lightgbm': 0.55},  # TEs primarily used in passing
+        'blocking_hybrid': {'random_forest': 0.6, 'lightgbm': 0.4},  # TEs with significant blocking duties
+        'matchup_dependent': {'random_forest': 0.4, 'lightgbm': 0.6},  # TEs with volatile weekly usage
+        'default': {'random_forest': 0.5, 'lightgbm': 0.5}
+    }
+}
+
+# Player archetype classification thresholds
+# Used to determine which dynamic ensemble weights to apply
+PLAYER_ARCHETYPE_THRESHOLDS = {
+    'QB': {
+        'veteran_stable': {'min_experience': 3, 'max_cv_fppg': 0.3},
+        'young_developing': {'max_experience': 2, 'min_games': 8},
+        'high_volatility': {'min_cv_fppg': 0.4}
+    },
+    'RB': {
+        'workhorse': {'min_carries_per_game': 15, 'min_touch_share': 0.6},
+        'committee_back': {'max_carries_per_game': 12, 'max_touch_share': 0.45},
+        'pass_catching': {'min_targets_per_game': 4, 'min_target_share': 0.1},
+        'goal_line': {'min_red_zone_carries': 3, 'max_carries_per_game': 10}
+    },
+    'WR': {
+        'target_hog': {'min_target_share': 0.25, 'min_targets_per_game': 8},
+        'big_play': {'min_adot': 12, 'min_yards_per_target': 8},
+        'possession': {'max_adot': 8, 'min_catch_rate': 0.7},
+        'rookie_developing': {'max_experience': 1, 'min_draft_round': 1, 'max_draft_round': 3}
+    },
+    'TE': {
+        'elite_tier': {'min_target_share': 0.15, 'min_targets_per_game': 6},
+        'receiving_specialist': {'min_routes_per_snap': 0.7, 'max_blocking_snaps': 0.3},
+        'blocking_hybrid': {'min_blocking_snaps': 0.4, 'max_targets_per_game': 4},
+        'matchup_dependent': {'min_cv_targets': 0.5, 'max_target_share': 0.12}
+    }
 }
 
 # Default scoring system to use for target variable calculation

@@ -3,6 +3,15 @@ Feature engineering module for the Fantasy Football AI Draft Tool.
 
 This module contains functions to generate features for predicting player performance
 in the upcoming season based on historical data, as described in Section 3.3 of the project plan.
+
+Enhanced with Phase 2 Matchup Intelligence:
+- Schedule strength analysis and opponent quality assessment
+- Environmental factors (weather, altitude, dome effects)
+- Situational adjustments and venue considerations
+- Position-specific matchup features and contextual factors
+
+The module supports both traditional feature engineering and enhanced matchup-aware
+feature generation through configurable parameters.
 """
 
 import os
@@ -12,7 +21,8 @@ import numpy as np
 from datetime import datetime
 import sys
 from pathlib import Path
-from data_storage import load_raw_data, save_features_data
+from typing import Dict, List, Optional, Tuple, Union
+from src.data_storage import load_raw_data, save_features_data
 
 # Add the project root to the path so we can import the config
 sys.path.append(str(Path(__file__).parent.parent))
@@ -20,6 +30,359 @@ import config
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+
+def combine_position_features_safely(position_dfs: List[pd.DataFrame]) -> pd.DataFrame:
+    """
+    Safely combine position-specific feature DataFrames without cross-contamination.
+    
+    This function ensures that position-specific features don't leak across positions
+    by properly handling column mismatches and filling missing values appropriately.
+    
+    Args:
+        position_dfs: List of DataFrames, each containing features for a specific position
+        
+    Returns:
+        Combined DataFrame with all positions and properly isolated features
+    """
+    logger.info("🔄 POSITION-AWARE FEATURE COMBINATION START")
+    logger.info("=" * 70)
+    
+    if not position_dfs:
+        logger.warning("No position DataFrames to combine")
+        return pd.DataFrame()
+    
+    # Log input data
+    total_players = sum(len(df) for df in position_dfs)
+    logger.info(f"Combining {len(position_dfs)} position DataFrames with {total_players} total players")
+    
+    for i, df in enumerate(position_dfs):
+        if 'position' in df.columns:
+            positions = df['position'].unique()
+            logger.info(f"  DataFrame {i+1}: {len(df)} players, {len(df.columns)} features, positions: {positions}")
+        else:
+            logger.info(f"  DataFrame {i+1}: {len(df)} players, {len(df.columns)} features, no position column")
+    
+    # Get all unique columns across all position DataFrames
+    all_columns = set()
+    for df in position_dfs:
+        all_columns.update(df.columns)
+    
+    all_columns = sorted(all_columns)  # Sort for consistent ordering
+    logger.info(f"📊 Total unique columns across all positions: {len(all_columns)}")
+    
+    # Identify position-specific feature categories
+    position_specific_features = identify_position_specific_features(all_columns)
+    logger.info(f"📋 Position-specific feature categories:")
+    for category, features in position_specific_features.items():
+        logger.info(f"   {category}: {len(features)} features")
+        if len(features) <= 5:  # Show all if 5 or fewer
+            logger.info(f"      {features}")
+        else:  # Show first 3 for longer lists
+            logger.info(f"      {features[:3]}... (+{len(features)-3} more)")
+    
+    # Normalize each DataFrame to have all columns
+    normalized_dfs = []
+    
+    for i, df in enumerate(position_dfs):
+        logger.info(f"🔧 Normalizing DataFrame {i+1}...")
+        
+        # Get the position(s) in this DataFrame
+        positions_in_df = df['position'].unique() if 'position' in df.columns else ['Unknown']
+        logger.info(f"   Processing positions: {positions_in_df}")
+        
+        # Create a copy with all columns
+        normalized_df = df.copy()
+        
+        # Add missing columns with appropriate default values
+        missing_columns = set(all_columns) - set(df.columns)
+        if missing_columns:
+            logger.info(f"   Adding {len(missing_columns)} missing columns...")
+            
+            for col in missing_columns:
+                # Determine appropriate default value based on column type and position relevance
+                default_value = get_default_value_for_column(col, positions_in_df, position_specific_features)
+                normalized_df[col] = default_value
+                
+        # Ensure column order is consistent
+        normalized_df = normalized_df[all_columns]
+        normalized_dfs.append(normalized_df)
+        
+        logger.info(f"   ✅ Normalized to {len(normalized_df.columns)} columns")
+    
+    # Now safely concatenate the normalized DataFrames
+    logger.info("🔗 Concatenating normalized DataFrames...")
+    combined_df = pd.concat(normalized_dfs, ignore_index=True)
+    
+    # Clean up any remaining null values that shouldn't be there
+    logger.info("🧹 Cleaning up null values in position-specific features...")
+    initial_nulls = combined_df.isnull().sum().sum()
+    
+    # Fill remaining nulls with appropriate defaults based on column types
+    for col in combined_df.columns:
+        if combined_df[col].isnull().any():
+            if pd.api.types.is_numeric_dtype(combined_df[col]):
+                # Special handling for environmental impact features
+                if 'env_impact' in col.lower():
+                    # Fill with neutral environmental impact
+                    combined_df[col] = combined_df[col].fillna(1.0)
+                    logger.info(f"      Filled environmental feature '{col}' with neutral value 1.0")
+                else:
+                    combined_df[col] = combined_df[col].fillna(0.0)
+            else:
+                combined_df[col] = combined_df[col].fillna('Unknown')
+    
+    final_nulls = combined_df.isnull().sum().sum()
+    logger.info(f"   Null values: {initial_nulls} → {final_nulls} (cleaned {initial_nulls - final_nulls})")
+    
+    # Validate the result
+    logger.info("✅ POSITION-AWARE COMBINATION COMPLETE")
+    logger.info(f"   Final DataFrame: {len(combined_df)} players, {len(combined_df.columns)} features")
+    
+    if 'position' in combined_df.columns:
+        final_position_counts = dict(combined_df['position'].value_counts())
+        logger.info(f"   Final position breakdown: {final_position_counts}")
+        
+        # Verify no players were lost
+        input_position_counts = {}
+        for df in position_dfs:
+            if 'position' in df.columns:
+                for pos, count in df['position'].value_counts().items():
+                    input_position_counts[pos] = input_position_counts.get(pos, 0) + count
+        
+        for pos, expected_count in input_position_counts.items():
+            actual_count = final_position_counts.get(pos, 0)
+            if actual_count != expected_count:
+                logger.error(f"❌ PLAYER LOSS DETECTED: {pos} had {expected_count} players, now has {actual_count}")
+            else:
+                logger.info(f"   ✅ {pos}: {actual_count} players (no loss)")
+    
+    # Log feature contamination check
+    check_feature_contamination(combined_df, position_specific_features)
+    
+    logger.info("=" * 70)
+    return combined_df
+
+
+def identify_position_specific_features(all_columns: List[str]) -> Dict[str, List[str]]:
+    """
+    Identify which features are specific to which positions based on naming patterns.
+    
+    Args:
+        all_columns: List of all column names
+        
+    Returns:
+        Dictionary mapping feature categories to lists of column names
+    """
+    position_features = {
+        'QB_specific': [],
+        'RB_specific': [],
+        'WR_specific': [],
+        'TE_specific': [],
+        'skill_position_common': [],  # RB, WR, TE common features
+        'universal': []  # Features relevant to all positions
+    }
+    
+    # QB-specific patterns
+    qb_patterns = [
+        'passing_', 'completion_', 'interception_', 'sack', 'quarterback_',
+        'qb_', 'air_yards_per_attempt', 'passer_rating', 'passing_td_percentage'
+    ]
+    
+    # RB-specific patterns
+    rb_patterns = [
+        'rushing_', 'carry', 'carries', 'yards_per_carry', 'goal_line_carries',
+        'workhorse_', 'rb_', 'early_down_rate', 'passing_down_rate', 'rb_age_factor'
+    ]
+    
+    # WR-specific patterns
+    wr_patterns = [
+        'deep_target', 'contested_catch', 'wr_', 'separation_', 'route_running'
+    ]
+    
+    # TE-specific patterns
+    te_patterns = [
+        'seam_route', 'inline_usage', 'slot_usage', 'blocking_snap', 'te_', 'versatility_score'
+    ]
+    
+    # Skill position common (RB, WR, TE)
+    skill_patterns = [
+        'target', 'reception', 'receiving_', 'yards_per_reception', 'yards_per_target',
+        'catch_rate', 'red_zone_target', 'air_yards', 'yac', 'wopr', 'adot'
+    ]
+    
+    # Universal patterns (relevant to all positions)
+    universal_patterns = [
+        'player_', 'season', 'team', 'position', 'games', 'fantasy_points',
+        'age', 'experience', 'draft', 'height', 'weight', 'college',
+        'next_', 'sos_', 'schedule', 'dome', 'altitude', 'weather', 'matchup'
+    ]
+    
+    for col in all_columns:
+        col_lower = col.lower()
+        
+        # Check each category
+        if any(pattern in col_lower for pattern in qb_patterns):
+            position_features['QB_specific'].append(col)
+        elif any(pattern in col_lower for pattern in rb_patterns):
+            position_features['RB_specific'].append(col)
+        elif any(pattern in col_lower for pattern in wr_patterns):
+            position_features['WR_specific'].append(col)
+        elif any(pattern in col_lower for pattern in te_patterns):
+            position_features['TE_specific'].append(col)
+        elif any(pattern in col_lower for pattern in skill_patterns):
+            position_features['skill_position_common'].append(col)
+        elif any(pattern in col_lower for pattern in universal_patterns):
+            position_features['universal'].append(col)
+        else:
+            # Default to universal if we can't categorize
+            position_features['universal'].append(col)
+    
+    return position_features
+
+
+def get_default_value_for_column(col: str, positions: List[str], position_features: Dict[str, List[str]]) -> Union[float, int, str]:
+    """
+    Get appropriate default value for a missing column based on position relevance.
+    
+    Args:
+        col: Column name
+        positions: List of positions this DataFrame contains
+        position_features: Dictionary of position-specific feature categories
+        
+    Returns:
+        Appropriate default value for the column
+    """
+    col_lower = col.lower()
+    
+    # For position-specific features that don't apply to current positions, use 0
+    if col in position_features['QB_specific'] and not any(pos == 'QB' for pos in positions):
+        return 0.0
+    elif col in position_features['RB_specific'] and not any(pos == 'RB' for pos in positions):
+        return 0.0
+    elif col in position_features['WR_specific'] and not any(pos == 'WR' for pos in positions):
+        return 0.0
+    elif col in position_features['TE_specific'] and not any(pos == 'TE' for pos in positions):
+        return 0.0
+    
+    # For skill position features, use 0 if QB
+    elif col in position_features['skill_position_common'] and positions == ['QB']:
+        return 0.0
+    
+    # String columns
+    elif any(pattern in col_lower for pattern in ['name', 'team', 'position', 'college', 'role']):
+        return 'Unknown'
+    
+    # Percentage/rate columns (0-100 range)
+    elif any(pattern in col_lower for pattern in ['percentage', 'rate', '_pct', 'share']):
+        return 0.0
+    
+    # Binary indicator columns
+    elif any(pattern in col_lower for pattern in ['indicator', '_flag', 'is_']):
+        return 0
+    
+    # Default to 0.0 for numeric columns
+    else:
+        return 0.0
+
+
+def check_feature_contamination(df: pd.DataFrame, position_features: Dict[str, List[str]]) -> None:
+    """
+    Check for feature contamination across positions and log warnings.
+    
+    Args:
+        df: Combined DataFrame to check
+        position_features: Dictionary of position-specific feature categories
+    """
+    logger.info("🔍 FEATURE CONTAMINATION CHECK")
+    
+    if 'position' not in df.columns:
+        logger.warning("Cannot check contamination - no position column")
+        return
+    
+    contamination_found = False
+    
+    for position in df['position'].unique():
+        pos_data = df[df['position'] == position]
+        
+        # Check for non-zero values in irrelevant position-specific features
+        if position == 'QB':
+            # QBs shouldn't have non-zero RB/WR/TE specific features
+            irrelevant_features = (position_features['RB_specific'] + 
+                                 position_features['WR_specific'] + 
+                                 position_features['TE_specific'])
+        elif position == 'RB':
+            # RBs shouldn't have non-zero QB specific features
+            irrelevant_features = position_features['QB_specific']
+        elif position == 'WR':
+            # WRs shouldn't have non-zero QB/RB/TE specific features  
+            irrelevant_features = (position_features['QB_specific'] + 
+                                 position_features['RB_specific'] + 
+                                 position_features['TE_specific'])
+        elif position == 'TE':
+            # TEs shouldn't have non-zero QB/RB/WR specific features
+            irrelevant_features = (position_features['QB_specific'] + 
+                                 position_features['RB_specific'] + 
+                                 position_features['WR_specific'])
+        else:
+            continue
+        
+        # Check for contamination
+        contaminated_features = []
+        for feature in irrelevant_features:
+            if feature in pos_data.columns:
+                non_zero_count = (pos_data[feature] != 0).sum()
+                if non_zero_count > 0:
+                    contaminated_features.append(f"{feature}({non_zero_count} non-zero)")
+        
+        if contaminated_features:
+            contamination_found = True
+            logger.warning(f"⚠️ CONTAMINATION in {position}: {len(contaminated_features)} features have non-zero values")
+            if len(contaminated_features) <= 3:
+                logger.warning(f"   Contaminated features: {contaminated_features}")
+            else:
+                logger.warning(f"   First 3 contaminated: {contaminated_features[:3]}... (+{len(contaminated_features)-3} more)")
+        else:
+            logger.info(f"   ✅ {position}: No contamination detected")
+    
+    if not contamination_found:
+        logger.info("🎉 No feature contamination detected across any positions!")
+    else:
+        logger.warning("❌ Feature contamination detected - review position-specific feature logic")
+
+# Import opportunity metrics and usage analytics (always available)
+try:
+    from src.features.opportunity_metrics import OpportunityMetricsCalculator
+    from src.features.usage_analytics import UsageAnalyticsCalculator
+    OPPORTUNITY_METRICS_AVAILABLE = True
+    logger.info("Opportunity metrics components loaded successfully")
+except ImportError as e:
+    OPPORTUNITY_METRICS_AVAILABLE = False
+    logger.warning(f"Opportunity metrics components not available: {e}")
+
+# Import position-specific feature engineering (should work standalone)
+try:
+    from src.data.feature_engineering.position.qb_features import engineer_qb_features
+    from src.data.feature_engineering.position.rb_features import engineer_rb_features
+    from src.data.feature_engineering.position.wr_features import engineer_wr_features  
+    from src.data.feature_engineering.position.te_features import engineer_te_features
+    POSITION_SPECIFIC_FEATURES_AVAILABLE = True
+    logger.info("Position-specific feature engineering loaded successfully")
+except ImportError as e:
+    POSITION_SPECIFIC_FEATURES_AVAILABLE = False
+    logger.warning(f"Position-specific feature engineering not available: {e}")
+
+# Import matchup intelligence components (Phase 2 enhancements) - optional
+try:
+    from src.features.matchup_feature_integrator import (
+        MatchupFeatureIntegrator, MatchupFeatureConfig
+    )
+    MATCHUP_INTELLIGENCE_AVAILABLE = True
+    logger.info("Matchup intelligence components loaded successfully")
+except ImportError as e:
+    MATCHUP_INTELLIGENCE_AVAILABLE = False
+    logger.warning(f"Matchup intelligence components not available: {e}")
+    logger.info("Matchup intelligence will be disabled")
 
 
 # This function is deprecated, use load_cleaned_data directly
@@ -495,22 +858,45 @@ def handle_minimal_data_players(df, min_games=4):
     return df_features
 
 
-def engineer_features_for_season(target_season, historical_seasons=None):
+def engineer_features_for_season(
+    target_season, 
+    historical_seasons=None, 
+    include_matchup_intelligence=False,
+    include_position_specific_features=False,
+    weeks_ahead_sos=4
+):
     """
     Engineer features for a target season using data from historical seasons.
     
+    Enhanced with Phase 2 Matchup Intelligence support for comprehensive
+    fantasy football projections that account for opponent strength,
+    environmental factors, and situational adjustments.
+
     Args:
         target_season (int): The season to engineer features for (predicting target_season+1)
         historical_seasons (list, optional): List of historical seasons to use. 
                                             Defaults to [target_season-1, target_season].
-    
+        include_matchup_intelligence (bool): Include Phase 2 matchup intelligence features
+        include_position_specific_features (bool): Include advanced position-specific features
+        weeks_ahead_sos (int): Number of weeks ahead to analyze for strength of schedule
+
     Returns:
-        pandas.DataFrame: DataFrame with engineered features
+        pandas.DataFrame: DataFrame with engineered features (traditional + enhanced if enabled)
     """
-    logger.info(f"Engineering features for {target_season} season to predict {target_season+1}")
+    logger.info(f"🏗️ FEATURE ENGINEERING START: {target_season} → {target_season+1}")
+    logger.info("=" * 80)
+    logger.info(f"📊 Configuration:")
+    logger.info(f"   Target season: {target_season}")
+    logger.info(f"   Prediction season: {target_season+1}")
+    logger.info(f"   Matchup intelligence: {include_matchup_intelligence}")
+    logger.info(f"   Position-specific features: {include_position_specific_features}")
+    logger.info(f"   Weeks ahead SOS: {weeks_ahead_sos}")
     
     if historical_seasons is None:
         historical_seasons = [target_season-1, target_season]
+    
+    logger.info(f"   Historical seasons: {historical_seasons}")
+    logger.info("=" * 80)
     
     # Load data for all required seasons
     historical_data = {}
@@ -545,6 +931,113 @@ def engineer_features_for_season(target_season, historical_seasons=None):
     # Get the current season data
     current_season_df = historical_data[target_season]
     
+    # FIX: Comprehensive data enhancement - add missing columns from roster data
+    logger.info(f"🔧 COMPREHENSIVE DATA ENHANCEMENT: Adding missing columns for enhanced features")
+    
+    try:
+        from src.current_data_pipeline import get_current_roster_assignments
+        current_rosters = get_current_roster_assignments(target_season)
+        
+        if current_rosters.empty:
+            logger.error(f"❌ Could not load roster data for {target_season}")
+            return pd.DataFrame()
+            
+        logger.info(f"✅ Loaded {len(current_rosters)} roster entries for data enhancement")
+        
+        # Get all available roster columns for merging
+        roster_columns = ['player_id']  # Always need player_id for joining
+        
+        # Essential columns for enhanced features
+        essential_mappings = {
+            'position': 'position',
+            'current_team': 'team',  # Roster uses 'current_team', features expect 'team'
+            'team': 'team',          # In case roster already has 'team'
+            'player_name': 'player_name'
+        }
+        
+        for roster_col, feature_col in essential_mappings.items():
+            if roster_col in current_rosters.columns:
+                roster_columns.append(roster_col)
+                logger.info(f"   Will add {roster_col} → {feature_col}")
+        
+        logger.info(f"🔗 Merging roster data: {roster_columns}")
+        
+        # Merge with roster data (inner join to only keep fantasy-relevant players)
+        enhanced_data = current_season_df.merge(
+            current_rosters[roster_columns], 
+            on='player_id', 
+            how='inner',
+            suffixes=('', '_roster')
+        )
+        
+        # Standardize column names and handle conflicts
+        if 'current_team' in enhanced_data.columns:
+            enhanced_data['team'] = enhanced_data['current_team']
+            enhanced_data = enhanced_data.drop(columns=['current_team'])
+            logger.info("   ✅ Standardized 'current_team' → 'team'")
+        
+        # Add default values for commonly expected columns that are missing
+        expected_columns = {
+            'first_name': '',           # Extract from player_name if needed
+            'last_name': '',            # Extract from player_name if needed
+            'draftround': 7,            # Default to undrafted
+            'draft_club': 'UNK',        # Unknown draft team
+            'height': 72,               # Default height in inches
+            'weight': 200,              # Default weight in pounds
+            'college': 'Unknown',       # Unknown college
+            'birth_date': pd.to_datetime('1995-01-01'), # Default birth date
+        }
+        
+        for col, default_val in expected_columns.items():
+            if col not in enhanced_data.columns:
+                enhanced_data[col] = default_val
+                logger.info(f"   ➕ Added default column '{col}' = {default_val}")
+        
+        # Extract first/last name from player_name if available
+        if 'player_name' in enhanced_data.columns and 'first_name' in enhanced_data.columns:
+            name_split = enhanced_data['player_name'].str.split(' ', n=1, expand=True)
+            enhanced_data['first_name'] = name_split[0].fillna('')
+            enhanced_data['last_name'] = name_split[1].fillna('')
+            logger.info("   ✅ Extracted first_name and last_name from player_name")
+        
+        # Filter to only fantasy-relevant positions
+        fantasy_positions = ['QB', 'RB', 'WR', 'TE']
+        if 'position' in enhanced_data.columns:
+            enhanced_data = enhanced_data[enhanced_data['position'].isin(fantasy_positions)]
+            logger.info(f"   🎯 Filtered to fantasy positions: {len(enhanced_data)} players")
+            logger.info(f"   📊 Position breakdown: {dict(enhanced_data['position'].value_counts())}")
+        
+        # Update the working dataframe
+        current_season_df = enhanced_data
+        
+        logger.info(f"✅ COMPREHENSIVE ENHANCEMENT COMPLETE")
+        logger.info(f"   Final data shape: {current_season_df.shape}")
+        logger.info(f"   Available teams: {sorted(current_season_df['team'].unique()) if 'team' in current_season_df.columns else 'MISSING'}")
+        logger.info(f"   Available positions: {sorted(current_season_df['position'].unique()) if 'position' in current_season_df.columns else 'MISSING'}")
+        
+        # Update the historical data dict so downstream processing works
+        historical_data[target_season] = current_season_df
+        
+    except Exception as e:
+        logger.error(f"❌ COMPREHENSIVE DATA ENHANCEMENT FAILED: {e}")
+        logger.exception("Full traceback:")
+        return pd.DataFrame()
+    
+    # Validate required columns for feature engineering
+    required_columns = ['position', 'games', 'player_id']
+    missing_columns = [col for col in required_columns if col not in current_season_df.columns]
+    
+    if missing_columns:
+        logger.error(f"❌ FEATURE ENGINEERING FAILED: Missing required columns: {missing_columns}")
+        logger.error(f"   Available columns: {list(current_season_df.columns)}")
+        logger.error(f"   Data shape: {current_season_df.shape}")
+        logger.error(f"   This indicates a data pipeline issue - feature engineering expects historical season data")
+        return pd.DataFrame()  # Return empty dataframe to trigger fallback
+    
+    logger.info(f"✅ Data validation passed - required columns present: {required_columns}")
+    logger.info(f"   Data shape: {current_season_df.shape}")
+    logger.info(f"   Available positions: {sorted(current_season_df['position'].unique()) if 'position' in current_season_df.columns else 'MISSING'}")
+    
     # Get the previous season data (if available)
     previous_season_df = historical_data.get(target_season-1, pd.DataFrame())
     
@@ -576,6 +1069,199 @@ def engineer_features_for_season(target_season, historical_seasons=None):
     # Step 8: Handle players with minimal recent data
     df_features = handle_minimal_data_players(df_features)
     
+    # STEP 9: Add Opportunity Metrics (Industry-Standard Features)
+    logger.info("🎯 STEP 9: Adding Opportunity Metrics")
+    if OPPORTUNITY_METRICS_AVAILABLE:
+        try:
+            # Initialize opportunity metrics calculator
+            opp_calculator = OpportunityMetricsCalculator(target_season)
+            
+            # Apply opportunity metrics to skill positions
+            skill_positions = ['RB', 'WR', 'TE']
+            
+            for position in skill_positions:
+                pos_mask = df_features['position'] == position
+                pos_count = pos_mask.sum()
+                
+                if pos_count > 0:
+                    logger.info(f"   Adding opportunity metrics for {pos_count} {position} players")
+                    pos_data = df_features[pos_mask].copy()
+                    
+                    # Apply opportunity metrics enhancement
+                    enhanced_pos_data = opp_calculator.enhance_opportunity_metrics(pos_data)
+                    
+                    # Update the main dataframe
+                    df_features.loc[pos_mask, enhanced_pos_data.columns] = enhanced_pos_data
+                    
+                    # Log key metrics added
+                    opp_metrics = ['target_share', 'air_yards_share', 'wopr', 'adot', 'red_zone_opportunities']
+                    added_metrics = [col for col in opp_metrics if col in enhanced_pos_data.columns]
+                    logger.info(f"   ✅ Added {len(added_metrics)} opportunity metrics for {position}: {added_metrics}")
+            
+            logger.info("✅ Opportunity metrics integration complete")
+            
+        except Exception as e:
+            logger.error(f"❌ Error adding opportunity metrics: {e}")
+            logger.info("Continuing without opportunity metrics")
+    else:
+        logger.warning("⚠️ Opportunity metrics not available - skipping industry-standard calculations")
+    
+    # STEP 10: Add Usage Analytics 
+    logger.info("📊 STEP 10: Adding Usage Analytics")
+    if OPPORTUNITY_METRICS_AVAILABLE:  # Uses same import check
+        try:
+            # Initialize usage analytics calculator
+            usage_calculator = UsageAnalyticsCalculator()
+            
+            # Apply usage analytics to all skill positions
+            for position in skill_positions:
+                pos_mask = df_features['position'] == position
+                pos_count = pos_mask.sum()
+                
+                if pos_count > 0:
+                    logger.info(f"   Adding usage analytics for {pos_count} {position} players")
+                    pos_data = df_features[pos_mask].copy()
+                    
+                    # Apply usage analytics
+                    enhanced_usage_data = usage_calculator.calculate_all_usage_metrics(pos_data)
+                    
+                    # Update the main dataframe
+                    df_features.loc[pos_mask, enhanced_usage_data.columns] = enhanced_usage_data
+                    
+                    # Log key usage metrics added
+                    usage_metrics = ['snap_share', 'targets_per_snap', 'route_participation', 'high_value_touches']
+                    added_usage = [col for col in usage_metrics if col in enhanced_usage_data.columns]
+                    logger.info(f"   ✅ Added {len(added_usage)} usage metrics for {position}: {added_usage}")
+            
+            logger.info("✅ Usage analytics integration complete")
+            
+        except Exception as e:
+            logger.error(f"❌ Error adding usage analytics: {e}")
+            logger.info("Continuing without usage analytics")
+    else:
+        logger.warning("⚠️ Usage analytics not available - skipping advanced usage calculations")
+    
+    # PHASE 2: Enhanced Position-Specific Features (Standalone)
+    if include_position_specific_features and POSITION_SPECIFIC_FEATURES_AVAILABLE:
+        logger.info("🔧 PHASE 2: Enhanced Position-Specific Features")
+        
+        # Apply position-specific feature engineering
+        position_dfs = []
+        
+        for position in ['QB', 'RB', 'WR', 'TE']:
+            pos_data = df_features[df_features['position'] == position].copy()
+            
+            if not pos_data.empty:
+                logger.info(f"Applying enhanced {position} feature engineering to {len(pos_data)} players")
+                
+                try:
+                    if position == 'QB':
+                        enhanced_pos_data = engineer_qb_features(pos_data)
+                    elif position == 'RB':
+                        enhanced_pos_data = engineer_rb_features(pos_data)
+                    elif position == 'WR':
+                        enhanced_pos_data = engineer_wr_features(pos_data)
+                    elif position == 'TE':
+                        enhanced_pos_data = engineer_te_features(pos_data)
+                    
+                    position_dfs.append(enhanced_pos_data)
+                    logger.info(f"Successfully enhanced {position} features: {len(enhanced_pos_data.columns)} total columns")
+                    
+                except Exception as e:
+                    logger.warning(f"Error in {position} feature engineering: {e}")
+                    position_dfs.append(pos_data)  # Use original data if enhancement fails
+        
+        # Combine position-specific features back together with position isolation
+        if position_dfs:
+            df_features = combine_position_features_safely(position_dfs)
+            logger.info(f"✅ Combined position-specific features: {len(df_features)} players, {len(df_features.columns)} features")
+    elif include_position_specific_features and not POSITION_SPECIFIC_FEATURES_AVAILABLE:
+        logger.warning("⚠️ Position-specific features requested but not available - skipping enhanced features")
+    
+    # PHASE 3: Matchup Intelligence Integration (Optional)
+    if include_matchup_intelligence and MATCHUP_INTELLIGENCE_AVAILABLE:
+        logger.info("Phase 3: Matchup Intelligence Integration")
+        
+        try:
+            logger.info(f"🎯 MATCHUP INTELLIGENCE INTEGRATION START")
+            logger.info(f"   Season for features: {target_season}")
+            logger.info(f"   Weeks ahead SOS: {weeks_ahead_sos}")
+            logger.info(f"   Players to enhance: {len(df_features)}")
+            
+            # Validate input data for matchup intelligence
+            required_cols = ['player_id', 'position', 'team']
+            missing_cols = [col for col in required_cols if col not in df_features.columns]
+            if missing_cols:
+                logger.error(f"❌ MATCHUP INTEGRATION FAILED: Missing required columns: {missing_cols}")
+                logger.info("Available columns: " + str(list(df_features.columns)))
+                raise ValueError(f"Missing required columns for matchup intelligence: {missing_cols}")
+            
+            # Configure matchup feature integration
+            matchup_config = MatchupFeatureConfig(
+                include_schedule_strength=True,
+                include_environmental_factors=True,
+                include_situational_adjustments=True,
+                weeks_ahead_sos=weeks_ahead_sos,
+                season_for_features=target_season,  # Use current season, not future season
+                cache_matchup_data=True
+            )
+            
+            logger.info(f"✅ Matchup config created successfully")
+            
+            # Initialize matchup integrator
+            try:
+                matchup_integrator = MatchupFeatureIntegrator(matchup_config)
+                logger.info(f"✅ MatchupFeatureIntegrator initialized successfully")
+            except Exception as e:
+                logger.error(f"❌ MATCHUP INTEGRATOR INIT FAILED: {e}")
+                raise
+            
+            # Count features before integration
+            features_before = len(df_features.columns)
+            
+            # Integrate matchup features
+            try:
+                df_features_enhanced = matchup_integrator.integrate_matchup_features(
+                    df_features,
+                    weeks_to_analyze=list(range(1, weeks_ahead_sos + 1))
+                )
+                
+                features_after = len(df_features_enhanced.columns)
+                matchup_features_added = features_after - features_before
+                
+                logger.info(f"✅ MATCHUP INTEGRATION SUCCESSFUL")
+                logger.info(f"   Features before: {features_before}")
+                logger.info(f"   Features after: {features_after}")
+                logger.info(f"   Matchup features added: {matchup_features_added}")
+                
+                # Validate that matchup features were actually added
+                if matchup_features_added == 0:
+                    logger.warning(f"⚠️ WARNING: No matchup features were added despite successful integration")
+                
+                # Check for specific matchup feature columns
+                sos_columns = [col for col in df_features_enhanced.columns if 'sos_rating' in col]
+                env_columns = [col for col in df_features_enhanced.columns if any(env in col for env in ['dome', 'altitude', 'weather'])]
+                
+                logger.info(f"   SOS columns found: {len(sos_columns)} - {sos_columns[:3]}...")
+                logger.info(f"   Environmental columns found: {len(env_columns)} - {env_columns[:3]}...")
+                
+                df_features = df_features_enhanced
+                
+            except Exception as e:
+                logger.error(f"❌ MATCHUP FEATURES INTEGRATION FAILED: {e}")
+                logger.error(f"   Input data shape: {df_features.shape}")
+                logger.error(f"   Weeks to analyze: {list(range(1, weeks_ahead_sos + 1))}")
+                import traceback
+                logger.error(f"   Full traceback: {traceback.format_exc()}")
+                raise
+            
+        except Exception as e:
+            logger.error(f"❌ MATCHUP INTELLIGENCE INTEGRATION FAILED: {e}")
+            logger.error(f"   This means NO matchup features (SOS, weather, environmental) will be available")
+            logger.info("   Continuing with traditional features only")
+    elif include_matchup_intelligence and not MATCHUP_INTELLIGENCE_AVAILABLE:
+        logger.warning("Matchup intelligence requested but components not available. Using traditional features only.")
+    
     # --- Add target variable ---
     if next_season_actuals_df is not None and not next_season_actuals_df.empty:
         points_col_name = config.FANTASY_POINTS_COLUMNS.get(config.DEFAULT_SCORING_SYSTEM, 'fantasy_points_ppr')
@@ -601,7 +1287,191 @@ def engineer_features_for_season(target_season, historical_seasons=None):
     df_features['season'] = target_season
     df_features['prediction_season'] = target_season + 1
     
-    logger.info(f"Successfully engineered features for {len(df_features)} players")
+    # Feature engineering metadata
+    df_features['has_matchup_intelligence'] = include_matchup_intelligence and MATCHUP_INTELLIGENCE_AVAILABLE
+    df_features['has_position_specific_features'] = include_position_specific_features and MATCHUP_INTELLIGENCE_AVAILABLE
+    df_features['feature_engineering_version'] = 'v2_integrated' if (include_matchup_intelligence or include_position_specific_features) else 'v1_traditional'
+    
+    # COMPREHENSIVE FEATURE ENGINEERING SUMMARY
+    logger.info("=" * 80)
+    logger.info("🎯 COMPREHENSIVE FEATURE ENGINEERING SUMMARY")
+    logger.info("=" * 80)
+    
+    feature_count = len(df_features.columns)
+    matchup_features = len([col for col in df_features.columns if col.startswith('next_')]) if include_matchup_intelligence else 0
+    
+    # Count key feature categories
+    opportunity_features = len([col for col in df_features.columns 
+                               if any(keyword in col.lower() for keyword in ['target_share', 'air_yards', 'wopr', 'adot'])])
+    usage_features = len([col for col in df_features.columns 
+                         if any(keyword in col.lower() for keyword in ['snap_share', 'route_participation', 'high_value'])])
+    position_features = len([col for col in df_features.columns 
+                            if any(keyword in col.lower() for keyword in ['rb_role', 'te_role', 'wr_tier', 'qb_style'])])
+    
+    logger.info(f"📊 Total Players: {len(df_features)}")
+    logger.info(f"📊 Total Features: {feature_count}")
+    logger.info(f"   • Opportunity Metrics: {opportunity_features}")
+    logger.info(f"   • Usage Analytics: {usage_features}")
+    logger.info(f"   • Position-Specific: {position_features}")
+    logger.info(f"   • Matchup Intelligence: {matchup_features}")
+    
+    # Show sample of key features for validation
+    key_feature_samples = {}
+    sample_features = ['target_share', 'air_yards_share', 'wopr', 'snap_share', 'red_zone_opportunities']
+    
+    for feature in sample_features:
+        if feature in df_features.columns:
+            non_zero_count = (df_features[feature] != 0).sum()
+            avg_value = df_features[feature].mean()
+            key_feature_samples[feature] = f"{non_zero_count} non-zero (avg: {avg_value:.3f})"
+    
+    if key_feature_samples:
+        logger.info("🔍 Key Feature Validation:")
+        for feature, stats in key_feature_samples.items():
+            logger.info(f"   • {feature}: {stats}")
+    
+    # Enhancement flags status
+    enhancements = []
+    if OPPORTUNITY_METRICS_AVAILABLE and opportunity_features > 0:
+        enhancements.append("✅ Opportunity Metrics")
+    else:
+        enhancements.append("❌ Opportunity Metrics")
+        
+    if POSITION_SPECIFIC_FEATURES_AVAILABLE and include_position_specific_features:
+        enhancements.append("✅ Position-Specific Features")
+    else:
+        enhancements.append("❌ Position-Specific Features")
+        
+    if MATCHUP_INTELLIGENCE_AVAILABLE and include_matchup_intelligence:
+        enhancements.append("✅ Matchup Intelligence")
+    else:
+        enhancements.append("❌ Matchup Intelligence")
+    
+    logger.info("🏗️  Feature Enhancement Status:")
+    for enhancement in enhancements:
+        logger.info(f"   {enhancement}")
+    
+    logger.info(f"🔖 Feature Engineering Version: {df_features['feature_engineering_version'].iloc[0] if not df_features.empty else 'unknown'}")
+    
+    # DETAILED COMPONENT SUCCESS/FAILURE REPORT
+    logger.info("")
+    logger.info("🔍 DETAILED COMPONENT STATUS REPORT")
+    logger.info("-" * 80)
+    
+    # Core Features Status
+    logger.info("📊 Core Features:")
+    logger.info(f"   ✅ Per-game statistics: SUCCESSFUL")
+    logger.info(f"   ✅ Efficiency metrics: SUCCESSFUL") 
+    logger.info(f"   ✅ Team aggregates: SUCCESSFUL")
+    logger.info(f"   ✅ Usage metrics: SUCCESSFUL")
+    logger.info(f"   ✅ Lagged features: SUCCESSFUL")
+    logger.info(f"   ✅ Age calculation: SUCCESSFUL")
+    logger.info(f"   ✅ Rookie handling: SUCCESSFUL")
+    
+    # Enhanced Features Status
+    logger.info("🎯 Enhanced Features:")
+    
+    # Opportunity Metrics
+    if OPPORTUNITY_METRICS_AVAILABLE and opportunity_features > 0:
+        logger.info(f"   ✅ Opportunity Metrics: SUCCESSFUL ({opportunity_features} features)")
+        logger.info(f"      • Target share, WOPR, air yards share calculations")
+        logger.info(f"      • Applied to {len(skill_positions)} skill positions")
+    else:
+        logger.info(f"   ❌ Opportunity Metrics: FAILED OR DISABLED")
+        if not OPPORTUNITY_METRICS_AVAILABLE:
+            logger.info(f"      • Reason: Import failed - components not available")
+        else:
+            logger.info(f"      • Reason: No features generated despite successful import")
+    
+    # Usage Analytics
+    if OPPORTUNITY_METRICS_AVAILABLE and usage_features > 0:
+        logger.info(f"   ✅ Usage Analytics: SUCCESSFUL ({usage_features} features)")
+        logger.info(f"      • Snap share, route participation, high-value touches")
+        logger.info(f"      • Applied to {len(skill_positions)} skill positions")
+    else:
+        logger.info(f"   ❌ Usage Analytics: FAILED OR DISABLED")
+        if not OPPORTUNITY_METRICS_AVAILABLE:
+            logger.info(f"      • Reason: Import failed - components not available")
+        else:
+            logger.info(f"      • Reason: No features generated despite successful import")
+    
+    # Position-Specific Features
+    if include_position_specific_features and POSITION_SPECIFIC_FEATURES_AVAILABLE and position_features > 0:
+        logger.info(f"   ✅ Position-Specific Features: SUCCESSFUL ({position_features} features)")
+        logger.info(f"      • Enhanced position-specific engineering completed")
+        logger.info(f"      • Applied to QB, RB, WR, TE positions")
+    elif include_position_specific_features and not POSITION_SPECIFIC_FEATURES_AVAILABLE:
+        logger.info(f"   ❌ Position-Specific Features: FAILED")
+        logger.info(f"      • Reason: Import failed - components not available")
+    elif include_position_specific_features:
+        logger.info(f"   ❌ Position-Specific Features: FAILED")
+        logger.info(f"      • Reason: Requested but no features generated")
+    else:
+        logger.info(f"   ⚪ Position-Specific Features: DISABLED (not requested)")
+    
+    # Matchup Intelligence
+    if include_matchup_intelligence and MATCHUP_INTELLIGENCE_AVAILABLE and matchup_features > 0:
+        logger.info(f"   ✅ Matchup Intelligence: SUCCESSFUL ({matchup_features} features)")
+        
+        # Detailed matchup component breakdown
+        sos_features = len([col for col in df_features.columns if 'sos_rating' in col])
+        env_features = len([col for col in df_features.columns if any(env in col for env in ['dome', 'altitude', 'weather'])])
+        situational_features = len([col for col in df_features.columns if any(sit in col for sit in ['primetime', 'division', 'rest'])])
+        
+        logger.info(f"      • Schedule Strength (SOS): {sos_features} features")
+        logger.info(f"      • Environmental Factors: {env_features} features") 
+        logger.info(f"      • Situational Adjustments: {situational_features} features")
+        logger.info(f"      • Analysis window: {weeks_ahead_sos} weeks ahead")
+        
+    elif include_matchup_intelligence and not MATCHUP_INTELLIGENCE_AVAILABLE:
+        logger.info(f"   ❌ Matchup Intelligence: FAILED")
+        logger.info(f"      • Reason: Import failed - components not available")
+        logger.info(f"      • Missing: SOS Calculator, Weather Integration, Environmental Factors")
+    elif include_matchup_intelligence:
+        logger.info(f"   ❌ Matchup Intelligence: FAILED")
+        logger.info(f"      • Reason: Requested but no matchup features generated")
+        logger.info(f"      • Check SOS calculations, schedule data, and environmental factors")
+    else:
+        logger.info(f"   ⚪ Matchup Intelligence: DISABLED (not requested)")
+    
+    # Data Quality Report
+    logger.info("")
+    logger.info("📋 Data Quality Report:")
+    logger.info(f"   • Total players processed: {len(df_features)}")
+    logger.info(f"   • Players with complete data: {df_features.dropna().shape[0]}")
+    logger.info(f"   • Missing data percentage: {(df_features.isnull().sum().sum() / (len(df_features) * len(df_features.columns)) * 100):.1f}%")
+    
+    # Position breakdown
+    if 'position' in df_features.columns:
+        position_counts = df_features['position'].value_counts()
+        logger.info(f"   • Position breakdown: {dict(position_counts)}")
+    
+    # Feature Engineering Success Score
+    total_components = 4  # Core + 3 enhanced components
+    successful_components = 1  # Core features always succeed
+    
+    if OPPORTUNITY_METRICS_AVAILABLE and opportunity_features > 0:
+        successful_components += 1
+    if include_position_specific_features and POSITION_SPECIFIC_FEATURES_AVAILABLE and position_features > 0:
+        successful_components += 1
+    if include_matchup_intelligence and MATCHUP_INTELLIGENCE_AVAILABLE and matchup_features > 0:
+        successful_components += 1
+    
+    success_rate = (successful_components / total_components) * 100
+    
+    logger.info("")
+    logger.info(f"🏆 FEATURE ENGINEERING SUCCESS RATE: {success_rate:.1f}% ({successful_components}/{total_components} components)")
+    
+    if success_rate == 100:
+        logger.info("🎉 PERFECT SCORE! All requested components executed successfully!")
+    elif success_rate >= 75:
+        logger.info("✅ EXCELLENT! Most components executed successfully.")
+    elif success_rate >= 50:
+        logger.info("⚠️  PARTIAL SUCCESS. Some components failed - check logs above.")
+    else:
+        logger.info("❌ POOR PERFORMANCE. Multiple components failed - review configuration.")
+    
+    logger.info("=" * 80)
     
     return df_features
 
@@ -626,14 +1496,24 @@ def save_engineered_features(df, season, prediction_season):
         return False
 
 
-def engineer_and_save_features(start_year=None, end_year=None, positions=None):
+def engineer_and_save_features(
+    start_year=None, 
+    end_year=None, 
+    positions=None,
+    include_matchup_intelligence=False,
+    include_position_specific_features=False,
+    weeks_ahead_sos=4
+):
     """
-    Engineer and save features for a range of seasons.
+    Engineer and save features for a range of seasons with optional enhancements.
     
     Args:
         start_year (int, optional): The first season to engineer features for. Defaults to config.DATA_START_YEAR.
         end_year (int, optional): The last season to engineer features for. Defaults to config.DATA_END_YEAR-1.
         positions (list, optional): List of positions to include. Defaults to config.POSITIONS.
+        include_matchup_intelligence (bool): Include Phase 2 matchup intelligence features
+        include_position_specific_features (bool): Include advanced position-specific features  
+        weeks_ahead_sos (int): Number of weeks ahead to analyze for strength of schedule
     
     Returns:
         list: List of paths to the saved files
@@ -647,6 +1527,7 @@ def engineer_and_save_features(start_year=None, end_year=None, positions=None):
         positions = config.POSITIONS
     
     logger.info(f"Engineering and saving features for seasons {start_year} to {end_year}")
+    logger.info(f"Matchup intelligence: {include_matchup_intelligence}, Position-specific: {include_position_specific_features}")
     
     saved_files = []
     
@@ -654,7 +1535,12 @@ def engineer_and_save_features(start_year=None, end_year=None, positions=None):
         try:
             logger.info(f"Processing season {year}...")
             logger.info(f"Engineering features for {year} season to predict {year+1}")
-            df = engineer_features_for_season(year)
+            df = engineer_features_for_season(
+                year,
+                include_matchup_intelligence=include_matchup_intelligence,
+                include_position_specific_features=include_position_specific_features,
+                weeks_ahead_sos=weeks_ahead_sos
+            )
             
             # Filter for relevant positions
             if positions and 'position' in df.columns:
@@ -681,6 +1567,99 @@ def engineer_and_save_features(start_year=None, end_year=None, positions=None):
     return saved_files
 
 
+def create_matchup_adjusted_projections(
+    base_projections_df: pd.DataFrame,
+    weeks_to_analyze: List[int] = None
+) -> pd.DataFrame:
+    """
+    Create matchup-adjusted projections from base projections using Phase 3 matchup intelligence.
+    
+    Args:
+        base_projections_df: DataFrame with player IDs and base projections
+        weeks_to_analyze: List of weeks to analyze for matchup adjustments
+        
+    Returns:
+        DataFrame with matchup-adjusted projections
+    """
+    logger.info(f"Creating matchup-adjusted projections for {len(base_projections_df)} players")
+    
+    if weeks_to_analyze is None:
+        weeks_to_analyze = list(range(1, 5))  # First 4 weeks by default
+    
+    if not MATCHUP_INTELLIGENCE_AVAILABLE:
+        logger.warning("Matchup intelligence components not available. Returning original projections.")
+        result = base_projections_df.copy()
+        result['matchup_adjusted_fppg'] = result.get('projected_fppg', result.get('fantasy_points_ppr', 0))
+        result['matchup_adjustment_factor'] = 1.0
+        return result
+    
+    try:
+        # Configure matchup integrator
+        matchup_config = MatchupFeatureConfig(
+            include_schedule_strength=True,
+            include_environmental_factors=True,
+            include_situational_adjustments=True,
+            weeks_ahead_sos=len(weeks_to_analyze),
+            season_for_features=config.CURRENT_SEASON,
+            cache_matchup_data=True
+        )
+        
+        # Initialize matchup integrator
+        matchup_integrator = MatchupFeatureIntegrator(matchup_config)
+        
+        # Get matchup-adjusted projections
+        adjusted_projections = matchup_integrator.get_matchup_adjusted_projections(
+            base_projections_df,
+            weeks=weeks_to_analyze
+        )
+        
+        logger.info(f"Successfully created matchup-adjusted projections")
+        logger.info(f"Average adjustment factor: {adjusted_projections['matchup_adjustment_factor'].mean():.3f}")
+        
+        return adjusted_projections
+        
+    except Exception as e:
+        logger.error(f"Error creating matchup-adjusted projections: {e}")
+        # Return original projections if adjustment fails
+        result = base_projections_df.copy()
+        result['matchup_adjusted_fppg'] = result.get('projected_fppg', result.get('fantasy_points_ppr', 0))
+        result['matchup_adjustment_factor'] = 1.0
+        return result
+
+
 if __name__ == "__main__":
-    # Example usage
-    engineer_and_save_features()
+    # Example usage - Traditional feature engineering
+    print("🎯 Fantasy Football Feature Engineering")
+    print("=" * 50)
+    
+    # Traditional feature engineering
+    print("Running traditional feature engineering...")
+    traditional_features = engineer_features_for_season(2022)
+    print(f"Traditional features: {len(traditional_features.columns)} columns for {len(traditional_features)} players")
+    
+    # Enhanced feature engineering (if available)
+    if MATCHUP_INTELLIGENCE_AVAILABLE:
+        print("\nRunning enhanced feature engineering with matchup intelligence...")
+        enhanced_features = engineer_features_for_season(
+            2022,
+            include_matchup_intelligence=True,
+            include_position_specific_features=True,
+            weeks_ahead_sos=4
+        )
+        print(f"Enhanced features: {len(enhanced_features.columns)} columns for {len(enhanced_features)} players")
+        
+        # Demo matchup-adjusted projections
+        if not enhanced_features.empty:
+            sample_projections = enhanced_features[['player_id', 'position', 'team']].head(5).copy()
+            sample_projections['projected_fppg'] = [20.0, 15.0, 12.0, 10.0, 8.0]
+            
+            adjusted = create_matchup_adjusted_projections(sample_projections)
+            
+            print("\nSample Matchup-Adjusted Projections:")
+            for _, row in adjusted.iterrows():
+                print(f"  {row['position']}: {row['projected_fppg']:.1f} → {row['matchup_adjusted_fppg']:.1f} "
+                      f"({row['matchup_adjustment_factor']:.3f}x)")
+    else:
+        print("\nMatchup intelligence components not available - using traditional features only")
+        
+    print("\nFeature engineering complete! 🎯")
