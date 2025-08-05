@@ -608,6 +608,8 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
     # Get feature columns
     X = df_engineered.drop(columns=[col for col in drop_cols if col in df_engineered.columns])
     
+    # Move this logic after loading expected features
+    
     print(f"📋 Feature preparation:")
     print(f"   Original columns: {len(df_engineered.columns)}")
     print(f"   Dropped columns: {len([col for col in drop_cols if col in df_engineered.columns])}")
@@ -732,50 +734,80 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
     
     print(f"   Final feature set: {len(X.columns)} columns")
     
-    # CRITICAL: Validate feature compatibility and FAIL HARD if missing
-    print(f"🔍 Validating feature compatibility with {position} ensemble model...")
+    # CRITICAL: Load expected features BEFORE feature preparation
+    print(f"🔧 Loading expected features from {position} ensemble model...")
+    expected_features = []
     
     try:
-        # Load model to get expected features
+        # Load model to get expected features - FIXED for EnsembleFantasyModel compatibility
         import joblib
         model_path = f"saved_models/{position}_ensemble_model.joblib"
         model_dict = joblib.load(model_path)
-        expected_features = model_dict['rf_model'].model.feature_names_in_
         
-        print(f"   Model expects: {len(expected_features)} features")
-        print(f"   Data provides: {len(X.columns)} features")
+        # Handle different model loading scenarios
+        if isinstance(model_dict, dict):
+            # Legacy dict-based model loading
+            if 'rf_model' in model_dict:
+                rf_model = model_dict['rf_model']
+                # Try multiple access patterns for RF model features
+                if hasattr(rf_model, 'model') and hasattr(rf_model.model, 'feature_names_in_'):
+                    expected_features = list(rf_model.model.feature_names_in_)
+                elif hasattr(rf_model, 'feature_names_in_'):
+                    expected_features = list(rf_model.feature_names_in_)
+                elif hasattr(rf_model, 'estimator') and hasattr(rf_model.estimator, 'feature_names_in_'):
+                    expected_features = list(rf_model.estimator.feature_names_in_)
+        else:
+            # Direct EnsembleFantasyModel object
+            if hasattr(model_dict, 'rf_model') and hasattr(model_dict.rf_model, 'model'):
+                if hasattr(model_dict.rf_model.model, 'feature_names_in_'):
+                    expected_features = list(model_dict.rf_model.model.feature_names_in_)
+            elif hasattr(model_dict, 'get_expected_features'):
+                expected_features = list(model_dict.get_expected_features())
         
-        # Find missing and extra features
+        print(f"   ✅ Loaded {len(expected_features)} expected features from model")
+        
+    except Exception as e:
+        print(f"   ⚠️ Cannot load expected features: {e}")
+        expected_features = []
+    
+    # CRITICAL: Create model-compatible features using the compatibility system
+    if expected_features and len(expected_features) > 0:
+        print(f"🔧 Creating model-compatible features using FeatureCompatibilityMapper...")
+        from src.feature_compatibility import create_model_compatible_features
+        
+        try:
+            X_compatible = create_model_compatible_features(
+                df_engineered,  # Use original data with all columns
+                expected_features, 
+                position
+            )
+            
+            print(f"   ✅ Compatible features created: {len(X_compatible.columns)}")
+            print(f"   📊 Compatibility: {len(X_compatible.columns)}/{len(expected_features)} features")
+            
+            # Use compatible features for prediction
+            X = X_compatible
+            
+        except Exception as e:
+            print(f"   ⚠️ Feature compatibility creation failed: {e}")
+            print(f"   🔄 Falling back to original feature preparation")
+        
+        # Validate feature compatibility after creating compatible features
         provided_features = set(X.columns)
         expected_features_set = set(expected_features)
         
         missing_features = expected_features_set - provided_features
-        extra_features = provided_features - expected_features_set
-        
-        print(f"   Missing: {len(missing_features)} | Extra: {len(extra_features)} | Matching: {len(expected_features_set & provided_features)}")
         
         if missing_features:
-            print(f"❌ CRITICAL FAILURE: {position} model missing {len(missing_features)} required features:")
-            for i, feature in enumerate(sorted(missing_features)[:10]):  # Show first 10
-                print(f"     {i+1:2d}. {feature}")
-            if len(missing_features) > 10:
-                print(f"     ... and {len(missing_features) - 10} more")
-                
-            print(f"🔧 Available features that might map:")
-            for feature in sorted(extra_features)[:5]:  # Show first 5 extra
-                print(f"     • {feature}")
-            
-            print(f"⚠️ ENSEMBLE MODEL INCOMPATIBLE: {position} ensemble model requires {len(missing_features)} missing features.")
-            print(f"🔄 FALLING BACK TO BASELINE MODEL: Using baseline model trained on available features.")
+            print(f"❌ Still missing {len(missing_features)} features after compatibility mapping")
+            for i, feature in enumerate(sorted(missing_features)[:5]):
+                print(f"     {i+1}. {feature}")
+            print(f"🔄 FALLING BACK TO BASELINE MODEL")
             return "fallback_to_baseline"
         else:
-            print(f"✅ All required features present for {position} model")
-            
-    except Exception as e:
-        if "missing features" in str(e) or "HARD FAILURE" in str(e):
-            raise  # Re-raise critical failures
-        else:
-            print(f"⚠️ Warning: Could not validate features: {e}")
+            print(f"✅ Feature compatibility successful - all {len(expected_features)} features available")
+    else:
+        print(f"⚠️ No expected features loaded, using enhanced features directly")
     
     # Make predictions with ensemble model
     print(f"🎯 Starting ensemble prediction...")

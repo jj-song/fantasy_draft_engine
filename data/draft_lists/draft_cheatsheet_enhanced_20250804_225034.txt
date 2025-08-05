@@ -1,0 +1,88 @@
+====================================================================================================
+🏈 FANTASY FOOTBALL DRAFT CHEATSHEET - VOR ANALYSIS EDITION
+Generated: 2025-08-04 22:50:34
+====================================================================================================
+
+📊 VALUE OVER REPLACEMENT (VOR) BREAKDOWN
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Position  Replacement    Scarcity   Top Player            Raw VOR  →  Adj VOR
+          Level          Mult       (Predicted Points)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+RB        RB30             1.5x      Kenneth Walker III   (210.2)  153.2  →  229.8
+TE        TE13             1.2x      Zach Ertz            (nan)  nan  →  nan
+WR        WR30             1.2x      Nelson Agholor       (nan)  nan  →  nan
+QB        QB13             0.9x      Aaron Rodgers        (nan)  nan  →  nan
+
+🏆 TOP 50 OVERALL PLAYERS WITH VOR ANALYSIS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+RNK  PLAYER NAME             POS  TEAM  PROJ   RAW    MULT   ADJ    TIER
+                                      PPG*   VOR    (x)    VOR
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  1. Kenneth Walker III      RB   SEA  210.2  153.2   1.5x  229.8  ELITE
+  2. Michael Carter          RB   ARI   57.0    0.0   1.5x    0.0  BENCH
+  3. Aaron Rodgers           QB   NYJ    nan    nan   0.9x    nan  BENCH
+  4. Joe Flacco              QB   IND    nan    nan   0.9x    nan  BENCH
+  5. Josh Johnson            QB   BAL    nan    nan   0.9x    nan  BENCH
+  6. Matthew Stafford        QB   LA     nan    nan   0.9x    nan  BENCH
+  7. Andy Dalton             QB   CAR    nan    nan   0.9x    nan  BENCH
+  8. Tyrod Taylor            QB   NYJ    nan    nan   0.9x    nan  BENCH
+  9. Russell Wilson          QB   PIT    nan    nan   0.9x    nan  BENCH
+ 10. Kirk Cousins            QB   ATL    nan    nan   0.9x    nan  BENCH
+ 11. Geno Smith              QB   SEA    nan    nan   0.9x    nan  BENCH
+ 12. Derek Carr              QB   NO     nan    nan   0.9x    nan  BENCH
+ 13. Jimmy Garoppolo         QB   LA     nan    nan   0.9x    nan  BENCH
+ 14. Jameis Winston          QB   CLE    nan    nan   0.9x    nan  BENCH
+ 15. Taylor Heinicke         QB   LAC    nan    nan   0.9x    nan  BENCH
+ 16. Marcus Mariota          QB   WAS    nan    nan   0.9x    nan  BENCH
+ 17. Brandon Allen           QB   SF     nan    nan   0.9x    nan  BENCH
+ 18. Carson Wentz            QB   KC     nan    nan   0.9x    nan  BENCH
+ 19. Dak Prescott            QB   DAL    nan    nan   0.9x    nan  BENCH
+ 20. Jared Goff              QB   DET    nan    nan   0.9x    nan  BENCH
+ 21. Jacoby Brissett         QB   NE     nan    nan   0.9x    nan  BENCH
+ 22. Nick Mullens            QB   MIN    nan    nan   0.9x    nan  BENCH
+ 23. Deshaun Watson          QB   CLE    nan    nan   0.9x    nan  BENCH
+ 24. Cooper Rush             QB   DAL    nan    nan   0.9x    nan  BENCH
+ 25. Mitchell Trubisky       QB   BUF    nan    nan   0.9x    nan  BENCH
+ 26. Patrick Mahomes         QB   KC     nan    nan   0.9x    nan  BENCH
+ 27. Joshua Dobbs            QB   SF     nan    nan   0.9x    nan  BENCH
+ 28. Tim Boyle               QB   NYG    nan    nan   0.9x    nan  BENCH
+ 29. Mike White              QB   BUF    nan    nan   0.9x    nan  BENCH
+ 30. Kyle Allen              QB   PIT    nan    nan   0.9x    nan  BENCH
+ 31. Mason Rudolph           QB   TEN    nan    nan   0.9x    nan  BENCH
+ 32. Lamar Jackson           QB   BAL    nan    nan   0.9x    nan  BENCH
+ 33. Baker Mayfield          QB   TB     nan    nan   0.9x    nan  BENCH
+ 34. Josh Allen              QB   BUF    nan    nan   0.9x    nan  BENCH
+ 35. Sam Darnold             QB   MIN    nan    nan   0.9x    nan  BENCH
+ 36. Jake Browning           QB   CIN    nan    nan   0.9x    nan  BENCH
+ 37. Kyler Murray            QB   ARI    nan    nan   0.9x    nan  BENCH
+ 38. Jarrett Stidham         QB   DEN    nan    nan   0.9x    nan  BENCH
+ 39. Gardner Minshew         QB   LV     nan    nan   0.9x    nan  BENCH
+ 40. Drew Lock               QB   NYG    nan    nan   0.9x    nan  BENCH
+ 41. Daniel Jones            QB   MIN    nan    nan   0.9x    nan  BENCH
+ 42. Tyler Huntley           QB   MIA    nan    nan   0.9x    nan  BENCH
+ 43. Tua Tagovailoa          QB   MIA    nan    nan   0.9x    nan  BENCH
+ 44. Jordan Love             QB   GB     nan    nan   0.9x    nan  BENCH
+ 45. Justin Herbert          QB   LAC    nan    nan   0.9x    nan  BENCH
+ 46. Jalen Hurts             QB   PHI    nan    nan   0.9x    nan  BENCH
+ 47. Joe Burrow              QB   CIN    nan    nan   0.9x    nan  BENCH
+ 48. Davis Mills             QB   HOU    nan    nan   0.9x    nan  BENCH
+ 49. Kyle Trask              QB   TB     nan    nan   0.9x    nan  BENCH
+ 50. Justin Fields           QB   PIT    nan    nan   0.9x    nan  BENCH
+
+* PPG = Points Per Game projection based on historical performance
+  For seasonal projections, multiply by expected games played (~17)
+
+🎲 DRAFT STRATEGY INSIGHTS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏆 ELITE TIER (Picks 1-8): Focus on RB/TE scarcity - these are league winners
+📈 PREMIUM TIER (Picks 9-20): Target position runs before they happen
+💡 SOLID TIER (Picks 21-40): Fill roster needs, avoid positional reaches
+🔍 DEPTH TIER (Picks 41+): Handcuffs, upside plays, and late-round fliers
+
+POSITIONAL STRATEGY:
+• RB: Draft 2 in first 4 rounds (injury insurance + high VOR)
+• WR: Target 3 before round 6 (consistent weekly floor)
+• TE: Elite (Kelce/top tier) or wait until round 8+ (huge VOR gap)
+• QB: No need to reach early, position has good depth
+
+VOR INSIGHTS:

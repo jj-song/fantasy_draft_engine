@@ -1,0 +1,88 @@
+====================================================================================================
+🏈 FANTASY FOOTBALL DRAFT CHEATSHEET - VOR ANALYSIS EDITION
+Generated: 2025-08-04 22:51:38
+====================================================================================================
+
+📊 VALUE OVER REPLACEMENT (VOR) BREAKDOWN
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Position  Replacement    Scarcity   Top Player            Raw VOR  →  Adj VOR
+          Level          Mult       (Predicted Points)
+────────────────────────────────────────────────────────────────────────────────────────────────────
+RB        RB30             1.5x      Derrick Henry        (350.0)  125.7  →  188.5
+TE        TE13             1.2x      Brock Bowers         (250.0)  108.5  →  130.2
+WR        WR30             1.2x      Ja'Marr Chase        (350.0)  153.5  →  184.2
+QB        QB13             0.9x      Lamar Jackson        (430.4)  163.5  →  147.2
+
+🏆 TOP 50 OVERALL PLAYERS WITH VOR ANALYSIS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+RNK  PLAYER NAME             POS  TEAM  PROJ   RAW    MULT   ADJ    TIER
+                                      PPG*   VOR    (x)    VOR
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  1. Derrick Henry           RB   BAL  350.0  125.7   1.5x  188.5  ELITE
+  2. Jahmyr Gibbs            RB   DET  350.0  125.7   1.5x  188.5  ELITE
+  3. Ja'Marr Chase           WR   CIN  350.0  153.5   1.2x  184.2  ELITE
+  4. Bijan Robinson          RB   ATL  343.6  119.3   1.5x  179.0  ELITE
+  5. Saquon Barkley          RB   PHI  336.6  112.3   1.5x  168.5  PREMIUM
+  6. Josh Jacobs             RB   GB   327.0  102.7   1.5x  154.0  SOLID
+  7. Lamar Jackson           QB   BAL  430.4  163.5   0.9x  147.2  SOLID
+  8. Justin Jefferson        WR   MIN  317.5  121.0   1.2x  145.2  SOLID
+  9. Amon-Ra St. Brown       WR   DET  316.2  119.7   1.2x  143.6  SOLID
+ 10. Brock Bowers            TE   LV   250.0  108.5   1.2x  130.2  DEPTH
+ 11. Bucky Irving            RB   TB   306.4   82.1   1.5x  123.1  DEPTH
+ 12. Trey McBride            TE   ARI  243.8  102.3   1.2x  122.8  DEPTH
+ 13. De'Von Achane           RB   MIA  301.6   77.3   1.5x  116.0  DEPTH
+ 14. Aaron Jones             RB   MIN  300.4   76.1   1.5x  114.1  DEPTH
+ 15. George Kittle           TE   SF   236.6   95.1   1.2x  114.1  DEPTH
+ 16. Kyren Williams          RB   LA   297.8   73.5   1.5x  110.2  DEPTH
+ 17. Brian Thomas Jr.        WR   JAX  284.0   87.5   1.2x  105.0  DEPTH
+ 18. Drake London            WR   ATL  280.8   84.3   1.2x  101.2  DEPTH
+ 19. Jonnu Smith             TE   MIA  222.3   80.8   1.2x   97.0  DEPTH
+ 20. Joe Burrow              QB   CIN  372.8  105.9   0.9x   95.3  DEPTH
+ 21. Josh Allen              QB   BUF  372.3  105.4   0.9x   94.9  DEPTH
+ 22. Malik Nabers            WR   NYG  273.6   77.1   1.2x   92.5  DEPTH
+ 23. Baker Mayfield          QB   TB   365.8   98.9   0.9x   89.0  DEPTH
+ 24. Najee Harris            RB   PIT  282.2   57.9   1.5x   86.8  DEPTH
+ 25. Terry McLaurin          WR   WAS  267.8   71.3   1.2x   85.6  DEPTH
+ 26. CeeDee Lamb             WR   DAL  263.4   66.9   1.2x   80.3  DEPTH
+ 27. Jayden Daniels          QB   WAS  355.8   88.9   0.9x   80.0  DEPTH
+ 28. Chuba Hubbard           RB   CAR  273.4   49.1   1.5x   73.6  DEPTH
+ 29. James Conner            RB   ARI  272.4   48.1   1.5x   72.1  DEPTH
+ 30. James Cook              RB   BUF  271.1   46.8   1.5x   70.2  BENCH
+ 31. Jonathan Taylor         RB   IND  270.1   45.8   1.5x   68.7  BENCH
+ 32. Rico Dowdle             RB   DAL  270.1   45.8   1.5x   68.7  BENCH
+ 33. Jaxon Smith-Njigba      WR   SEA  253.0   56.5   1.2x   67.8  BENCH
+ 34. Garrett Wilson          WR   NYJ  251.9   55.4   1.2x   66.5  BENCH
+ 35. Travis Kelce            TE   KC   195.4   53.9   1.2x   64.7  BENCH
+ 36. Tony Pollard            RB   TEN  266.4   42.1   1.5x   63.1  BENCH
+ 37. D'Andre Swift           RB   CHI  265.3   41.0   1.5x   61.5  BENCH
+ 38. Chase Brown             RB   CIN  264.2   39.9   1.5x   59.8  BENCH
+ 39. Mark Andrews            TE   BAL  188.8   47.3   1.2x   56.8  BENCH
+ 40. Davante Adams           WR   NYJ  241.3   44.8   1.2x   53.8  BENCH
+ 41. Ladd McConkey           WR   LAC  241.0   44.5   1.2x   53.4  BENCH
+ 42. Jerry Jeudy             WR   CLE  240.9   44.4   1.2x   53.3  BENCH
+ 43. Mike Evans              WR   TB   240.4   43.9   1.2x   52.7  BENCH
+ 44. Courtland Sutton        WR   DEN  240.3   43.8   1.2x   52.6  BENCH
+ 45. Jared Goff              QB   DET  324.5   57.6   0.9x   51.8  BENCH
+ 46. DJ Moore                WR   CHI  238.1   41.6   1.2x   49.9  BENCH
+ 47. Bo Nix                  QB   DEN  317.2   50.3   0.9x   45.3  BENCH
+ 48. Jalen Hurts             QB   PHI  315.1   48.2   0.9x   43.4  BENCH
+ 49. Tyrone Tracy Jr.        RB   NYG  253.1   28.8   1.5x   43.2  BENCH
+ 50. Zach Ertz               TE   WAS  177.4   35.9   1.2x   43.1  BENCH
+
+* PPG = Points Per Game projection based on historical performance
+  For seasonal projections, multiply by expected games played (~17)
+
+🎲 DRAFT STRATEGY INSIGHTS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🏆 ELITE TIER (Picks 1-8): Focus on RB/TE scarcity - these are league winners
+📈 PREMIUM TIER (Picks 9-20): Target position runs before they happen
+💡 SOLID TIER (Picks 21-40): Fill roster needs, avoid positional reaches
+🔍 DEPTH TIER (Picks 41+): Handcuffs, upside plays, and late-round fliers
+
+POSITIONAL STRATEGY:
+• RB: Draft 2 in first 4 rounds (injury insurance + high VOR)
+• WR: Target 3 before round 6 (consistent weekly floor)
+• TE: Elite (Kelce/top tier) or wait until round 8+ (huge VOR gap)
+• QB: No need to reach early, position has good depth
+
+VOR INSIGHTS:
