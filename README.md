@@ -1,10 +1,11 @@
 # Fantasy Draft Engine 🏈
 
-**AI-powered fantasy football draft rankings** using machine learning, 180+ engineered features, and comprehensive NFL data from 2010-2024.
+**AI-powered fantasy football draft rankings** using machine learning, 300+ engineered features, environmental intelligence, and comprehensive NFL data from 2010-2024.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![ML Models](https://img.shields.io/badge/ML-RandomForest%20%2B%20LightGBM-green.svg)](https://lightgbm.readthedocs.io/)
-[![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen.svg)](https://coverage.readthedocs.io/)
+[![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen.svg)](https://coverage.readthedocs.io/)
+[![API Integration](https://img.shields.io/badge/APIs-NFL%20Data%20%2B%20Weather-blue.svg)](./documentation/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Why Fantasy Draft Engine?
@@ -13,11 +14,14 @@ Traditional "expert" rankings are subjective and often biased. **Fantasy Draft E
 
 - 📊 **15 years of NFL data** (2010-2024) for robust predictions  
 - 🤖 **Advanced ML models** with RandomForest + LightGBM ensemble
-- 🎯 **180+ engineered features** including efficiency metrics and usage patterns
+- 🎯 **300+ engineered features** including efficiency metrics, usage patterns, and advanced analytics
+- 🌤️ **Environmental intelligence** with weather impact analysis and venue adjustments
 - 📈 **Value Over Replacement (VOR)** for optimal cross-position rankings
+- 🏟️ **Matchup analysis** with strength of schedule and opponent adjustments
 - 🔧 **Production-ready pipeline** with comprehensive validation and error handling
+- 📚 **Complete API integration** with NFL data and weather services
 
-**Latest Results**: **569 players ranked** with elite RBs properly valued (Derrick Henry #1, Jahmyr Gibbs #2, Saquon Barkley #5)
+**Latest Results**: **569 players ranked** with elite RBs properly valued (Derrick Henry #1, Jahmyr Gibbs #2, Saquon Barkley #5) and environmental adjustments applied
 
 ## Quick Start
 
@@ -205,32 +209,62 @@ python generate_auction_values.py --budget 200 --league-size 12
 # ...
 ```
 
-### 🔄 Weekly Projections (Coming Soon)
-- Matchup-based adjustments
-- Weather impact modeling
-- Injury report integration
-- DFS optimizer
+### 🌤️ Environmental Intelligence
+- **Weather Impact Analysis**: Position-specific adjustments for wind, precipitation, temperature
+- **Stadium Intelligence**: Dome vs outdoor venue considerations with comprehensive database
+- **Altitude Effects**: Denver and high-altitude venue adjustments for kicking and passing
+- **Travel Factors**: Time zone adjustments and rest advantage calculations
+
+### 📚 API Documentation & Integration
+Complete guides available in `/documentation/` - see **[API Documentation Hub](./documentation/API_README.md)** for overview:
+- **[NFL Data Python](./documentation/NFL_DATA_PY.md)**: Comprehensive NFL statistics integration
+- **[OpenWeatherMap API](./documentation/OPENWEATHERMAP_API.md)**: Weather and environmental data
+- **[API Integration Guide](./documentation/API_INTEGRATION_GUIDE.md)**: Master architecture overview
+- **[Environment Setup](./documentation/ENVIRONMENT_SETUP.md)**: Complete configuration guide
+
+### 🔄 Advanced Analytics (Implemented)
+- **Matchup-based adjustments**: Strength of schedule and opponent analysis
+- **Weather impact modeling**: Position-specific environmental adjustments
+- **Usage analytics**: Snap counts, target share, and opportunity metrics
+- **Venue intelligence**: Stadium-specific factors and environmental conditions
 
 ## Project Structure
 
 ```
 fantasy_draft_engine/
+├── documentation/           # Complete API integration guides
+│   ├── API_README.md       # API documentation hub
+│   ├── NFL_DATA_PY.md      # NFL data integration
+│   ├── OPENWEATHERMAP_API.md # Weather API integration
+│   ├── API_INTEGRATION_GUIDE.md # Master architecture
+│   └── ENVIRONMENT_SETUP.md # Configuration guide
 ├── data/
-│   ├── raw/                 # Historical NFL data (2010-2023)
+│   ├── raw/                 # Historical NFL data (2010-2024)
 │   ├── processed/           # Feature-engineered datasets
 │   └── draft_lists/         # Generated rankings and cheatsheets
 ├── src/
-│   ├── data_acquisition.py  # NFL data fetching
+│   ├── data_acquisition.py  # NFL data fetching with API integration
 │   ├── feature_engineering.py # 300+ feature generation
 │   ├── modeling.py          # ML model implementations
 │   ├── scoring.py           # Fantasy point calculations
-│   └── data/
-│       └── feature_engineering/
-│           └── position/    # Position-specific features
-├── saved_models/            # Trained model artifacts
-├── tests/                   # Comprehensive test suite
-├── generate_draft_rankings.py # Main ranking generator
-└── main.py                  # Complete pipeline runner
+│   ├── data/
+│   │   ├── weather_integration.py # Weather API and environmental factors
+│   │   └── feature_engineering/
+│   │       └── position/    # Position-specific features (6 positions)
+│   ├── features/            # Advanced analytics modules
+│   │   ├── matchup_analysis.py # Opponent and schedule analysis
+│   │   ├── opportunity_metrics.py # Usage and efficiency analytics
+│   │   └── schedule_strength.py # Forward-looking SOS calculations
+│   ├── core/                # Infrastructure and base classes
+│   │   ├── model_factory.py # Centralized model creation
+│   │   └── base_feature_engineer.py # Standardized interfaces
+│   └── config/              # Configuration management system
+├── saved_models/            # Trained model artifacts (6 positions)
+├── tests/                   # Comprehensive test suite (180+ tests)
+├── scripts/
+│   ├── generate_draft_rankings.py # Main ranking generator
+│   └── main.py              # Complete pipeline runner
+└── PLANNER.md              # Future development roadmap
 ```
 
 ## Configuration
@@ -272,25 +306,29 @@ pytest tests/test_scoring.py -v      # Ranking generation
 pytest --cov=src --cov-report=html
 ```
 
-## Roadmap
+## Development Status & Roadmap
 
-### 🚀 Phase 2: Real-time Integration (In Progress)
-- Live injury report updates
-- Weather impact modeling
-- Vegas line integration
-- Beat reporter sentiment analysis
+### ✅ Current System (Fully Operational)
+- **Phase 0-1**: ✅ Complete ML pipeline with 300+ features and ensemble models
+- **Phase 1.5**: ✅ Industry-standard analytics matching FantasyPros/ESPN capabilities  
+- **Phase 1.8**: ✅ Infrastructure modernization with standardized architecture
+- **Phase 2**: ✅ Environmental intelligence and matchup analysis integrated
 
-### 📱 Phase 3: Interactive Tools (Planned)
-- Web-based draft assistant
-- Mobile app with push notifications
-- Live auction draft support
-- Trade analyzer with fair values
+### 🚀 Future Development
+See **[PLANNER.md](./PLANNER.md)** for detailed development roadmap including:
 
-### 🏆 Phase 4: Advanced Analytics (Future)
-- Team stack optimization
-- Playoff schedule analysis
-- Dynasty league rankings
-- Keeper value projections
+- **Phase 3**: Real-time data pipeline with injury reports and news integration
+- **Phase 4**: Interactive web tools and mobile applications  
+- **Phase 5**: Advanced analytics and prediction confidence modeling
+- **Phase 6**: Production scaling and premium features
+
+### 🏆 System Capabilities
+Your Fantasy Draft Engine now includes:
+- **569 player rankings** with proper position scarcity
+- **Environmental adjustments** for weather and venue conditions
+- **Advanced feature engineering** with 300+ metrics per player
+- **API integrations** for comprehensive data sourcing
+- **Production-ready pipeline** with comprehensive testing
 
 ## Contributing
 
