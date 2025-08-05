@@ -29,6 +29,7 @@ from typing import Dict, List, Tuple
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
+import logging
 
 # Add the project root to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -38,6 +39,126 @@ sys.path.insert(0, os.path.join(project_root, 'src'))
 # Set plot style
 plt.style.use('seaborn-v0_8-darkgrid')
 sns.set_palette('viridis')
+
+# Statistical Tier Calculation Functions
+def calculate_statistical_tiers(vor_values: List[float]) -> Dict[str, float]:
+    """Calculate tier thresholds based on statistical significance using standard deviations."""
+    positive_vors = [v for v in vor_values if v > 0]  # Only draft-relevant players
+    
+    if not positive_vors:
+        # Fallback if no positive VOR values
+        return {'ELITE': 50, 'PREMIUM': 30, 'SOLID': 15, 'DEPTH': 5}
+    
+    mean_vor = np.mean(positive_vors)
+    std_vor = np.std(positive_vors)
+    
+    return {
+        # Elite: 2+ standard deviations above mean (statistically exceptional)
+        'ELITE': mean_vor + (2.0 * std_vor),
+        
+        # Premium: 1+ standard deviations above mean (significantly above average)  
+        'PREMIUM': mean_vor + (1.0 * std_vor),
+        
+        # Solid: Above mean but within 1 std dev (above average)
+        'SOLID': mean_vor,
+        
+        # Depth: Within 0.5 std dev below mean (near average, still draftable)
+        'DEPTH': mean_vor - (0.5 * std_vor)
+    }
+
+def find_tier_gaps(vor_values: List[float]) -> Dict[str, float]:
+    """Find tier boundaries at largest performance gaps (natural breakpoints)."""
+    positive_vors = sorted([v for v in vor_values if v > 0], reverse=True)
+    
+    if len(positive_vors) < 10:
+        # Not enough data for gap analysis, use simple percentiles
+        return {
+            'ELITE': positive_vors[min(4, len(positive_vors)-1)],
+            'PREMIUM': positive_vors[min(9, len(positive_vors)-1)],
+            'SOLID': positive_vors[min(19, len(positive_vors)-1)],
+            'DEPTH': positive_vors[min(39, len(positive_vors)-1)]
+        }
+    
+    # Calculate gaps between consecutive players
+    gaps = [(positive_vors[i] - positive_vors[i+1], i) for i in range(len(positive_vors)-1)]
+    gaps.sort(reverse=True)  # Largest gaps first
+    
+    # Take the 3-4 largest gaps as natural tier boundaries
+    tier_indices = sorted([gap[1] for gap in gaps[:3]])
+    
+    return {
+        'ELITE': positive_vors[tier_indices[0]] if tier_indices else positive_vors[4],
+        'PREMIUM': positive_vors[tier_indices[1]] if len(tier_indices) > 1 else positive_vors[9],
+        'SOLID': positive_vors[tier_indices[2]] if len(tier_indices) > 2 else positive_vors[19],
+        'DEPTH': positive_vors[min(tier_indices[2] + 20, len(positive_vors)-1)] if len(tier_indices) > 2 else positive_vors[39]
+    }
+
+def calculate_intelligent_tiers(vor_values: List[float]) -> Dict[str, float]:
+    """Calculate tiers using multiple statistical methods for robustness."""
+    positive_vors = [v for v in vor_values if v > 0]
+    
+    if not positive_vors:
+        return {'ELITE': 50, 'PREMIUM': 30, 'SOLID': 15, 'DEPTH': 5}
+    
+    # Method 1: Standard deviation-based
+    std_tiers = calculate_statistical_tiers(positive_vors)
+    
+    # Method 2: Natural breakpoints (gap analysis)
+    gap_tiers = find_tier_gaps(positive_vors)
+    
+    # Combine methods - use the more conservative (higher) threshold for reliability
+    final_tiers = {}
+    for tier in ['ELITE', 'PREMIUM', 'SOLID', 'DEPTH']:
+        std_threshold = std_tiers[tier]
+        gap_threshold = gap_tiers.get(tier, std_threshold)
+        
+        # Take the higher threshold for more conservative tiering
+        final_tiers[tier] = max(std_threshold, gap_threshold)
+    
+    return final_tiers
+
+def get_tier_for_vor(vor_value: float, thresholds: Dict[str, float]) -> str:
+    """Get tier name for a VOR value using statistical thresholds."""
+    if vor_value >= thresholds['ELITE']:
+        return "ELITE"
+    elif vor_value >= thresholds['PREMIUM']:
+        return "PREMIUM"
+    elif vor_value >= thresholds['SOLID']:
+        return "SOLID"
+    elif vor_value >= thresholds['DEPTH']:
+        return "DEPTH"
+    else:
+        return "BENCH"
+
+def validate_statistical_tiers(vor_values: List[float], thresholds: Dict[str, float]):
+    """Validate that tier distribution makes statistical and fantasy sense."""
+    positive_vors = [v for v in vor_values if v > 0]
+    
+    if not positive_vors:
+        return
+    
+    # Count players in each tier
+    tier_counts = {}
+    for tier_name, threshold in thresholds.items():
+        count = sum(1 for v in positive_vors if v >= threshold)
+        tier_counts[tier_name] = count
+    
+    # Log statistical properties
+    mean_vor = np.mean(positive_vors)
+    std_vor = np.std(positive_vors)
+    
+    print(f"📊 VOR Statistics: Mean={mean_vor:.1f}, StdDev={std_vor:.1f}")
+    print(f"🎯 Tier Thresholds: ELITE={thresholds['ELITE']:.1f}, PREMIUM={thresholds['PREMIUM']:.1f}, SOLID={thresholds['SOLID']:.1f}, DEPTH={thresholds['DEPTH']:.1f}")
+    print(f"👥 Tier Counts: ELITE={tier_counts.get('ELITE', 0)}, PREMIUM={tier_counts.get('PREMIUM', 0)}, SOLID={tier_counts.get('SOLID', 0)}, DEPTH={tier_counts.get('DEPTH', 0)}")
+    
+    # Validate reasonable distribution
+    elite_count = tier_counts.get('ELITE', 0)
+    if elite_count > 15:
+        print(f"⚠️  WARNING: Many ELITE players ({elite_count}), very top-heavy distribution")
+    elif elite_count < 3:
+        print(f"⚠️  WARNING: Few ELITE players ({elite_count}), consider data quality")
+    else:
+        print(f"✅ ELITE tier size ({elite_count}) looks reasonable")
 
 def load_position_data(
     position: str, 
@@ -1148,20 +1269,19 @@ def generate_draft_cheatsheet(overall_rankings: pd.DataFrame, position_rankings:
         f.write("─" * 100 + "\n")
         
         if not overall_rankings.empty:
+            # Calculate statistically-driven tier thresholds
+            all_vor_values = overall_rankings['vor'].tolist()
+            tier_thresholds = calculate_intelligent_tiers(all_vor_values)
+            
+            # Validate and log tier distribution
+            validate_statistical_tiers(all_vor_values, tier_thresholds)
+            
             top_50 = overall_rankings.head(50)
             
-            # Define tiers based on VOR (adjusted for per-game projections)
-            tier_cutoffs = [12, 8, 5, 2]  # Elite, Premium, Solid, Depth
-            tier_names = ["ELITE", "PREMIUM", "SOLID", "DEPTH", "BENCH"]
-            
             for _, row in top_50.iterrows():
-                # Determine tier
+                # Determine tier using statistical thresholds
                 vor_value = row['vor']
-                tier = tier_names[-1]  # Default to BENCH
-                for i, cutoff in enumerate(tier_cutoffs):
-                    if vor_value >= cutoff:
-                        tier = tier_names[i]
-                        break
+                tier = get_tier_for_vor(vor_value, tier_thresholds)
                 
                 # Get scarcity multiplier for this position
                 scarcity_mult = scarcity_multipliers.get(row['position'], 1.0)
@@ -1173,63 +1293,6 @@ def generate_draft_cheatsheet(overall_rankings: pd.DataFrame, position_rankings:
                 f.write(f"{scarcity_mult:4.1f}x  ")
                 f.write(f"{row['vor']:5.1f}  ")
                 f.write(f"{tier}\n")
-        
-        f.write("\n")
-        
-        # Side-by-Side Positional Comparison by Tiers
-        f.write("🎯 SIDE-BY-SIDE POSITIONAL COMPARISON BY TIERS\n")
-        f.write("=" * 100 + "\n")
-        
-        # Create tier groupings
-        tiers = {
-            "ELITE (VOR 18+)": [],
-            "PREMIUM (VOR 14-18)": [],
-            "SOLID (VOR 10-14)": [],
-            "DEPTH (VOR 6-10)": []
-        }
-        
-        # Group players by tier
-        for _, row in overall_rankings.head(60).iterrows():
-            vor_value = row['vor']
-            if vor_value >= 18:
-                tiers["ELITE (VOR 18+)"].append(row)
-            elif vor_value >= 14:
-                tiers["PREMIUM (VOR 14-18)"].append(row)
-            elif vor_value >= 10:
-                tiers["SOLID (VOR 10-14)"].append(row)
-            elif vor_value >= 6:
-                tiers["DEPTH (VOR 6-10)"].append(row)
-        
-        # Display each tier
-        for tier_name, tier_players in tiers.items():
-            if tier_players:
-                f.write(f"\n┌─ {tier_name} " + "─" * (95 - len(tier_name)) + "┐\n")
-                f.write("│ RB                    │ WR                    │ TE                    │ QB                    │\n")
-                f.write("│ ──                    │ ──                    │ ──                    │ ──                    │\n")
-                
-                # Group by position
-                tier_by_pos = {'RB': [], 'WR': [], 'TE': [], 'QB': []}
-                for player in tier_players:
-                    pos = player['position']
-                    if pos in tier_by_pos:
-                        tier_by_pos[pos].append(player)
-                
-                # Find max length for any position
-                max_players = max(len(players) for players in tier_by_pos.values()) if tier_by_pos else 0
-                
-                # Print players side by side
-                for i in range(max_players):
-                    f.write("│ ")
-                    for pos in ['RB', 'WR', 'TE', 'QB']:
-                        if i < len(tier_by_pos[pos]):
-                            player = tier_by_pos[pos][i]
-                            player_str = f"{player['player_name'][:12]} {player['vor']:.1f}"
-                            f.write(f"{player_str:<21} │ ")
-                        else:
-                            f.write(" " * 21 + " │ ")
-                    f.write("\n")
-                
-                f.write("└" + "─" * 95 + "┘\n")
         
         f.write("\n")
         
@@ -1442,69 +1505,6 @@ def create_visual_draft_board(overall_rankings: pd.DataFrame, position_rankings:
     plt.savefig(plot_file_enhanced, dpi=300, bbox_inches='tight')
     print(f"Enhanced draft board saved to {plot_file_enhanced}")
     
-    # Create Figure 2: Tier-Based Positional Heat Map
-    plt.figure(figsize=(16, 10))
-    
-    # Create data for heatmap
-    tier_data = {}
-    tier_names = ['Elite (18+)', 'Premium (14-18)', 'Solid (10-14)', 'Depth (6-10)']
-    
-    # Initialize data structure
-    for tier in tier_names:
-        tier_data[tier] = {'RB': [], 'WR': [], 'TE': [], 'QB': []}
-    
-    # Populate tier data
-    for _, row in overall_rankings.head(50).iterrows():
-        vor = row['vor']
-        pos = row['position']
-        
-        if pos in ['RB', 'WR', 'TE', 'QB']:
-            if vor >= 18:
-                tier_data['Elite (18+)'][pos].append(row)
-            elif vor >= 14:
-                tier_data['Premium (14-18)'][pos].append(row)
-            elif vor >= 10:
-                tier_data['Solid (10-14)'][pos].append(row)
-            elif vor >= 6:
-                tier_data['Depth (6-10)'][pos].append(row)
-    
-    # Create heatmap data
-    heatmap_data = []
-    for tier in tier_names:
-        tier_row = []
-        for pos in ['RB', 'WR', 'TE', 'QB']:
-            tier_row.append(len(tier_data[tier][pos]))
-        heatmap_data.append(tier_row)
-    
-    # Create heatmap
-    heatmap_array = np.array(heatmap_data)
-    im = plt.imshow(heatmap_array, cmap='Reds', aspect='auto')
-    
-    # Set ticks and labels
-    plt.xticks(range(4), ['RB', 'WR', 'TE', 'QB'], fontsize=14, fontweight='bold')
-    plt.yticks(range(4), tier_names, fontsize=12, fontweight='bold')
-    
-    # Add text annotations
-    for i in range(len(tier_names)):
-        for j in range(4):
-            count = heatmap_data[i][j]
-            plt.text(j, i, str(count), ha='center', va='center', 
-                    fontsize=16, fontweight='bold', color='white' if count > 2 else 'black')
-    
-    plt.title('Position Distribution by VOR Tier (Player Count)', fontsize=18, fontweight='bold')
-    plt.xlabel('Position', fontsize=14, fontweight='bold')
-    plt.ylabel('VOR Tier', fontsize=14, fontweight='bold')
-    
-    # Add colorbar
-    cbar = plt.colorbar(im)
-    cbar.set_label('Number of Players', fontsize=12, fontweight='bold')
-    
-    plt.tight_layout()
-    
-    # Save heatmap
-    heatmap_file = os.path.join(plots_dir, f'vor_tier_heatmap_{timestamp}.png')
-    plt.savefig(heatmap_file, dpi=300, bbox_inches='tight')
-    print(f"VOR tier heatmap saved to {heatmap_file}")
     
     plt.close('all')  # Close all figures to free memory
 
