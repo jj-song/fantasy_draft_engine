@@ -6,7 +6,7 @@
 [![ML Models](https://img.shields.io/badge/ML-RandomForest%20%2B%20LightGBM-green.svg)](https://lightgbm.readthedocs.io/)
 [![Microservices](https://img.shields.io/badge/Architecture-Microservices-blue.svg)](./PLAN.md)
 [![Docker](https://img.shields.io/badge/Deployment-Docker%20Compose-blue.svg)](https://docker.com/)
-[![Production Ready](https://img.shields.io/badge/Status-4%2F6%20Services%20Production%20Ready-brightgreen.svg)](./developer_notes.md)
+[![Production Ready](https://img.shields.io/badge/Status-Ranking%20Service%20Integration%20Complete-brightgreen.svg)](./DEVELOPER_NOTES.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🎯 What Makes This Different
@@ -32,8 +32,8 @@ cd fantasy_draft_engine
 # Launch microservices
 docker-compose up -d
 
-# Generate rankings
-python main_microservices.py
+# Generate ML-powered rankings
+python generate_draft_rankings.py
 ```
 
 ### Option 2: Direct Execution
@@ -42,8 +42,11 @@ python main_microservices.py
 # Install dependencies
 pip install -r requirements.txt
 
-# Generate draft rankings  
-python scripts/generate_draft_rankings.py
+# Test ML models integration
+python test_ranking_service_integration.py
+
+# Generate draft rankings with ML predictions
+python generate_draft_rankings.py
 ```
 
 ## 📊 What You Get
@@ -57,12 +60,12 @@ python scripts/generate_draft_rankings.py
 Players ranked by **Value Over Replacement** to optimize draft strategy across positions:
 
 ```
-2025 Season Rankings (Sample):
-1.  Christian McCaffrey   RB  SF   355.2 pts  (+195.8 VOR)  💎 ELITE
-2.  Cooper Kupp           WR  LAR  320.4 pts  (+154.6 VOR)  💎 ELITE  
-3.  Josh Allen            QB  BUF  385.1 pts  (+152.1 VOR)  💎 ELITE
-4.  Derrick Henry         RB  TEN  340.6 pts  (+149.2 VOR)  🌟 TIER 1
-5.  Davante Adams         WR  LVR  315.8 pts  (+147.2 VOR)  🌟 TIER 1
+2025 Season Rankings (ML-Generated):
+1.  Derrick Henry         RB  BAL  243.1 pts  (+148.3 VOR)  💎 ELITE
+2.  Jahmyr Gibbs          RB  DET  241.5 pts  (+146.7 VOR)  💎 ELITE  
+3.  Bijan Robinson        RB  ATL  223.3 pts  (+128.6 VOR)  💎 ELITE
+4.  De'Von Achane         RB  MIA  220.3 pts  (+125.6 VOR)  🌟 TIER 1
+5.  Saquon Barkley        RB  PHI  219.6 pts  (+124.9 VOR)  🌟 TIER 1
 ```
 
 ### Exportable Formats
@@ -78,8 +81,8 @@ Players ranked by **Value Over Replacement** to optimize draft strategy across p
 - **Data Ingestion** (8002) - ✅ **Production Ready** - NFL data acquisition and cleaning
 - **Feature Engineering** (8003) - ✅ **Production Ready** - Advanced statistical feature generation
 - **ML Models** (8004) - ✅ **Production Ready** - Model training and prediction serving
-- **Ranking** (8005) - ✅ **Production Ready** - VOR calculations and tier generation
-- **Orchestration** (8006) - 🔄 Testing Required - Workflow coordination and monitoring
+- **Ranking** (8005) - ✅ **Production Ready** - VOR calculations and ML-powered draft rankings
+- **Orchestration** (8006) - 🔄 Development Phase - Workflow coordination and monitoring
 
 For detailed technical documentation, see [PLAN.md](./PLAN.md)
 
@@ -89,13 +92,13 @@ Our ensemble models trained on **15 years of historical data** achieve industry-
 
 | Position | Training Samples | R² Score | RMSE (FPPG) | Key Predictive Features |
 |----------|------------------|----------|-------------|------------------------|
-| QB       | **322 samples**  | 72%      | 2.3         | Pass attempts, TD rate, rushing yards |
-| RB       | **473 samples**  | 68%      | 2.8         | Touches, efficiency, offensive line strength |
-| WR       | **726 samples**  | 65%      | 2.5         | Targets, air yards, QB compatibility |
-| TE       | **432 samples**  | 63%      | 2.1         | Target share, red zone usage |
+| QB       | **592 samples**  | 42.5%    | 4.39        | Passing yards, TD rate, rushing production |
+| RB       | **1,291 samples**| 45.7%    | 3.60        | Carries, receptions, efficiency metrics |
+| WR       | **1,856 samples**| 46.1%    | 2.52        | Targets, air yards, catch rate |
+| TE       | **989 samples**  | 40.6%    | 1.75        | Target share, red zone opportunities |
 
-**Training Scale:** Models trained on **1,953+ player-seasons** (2010-2024) with 40-70x more data than typical systems.  
-**Validation:** Backtested on 2021-2023 seasons with consistent outperformance vs consensus rankings.
+**Training Scale:** Models trained on **4,728+ player-seasons** (2010-2024) using time-series methodology.  
+**Validation:** Realistic performance metrics (R² 40-46%) indicate genuine predictive capability without data leakage.
 
 ## 🛠️ Development & Contribution
 

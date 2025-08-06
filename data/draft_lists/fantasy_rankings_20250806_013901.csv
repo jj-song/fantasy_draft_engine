@@ -1,0 +1,563 @@
+Overall_Rank,Player_Name,Team,Position,Position_Rank,Predicted_FPPG,Games_Played,Predicted_Seasonal_Points,VOR_Value,Tier,Draft_Tier,Is_Replacement_Level
+1,Derrick Henry,BAL,RB,1,14.3,17,243.1,148.3,1,Elite (1st Round),False
+2,Jahmyr Gibbs,DET,RB,2,14.21,17,241.5,146.7,1,Elite (1st Round),False
+3,Bijan Robinson,ATL,RB,3,13.14,17,223.3,128.6,1,Elite (1st Round),False
+4,De'Von Achane,MIA,RB,4,12.96,17,220.3,125.6,1,Elite (1st Round),False
+5,Saquon Barkley,PHI,RB,5,13.73,16,219.6,124.9,1,Elite (1st Round),False
+6,Josh Jacobs,GB,RB,6,12.51,17,212.8,118.0,1,Elite (1st Round),False
+7,Bucky Irving,TB,RB,7,12.17,17,206.8,112.1,1,Elite (1st Round),False
+8,Ja'Marr Chase,CIN,WR,1,12.36,17,210.1,102.4,1,Elite (1st Round),False
+9,Justin Jefferson,MIN,WR,2,12.26,17,208.4,100.7,1,Elite (1st Round),False
+10,Kyren Williams,LA,RB,8,11.64,16,186.2,91.4,1,Elite (1st Round),False
+11,James Cook,BUF,RB,9,11.28,16,180.5,85.8,1,Elite (1st Round),False
+12,Amon-Ra St. Brown,DET,WR,3,11.25,17,191.2,83.5,1,Elite (1st Round),False
+13,Najee Harris,PIT,RB,10,10.33,17,175.6,80.9,1,High-End (2nd Round),False
+14,Aaron Jones,MIN,RB,11,10.31,17,175.3,80.5,1,High-End (2nd Round),False
+15,Chuba Hubbard,CAR,RB,12,11.57,15,173.5,78.7,1,High-End (2nd Round),False
+16,Brian Thomas Jr.,JAX,WR,4,10.92,17,185.7,78.0,1,High-End (2nd Round),False
+17,James Conner,ARI,RB,13,10.77,16,172.3,77.6,1,High-End (2nd Round),False
+18,Rico Dowdle,DAL,RB,14,10.75,16,172.0,77.3,1,High-End (2nd Round),False
+19,D'Andre Swift,CHI,RB,15,10.02,17,170.3,75.5,1,High-End (2nd Round),False
+20,Chase Brown,CIN,RB,16,10.51,16,168.1,73.4,1,High-End (2nd Round),False
+21,Breece Hall,NYJ,RB,17,10.48,16,167.8,73.0,1,High-End (2nd Round),False
+22,Lamar Jackson,BAL,QB,1,20.13,17,342.1,72.4,1,High-End (2nd Round),False
+23,Jonathan Taylor,IND,RB,18,11.89,14,166.4,71.6,1,High-End (2nd Round),False
+24,Alvin Kamara,NO,RB,19,11.72,14,164.0,69.3,1,High-End (2nd Round),False
+25,Drake London,ATL,WR,5,10.28,17,174.8,67.1,1,Mid-Tier (3rd Round),False
+26,Tony Pollard,TEN,RB,20,9.99,16,159.8,65.1,1,Mid-Tier (3rd Round),False
+27,Brock Bowers,LV,TE,1,8.43,17,143.3,64.3,1,Mid-Tier (3rd Round),False
+28,Joe Mixon,HOU,RB,21,10.79,14,151.0,56.2,1,Mid-Tier (3rd Round),False
+29,Jerry Jeudy,CLE,WR,6,9.62,17,163.5,55.8,1,Mid-Tier (3rd Round),False
+30,Terry McLaurin,WAS,WR,7,9.61,17,163.4,55.7,1,Mid-Tier (3rd Round),False
+31,George Kittle,SF,TE,2,8.96,15,134.4,55.3,1,Mid-Tier (3rd Round),False
+32,Jayden Daniels,WAS,QB,2,19.11,17,324.8,55.0,1,Mid-Tier (3rd Round),False
+33,Tyrone Tracy Jr.,NYG,RB,22,8.75,17,148.8,54.1,1,Mid-Tier (3rd Round),False
+34,Trey McBride,ARI,TE,3,8.27,16,132.4,53.3,1,Mid-Tier (3rd Round),False
+35,Jonnu Smith,MIA,TE,4,7.68,17,130.6,51.5,1,Mid-Tier (3rd Round),False
+36,Baker Mayfield,TB,QB,3,18.76,17,318.9,49.1,1,Mid-Tier (3rd Round),False
+37,DJ Moore,CHI,WR,8,9.22,17,156.8,49.1,1,Solid (4th-5th Round),False
+38,Zay Flowers,BAL,WR,9,9.2,17,156.4,48.7,1,Solid (4th-5th Round),False
+39,Jaxon Smith-Njigba,SEA,WR,10,9.17,17,155.9,48.3,1,Solid (4th-5th Round),False
+40,Ladd McConkey,LAC,WR,11,9.72,16,155.5,47.8,1,Solid (4th-5th Round),False
+41,David Montgomery,DET,RB,23,10.09,14,141.3,46.5,1,Solid (4th-5th Round),False
+42,Bo Nix,DEN,QB,4,18.57,17,315.6,45.9,1,Solid (4th-5th Round),False
+43,Tucker Kraft,GB,TE,5,7.31,17,124.3,45.2,1,Solid (4th-5th Round),False
+44,Mark Andrews,BAL,TE,6,7.26,17,123.4,44.3,1,Solid (4th-5th Round),False
+45,Zach Charbonnet,SEA,RB,24,8.13,17,138.3,43.5,1,Solid (4th-5th Round),False
+46,Tyreek Hill,MIA,WR,12,8.88,17,151.0,43.3,1,Solid (4th-5th Round),False
+47,J.K. Dobbins,LAC,RB,25,10.46,13,136.0,41.3,1,Solid (4th-5th Round),False
+48,CeeDee Lamb,DAL,WR,13,9.88,15,148.2,40.5,1,Solid (4th-5th Round),False
+49,Garrett Wilson,NYJ,WR,14,8.62,17,146.5,38.8,1,Solid (4th-5th Round),False
+50,Malik Nabers,NYG,WR,15,9.62,15,144.3,36.6,1,Solid (4th-5th Round),False
+51,Joe Burrow,CIN,QB,5,18.0,17,306.0,36.2,1,Solid (4th-5th Round),False
+52,Josh Allen,BUF,QB,6,19.05,16,304.8,35.1,1,Solid (4th-5th Round),False
+53,Sam LaPorta,DET,TE,7,7.1,16,113.6,34.5,1,Solid (4th-5th Round),False
+54,Jordan Addison,MIN,WR,16,9.48,15,142.2,34.5,1,Solid (4th-5th Round),False
+55,Kyler Murray,ARI,QB,7,17.76,17,302.0,32.2,1,Solid (4th-5th Round),False
+56,Calvin Ridley,TEN,WR,17,8.18,17,139.1,31.4,1,Solid (4th-5th Round),False
+57,Justin Herbert,LAC,QB,8,17.7,17,300.9,31.2,1,Solid (4th-5th Round),False
+58,Jared Goff,DET,QB,9,17.62,17,299.6,29.8,1,Solid (4th-5th Round),False
+59,Sam Darnold,MIN,QB,10,17.59,17,299.1,29.3,1,Solid (4th-5th Round),False
+60,Marvin Harrison Jr.,ARI,WR,18,8.0,17,136.0,28.3,1,Solid (4th-5th Round),False
+61,Courtland Sutton,DEN,WR,19,8.48,16,135.7,28.0,1,Depth (6th-8th Round),False
+62,Brian Robinson,WAS,RB,26,8.69,14,121.6,26.9,1,Depth (6th-8th Round),False
+63,Travis Kelce,KC,TE,8,6.58,16,105.2,26.2,1,Depth (6th-8th Round),False
+64,Pat Freiermuth,PIT,TE,9,6.17,17,104.9,25.8,1,Depth (6th-8th Round),False
+65,Caleb Williams,CHI,QB,11,17.37,17,295.2,25.5,1,Depth (6th-8th Round),False
+66,Jakobi Meyers,LV,WR,20,8.86,15,132.9,25.2,1,Depth (6th-8th Round),False
+67,Kyle Pitts,ATL,TE,10,6.07,17,103.3,24.2,1,Depth (6th-8th Round),False
+68,Jameson Williams,DET,WR,21,8.76,15,131.5,23.8,1,Depth (6th-8th Round),False
+69,Jayden Reed,GB,WR,22,7.64,17,130.0,22.3,1,Depth (6th-8th Round),False
+70,Geno Smith,SEA,QB,12,17.03,17,289.6,19.8,1,Depth (6th-8th Round),False
+71,Jauan Jennings,SF,WR,23,8.49,15,127.3,19.6,1,Depth (6th-8th Round),False
+72,Rhamondre Stevenson,NE,RB,27,7.58,15,113.6,18.9,1,Depth (6th-8th Round),False
+73,Tank Bigsby,JAX,RB,28,7.56,15,113.5,18.7,1,Depth (6th-8th Round),False
+74,Zach Ertz,WAS,TE,11,5.73,17,97.5,18.4,1,Depth (6th-8th Round),False
+75,Mike Gesicki,CIN,TE,12,5.83,16,93.2,14.2,1,Depth (6th-8th Round),False
+76,Mike Evans,TB,WR,24,8.65,14,121.1,13.4,1,Depth (6th-8th Round),False
+77,Juwan Johnson,NO,TE,13,6.13,15,92.0,12.9,1,Depth (6th-8th Round),False
+78,Jerome Ford,CLE,RB,29,7.68,14,107.5,12.8,1,Depth (6th-8th Round),False
+79,Rachaad White,TB,RB,30,7.17,15,107.5,12.8,1,Depth (6th-8th Round),False
+80,Davante Adams,NYJ,WR,25,8.59,14,120.2,12.5,1,Depth (6th-8th Round),False
+81,Tyler Allgeier,ATL,RB,31,6.27,17,106.7,11.9,2,Depth (6th-8th Round),False
+82,Jordan Mason,SF,RB,32,8.84,12,106.1,11.4,2,Depth (6th-8th Round),False
+83,Patrick Mahomes,KC,QB,13,17.55,16,280.7,11.0,2,Depth (6th-8th Round),False
+84,Wan'Dale Robinson,NYG,WR,26,6.9,17,117.2,9.5,2,Depth (6th-8th Round),False
+85,A.J. Brown,PHI,WR,27,9.01,13,117.1,9.4,2,Depth (6th-8th Round),False
+86,Darnell Mooney,ATL,WR,28,7.23,16,115.7,8.0,2,Depth (6th-8th Round),False
+87,Austin Hooper,NE,TE,14,5.06,17,86.1,7.0,2,Depth (6th-8th Round),False
+88,Aaron Rodgers,NYJ,QB,14,16.28,17,276.7,6.9,3,Depth (6th-8th Round),False
+89,Javonte Williams,DEN,RB,33,5.97,17,101.5,6.8,3,Depth (6th-8th Round),False
+90,Xavier Worthy,KC,WR,29,7.07,16,113.1,5.4,3,Depth (6th-8th Round),False
+91,Josh Downs,IND,WR,30,8.07,14,113.0,5.3,3,Depth (6th-8th Round),False
+92,Rome Odunze,CHI,WR,31,6.62,17,112.5,4.8,3,Depth (6th-8th Round),False
+93,Jaleel McLaughlin,DEN,RB,34,6.14,16,98.2,3.5,4,Depth (6th-8th Round),False
+94,Tee Higgins,CIN,WR,32,9.25,12,111.0,3.3,3,Depth (6th-8th Round),False
+95,DeVonta Smith,PHI,WR,33,8.46,13,110.0,2.3,4,Depth (6th-8th Round),False
+96,DK Metcalf,SEA,WR,34,7.28,15,109.2,1.5,4,Depth (6th-8th Round),False
+97,Khalil Shakir,BUF,WR,35,7.24,15,108.6,0.9,4,Depth (6th-8th Round),False
+98,Kenneth Walker III,SEA,RB,35,8.63,11,94.9,0.1,4,Depth (6th-8th Round),False
+99,Brock Purdy,SF,QB,15,17.98,15,269.8,0.0,4,Depth (6th-8th Round),True
+100,Antonio Gibson,NE,RB,36,5.57,17,94.8,0.0,4,Depth (6th-8th Round),True
+101,Keenan Allen,CHI,WR,36,7.18,15,107.7,0.0,4,Waiver Wire/Handcuff,True
+102,Hunter Henry,NE,TE,15,4.94,16,79.1,0.0,4,Waiver Wire/Handcuff,True
+103,Kareem Hunt,KC,RB,37,7.29,13,94.7,-0.0,5,Waiver Wire/Handcuff,False
+104,Rashod Bateman,BAL,WR,37,6.69,16,107.0,-0.7,5,Waiver Wire/Handcuff,False
+105,Nico Collins,HOU,WR,38,8.79,12,105.5,-2.2,5,Waiver Wire/Handcuff,False
+106,Jaylen Warren,PIT,RB,38,6.15,15,92.3,-2.5,5,Waiver Wire/Handcuff,False
+107,Cade Otton,TB,TE,16,5.42,14,75.9,-3.1,6,Waiver Wire/Handcuff,False
+108,C.J. Stroud,HOU,QB,16,15.64,17,265.8,-3.9,5,Waiver Wire/Handcuff,False
+109,George Pickens,PIT,WR,39,7.34,14,102.7,-5.0,6,Waiver Wire/Handcuff,False
+110,Alec Pierce,IND,WR,40,6.37,16,102.0,-5.7,6,Waiver Wire/Handcuff,False
+111,Quentin Johnston,LAC,WR,41,6.79,15,101.9,-5.8,6,Waiver Wire/Handcuff,False
+112,Ray Davis,BUF,RB,39,5.55,16,88.8,-5.9,6,Waiver Wire/Handcuff,False
+113,Chig Okonkwo,TEN,TE,17,4.53,16,72.5,-6.6,6,Waiver Wire/Handcuff,False
+114,Puka Nacua,LA,WR,42,9.19,11,101.0,-6.6,6,Waiver Wire/Handcuff,False
+115,Emanuel Wilson,GB,RB,40,5.18,17,88.1,-6.7,6,Waiver Wire/Handcuff,False
+116,Braelon Allen,NYJ,RB,41,5.1,17,86.7,-8.0,6,Waiver Wire/Handcuff,False
+117,Isaiah Likely,BAL,TE,18,4.65,15,69.8,-9.3,6,Waiver Wire/Handcuff,False
+118,Jalen Tolbert,DAL,WR,43,5.71,17,97.0,-10.7,6,Waiver Wire/Handcuff,False
+119,Michael Pittman,IND,WR,44,6.05,16,96.8,-10.9,6,Waiver Wire/Handcuff,False
+120,Travis Etienne,JAX,RB,42,5.56,15,83.4,-11.3,6,Waiver Wire/Handcuff,False
+121,Ray-Ray McCloud,ATL,WR,45,5.57,17,94.6,-13.1,6,Waiver Wire/Handcuff,False
+122,Jalen Hurts,PHI,QB,17,17.1,15,256.5,-13.2,6,Waiver Wire/Handcuff,False
+123,Cole Kmet,CHI,TE,19,4.69,14,65.7,-13.4,6,Waiver Wire/Handcuff,False
+124,Jaylen Waddle,MIA,WR,46,6.28,15,94.2,-13.5,6,Waiver Wire/Handcuff,False
+125,Dalton Schultz,HOU,TE,20,3.85,17,65.4,-13.6,6,Waiver Wire/Handcuff,False
+126,Will Dissly,LAC,TE,21,4.36,15,65.3,-13.7,6,Waiver Wire/Handcuff,False
+127,Noah Fant,SEA,TE,22,4.64,14,65.0,-14.1,6,Waiver Wire/Handcuff,False
+128,DeMario Douglas,NE,WR,47,5.85,16,93.5,-14.2,6,Waiver Wire/Handcuff,False
+129,Noah Gray,KC,TE,23,3.92,16,62.7,-16.3,6,Waiver Wire/Handcuff,False
+130,Ty Johnson,BUF,RB,43,4.57,17,77.8,-17.0,6,Waiver Wire/Handcuff,False
+131,Matthew Stafford,LA,QB,18,15.74,16,251.8,-17.9,6,Waiver Wire/Handcuff,False
+132,Tyler Conklin,NYJ,TE,24,3.79,16,60.6,-18.5,6,Waiver Wire/Handcuff,False
+133,Kayshon Boutte,NE,WR,48,5.95,15,89.2,-18.5,6,Waiver Wire/Handcuff,False
+134,Devin Singletary,NYG,RB,44,5.08,15,76.2,-18.5,6,Waiver Wire/Handcuff,False
+135,Kenneth Gainwell,PHI,RB,45,4.76,16,76.1,-18.6,6,Waiver Wire/Handcuff,False
+136,Isaac Guerendo,SF,RB,46,5.85,13,76.1,-18.7,6,Waiver Wire/Handcuff,False
+137,Christian Watson,GB,WR,49,6.3,14,88.3,-19.4,6,Waiver Wire/Handcuff,False
+138,Cam Akers,MIN,RB,47,5.0,15,75.0,-19.7,6,Waiver Wire/Handcuff,False
+139,Jake Ferguson,DAL,TE,25,4.23,14,59.3,-19.8,6,Waiver Wire/Handcuff,False
+140,Justice Hill,BAL,RB,48,4.93,15,73.9,-20.8,6,Waiver Wire/Handcuff,False
+141,Cooper Kupp,LA,WR,50,7.21,12,86.5,-21.2,6,Waiver Wire/Handcuff,False
+142,Austin Ekeler,WAS,RB,49,6.13,12,73.6,-21.2,6,Waiver Wire/Handcuff,False
+143,Marvin Mims Jr.,DEN,WR,51,5.36,16,85.8,-21.9,6,Waiver Wire/Handcuff,False
+144,Tank Dell,HOU,WR,52,6.12,14,85.6,-22.1,6,Waiver Wire/Handcuff,False
+145,Foster Moreau,NO,TE,26,3.8,15,57.0,-22.1,6,Waiver Wire/Handcuff,False
+146,Josh Palmer,LAC,WR,53,5.71,15,85.6,-22.1,6,Waiver Wire/Handcuff,False
+147,Dalton Kincaid,BUF,TE,27,4.24,13,55.1,-24.0,6,Waiver Wire/Handcuff,False
+148,Jordan Akins,CLE,TE,28,3.39,16,54.2,-24.8,6,Waiver Wire/Handcuff,False
+149,Jordan Love,GB,QB,19,16.28,15,244.1,-25.6,6,Waiver Wire/Handcuff,False
+150,Tyjae Spears,TEN,RB,50,5.69,12,68.3,-26.4,6,Waiver Wire/Handcuff,False
+151,Dawson Knox,BUF,TE,29,3.75,14,52.5,-26.6,6,Waiver Wire/Handcuff,False
+152,Jaylen Wright,MIA,RB,51,5.22,13,67.9,-26.8,6,Waiver Wire/Handcuff,False
+153,Tutu Atwell,LA,WR,54,5.38,15,80.7,-27.0,6,Waiver Wire/Handcuff,False
+154,Alexander Mattison,LV,RB,52,4.82,14,67.5,-27.3,6,Waiver Wire/Handcuff,False
+155,DeAndre Hopkins,KC,WR,55,5.0,16,80.0,-27.7,6,Waiver Wire/Handcuff,False
+156,Andrei Iosivas,CIN,WR,56,4.63,17,78.7,-29.0,6,Waiver Wire/Handcuff,False
+157,Michael Wilson,ARI,WR,57,4.86,16,77.8,-29.9,6,Waiver Wire/Handcuff,False
+158,Blake Corum,LA,RB,53,4.63,14,64.8,-29.9,6,Waiver Wire/Handcuff,False
+159,Audric Estimé,DEN,RB,54,4.98,13,64.7,-30.0,6,Waiver Wire/Handcuff,False
+160,Deebo Samuel Sr.,SF,WR,58,5.55,14,77.6,-30.1,6,Waiver Wire/Handcuff,False
+161,David Njoku,CLE,TE,30,4.38,11,48.2,-30.8,6,Waiver Wire/Handcuff,False
+162,Dallas Goedert,PHI,TE,31,4.81,10,48.1,-30.9,6,Waiver Wire/Handcuff,False
+163,Calvin Austin III,PIT,WR,59,4.51,17,76.7,-31.0,6,Waiver Wire/Handcuff,False
+164,Demarcus Robinson,LA,WR,60,4.51,17,76.7,-31.0,6,Waiver Wire/Handcuff,False
+165,Romeo Doubs,GB,WR,61,5.88,13,76.4,-31.3,6,Waiver Wire/Handcuff,False
+166,Adonai Mitchell,IND,WR,62,4.46,17,75.8,-31.9,6,Waiver Wire/Handcuff,False
+167,Elijah Moore,CLE,WR,63,4.46,17,75.8,-31.9,6,Waiver Wire/Handcuff,False
+168,Brenton Strange,JAX,TE,32,3.36,14,47.1,-32.0,6,Waiver Wire/Handcuff,False
+169,Sean Tucker,TB,RB,55,5.64,11,62.1,-32.7,6,Waiver Wire/Handcuff,False
+170,Tyler Lockett,SEA,WR,64,4.41,17,75.0,-32.7,6,Waiver Wire/Handcuff,False
+171,Jeremy McNichols,WAS,RB,56,4.43,14,62.0,-32.8,6,Waiver Wire/Handcuff,False
+172,Tre Tucker,LV,WR,65,4.39,17,74.6,-33.1,6,Waiver Wire/Handcuff,False
+173,Ja'Tavion Sanders,CAR,TE,33,2.99,15,44.8,-34.3,6,Waiver Wire/Handcuff,False
+174,Grant Calcaterra,PHI,TE,34,3.42,13,44.5,-34.6,6,Waiver Wire/Handcuff,False
+175,T.J. Hockenson,MIN,TE,35,4.37,10,43.7,-35.3,6,Waiver Wire/Handcuff,False
+176,Trey Benson,ARI,RB,57,4.93,12,59.1,-35.6,6,Waiver Wire/Handcuff,False
+177,Keon Coleman,BUF,WR,66,5.47,13,71.1,-36.6,6,Waiver Wire/Handcuff,False
+178,AJ Barner,SEA,TE,36,2.98,14,41.8,-37.3,6,Waiver Wire/Handcuff,False
+179,Ameer Abdullah,LV,RB,58,4.38,13,56.9,-37.9,6,Waiver Wire/Handcuff,False
+180,Dare Ogunbowale,HOU,RB,59,3.78,15,56.6,-38.1,6,Waiver Wire/Handcuff,False
+181,Jeremy Ruckert,NYJ,TE,37,3.15,13,40.9,-38.2,6,Waiver Wire/Handcuff,False
+182,Samaje Perine,KC,RB,60,3.33,17,56.6,-38.2,6,Waiver Wire/Handcuff,False
+183,Jalen Nailor,MIN,WR,67,4.61,15,69.2,-38.5,6,Waiver Wire/Handcuff,False
+184,Kylen Granson,IND,TE,38,2.88,14,40.3,-38.7,6,Waiver Wire/Handcuff,False
+185,Adam Thielen,CAR,WR,68,6.86,10,68.6,-39.1,6,Waiver Wire/Handcuff,False
+186,Colby Parkinson,LA,TE,39,2.66,15,39.9,-39.1,6,Waiver Wire/Handcuff,False
+187,Ezekiel Elliott,LAC,RB,61,3.65,15,54.8,-40.0,6,Waiver Wire/Handcuff,False
+188,Jalen McMillan,TB,WR,69,5.19,13,67.5,-40.2,6,Waiver Wire/Handcuff,False
+189,Carson Steele,KC,RB,62,4.5,12,54.0,-40.7,6,Waiver Wire/Handcuff,False
+190,D'Ernest Johnson,JAX,RB,63,4.49,12,53.9,-40.9,6,Waiver Wire/Handcuff,False
+191,Darius Slayton,NYG,WR,70,4.17,16,66.8,-40.9,6,Waiver Wire/Handcuff,False
+192,Johnny Mundt,MIN,TE,40,2.9,13,37.7,-41.3,6,Waiver Wire/Handcuff,False
+193,Dontayvion Wicks,GB,WR,71,3.87,17,65.8,-41.9,6,Waiver Wire/Handcuff,False
+194,Adam Trautman,DEN,TE,41,2.84,13,36.9,-42.1,6,Waiver Wire/Handcuff,False
+195,Xavier Legette,CAR,WR,72,4.37,15,65.5,-42.2,6,Waiver Wire/Handcuff,False
+196,Cordarrelle Patterson,PIT,RB,64,4.03,13,52.4,-42.4,6,Waiver Wire/Handcuff,False
+197,Darnell Washington,PIT,TE,42,2.76,13,35.9,-43.2,6,Waiver Wire/Handcuff,False
+198,Emari Demercado,ARI,RB,65,3.96,13,51.5,-43.2,6,Waiver Wire/Handcuff,False
+199,KaVontae Turpin,DAL,WR,73,4.29,15,64.3,-43.4,6,Waiver Wire/Handcuff,False
+200,Josh Oliver,MIN,TE,43,3.23,11,35.5,-43.5,6,Waiver Wire/Handcuff,False
+201,Theo Johnson,NYG,TE,44,3.55,10,35.5,-43.6,6,Waiver Wire/Handcuff,False
+202,Elijah Higgins,ARI,TE,45,2.53,14,35.4,-43.7,6,Waiver Wire/Handcuff,False
+203,Josh Whyle,TEN,TE,46,2.51,14,35.2,-43.9,6,Waiver Wire/Handcuff,False
+204,Chris Brooks,GB,RB,66,4.52,11,49.7,-45.1,6,Waiver Wire/Handcuff,False
+205,Michael Mayer,LV,TE,47,3.07,11,33.8,-45.3,6,Waiver Wire/Handcuff,False
+206,Troy Franklin,DEN,WR,74,3.86,16,61.7,-46.0,6,Waiver Wire/Handcuff,False
+207,Greg Dortch,ARI,WR,75,3.59,17,60.9,-46.7,6,Waiver Wire/Handcuff,False
+208,Evan Engram,JAX,TE,48,3.58,9,32.3,-46.8,6,Waiver Wire/Handcuff,False
+209,Isaiah Davis,NYJ,RB,67,5.31,9,47.8,-46.9,6,Waiver Wire/Handcuff,False
+210,Nick Westbrook-Ikhine,TEN,WR,76,4.67,13,60.7,-47.0,6,Waiver Wire/Handcuff,False
+211,Trey Sermon,IND,RB,68,3.41,14,47.7,-47.0,6,Waiver Wire/Handcuff,False
+212,Mack Hollins,BUF,WR,77,3.75,16,60.1,-47.6,6,Waiver Wire/Handcuff,False
+213,Mo Alie-Cox,IND,TE,49,2.62,12,31.4,-47.6,6,Waiver Wire/Handcuff,False
+214,Amari Cooper,BUF,WR,78,4.6,13,59.8,-47.9,6,Waiver Wire/Handcuff,False
+215,Jamaal Williams,NO,RB,69,3.59,13,46.7,-48.1,6,Waiver Wire/Handcuff,False
+216,Cade Stover,HOU,TE,50,2.36,13,30.7,-48.4,6,Waiver Wire/Handcuff,False
+217,Pierre Strong,CLE,RB,70,4.16,11,45.8,-49.0,6,Waiver Wire/Handcuff,False
+218,Ricky Pearsall,SF,WR,79,5.85,10,58.5,-49.2,6,Waiver Wire/Handcuff,False
+219,Parker Washington,JAX,WR,80,4.48,13,58.3,-49.4,6,Waiver Wire/Handcuff,False
+220,Luke Schoonmaker,DAL,TE,51,2.95,10,29.5,-49.6,6,Waiver Wire/Handcuff,False
+221,Tommy Tremble,CAR,TE,52,2.93,10,29.3,-49.7,6,Waiver Wire/Handcuff,False
+222,Raheem Mostert,MIA,RB,71,3.75,12,44.9,-49.8,6,Waiver Wire/Handcuff,False
+223,Dyami Brown,WAS,WR,81,3.85,15,57.8,-49.9,6,Waiver Wire/Handcuff,False
+224,Roschon Johnson,CHI,RB,72,3.74,12,44.8,-49.9,6,Waiver Wire/Handcuff,False
+225,Nate Adkins,DEN,TE,53,2.42,12,29.1,-50.0,6,Waiver Wire/Handcuff,False
+226,Tyler Goodson,IND,RB,73,4.97,9,44.7,-50.0,6,Waiver Wire/Handcuff,False
+227,Kimani Vidal,LAC,RB,74,4.94,9,44.5,-50.3,6,Waiver Wire/Handcuff,False
+228,Andrew Ogletree,IND,TE,54,2.53,11,27.8,-51.3,6,Waiver Wire/Handcuff,False
+229,Gus Edwards,LAC,RB,75,3.92,11,43.2,-51.6,6,Waiver Wire/Handcuff,False
+230,Jalen Coker,CAR,WR,82,5.09,11,56.0,-51.7,6,Waiver Wire/Handcuff,False
+231,Dameon Pierce,HOU,RB,76,4.7,9,42.3,-52.5,6,Waiver Wire/Handcuff,False
+232,Van Jefferson,PIT,WR,83,3.68,15,55.2,-52.5,6,Waiver Wire/Handcuff,False
+233,Hunter Luepke,DAL,RB,77,3.2,13,41.6,-53.2,6,Waiver Wire/Handcuff,False
+234,D'Onta Foreman,CLE,RB,78,4.14,10,41.4,-53.3,6,Waiver Wire/Handcuff,False
+235,Ty Chandler,MIN,RB,79,4.02,10,40.2,-54.6,6,Waiver Wire/Handcuff,False
+236,Taysom Hill,NO,TE,55,3.04,8,24.4,-54.7,6,Waiver Wire/Handcuff,False
+237,Lucas Krull,DEN,TE,56,2.41,10,24.1,-54.9,6,Waiver Wire/Handcuff,False
+238,Miles Sanders,CAR,RB,80,3.6,11,39.6,-55.2,6,Waiver Wire/Handcuff,False
+239,Nick Vannett,TEN,TE,57,1.98,12,23.8,-55.3,6,Waiver Wire/Handcuff,False
+240,Marquez Valdes-Scantling,NO,WR,84,4.03,13,52.4,-55.3,6,Waiver Wire/Handcuff,False
+241,Allen Lazard,NYJ,WR,85,4.37,12,52.4,-55.3,6,Waiver Wire/Handcuff,False
+242,Drew Sample,CIN,TE,58,2.15,11,23.7,-55.4,6,Waiver Wire/Handcuff,False
+243,Durham Smythe,MIA,TE,59,1.81,13,23.5,-55.5,6,Waiver Wire/Handcuff,False
+244,Tim Patrick,DET,WR,86,3.48,15,52.2,-55.5,6,Waiver Wire/Handcuff,False
+245,Olamide Zaccheaus,WAS,WR,87,3.45,15,51.7,-56.0,6,Waiver Wire/Handcuff,False
+246,Curtis Samuel,BUF,WR,88,3.67,14,51.4,-56.3,6,Waiver Wire/Handcuff,False
+247,Justin Watson,KC,WR,89,3.43,15,51.4,-56.3,6,Waiver Wire/Handcuff,False
+248,Isiah Pacheco,KC,RB,81,5.47,7,38.3,-56.5,6,Waiver Wire/Handcuff,False
+249,Hassan Haskins,LAC,RB,82,3.44,11,37.8,-56.9,6,Waiver Wire/Handcuff,False
+250,John Bates,WAS,TE,60,2.17,10,21.7,-57.3,6,Waiver Wire/Handcuff,False
+251,Mike Williams,PIT,WR,90,3.86,13,50.2,-57.5,6,Waiver Wire/Handcuff,False
+252,Julian Hill,MIA,TE,61,1.96,11,21.5,-57.5,6,Waiver Wire/Handcuff,False
+253,Tyler Boyd,TEN,WR,91,3.31,15,49.7,-58.0,6,Waiver Wire/Handcuff,False
+254,Jonathan Mingo,DAL,WR,92,3.47,14,48.6,-59.1,6,Waiver Wire/Handcuff,False
+255,Brock Wright,DET,TE,62,1.98,10,19.8,-59.2,6,Waiver Wire/Handcuff,False
+256,Tanner Hudson,CIN,TE,63,2.19,9,19.7,-59.4,6,Waiver Wire/Handcuff,False
+257,Jahan Dotson,PHI,WR,93,3.44,14,48.1,-59.6,6,Waiver Wire/Handcuff,False
+258,Zack Moss,CIN,RB,83,4.35,8,34.8,-59.9,6,Waiver Wire/Handcuff,False
+259,Zamir White,LV,RB,84,4.32,8,34.6,-60.2,6,Waiver Wire/Handcuff,False
+260,Nick Chubb,CLE,RB,85,4.31,8,34.5,-60.3,6,Waiver Wire/Handcuff,False
+261,Khalil Herbert,CIN,RB,86,4.3,8,34.4,-60.3,6,Waiver Wire/Handcuff,False
+262,Xavier Hutchinson,HOU,WR,94,3.38,14,47.3,-60.4,6,Waiver Wire/Handcuff,False
+263,Kenny McIntosh,SEA,RB,87,4.89,7,34.3,-60.5,6,Waiver Wire/Handcuff,False
+264,Lil'Jordan Humphrey,DEN,WR,95,3.37,14,47.1,-60.6,6,Waiver Wire/Handcuff,False
+265,Malik Washington,MIA,WR,96,3.92,12,47.1,-60.6,6,Waiver Wire/Handcuff,False
+266,Luke Farrell,JAX,TE,64,1.84,10,18.4,-60.7,6,Waiver Wire/Handcuff,False
+267,Devaughn Vele,DEN,WR,97,3.57,13,46.4,-61.3,6,Waiver Wire/Handcuff,False
+268,Nelson Agholor,BAL,WR,98,3.54,13,46.0,-61.7,6,Waiver Wire/Handcuff,False
+269,Ja'Lynn Polk,NE,WR,99,3.51,13,45.6,-62.1,6,Waiver Wire/Handcuff,False
+270,David Moore,CAR,WR,100,3.25,14,45.5,-62.2,6,Waiver Wire/Handcuff,False
+271,Noah Brown,WAS,WR,101,4.13,11,45.4,-62.3,6,Waiver Wire/Handcuff,False
+272,Gerald Everett,CHI,TE,65,1.83,9,16.5,-62.6,6,Waiver Wire/Handcuff,False
+273,Kendrick Bourne,NE,WR,102,3.75,12,45.0,-62.7,6,Waiver Wire/Handcuff,False
+274,Erick All,CIN,TE,66,2.04,8,16.3,-62.7,6,Waiver Wire/Handcuff,False
+275,Eric Saubert,SF,TE,67,1.98,8,15.9,-63.2,6,Waiver Wire/Handcuff,False
+276,Sterling Shepard,TB,WR,103,3.42,13,44.4,-63.3,6,Waiver Wire/Handcuff,False
+277,Kendre Miller,NO,RB,88,5.24,6,31.4,-63.3,6,Waiver Wire/Handcuff,False
+278,Chris Olave,NO,WR,104,5.48,8,43.9,-63.8,6,Waiver Wire/Handcuff,False
+279,Chris Rodriguez Jr.,WAS,RB,89,5.13,6,30.8,-64.0,6,Waiver Wire/Handcuff,False
+280,Blake Whiteheart,CLE,TE,68,2.15,7,15.0,-64.0,6,Waiver Wire/Handcuff,False
+281,Daniel Bellinger,NYG,TE,69,2.06,7,14.4,-64.6,6,Waiver Wire/Handcuff,False
+282,Charlie Woerner,ATL,TE,70,1.78,8,14.2,-64.9,6,Waiver Wire/Handcuff,False
+283,Brevyn Spann-Ford,DAL,TE,71,2.33,6,14.0,-65.1,6,Waiver Wire/Handcuff,False
+284,Eric Gray,NYG,RB,90,2.97,10,29.7,-65.1,6,Waiver Wire/Handcuff,False
+285,Payne Durham,TB,TE,72,2.79,5,13.9,-65.1,6,Waiver Wire/Handcuff,False
+286,Charlie Kolar,BAL,TE,73,1.99,7,13.9,-65.1,6,Waiver Wire/Handcuff,False
+287,Tyler Johnson,LA,WR,105,3.85,11,42.3,-65.4,6,Waiver Wire/Handcuff,False
+288,Will Mallory,IND,TE,74,1.87,7,13.1,-66.0,6,Waiver Wire/Handcuff,False
+289,Pharaoh Brown,SEA,TE,75,1.59,8,12.7,-66.4,6,Waiver Wire/Handcuff,False
+290,Chris Godwin,TB,WR,106,5.9,7,41.3,-66.4,6,Waiver Wire/Handcuff,False
+291,Cedric Tillman,CLE,WR,107,4.54,9,40.8,-66.9,6,Waiver Wire/Handcuff,False
+292,Hayden Hurst,LAC,TE,76,1.73,7,12.1,-67.0,6,Waiver Wire/Handcuff,False
+293,Stone Smartt,LAC,TE,77,1.72,7,12.1,-67.0,6,Waiver Wire/Handcuff,False
+294,Diontae Johnson,HOU,WR,108,3.68,11,40.5,-67.2,6,Waiver Wire/Handcuff,False
+295,Kenny Yeboah,NYJ,TE,78,1.95,6,11.7,-67.4,6,Waiver Wire/Handcuff,False
+296,Luke Musgrave,GB,TE,79,1.67,7,11.7,-67.4,6,Waiver Wire/Handcuff,False
+297,Tucker Fisk,LAC,TE,80,1.65,7,11.5,-67.5,6,Waiver Wire/Handcuff,False
+298,Julius Chestnut,TEN,RB,91,3.88,7,27.2,-67.6,6,Waiver Wire/Handcuff,False
+299,Davis Allen,LA,TE,81,1.9,6,11.4,-67.7,6,Waiver Wire/Handcuff,False
+300,John Metchie III,HOU,WR,109,3.98,10,39.8,-67.9,6,Waiver Wire/Handcuff,False
+301,Brandin Cooks,DAL,WR,110,3.98,10,39.8,-67.9,6,Waiver Wire/Handcuff,False
+302,Jalen Brooks,DAL,WR,111,3.3,12,39.6,-68.1,6,Waiver Wire/Handcuff,False
+303,MyCole Pruitt,PIT,TE,82,1.83,6,11.0,-68.1,6,Waiver Wire/Handcuff,False
+304,JaMycal Hasty,NE,RB,92,2.96,9,26.6,-68.1,6,Waiver Wire/Handcuff,False
+305,Hunter Long,LA,TE,83,1.52,7,10.6,-68.4,6,Waiver Wire/Handcuff,False
+306,Harrison Bryant,LV,TE,84,2.09,5,10.4,-68.6,6,Waiver Wire/Handcuff,False
+307,Tip Reiman,ARI,TE,85,1.89,5,9.4,-69.6,6,Waiver Wire/Handcuff,False
+308,Connor Heyward,PIT,TE,86,1.88,5,9.4,-69.7,6,Waiver Wire/Handcuff,False
+309,Craig Reynolds,DET,RB,93,3.57,7,25.0,-69.8,6,Waiver Wire/Handcuff,False
+310,Quintin Morris,BUF,TE,87,1.81,5,9.1,-70.0,6,Waiver Wire/Handcuff,False
+311,Christian Kirk,JAX,WR,112,4.68,8,37.4,-70.3,6,Waiver Wire/Handcuff,False
+312,Stefon Diggs,HOU,WR,113,4.65,8,37.2,-70.5,6,Waiver Wire/Handcuff,False
+313,Luke McCaffrey,WAS,WR,114,3.09,12,37.1,-70.6,6,Waiver Wire/Handcuff,False
+314,Jeff Wilson,MIA,RB,94,3.44,7,24.1,-70.7,6,Waiver Wire/Handcuff,False
+315,Jordan Mims,NO,RB,95,3.37,7,23.6,-71.2,6,Waiver Wire/Handcuff,False
+316,Devin Duvernay,JAX,WR,115,3.64,10,36.4,-71.3,6,Waiver Wire/Handcuff,False
+317,Chris Manhertz,NYG,TE,88,1.89,4,7.5,-71.5,6,Waiver Wire/Handcuff,False
+318,Ben Sims,GB,TE,89,1.88,4,7.5,-71.5,6,Waiver Wire/Handcuff,False
+319,Eric Tomlinson,LAC,TE,90,1.83,4,7.3,-71.7,6,Waiver Wire/Handcuff,False
+320,Brandon Aiyuk,SF,WR,116,5.13,7,35.9,-71.8,6,Waiver Wire/Handcuff,False
+321,JuJu Smith-Schuster,KC,WR,117,3.24,11,35.6,-72.1,6,Waiver Wire/Handcuff,False
+322,Ben Sinnott,WAS,TE,91,1.66,4,6.6,-72.4,6,Waiver Wire/Handcuff,False
+323,Cam Grandy,CIN,TE,92,1.61,4,6.4,-72.6,6,Waiver Wire/Handcuff,False
+324,Greg Dulcich,NYG,TE,93,2.05,3,6.1,-72.9,6,Waiver Wire/Handcuff,False
+325,Feleipe Franks,CAR,TE,94,1.99,3,6.0,-73.1,6,Waiver Wire/Handcuff,False
+326,Tyler Higbee,LA,TE,95,1.97,3,5.9,-73.2,6,Waiver Wire/Handcuff,False
+327,Bo Melton,GB,WR,118,3.13,11,34.4,-73.3,6,Waiver Wire/Handcuff,False
+328,Jaheim Bell,NE,TE,96,1.92,3,5.8,-73.3,6,Waiver Wire/Handcuff,False
+329,Joseph Fortson,KC,TE,97,1.86,3,5.6,-73.5,6,Waiver Wire/Handcuff,False
+330,Peyton Hendershot,KC,TE,98,1.39,4,5.6,-73.5,6,Waiver Wire/Handcuff,False
+331,Derius Davis,LAC,WR,119,3.1,11,34.1,-73.6,6,Waiver Wire/Handcuff,False
+332,Ian Thomas,CAR,TE,99,1.81,3,5.4,-73.6,6,Waiver Wire/Handcuff,False
+333,Rashid Shaheed,NO,WR,120,5.68,6,34.1,-73.6,6,Waiver Wire/Handcuff,False
+334,Patrick Taylor,SF,RB,96,4.21,5,21.1,-73.7,6,Waiver Wire/Handcuff,False
+335,DJ Turner,LV,WR,121,3.38,10,33.8,-73.9,6,Waiver Wire/Handcuff,False
+336,DeeJay Dallas,ARI,RB,97,2.97,7,20.8,-73.9,6,Waiver Wire/Handcuff,False
+337,Jalin Hyatt,NYG,WR,122,3.36,10,33.6,-74.1,6,Waiver Wire/Handcuff,False
+338,Sincere McCormick,LV,RB,98,5.17,4,20.7,-74.1,6,Waiver Wire/Handcuff,False
+339,Josiah Deguara,JAX,TE,100,1.64,3,4.9,-74.2,6,Waiver Wire/Handcuff,False
+340,Gabe Davis,JAX,WR,123,3.72,9,33.5,-74.2,6,Waiver Wire/Handcuff,False
+341,Christian McCaffrey,SF,RB,99,5.01,4,20.0,-74.7,6,Waiver Wire/Handcuff,False
+342,David Martin-Robinson,TEN,TE,101,1.89,2,3.8,-75.3,6,Waiver Wire/Handcuff,False
+343,Cedrick Wilson Jr.,NO,WR,124,3.24,10,32.4,-75.3,6,Waiver Wire/Handcuff,False
+344,Zach Davidson,BUF,TE,102,1.86,2,3.7,-75.3,6,Waiver Wire/Handcuff,False
+345,Brevin Jordan,HOU,TE,103,1.84,2,3.7,-75.4,6,Waiver Wire/Handcuff,False
+346,Jack Stoll,MIA,TE,104,1.81,2,3.6,-75.4,6,Waiver Wire/Handcuff,False
+347,Drake Maye,NE,QB,20,14.95,13,194.3,-75.5,6,Waiver Wire/Handcuff,False
+348,E.J. Jenkins,PHI,TE,105,1.75,2,3.5,-75.5,6,Waiver Wire/Handcuff,False
+349,Robert Woods,HOU,WR,125,2.67,12,32.1,-75.6,6,Waiver Wire/Handcuff,False
+350,Dallin Holker,NO,TE,106,1.63,2,3.3,-75.8,6,Waiver Wire/Handcuff,False
+351,Devin Culp,TB,TE,107,1.55,2,3.1,-76.0,6,Waiver Wire/Handcuff,False
+352,Trey Palmer,TB,WR,126,3.14,10,31.4,-76.3,6,Waiver Wire/Handcuff,False
+353,Jake Bobo,SEA,WR,127,2.8,11,30.8,-76.8,6,Waiver Wire/Handcuff,False
+354,Bryce Young,CAR,QB,21,13.77,14,192.8,-77.0,6,Waiver Wire/Handcuff,False
+355,Brayden Willis,SF,TE,108,1.9,1,1.9,-77.2,6,Waiver Wire/Handcuff,False
+356,Baylor Cupp,KC,TE,109,1.9,1,1.9,-77.2,6,Waiver Wire/Handcuff,False
+357,Brenden Bates,CLE,TE,110,1.9,1,1.9,-77.2,6,Waiver Wire/Handcuff,False
+358,Stephen Sullivan,CAR,TE,111,1.87,1,1.9,-77.2,6,Waiver Wire/Handcuff,False
+359,Jordan Matthews,CAR,TE,112,1.84,1,1.8,-77.2,6,Waiver Wire/Handcuff,False
+360,Mike Boone,CAR,RB,100,3.49,5,17.5,-77.3,6,Waiver Wire/Handcuff,False
+361,Ross Dwelley,ATL,TE,113,1.65,1,1.7,-77.4,6,Waiver Wire/Handcuff,False
+362,John FitzPatrick,GB,TE,114,1.65,1,1.7,-77.4,6,Waiver Wire/Handcuff,False
+363,Marcedes Lewis,CHI,TE,115,1.62,1,1.6,-77.4,6,Waiver Wire/Handcuff,False
+364,Jared Wiley,KC,TE,116,1.52,1,1.5,-77.5,6,Waiver Wire/Handcuff,False
+365,Will Shipley,PHI,RB,101,3.44,5,17.2,-77.5,6,Waiver Wire/Handcuff,False
+366,John Shenker,LV,TE,117,1.51,1,1.5,-77.5,6,Waiver Wire/Handcuff,False
+367,Geoff Swaim,CLE,TE,118,1.47,1,1.5,-77.6,6,Waiver Wire/Handcuff,False
+368,Shane Zylstra,DET,TE,119,1.36,1,1.4,-77.7,6,Waiver Wire/Handcuff,False
+369,Ronnie Rivers,LA,RB,102,3.38,5,16.9,-77.8,6,Waiver Wire/Handcuff,False
+370,Kalif Raymond,DET,WR,128,2.95,10,29.5,-78.2,6,Waiver Wire/Handcuff,False
+371,Mason Tipton,NO,WR,129,3.27,9,29.5,-78.2,6,Waiver Wire/Handcuff,False
+372,Odell Beckham Jr.,MIA,WR,130,3.55,8,28.4,-79.3,6,Waiver Wire/Handcuff,False
+373,Michael Carter,ARI,RB,103,4.92,3,14.8,-80.0,6,Waiver Wire/Handcuff,False
+374,Deuce Vaughn,DAL,RB,104,2.88,5,14.4,-80.4,6,Waiver Wire/Handcuff,False
+375,Johnny Wilson,PHI,WR,131,3.02,9,27.2,-80.5,6,Waiver Wire/Handcuff,False
+376,Dante Pettis,NO,WR,132,3.24,8,25.9,-81.8,6,Waiver Wire/Handcuff,False
+377,Raheem Blackshear,CAR,RB,105,4.1,3,12.3,-82.5,6,Waiver Wire/Handcuff,False
+378,Kevin Austin Jr.,NO,WR,133,3.14,8,25.1,-82.6,6,Waiver Wire/Handcuff,False
+379,Josh Reynolds,JAX,WR,134,3.08,8,24.7,-83.0,6,Waiver Wire/Handcuff,False
+380,Jordan Whittington,LA,WR,135,4.09,6,24.5,-83.2,6,Waiver Wire/Handcuff,False
+381,Ryan Miller,TB,WR,136,3.01,8,24.1,-83.6,6,Waiver Wire/Handcuff,False
+382,Rasheen Ali,BAL,RB,106,2.76,4,11.1,-83.7,6,Waiver Wire/Handcuff,False
+383,Tylan Wallace,BAL,WR,137,2.95,8,23.6,-84.1,6,Waiver Wire/Handcuff,False
+384,Tyler Badie,DEN,RB,107,3.51,3,10.5,-84.2,6,Waiver Wire/Handcuff,False
+385,Ashton Dulin,IND,WR,138,2.46,9,22.1,-85.6,6,Waiver Wire/Handcuff,False
+386,Xavier Gipson,NYJ,WR,139,3.1,7,21.7,-86.0,6,Waiver Wire/Handcuff,False
+387,J.J. Taylor,HOU,RB,108,2.91,3,8.7,-86.0,6,Waiver Wire/Handcuff,False
+388,Mecole Hardman,KC,WR,140,2.94,7,20.6,-87.1,6,Waiver Wire/Handcuff,False
+389,Travis Homer,CHI,RB,109,1.73,4,6.9,-87.8,6,Waiver Wire/Handcuff,False
+390,K.J. Osborn,WAS,WR,141,3.29,6,19.7,-88.0,6,Waiver Wire/Handcuff,False
+391,Terrell Jennings,NE,RB,110,3.37,2,6.7,-88.0,6,Waiver Wire/Handcuff,False
+392,Adam Prentice,NO,RB,111,1.67,4,6.7,-88.1,6,Waiver Wire/Handcuff,False
+393,Keaton Mitchell,BAL,RB,112,3.05,2,6.1,-88.7,6,Waiver Wire/Handcuff,False
+394,Clyde Edwards-Helaire,NO,RB,113,3.05,2,6.1,-88.7,6,Waiver Wire/Handcuff,False
+395,Jase McClellan,ATL,RB,114,3.01,2,6.0,-88.7,6,Waiver Wire/Handcuff,False
+396,Kirk Cousins,ATL,QB,22,12.9,14,180.7,-89.1,6,Waiver Wire/Handcuff,False
+397,Sione Vaki,DET,RB,115,1.32,4,5.3,-89.5,6,Waiver Wire/Handcuff,False
+398,Jonathon Brooks,CAR,RB,116,1.55,3,4.7,-90.1,6,Waiver Wire/Handcuff,False
+399,Jalen Reagor,LAC,WR,142,2.51,7,17.6,-90.1,6,Waiver Wire/Handcuff,False
+400,Laviska Shenault Jr.,LAC,WR,143,2.84,6,17.0,-90.7,6,Waiver Wire/Handcuff,False
+401,Aaron Shampklin,PIT,RB,117,1.34,3,4.0,-90.7,6,Waiver Wire/Handcuff,False
+402,Trent Sherfield,MIN,WR,144,2.12,8,16.9,-90.8,6,Waiver Wire/Handcuff,False
+403,Dalvin Cook,DAL,RB,118,1.76,2,3.5,-91.2,6,Waiver Wire/Handcuff,False
+404,Allen Robinson,DET,WR,145,2.71,6,16.2,-91.5,6,Waiver Wire/Handcuff,False
+405,Andrew Beck,HOU,RB,119,1.63,2,3.3,-91.5,6,Waiver Wire/Handcuff,False
+406,Treylon Burks,TEN,WR,146,3.22,5,16.1,-91.6,6,Waiver Wire/Handcuff,False
+407,Chris Conley,SF,WR,147,2.29,7,16.0,-91.7,6,Waiver Wire/Handcuff,False
+408,Myles Gaskin,JAX,RB,120,1.49,2,3.0,-91.8,6,Waiver Wire/Handcuff,False
+409,Tony Jones,ARI,RB,121,2.95,1,3.0,-91.8,6,Waiver Wire/Handcuff,False
+410,Jonathan Ward,PIT,RB,122,1.46,2,2.9,-91.8,6,Waiver Wire/Handcuff,False
+411,Velus Jones Jr.,CAR,RB,123,1.34,2,2.7,-92.1,6,Waiver Wire/Handcuff,False
+412,Brandon Powell,MIN,WR,148,2.23,7,15.6,-92.1,6,Waiver Wire/Handcuff,False
+413,Chris Collier,LV,RB,124,1.32,2,2.6,-92.1,6,Waiver Wire/Handcuff,False
+414,Ryan Flournoy,DAL,WR,149,2.22,7,15.5,-92.2,6,Waiver Wire/Handcuff,False
+415,Jermar Jefferson,DET,RB,125,1.28,2,2.6,-92.2,6,Waiver Wire/Handcuff,False
+416,George Holani,SEA,RB,126,1.18,2,2.4,-92.4,6,Waiver Wire/Handcuff,False
+417,Rakim Jarrett,TB,WR,150,2.54,6,15.2,-92.5,6,Waiver Wire/Handcuff,False
+418,Mike Woods,CLE,WR,151,3.01,5,15.0,-92.7,6,Waiver Wire/Handcuff,False
+419,Jamari Thrash,CLE,WR,152,2.49,6,14.9,-92.8,6,Waiver Wire/Handcuff,False
+420,Kene Nwangwu,NYJ,RB,127,1.65,1,1.6,-93.1,6,Waiver Wire/Handcuff,False
+421,KhaDarel Hodge,ATL,WR,153,2.43,6,14.6,-93.1,6,Waiver Wire/Handcuff,False
+422,Darrynton Evans,CHI,RB,128,1.63,1,1.6,-93.1,6,Waiver Wire/Handcuff,False
+423,Tyreik McAllister,LV,RB,129,1.6,1,1.6,-93.2,6,Waiver Wire/Handcuff,False
+424,Joshua Kelley,TEN,RB,130,1.52,1,1.5,-93.2,6,Waiver Wire/Handcuff,False
+425,Dylan Laube,LV,RB,131,1.5,1,1.5,-93.3,6,Waiver Wire/Handcuff,False
+426,Ke'Shawn Vaughn,SF,RB,132,1.47,1,1.5,-93.3,6,Waiver Wire/Handcuff,False
+427,Jacob Kibodi,CLE,RB,133,1.46,1,1.5,-93.3,6,Waiver Wire/Handcuff,False
+428,Tyrion Davis-Price,PHI,RB,134,1.42,1,1.4,-93.3,6,Waiver Wire/Handcuff,False
+429,British Brooks,HOU,RB,135,1.37,1,1.4,-93.4,6,Waiver Wire/Handcuff,False
+430,MarShawn Lloyd,GB,RB,136,1.35,1,1.3,-93.4,6,Waiver Wire/Handcuff,False
+431,Blake Watson,DEN,RB,137,1.28,1,1.3,-93.5,6,Waiver Wire/Handcuff,False
+432,Cody Schrader,LA,RB,138,1.2,1,1.2,-93.6,6,Waiver Wire/Handcuff,False
+433,DeAndre Carter,CHI,WR,154,2.75,5,13.7,-94.0,6,Waiver Wire/Handcuff,False
+434,Simi Fehoko,LAC,WR,155,2.72,5,13.6,-94.1,6,Waiver Wire/Handcuff,False
+435,Rashee Rice,KC,WR,156,4.36,3,13.1,-94.6,6,Waiver Wire/Handcuff,False
+436,Parris Campbell,PHI,WR,157,3.1,4,12.4,-95.3,6,Waiver Wire/Handcuff,False
+437,Terrace Marshall Jr.,LV,WR,158,2.45,5,12.2,-95.4,6,Waiver Wire/Handcuff,False
+438,DJ Chark,LAC,WR,159,3.06,4,12.2,-95.5,6,Waiver Wire/Handcuff,False
+439,Zay Jones,ARI,WR,160,2.03,6,12.2,-95.5,6,Waiver Wire/Handcuff,False
+440,Deven Thompkins,CAR,WR,161,3.05,4,12.2,-95.5,6,Waiver Wire/Handcuff,False
+441,Bub Means,NO,WR,162,3.0,4,12.0,-95.7,6,Waiver Wire/Handcuff,False
+442,Malachi Corley,NYJ,WR,163,2.34,5,11.7,-96.0,6,Waiver Wire/Handcuff,False
+443,Bryce Oliver,TEN,WR,164,2.34,5,11.7,-96.0,6,Waiver Wire/Handcuff,False
+444,Malik Heath,GB,WR,165,2.32,5,11.6,-96.1,6,Waiver Wire/Handcuff,False
+445,Jamison Crowder,WAS,WR,166,2.79,4,11.1,-96.6,6,Waiver Wire/Handcuff,False
+446,Ainias Smith,PHI,WR,167,3.69,3,11.1,-96.6,6,Waiver Wire/Handcuff,False
+447,Tyquan Thornton,KC,WR,168,2.68,4,10.7,-97.0,6,Waiver Wire/Handcuff,False
+448,Jermaine Burton,CIN,WR,169,2.63,4,10.5,-97.2,6,Waiver Wire/Handcuff,False
+449,Trenton Irwin,CAR,WR,170,2.58,4,10.3,-97.4,6,Waiver Wire/Handcuff,False
+450,River Cracraft,MIA,WR,171,2.57,4,10.3,-97.4,6,Waiver Wire/Handcuff,False
+451,Britain Covey,PHI,WR,172,3.37,3,10.1,-97.6,6,Waiver Wire/Handcuff,False
+452,Scott Miller,PIT,WR,173,2.5,4,10.0,-97.7,6,Waiver Wire/Handcuff,False
+453,Ben Skowronek,PIT,WR,174,2.26,4,9.0,-98.7,6,Waiver Wire/Handcuff,False
+454,Javon Baker,NE,WR,175,2.12,4,8.5,-99.2,6,Waiver Wire/Handcuff,False
+455,Xavier Smith,LA,WR,176,2.7,3,8.1,-99.6,6,Waiver Wire/Handcuff,False
+456,Jacob Cowing,SF,WR,177,2.46,3,7.4,-100.3,6,Waiver Wire/Handcuff,False
+457,Dee Eskridge,MIA,WR,178,2.46,3,7.4,-100.3,6,Waiver Wire/Handcuff,False
+458,Tim Jones,JAX,WR,179,2.32,3,7.0,-100.7,6,Waiver Wire/Handcuff,False
+459,Dan Chisena,CAR,WR,180,2.3,3,6.9,-100.8,6,Waiver Wire/Handcuff,False
+460,Kameron Johnson,TB,WR,181,2.24,3,6.7,-101.0,6,Waiver Wire/Handcuff,False
+461,Braxton Berrios,MIA,WR,182,2.17,3,6.5,-101.2,6,Waiver Wire/Handcuff,False
+462,Ronnie Bell,SF,WR,183,2.04,3,6.1,-101.6,6,Waiver Wire/Handcuff,False
+463,Charlie Jones,CIN,WR,184,2.77,2,5.5,-102.2,6,Waiver Wire/Handcuff,False
+464,Marquise Brown,KC,WR,185,2.75,2,5.5,-102.2,6,Waiver Wire/Handcuff,False
+465,Tanner Conner,MIA,WR,186,2.74,2,5.5,-102.2,6,Waiver Wire/Handcuff,False
+466,Isaiah Hodgins,NYG,WR,187,2.64,2,5.3,-102.4,6,Waiver Wire/Handcuff,False
+467,James Proche,CLE,WR,188,2.61,2,5.2,-102.5,6,Waiver Wire/Handcuff,False
+468,Mason Kinsey,TEN,WR,189,2.41,2,4.8,-102.9,6,Waiver Wire/Handcuff,False
+469,Collin Johnson,CHI,WR,190,2.32,2,4.6,-103.1,6,Waiver Wire/Handcuff,False
+470,Devontez Walker,BAL,WR,191,2.32,2,4.6,-103.1,6,Waiver Wire/Handcuff,False
+471,Grant DuBose,MIA,WR,192,2.31,2,4.6,-103.1,6,Waiver Wire/Handcuff,False
+472,Casey Washington,ATL,WR,193,2.31,2,4.6,-103.1,6,Waiver Wire/Handcuff,False
+473,Kadarius Toney,CLE,WR,194,2.28,2,4.6,-103.1,6,Waiver Wire/Handcuff,False
+474,Skyy Moore,KC,WR,195,2.22,2,4.4,-103.3,6,Waiver Wire/Handcuff,False
+475,Xavier Weaver,ARI,WR,196,2.22,2,4.4,-103.3,6,Waiver Wire/Handcuff,False
+476,Ramel Keyton,LV,WR,197,2.15,2,4.3,-103.4,6,Waiver Wire/Handcuff,False
+477,Jha'Quan Jackson,TEN,WR,198,2.12,2,4.2,-103.4,6,Waiver Wire/Handcuff,False
+478,Chris Blair,ATL,WR,199,2.11,2,4.2,-103.5,6,Waiver Wire/Handcuff,False
+479,Tyler Scott,CHI,WR,200,2.98,1,3.0,-104.7,6,Waiver Wire/Handcuff,False
+480,David Bell,CLE,WR,201,2.86,1,2.9,-104.8,6,Waiver Wire/Handcuff,False
+481,Jaelon Darden,SEA,WR,202,2.64,1,2.6,-105.1,6,Waiver Wire/Handcuff,False
+482,Kristian Wilkerson,LV,WR,203,2.54,1,2.5,-105.2,6,Waiver Wire/Handcuff,False
+483,Brycen Tremayne,WAS,WR,204,2.51,1,2.5,-105.2,6,Waiver Wire/Handcuff,False
+484,Anthony Gould,IND,WR,205,2.46,1,2.5,-105.2,6,Waiver Wire/Handcuff,False
+485,Isaiah Williams,CIN,WR,206,2.46,1,2.5,-105.2,6,Waiver Wire/Handcuff,False
+486,Brandon Johnson,PIT,WR,207,2.41,1,2.4,-105.3,6,Waiver Wire/Handcuff,False
+487,Kendric Pryor,CIN,WR,208,2.41,1,2.4,-105.3,6,Waiver Wire/Handcuff,False
+488,Alex Bachman,LV,WR,209,2.36,1,2.4,-105.3,6,Waiver Wire/Handcuff,False
+489,John Ross,PHI,WR,210,2.32,1,2.3,-105.4,6,Waiver Wire/Handcuff,False
+490,Anthony Miller,BAL,WR,211,2.31,1,2.3,-105.4,6,Waiver Wire/Handcuff,False
+491,Austin Trammell,JAX,WR,212,2.31,1,2.3,-105.4,6,Waiver Wire/Handcuff,False
+492,Tay Martin,TEN,WR,213,2.29,1,2.3,-105.4,6,Waiver Wire/Handcuff,False
+493,Cody White,SEA,WR,214,2.27,1,2.3,-105.4,6,Waiver Wire/Handcuff,False
+494,Trent Taylor,SF,WR,215,2.26,1,2.3,-105.4,6,Waiver Wire/Handcuff,False
+495,Justyn Ross,KC,WR,216,2.19,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+496,Erik Ezukanma,MIA,WR,217,2.19,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+497,Bryce Ford-Wheaton,NYG,WR,218,2.19,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+498,Tyrell Shavers,BUF,WR,219,2.19,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+499,Jermaine Jackson,NO,WR,220,2.19,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+500,Nikko Remigio,KC,WR,221,2.19,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+501,Irvin Charles,NYJ,WR,222,2.17,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+502,Tom Kennedy,DET,WR,223,2.17,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+503,Steven Sims,BAL,WR,224,2.16,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+504,Ihmir Smith-Marsette,NYG,WR,225,2.16,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+505,Dareke Young,SEA,WR,226,2.16,1,2.2,-105.5,6,Waiver Wire/Handcuff,False
+506,Robbie Chosen,MIA,WR,227,2.15,1,2.1,-105.5,6,Waiver Wire/Handcuff,False
+507,Tua Tagovailoa,MIA,QB,23,14.25,11,156.7,-113.1,6,Waiver Wire/Handcuff,False
+508,Anthony Richardson,IND,QB,24,13.66,11,150.3,-119.5,6,Waiver Wire/Handcuff,False
+509,Will Levis,TEN,QB,25,12.26,12,147.1,-122.7,6,Waiver Wire/Handcuff,False
+510,Cooper Rush,DAL,QB,26,12.21,12,146.5,-123.3,6,Waiver Wire/Handcuff,False
+511,Daniel Jones,MIN,QB,27,14.4,10,144.0,-125.7,6,Waiver Wire/Handcuff,False
+512,Justin Fields,PIT,QB,28,13.84,10,138.4,-131.3,6,Waiver Wire/Handcuff,False
+513,Russell Wilson,PIT,QB,29,12.47,11,137.2,-132.6,6,Waiver Wire/Handcuff,False
+514,Derek Carr,NO,QB,30,13.03,10,130.3,-139.5,6,Waiver Wire/Handcuff,False
+515,Jameis Winston,CLE,QB,31,11.71,11,128.8,-141.0,6,Waiver Wire/Handcuff,False
+516,Gardner Minshew,LV,QB,32,12.23,10,122.3,-147.5,6,Waiver Wire/Handcuff,False
+517,Mac Jones,JAX,QB,33,11.28,10,112.8,-156.9,6,Waiver Wire/Handcuff,False
+518,Trevor Lawrence,JAX,QB,34,11.26,10,112.6,-157.2,6,Waiver Wire/Handcuff,False
+519,Aidan O'Connell,LV,QB,35,11.66,9,104.9,-164.9,6,Waiver Wire/Handcuff,False
+520,Dak Prescott,DAL,QB,36,11.49,8,91.9,-177.8,6,Waiver Wire/Handcuff,False
+521,Mason Rudolph,TEN,QB,37,10.83,8,86.7,-183.1,6,Waiver Wire/Handcuff,False
+522,Drew Lock,NYG,QB,38,12.05,7,84.3,-185.4,6,Waiver Wire/Handcuff,False
+523,Deshaun Watson,CLE,QB,39,11.83,7,82.8,-187.0,6,Waiver Wire/Handcuff,False
+524,Joe Flacco,IND,QB,40,10.71,7,75.0,-194.8,6,Waiver Wire/Handcuff,False
+525,Jacoby Brissett,NE,QB,41,10.25,7,71.7,-198.0,6,Waiver Wire/Handcuff,False
+526,Spencer Rattler,NO,QB,42,10.22,7,71.6,-198.2,6,Waiver Wire/Handcuff,False
+527,Mitchell Trubisky,BUF,QB,43,7.46,8,59.6,-210.1,6,Waiver Wire/Handcuff,False
+528,Andy Dalton,CAR,QB,44,9.71,6,58.2,-211.5,6,Waiver Wire/Handcuff,False
+529,Jake Haener,NO,QB,45,7.1,8,56.8,-213.0,6,Waiver Wire/Handcuff,False
+530,Malik Willis,GB,QB,46,8.3,6,49.8,-220.0,6,Waiver Wire/Handcuff,False
+531,Tyler Huntley,MIA,QB,47,8.74,5,43.7,-226.0,6,Waiver Wire/Handcuff,False
+532,Dorian Thompson-Robinson,CLE,QB,48,6.61,6,39.7,-230.1,6,Waiver Wire/Handcuff,False
+533,Clayton Tune,ARI,QB,49,7.79,5,38.9,-230.8,6,Waiver Wire/Handcuff,False
+534,Michael Penix Jr.,ATL,QB,50,7.13,5,35.7,-234.1,6,Waiver Wire/Handcuff,False
+535,Nick Mullens,MIN,QB,51,8.84,4,35.4,-234.4,6,Waiver Wire/Handcuff,False
+536,Tyson Bagent,CHI,QB,52,8.51,4,34.0,-235.7,6,Waiver Wire/Handcuff,False
+537,Davis Mills,HOU,QB,53,8.47,4,33.9,-235.9,6,Waiver Wire/Handcuff,False
+538,Josh Johnson,BAL,QB,54,8.33,4,33.3,-236.4,6,Waiver Wire/Handcuff,False
+539,Taylor Heinicke,LAC,QB,55,8.18,4,32.7,-237.0,6,Waiver Wire/Handcuff,False
+540,Kenny Pickett,PHI,QB,56,6.36,5,31.8,-238.0,6,Waiver Wire/Handcuff,False
+541,Desmond Ridder,LV,QB,57,6.3,5,31.5,-238.3,6,Waiver Wire/Handcuff,False
+542,Trey Lance,DAL,QB,58,6.83,4,27.3,-242.4,6,Waiver Wire/Handcuff,False
+543,Kyle Trask,TB,QB,59,8.78,3,26.3,-243.4,6,Waiver Wire/Handcuff,False
+544,Tim Boyle,NYG,QB,60,8.33,3,25.0,-244.8,6,Waiver Wire/Handcuff,False
+545,Hendon Hooker,DET,QB,61,8.27,3,24.8,-245.0,6,Waiver Wire/Handcuff,False
+546,Marcus Mariota,WAS,QB,62,8.22,3,24.7,-245.1,6,Waiver Wire/Handcuff,False
+547,Brandon Allen,SF,QB,63,8.01,3,24.0,-245.8,6,Waiver Wire/Handcuff,False
+548,Jarrett Stidham,DEN,QB,64,8.85,2,17.7,-252.1,6,Waiver Wire/Handcuff,False
+549,Jake Browning,CIN,QB,65,8.78,2,17.6,-252.2,6,Waiver Wire/Handcuff,False
+550,Tyrod Taylor,NYJ,QB,66,8.69,2,17.4,-252.4,6,Waiver Wire/Handcuff,False
+551,Tanner McKee,PHI,QB,67,8.4,2,16.8,-253.0,6,Waiver Wire/Handcuff,False
+552,Carson Wentz,KC,QB,68,8.27,2,16.5,-253.2,6,Waiver Wire/Handcuff,False
+553,Skylar Thompson,MIA,QB,69,8.17,2,16.3,-253.4,6,Waiver Wire/Handcuff,False
+554,Tommy DeVito,NYG,QB,70,7.99,2,16.0,-253.8,6,Waiver Wire/Handcuff,False
+555,Joshua Dobbs,SF,QB,71,7.66,2,15.3,-254.4,6,Waiver Wire/Handcuff,False
+556,Sam Howell,SEA,QB,72,9.2,1,9.2,-260.6,6,Waiver Wire/Handcuff,False
+557,Chris Oladokun,KC,QB,73,9.01,1,9.0,-260.8,6,Waiver Wire/Handcuff,False
+558,Mike White,BUF,QB,74,8.83,1,8.8,-260.9,6,Waiver Wire/Handcuff,False
+559,Kyle Allen,PIT,QB,75,8.8,1,8.8,-261.0,6,Waiver Wire/Handcuff,False
+560,Bailey Zappe,CLE,QB,76,8.5,1,8.5,-261.3,6,Waiver Wire/Handcuff,False
+561,Jimmy Garoppolo,LA,QB,77,8.18,1,8.2,-261.6,6,Waiver Wire/Handcuff,False
+562,Joe Milton III,NE,QB,78,7.92,1,7.9,-261.9,6,Waiver Wire/Handcuff,False
