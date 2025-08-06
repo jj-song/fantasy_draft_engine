@@ -1,5 +1,5 @@
 """
-Base API template for all microservices with standardized patterns.
+Base API template for all microservices with centralized logging.
 """
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,17 +9,21 @@ from contextlib import asynccontextmanager
 import logging
 import time
 import uuid
+import os
 from typing import Dict, Any, Optional
 import traceback
 
 from ..health.health_checks import HealthChecker
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Import centralized logging
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent.parent.parent.parent / "utils"))
+from utils.logging.config import get_service_logger
+from utils.logging.middleware import add_logging_middleware
+from utils.logging.context import get_contextual_logger
+
+# Remove old logging configuration - now handled by centralized system
 
 class BaseService:
     def __init__(
@@ -31,18 +35,91 @@ class BaseService:
         self.service_name = service_name
         self.version = version
         self.description = description
+        
+        # Initialize centralized logging
+        self.logger = get_service_logger(service_name, version)
+        self.contextual_logger = get_contextual_logger(f"{service_name}.base")
+        
         self.health_checker = HealthChecker(service_name, version)
         
-        # Create FastAPI app with lifespan management
+        # Create FastAPI app with enhanced lifespan management
         @asynccontextmanager
         async def lifespan(app: FastAPI):
-            # Startup
-            logger.info(f"Starting {service_name} service v{version}")
-            await self.startup()
+            # Startup logging
+            start_time = time.time()
+            self.logger.info(
+                f"🚀 {service_name} v{version} starting up...",
+                extra={
+                    "event_type": "service_startup_begin",
+                    "service_name": service_name,
+                    "version": version,
+                    "environment": os.getenv("ENVIRONMENT", "development"),
+                    "process_id": os.getpid()
+                }
+            )
+            
+            try:
+                await self.startup()
+                startup_duration = time.time() - start_time
+                self.logger.info(
+                    f"✅ {service_name} v{version} started successfully in {startup_duration:.2f}s",
+                    extra={
+                        "event_type": "service_startup_complete",
+                        "service_name": service_name,
+                        "version": version,
+                        "startup_duration_seconds": startup_duration
+                    }
+                )
+            except Exception as e:
+                startup_duration = time.time() - start_time
+                self.logger.error(
+                    f"❌ {service_name} v{version} failed to start: {str(e)}",
+                    extra={
+                        "event_type": "service_startup_failed",
+                        "service_name": service_name,
+                        "version": version,
+                        "startup_duration_seconds": startup_duration,
+                        "error_type": type(e).__name__,
+                        "error_message": str(e)
+                    },
+                    exc_info=True
+                )
+                raise
+            
             yield
-            # Shutdown
-            logger.info(f"Shutting down {service_name} service")
-            await self.shutdown()
+            
+            # Shutdown logging
+            self.logger.info(
+                f"🛑 {service_name} v{version} shutting down...",
+                extra={
+                    "event_type": "service_shutdown_begin",
+                    "service_name": service_name,
+                    "version": version
+                }
+            )
+            
+            try:
+                await self.shutdown()
+                self.logger.info(
+                    f"✅ {service_name} v{version} shutdown complete",
+                    extra={
+                        "event_type": "service_shutdown_complete",
+                        "service_name": service_name,
+                        "version": version
+                    }
+                )
+            except Exception as e:
+                self.logger.error(
+                    f"❌ {service_name} v{version} shutdown error: {str(e)}",
+                    extra={
+                        "event_type": "service_shutdown_error",
+                        "service_name": service_name,
+                        "version": version,
+                        "error_type": type(e).__name__,
+                        "error_message": str(e)
+                    },
+                    exc_info=True
+                )
         
         self.app = FastAPI(
             title=service_name,
@@ -54,9 +131,19 @@ class BaseService:
         self._setup_middleware()
         self._setup_health_endpoints()
         self._setup_error_handlers()
+        
+        # Log service initialization
+        self.logger.info(
+            f"🏗️ {service_name} v{version} initialized",
+            extra={
+                "event_type": "service_initialization",
+                "service_name": service_name,
+                "version": version
+            }
+        )
     
     def _setup_middleware(self):
-        """Set up standard middleware for all services"""
+        """Set up enhanced middleware with centralized logging"""
         
         # CORS middleware
         self.app.add_middleware(
@@ -67,69 +154,84 @@ class BaseService:
             allow_headers=["*"],
         )
         
-        # Request logging middleware
-        @self.app.middleware("http")
-        async def log_requests(request: Request, call_next):
-            correlation_id = str(uuid.uuid4())
-            start_time = time.time()
-            
-            # Add correlation ID to request state
-            request.state.correlation_id = correlation_id
-            
-            # Log request
-            logger.info(
-                f"Request started: {request.method} {request.url.path} "
-                f"[correlation_id: {correlation_id}]"
-            )
-            
-            response = await call_next(request)
-            
-            # Log response
-            duration = time.time() - start_time
-            logger.info(
-                f"Request completed: {request.method} {request.url.path} "
-                f"Status: {response.status_code} Duration: {duration:.3f}s "
-                f"[correlation_id: {correlation_id}]"
-            )
-            
-            # Add correlation ID to response headers
-            response.headers["X-Correlation-ID"] = correlation_id
-            
-            return response
+        # Add centralized logging middleware (replaces old request logging)
+        add_logging_middleware(
+            self.app,
+            service_name=self.service_name,
+            logger=self.logger,
+            enable_service_discovery=True,
+            log_request_body=True,   # Enable request payload logging
+            log_response_body=True   # Enable response payload logging
+        )
     
     def _setup_health_endpoints(self):
-        """Set up standardized health check endpoints"""
+        """Set up health check endpoints with enhanced logging"""
         
         @self.app.get("/health/live")
         async def liveness_check():
-            result = await self.health_checker.liveness_check()
-            return result
+            try:
+                result = await self.health_checker.liveness_check()
+                self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                return result
+            except Exception as e:
+                self.contextual_logger.error(f"Liveness check failed: {str(e)}", exc_info=True)
+                raise HTTPException(status_code=503, detail="Service not live")
         
         @self.app.get("/health/ready")
         async def readiness_check():
-            result = await self.health_checker.readiness_check()
-            if result.status != "ready":
-                raise HTTPException(status_code=503, detail=result.dict())
-            return result
+            try:
+                result = await self.health_checker.readiness_check()
+                status = result.get("status", "unknown") if isinstance(result, dict) else getattr(result, "status", "unknown")
+                
+                self.contextual_logger.debug("Readiness check completed", extra={"status": status})
+                
+                if status != "ready":
+                    raise HTTPException(status_code=503, detail=result)
+                return result
+            except HTTPException:
+                raise
+            except Exception as e:
+                self.contextual_logger.error(f"Readiness check failed: {str(e)}", exc_info=True)
+                raise HTTPException(status_code=503, detail="Service not ready")
         
         @self.app.get("/health/deep")
         async def deep_health_check():
-            result = await self.health_checker.deep_health_check()
-            if result.status == "unhealthy":
-                raise HTTPException(status_code=503, detail=result.dict())
-            return result
+            try:
+                result = await self.health_checker.deep_health_check()
+                status = result.get("status", "unknown") if isinstance(result, dict) else getattr(result, "status", "unknown")
+                
+                self.contextual_logger.debug("Deep health check completed", extra={"status": status})
+                
+                if status == "unhealthy":
+                    raise HTTPException(status_code=503, detail=result)
+                return result
+            except HTTPException:
+                raise
+            except Exception as e:
+                self.contextual_logger.error(f"Deep health check failed: {str(e)}", exc_info=True)
+                raise HTTPException(status_code=503, detail="Service unhealthy")
         
         @self.app.get("/health/metrics")
         async def metrics():
-            result = await self.health_checker.metrics()
-            return result
+            try:
+                result = await self.health_checker.metrics()
+                return result
+            except Exception as e:
+                self.contextual_logger.error(f"Metrics collection failed: {str(e)}", exc_info=True)
+                return {"status": "error", "message": "Failed to collect metrics"}
         
         @self.app.get("/api/v1/info")
         async def service_info():
+            """Enhanced service info with logging metadata"""
             return {
                 "service_name": self.service_name,
                 "version": self.version,
                 "description": self.description,
+                "logging": {
+                    "structured_logging_enabled": True,
+                    "correlation_tracking": True,
+                    "centralized_logging": True
+                },
                 "endpoints": [
                     "/health/live",
                     "/health/ready", 
@@ -140,60 +242,84 @@ class BaseService:
             }
     
     def _setup_error_handlers(self):
-        """Set up standardized error handling"""
+        """Set up enhanced error handling with centralized logging"""
         
         @self.app.exception_handler(HTTPException)
         async def http_exception_handler(request: Request, exc: HTTPException):
             correlation_id = getattr(request.state, 'correlation_id', 'unknown')
             
-            error_response = {
-                "status": "error",
-                "error": {
-                    "code": exc.status_code,
-                    "message": exc.detail,
+            # Enhanced HTTP exception logging
+            self.contextual_logger.warning(
+                f"HTTP Exception {exc.status_code}: {exc.detail}",
+                extra={
+                    "event_type": "http_exception",
+                    "status_code": exc.status_code,
+                    "detail": str(exc.detail),
+                    "path": request.url.path,
+                    "method": request.method,
                     "correlation_id": correlation_id
-                },
-                "timestamp": time.time()
-            }
-            
-            logger.error(f"HTTP Exception: {exc.status_code} - {exc.detail} [correlation_id: {correlation_id}]")
+                }
+            )
             
             return JSONResponse(
                 status_code=exc.status_code,
-                content=error_response
+                content={
+                    "status": "error",
+                    "error_code": exc.status_code,
+                    "message": exc.detail,
+                    "correlation_id": correlation_id,
+                    "service": self.service_name,
+                    "timestamp": time.time()
+                },
+                headers={"X-Correlation-ID": correlation_id}
             )
         
         @self.app.exception_handler(Exception)
         async def general_exception_handler(request: Request, exc: Exception):
             correlation_id = getattr(request.state, 'correlation_id', 'unknown')
             
-            error_response = {
-                "status": "error", 
-                "error": {
-                    "code": 500,
-                    "message": "Internal server error",
+            # Enhanced general exception logging with full context
+            self.contextual_logger.error(
+                f"Unhandled exception: {str(exc)}",
+                extra={
+                    "event_type": "unhandled_exception",
+                    "exception_type": type(exc).__name__,
+                    "exception_message": str(exc),
+                    "path": request.url.path,
+                    "method": request.method,
                     "correlation_id": correlation_id
                 },
-                "timestamp": time.time()
-            }
-            
-            logger.error(
-                f"Unhandled exception: {type(exc).__name__}: {str(exc)} "
-                f"[correlation_id: {correlation_id}]\n{traceback.format_exc()}"
+                exc_info=True
             )
             
             return JSONResponse(
                 status_code=500,
-                content=error_response
+                content={
+                    "status": "error",
+                    "error_code": 500,
+                    "message": "Internal server error",
+                    "correlation_id": correlation_id,
+                    "service": self.service_name,
+                    "timestamp": time.time()
+                },
+                headers={"X-Correlation-ID": correlation_id}
             )
     
     async def startup(self):
         """Override this method for service-specific startup logic"""
-        logger.info(f"{self.service_name} startup completed")
+        self.logger.info(f"{self.service_name} startup completed")
     
     async def shutdown(self):
         """Override this method for service-specific shutdown logic"""
-        logger.info(f"{self.service_name} shutdown completed")
+        self.logger.info(f"{self.service_name} shutdown completed")
+    
+    def get_logger(self):
+        """Get the service logger for use in service implementations"""
+        return self.logger
+    
+    def get_contextual_logger(self):
+        """Get the contextual logger for use in service implementations"""
+        return self.contextual_logger
 
 def create_standard_response(
     status: str = "success",
