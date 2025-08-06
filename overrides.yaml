@@ -1,0 +1,172 @@
+# Manual Player Overrides for 2025 Fantasy Season
+# This file allows manual adjustments to rankings for known issues
+
+# Force certain players into top tiers regardless of model predictions
+force_elite_tier:
+  # Top-tier RBs that must appear in top 20
+  - name: "Christian McCaffrey"
+    position: "RB"
+    min_rank: 1
+    max_rank: 5
+    reason: "Proven elite workhorse when healthy"
+    
+  - name: "Saquon Barkley" 
+    position: "RB"
+    min_rank: 2
+    max_rank: 8
+    reason: "Elite talent in improved situation"
+    
+  - name: "Josh Jacobs"
+    position: "RB" 
+    min_rank: 5
+    max_rank: 15
+    reason: "Proven consistent RB1 production"
+    
+  # Top-tier QBs that should be ranked appropriately
+  - name: "Josh Allen"
+    position: "QB"
+    min_rank: 1
+    max_rank: 3
+    reason: "Dual-threat elite QB, consistent QB1"
+    
+  - name: "Patrick Mahomes"
+    position: "QB"
+    min_rank: 1
+    max_rank: 3
+    reason: "Proven championship QB with elite ceiling"
+    
+  - name: "Lamar Jackson"
+    position: "QB"
+    min_rank: 2
+    max_rank: 5
+    reason: "Dual-threat capability, high fantasy upside"
+
+# Force certain players to be excluded from top rankings
+force_exclude_top_100:
+  # Retired players
+  - name: "Tom Brady"
+    reason: "Retired"
+    
+  - name: "Rob Gronkowski"
+    reason: "Retired"
+    
+  - name: "Julian Edelman"
+    reason: "Retired"
+    
+  # Severely declining veterans
+  - name: "Zach Ertz"
+    reason: "Significant decline, backup role"
+    
+  - name: "Frank Gore"
+    reason: "Retired/inactive"
+    
+  - name: "Adrian Peterson"
+    reason: "Out of league"
+
+# Position distribution requirements for top 50
+position_minimums_top_50:
+  QB: 8   # At least 8 QBs in top 50
+  RB: 12  # At least 12 RBs in top 50 (critical for balance)
+  WR: 15  # At least 15 WRs in top 50  
+  TE: 5   # At least 5 TEs in top 50
+
+position_maximums_top_50:
+  QB: 15  # At most 15 QBs in top 50
+  RB: 18  # At most 18 RBs in top 50
+  WR: 22  # At most 22 WRs in top 50
+  TE: 8   # At most 8 TEs in top 50
+
+# Fantasy point overrides for specific players
+fantasy_point_overrides:
+  # Players with known prediction issues
+  - name: "Kenneth Walker III"
+    position: "RB"
+    min_points: 180
+    reason: "Model undervaluing due to injury history"
+    
+  - name: "Jonathan Taylor"
+    position: "RB" 
+    min_points: 200
+    reason: "Elite talent returning from injury"
+
+# Age-based filtering overrides  
+age_overrides:
+  # Players to keep despite age
+  - name: "Derrick Henry"
+    position: "RB"
+    max_age_override: 35
+    reason: "Proven durability and production"
+    
+  # Players to age-filter more aggressively
+  - name: "Aaron Rodgers"
+    position: "QB"
+    max_age_override: 40
+    reason: "Injury concerns and age decline"
+
+# Team situation adjustments
+team_situation_boosts:
+  # Players in improved situations
+  - name: "Saquon Barkley"
+    boost_multiplier: 1.15
+    reason: "Moved to Eagles, improved offensive line"
+    
+  - name: "Calvin Ridley"
+    boost_multiplier: 1.10
+    reason: "Return from suspension, proven talent"
+
+team_situation_penalties:
+  # Players in worse situations
+  - name: "Davante Adams"
+    penalty_multiplier: 0.90
+    reason: "Uncertainty with Raiders QB situation"
+
+# Rookie adjustments
+rookie_boosts:
+  # High-upside rookies
+  - name: "Caleb Williams"
+    position: "QB"
+    boost_multiplier: 1.20
+    reason: "High draft capital, talented rookie QB"
+    
+  - name: "Jayden Daniels"
+    position: "QB"
+    boost_multiplier: 1.15
+    reason: "Dual-threat ability, good landing spot"
+
+# VOR multiplier overrides for specific positions
+vor_multiplier_overrides:
+  RB: 1.5   # Ensure RBs get proper scarcity boost
+  TE: 1.2   # Moderate boost for elite TEs
+  WR: 1.0   # Baseline for WRs
+  QB: 0.85  # Reduce QB values in 1QB leagues
+
+# Injury concerns and risk adjustments  
+injury_risk_penalties:
+  - name: "Christian McCaffrey"
+    penalty_multiplier: 0.95
+    reason: "Injury history, maintain but slight discount"
+    
+  - name: "Nick Chubb"
+    penalty_multiplier: 0.85
+    reason: "Coming back from serious knee injury"
+
+# Validation settings
+validation_requirements:
+  # Minimum elite players that must appear
+  min_elite_in_top_20: 8
+  min_rbs_in_top_20: 5
+  min_qbs_top_5_in_top_15: 4
+  
+  # Maximum obviously wrong rankings
+  max_backup_qbs_in_top_50: 2
+  max_aging_players_in_top_30: 3
+  
+# Season-specific notes
+season_notes:
+  year: 2025
+  last_updated: "2025-08-05"
+  key_changes:
+    - "Adjusted RB scarcity multipliers after data loss issues"
+    - "Added elite player forcing to prevent obvious misses"
+    - "Implemented retired player filtering"
+    - "Balanced position distribution requirements"

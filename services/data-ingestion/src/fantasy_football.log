@@ -1,0 +1,32 @@
+2025-08-05 17:07:46,735 - src.acquisition.nfl_data_fetcher - INFO - Fetching player statistics for 2024 season for positions: ['QB']
+2025-08-05 17:07:47,294 - src.acquisition.nfl_data_fetcher - INFO - Fetching play-by-play data for 2024 season...
+2025-08-05 17:07:49,244 - src.data_storage - INFO - Mapped name to player_name
+2025-08-05 17:07:49,263 - src.acquisition.nfl_data_fetcher - INFO - Loaded 49492 play-by-play records for 2024
+2025-08-05 17:07:49,313 - src.acquisition.nfl_data_fetcher - INFO - Calculated advanced receiving metrics for 486 players
+2025-08-05 17:07:49,313 - src.acquisition.nfl_data_fetcher - INFO - Fetching snap count data for 2024 season...
+2025-08-05 17:07:49,599 - src.data_storage - INFO - Mapped player to player_name
+2025-08-05 17:07:49,600 - src.acquisition.nfl_data_fetcher - INFO - Loaded 26600 snap count records for 2024
+2025-08-05 17:07:49,603 - src.acquisition.nfl_data_fetcher - INFO - Calculated snap metrics for 2186 players
+2025-08-05 17:07:50,234 - src.acquisition.nfl_data_fetcher - INFO - Successfully fetched raw data for 2024 season
+2025-08-05 17:07:50,250 - src.data_storage - INFO - Mapped display_name to player_name
+2025-08-05 17:07:50,250 - src.acquisition.nfl_data_fetcher - INFO - Merging play-by-play data: 486 players with advanced metrics
+2025-08-05 17:07:50,251 - src.acquisition.nfl_data_fetcher - INFO - Successfully merged play-by-play data
+2025-08-05 17:07:50,251 - src.acquisition.nfl_data_fetcher - INFO - Merging snap count data: 2186 players with snap metrics
+2025-08-05 17:07:50,252 - src.acquisition.nfl_data_fetcher - INFO - Successfully merged snap count data
+2025-08-05 17:07:50,253 - src.acquisition.nfl_data_fetcher - INFO - Successfully merged stats for 2024 season. Total players: 78
+2025-08-05 17:23:59,307 - src.acquisition.nfl_data_fetcher - INFO - Fetching player statistics for 2024 season for positions: ['QB']
+2025-08-05 17:23:59,779 - src.acquisition.nfl_data_fetcher - INFO - Fetching play-by-play data for 2024 season...
+2025-08-05 17:24:01,464 - src.data_storage - INFO - Mapped name to player_name
+2025-08-05 17:24:01,481 - src.acquisition.nfl_data_fetcher - INFO - Loaded 49492 play-by-play records for 2024
+2025-08-05 17:24:01,532 - src.acquisition.nfl_data_fetcher - INFO - Calculated advanced receiving metrics for 486 players
+2025-08-05 17:24:01,532 - src.acquisition.nfl_data_fetcher - INFO - Fetching snap count data for 2024 season...
+2025-08-05 17:24:01,783 - src.data_storage - INFO - Mapped player to player_name
+2025-08-05 17:24:01,784 - src.acquisition.nfl_data_fetcher - INFO - Loaded 26600 snap count records for 2024
+2025-08-05 17:24:01,789 - src.acquisition.nfl_data_fetcher - INFO - Calculated snap metrics for 2186 players
+2025-08-05 17:24:02,378 - src.acquisition.nfl_data_fetcher - INFO - Successfully fetched raw data for 2024 season
+2025-08-05 17:24:02,391 - src.data_storage - INFO - Mapped display_name to player_name
+2025-08-05 17:24:02,391 - src.acquisition.nfl_data_fetcher - INFO - Merging play-by-play data: 486 players with advanced metrics
+2025-08-05 17:24:02,392 - src.acquisition.nfl_data_fetcher - INFO - Successfully merged play-by-play data
+2025-08-05 17:24:02,392 - src.acquisition.nfl_data_fetcher - INFO - Merging snap count data: 2186 players with snap metrics
+2025-08-05 17:24:02,394 - src.acquisition.nfl_data_fetcher - INFO - Successfully merged snap count data
+2025-08-05 17:24:02,394 - src.acquisition.nfl_data_fetcher - INFO - Successfully merged stats for 2024 season. Total players: 78

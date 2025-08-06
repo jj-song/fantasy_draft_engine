@@ -1,0 +1,180 @@
+# Position-specific settings for Fantasy Football
+positions:
+  # All supported positions
+  all_positions: ['QB', 'RB', 'WR', 'TE', 'K', 'DST']
+  
+  # Core positions with full feature engineering
+  core_positions: ['QB', 'RB', 'WR', 'TE']
+  
+  # Position-specific rookie baselines (by draft round)
+  rookie_baseline_fppg:
+    QB:
+      1: 15.0    # 1st round
+      2: 12.0    # 2nd round
+      3: 10.0    # 3rd round
+      4: 8.0     # 4th round
+      5: 7.0     # 5th round
+      6: 6.0     # 6th round
+      7: 5.0     # 7th round
+      UDFA: 3.0  # Undrafted free agent
+      
+    RB:
+      1: 12.0
+      2: 9.0
+      3: 7.0
+      4: 5.0
+      5: 4.0
+      6: 3.5
+      7: 3.0
+      UDFA: 2.0
+      
+    WR:
+      1: 11.0
+      2: 8.0
+      3: 6.0
+      4: 4.5
+      5: 3.5
+      6: 3.0
+      7: 2.5
+      UDFA: 1.5
+      
+    TE:
+      1: 9.0
+      2: 7.0
+      3: 5.0
+      4: 4.0
+      5: 3.0
+      6: 2.0
+      7: 1.5
+      UDFA: 1.0
+  
+  # Baseline FPPG for players with minimal recent data
+  minimal_data_baseline_fppg:
+    QB: 5.0
+    RB: 3.0
+    WR: 2.5
+    TE: 1.5
+    K: 8.0
+    DST: 6.0
+  
+  # Position archetypes for dynamic ensemble weighting
+  archetypes:
+    QB:
+      veteran_stable:
+        description: "Experienced QBs with consistent performance"
+        criteria:
+          min_experience: 3
+          max_cv_fppg: 0.3
+          
+      young_developing:
+        description: "Young QBs still developing"
+        criteria:
+          max_experience: 2
+          min_games: 8
+          
+      high_volatility:
+        description: "QBs with inconsistent performance"
+        criteria:
+          min_cv_fppg: 0.4
+    
+    RB:
+      workhorse:
+        description: "High-volume primary backs"
+        criteria:
+          min_carries_per_game: 15
+          min_touch_share: 0.6
+          
+      committee_back:
+        description: "RBs in timeshare situations"
+        criteria:
+          max_carries_per_game: 12
+          max_touch_share: 0.45
+          
+      pass_catching:
+        description: "RBs heavily involved in passing game"
+        criteria:
+          min_targets_per_game: 4
+          min_target_share: 0.1
+          
+      goal_line:
+        description: "Specialized goal line and short yardage backs"
+        criteria:
+          min_red_zone_carries: 3
+          max_carries_per_game: 10
+    
+    WR:
+      target_hog:
+        description: "High-target volume receivers"
+        criteria:
+          min_target_share: 0.25
+          min_targets_per_game: 8
+          
+      big_play:
+        description: "Deep threat receivers"
+        criteria:
+          min_adot: 12
+          min_yards_per_target: 8
+          
+      possession:
+        description: "Short-route, high-catch-rate receivers"
+        criteria:
+          max_adot: 8
+          min_catch_rate: 0.7
+          
+      rookie_developing:
+        description: "High-draft-capital rookie receivers"
+        criteria:
+          max_experience: 1
+          min_draft_round: 1
+          max_draft_round: 3
+    
+    TE:
+      elite_tier:
+        description: "Top-tier fantasy TEs"
+        criteria:
+          min_target_share: 0.15
+          min_targets_per_game: 6
+          
+      receiving_specialist:
+        description: "Pass-catching specialist TEs"
+        criteria:
+          min_routes_per_snap: 0.7
+          max_blocking_snaps: 0.3
+          
+      blocking_hybrid:
+        description: "TEs with significant blocking duties"
+        criteria:
+          min_blocking_snaps: 0.4
+          max_targets_per_game: 4
+          
+      matchup_dependent:
+        description: "TEs with inconsistent usage"
+        criteria:
+          min_cv_targets: 0.5
+          max_target_share: 0.12
+
+  # Position-specific feature importance weights
+  feature_weights:
+    QB:
+      # Passing stats are most important for QBs
+      passing_stats: 0.6
+      rushing_stats: 0.3
+      team_context: 0.1
+      
+    RB:
+      # Balance between rushing, receiving, and opportunity
+      rushing_stats: 0.5
+      receiving_stats: 0.3
+      opportunity_metrics: 0.2
+      
+    WR:
+      # Receiving stats and target share most important
+      receiving_stats: 0.7
+      target_metrics: 0.2
+      team_context: 0.1
+      
+    TE:
+      # Similar to WRs but with more position scarcity
+      receiving_stats: 0.6
+      target_metrics: 0.25
+      positional_scarcity: 0.15

@@ -79,6 +79,15 @@
 
 ## Code Standards
 
+### CRITICAL - Error Handling and Debugging Rules
+• **NO GRACEFUL FAILURES**: Never implement fallbacks or graceful degradation that hide problems
+• **FAIL FAST AND LOUD**: If something breaks, the system MUST fail immediately with clear error messages
+• **COMPREHENSIVE LOGGING**: Every failure point MUST log exactly what went wrong, where, and why
+• **EXPLICIT ERROR PROPAGATION**: Never catch exceptions unless you can meaningfully handle them
+• **DEBUGGING FIRST**: Design all error handling to make debugging easier, not to hide problems
+• **STACK TRACES REQUIRED**: All exceptions must include full stack traces in logs
+• **NO SILENT FAILURES**: Every operation that can fail must either succeed completely or fail with detailed error information
+
 ### IMPORTANT - Python Rules
 • YOU MUST use type hints for ALL functions
 • YOU MUST use pandas for data manipulation
