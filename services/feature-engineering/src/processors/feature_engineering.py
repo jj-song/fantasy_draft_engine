@@ -50,14 +50,21 @@ def get_config() -> Dict[str, Any]:
             "core_positions": ['QB', 'RB', 'WR', 'TE']
         }
 
-def load_raw_data(file_path: str) -> pd.DataFrame:
-    """Load raw data - now reads directly from file system (shared volume)"""
+def load_raw_data(season_or_path) -> pd.DataFrame:
+    """Load raw data - handles both season years and file paths"""
     try:
-        if not Path(file_path).exists():
+        # If integer passed, construct file path from season
+        if isinstance(season_or_path, int):
+            services_root = Path(__file__).parent.parent.parent.parent.parent
+            file_path = services_root / "data" / "raw" / f"player_season_{season_or_path}.parquet"
+        else:
+            file_path = Path(season_or_path)
+            
+        if not file_path.exists():
             raise FileNotFoundError(f"Raw data file not found: {file_path}")
         return pd.read_parquet(file_path)
     except Exception as e:
-        logger.error(f"Failed to load raw data from {file_path}: {e}")
+        logger.error(f"Failed to load raw data from {season_or_path}: {e}")
         raise
 
 def save_features_data(df: pd.DataFrame, file_path: str) -> None:
@@ -83,6 +90,24 @@ class MockValidator:
         if df.isnull().all().any():
             raise DataQualityError("Found columns with all null values")
         return True
+    
+    def validate_raw_data(self, df: pd.DataFrame, season: int) -> bool:
+        """Validate raw data quality"""
+        if df.empty:
+            raise DataQualityError(f"Empty raw data for season {season}")
+        logger.info(f"Raw data validation passed for season {season}: {len(df)} records")
+        return True
+    
+    def validate_feature_engineered_data(self, df: pd.DataFrame, season: int, **kwargs) -> bool:
+        """Validate feature engineered data quality"""
+        if df.empty:
+            raise DataQualityError(f"Empty feature engineered data for season {season}")
+        logger.info(f"Feature engineered data validation passed for season {season}: {len(df)} records")
+        return True
+    
+    def log_data_quality_summary(self, df: pd.DataFrame, context: str) -> None:
+        """Log data quality summary"""
+        logger.info(f"Data Quality Summary - {context}: {len(df)} records, {len(df.columns)} features")
 
 validator = MockValidator()
 
@@ -1088,99 +1113,24 @@ def engineer_features_for_season(
     # Get the current season data
     current_season_df = historical_data[target_season]
     
-    # FIX: Comprehensive data enhancement - add missing columns from roster data
-    logger.info(f"🔧 COMPREHENSIVE DATA ENHANCEMENT: Adding missing columns for enhanced features")
+    # Skip comprehensive data enhancement for now - use raw data directly
+    logger.info(f"🔧 Using raw data directly for feature engineering (skipping roster enhancement)")
     
-    try:
-        # TODO: Implement service call to get current roster assignments
-        # For now, return empty DataFrame to prevent import errors
-        logger.warning("STUB: get_current_roster_assignments not implemented in microservices architecture")
-        current_rosters = pd.DataFrame()
-        
-        if current_rosters.empty:
-            logger.error(f"❌ Could not load roster data for {target_season}")
-            return pd.DataFrame()
-            
-        logger.info(f"✅ Loaded {len(current_rosters)} roster entries for data enhancement")
-        
-        # Get all available roster columns for merging
-        roster_columns = ['player_id']  # Always need player_id for joining
-        
-        # Essential columns for enhanced features
-        essential_mappings = {
-            'position': 'position',
-            'current_team': 'team',  # Roster uses 'current_team', features expect 'team'
-            'team': 'team',          # In case roster already has 'team'
-            'player_name': 'player_name'
-        }
-        
-        for roster_col, feature_col in essential_mappings.items():
-            if roster_col in current_rosters.columns:
-                roster_columns.append(roster_col)
-                logger.info(f"   Will add {roster_col} → {feature_col}")
-        
-        logger.info(f"🔗 Merging roster data: {roster_columns}")
-        
-        # Merge with roster data (inner join to only keep fantasy-relevant players)
-        enhanced_data = current_season_df.merge(
-            current_rosters[roster_columns], 
-            on='player_id', 
-            how='inner',
-            suffixes=('', '_roster')
-        )
-        
-        # Standardize column names and handle conflicts
-        if 'current_team' in enhanced_data.columns:
-            enhanced_data['team'] = enhanced_data['current_team']
-            enhanced_data = enhanced_data.drop(columns=['current_team'])
-            logger.info("   ✅ Standardized 'current_team' → 'team'")
-        
-        # Add default values for commonly expected columns that are missing
-        expected_columns = {
-            'first_name': '',           # Extract from player_name if needed
-            'last_name': '',            # Extract from player_name if needed
-            'draftround': 7,            # Default to undrafted
-            'draft_club': 'UNK',        # Unknown draft team
-            'height': 72,               # Default height in inches
-            'weight': 200,              # Default weight in pounds
-            'college': 'Unknown',       # Unknown college
-            'birth_date': pd.to_datetime('1995-01-01'), # Default birth date
-        }
-        
-        for col, default_val in expected_columns.items():
-            if col not in enhanced_data.columns:
-                enhanced_data[col] = default_val
-                logger.info(f"   ➕ Added default column '{col}' = {default_val}")
-        
-        # Extract first/last name from player_name if available
-        if 'player_name' in enhanced_data.columns and 'first_name' in enhanced_data.columns:
-            name_split = enhanced_data['player_name'].str.split(' ', n=1, expand=True)
-            enhanced_data['first_name'] = name_split[0].fillna('')
-            enhanced_data['last_name'] = name_split[1].fillna('')
-            logger.info("   ✅ Extracted first_name and last_name from player_name")
-        
-        # Filter to only fantasy-relevant positions
-        fantasy_positions = ['QB', 'RB', 'WR', 'TE']
-        if 'position' in enhanced_data.columns:
-            enhanced_data = enhanced_data[enhanced_data['position'].isin(fantasy_positions)]
-            logger.info(f"   🎯 Filtered to fantasy positions: {len(enhanced_data)} players")
-            logger.info(f"   📊 Position breakdown: {dict(enhanced_data['position'].value_counts())}")
-        
-        # Update the working dataframe
-        current_season_df = enhanced_data
-        
-        logger.info(f"✅ COMPREHENSIVE ENHANCEMENT COMPLETE")
-        logger.info(f"   Final data shape: {current_season_df.shape}")
-        logger.info(f"   Available teams: {sorted(current_season_df['team'].unique()) if 'team' in current_season_df.columns else 'MISSING'}")
-        logger.info(f"   Available positions: {sorted(current_season_df['position'].unique()) if 'position' in current_season_df.columns else 'MISSING'}")
-        
-        # Update the historical data dict so downstream processing works
-        historical_data[target_season] = current_season_df
-        
-    except Exception as e:
-        logger.error(f"❌ COMPREHENSIVE DATA ENHANCEMENT FAILED: {e}")
-        logger.exception("Full traceback:")
+    # The current season data should already have the basic columns we need
+    if 'position' not in current_season_df.columns:
+        logger.error(f"❌ No position column in raw data for {target_season}")
         return pd.DataFrame()
+    
+    # Filter to fantasy-relevant positions
+    fantasy_positions = ['QB', 'RB', 'WR', 'TE']
+    current_season_df = current_season_df[current_season_df['position'].isin(fantasy_positions)]
+    
+    logger.info(f"✅ Raw data loaded for {target_season}")
+    logger.info(f"   Data shape: {current_season_df.shape}")
+    logger.info(f"   Position breakdown: {dict(current_season_df['position'].value_counts())}")
+    
+    # Update the historical data dict so downstream processing works
+    historical_data[target_season] = current_season_df
     
     # Validate required columns for feature engineering
     required_columns = ['position', 'games', 'player_id']
@@ -1439,19 +1389,16 @@ def engineer_features_for_season(
             df_features[config.get('data.target_variable', 'fantasy_points_ppr')] = np.nan
     else:
         if inference_mode:
-            # INFERENCE MODE: Preserve historical fantasy points for draft rankings
-            logger.info(f"🎯 INFERENCE MODE: Preserving {target_season} fantasy points instead of setting to NaN")
-            points_col_name = config.get('scoring.fantasy_points_columns', {}).get(config.get('scoring.default_system', 'ppr'), 'fantasy_points_ppr')
+            # INFERENCE MODE: Generate projection features for ranking, don't use historical actuals
+            logger.info(f"🎯 INFERENCE MODE: Generating projection features for {prediction_season} rankings")
+            logger.info(f"   Features based on {target_season} data → {prediction_season} projections")
             
-            # Use the target season's actual fantasy points (preserve historical performance)
-            if points_col_name in historical_data[target_season].columns:
-                target_df_historical = historical_data[target_season][['player_id', points_col_name]].copy()
-                target_df_historical = target_df_historical.rename(columns={points_col_name: config.get('data.target_variable', 'fantasy_points_ppr')})
-                df_features = pd.merge(df_features, target_df_historical, on='player_id', how='left')
-                logger.info(f"✅ Preserved {target_season} actual fantasy points for {len(target_df_historical)} players")
-            else:
-                logger.warning(f"❌ Could not find {points_col_name} in {target_season} data. Setting target to NaN.")
-                df_features[config.get('data.target_variable', 'fantasy_points_ppr')] = np.nan
+            # For inference mode, we don't set a target variable since ML models will predict it
+            # The features we've generated are designed to predict future performance
+            df_features[config.get('data.target_variable', 'fantasy_points_ppr')] = np.nan
+            
+            logger.info(f"✅ Generated projection features for {len(df_features)} players")
+            logger.info(f"   Target variable set to NaN - ML models will generate predictions")
         else:
             # TRAINING MODE: Set to NaN for prediction
             logger.info(f"No actuals data available for {prediction_season}. Target variable '{config.get('data.target_variable', 'fantasy_points_ppr')}' will be NaN.")
@@ -1658,6 +1605,77 @@ def engineer_features_for_season(
         training_mode=is_training_mode
     )
     validator.log_data_quality_summary(df_features, f"Feature Engineering Complete ({target_season})")
+    
+    # CRITICAL: Add missing calculated features before production filter
+    if inference_mode:
+        # Calculate dual_threat_score for RBs (rushing + receiving yards per game)
+        rb_mask = df_features['position'] == 'RB'
+        games_played = df_features['games'].replace(0, 1)  # Avoid division by zero
+        
+        if rb_mask.any():
+            dual_threat = (df_features['rushing_yards'].fillna(0) + df_features['receiving_yards'].fillna(0)) / games_played
+            df_features.loc[rb_mask, 'dual_threat_score'] = dual_threat[rb_mask]
+            logger.info(f"✅ Calculated dual_threat_score for {rb_mask.sum()} RBs")
+        
+        # Calculate rushing_share (player rushing yards / team total rushing yards)
+        if 'team' in df_features.columns and 'rushing_yards' in df_features.columns:
+            try:
+                # Calculate team totals for rushing yards
+                team_rushing = df_features.groupby(['team', 'season'])['rushing_yards'].sum().reset_index()
+                team_rushing = team_rushing.rename(columns={'rushing_yards': 'team_rushing_yards'})
+                
+                # Merge team totals back
+                df_features = df_features.merge(
+                    team_rushing, 
+                    on=['team', 'season'], 
+                    how='left'
+                )
+                
+                # Calculate rushing share only where we have team data
+                if 'team_rushing_yards' in df_features.columns:
+                    mask = (df_features['team_rushing_yards'] > 0) & (df_features['rushing_yards'] > 0)
+                    df_features.loc[mask, 'rushing_share'] = (
+                        df_features.loc[mask, 'rushing_yards'] / df_features.loc[mask, 'team_rushing_yards']
+                    )
+                    
+                    # Clean up temporary column
+                    df_features = df_features.drop(columns=['team_rushing_yards'], errors='ignore')
+                    logger.info(f"✅ Calculated rushing_share for {mask.sum()} players")
+                else:
+                    logger.warning("⚠️ Could not merge team rushing data, setting rushing_share to 0")
+                    df_features['rushing_share'] = 0.0
+                    
+            except Exception as e:
+                logger.warning(f"⚠️ Failed to calculate rushing_share: {e}, setting to 0")
+                df_features['rushing_share'] = 0.0
+        
+        # Fill NaN values for these calculated features
+        df_features['dual_threat_score'] = df_features['dual_threat_score'].fillna(0.0)
+        df_features['rushing_share'] = df_features['rushing_share'].fillna(0.0)
+    
+    # PRODUCTION FILTER: Return only core features that models expect
+    if inference_mode:
+        core_features = [
+            # Model features (23 unique across all positions)
+            'games', 'age', 'attempts', 'completions', 'passing_yards', 'passing_tds', 'interceptions',
+            'carries', 'rushing_yards', 'rushing_tds', 'targets', 'receptions', 'receiving_yards', 
+            'receiving_tds', 'yards_per_attempt', 'completion_percentage', 'yards_per_carry', 
+            'catch_rate', 'dual_threat_score', 'rushing_share', 'target_share', 'yards_per_target',
+            'yards_per_reception',
+            # Essential metadata 
+            'player_id', 'player_name', 'team', 'position', 'fantasy_points_ppr'
+        ]
+        
+        # Filter to only available core features
+        available_core_features = [col for col in core_features if col in df_features.columns]
+        missing_core_features = [col for col in core_features if col not in df_features.columns]
+        
+        if missing_core_features:
+            logger.warning(f"⚠️ Missing core features: {missing_core_features}")
+        
+        df_features = df_features[available_core_features]
+        logger.info(f"🎯 PRODUCTION MODE: Filtered to {len(available_core_features)} core features")
+        logger.info(f"   Core features: {available_core_features}")
     
     return df_features
 

@@ -220,8 +220,20 @@ class ModelRegistry:
         """Register a model loaded from file."""
         model_key = f"{position}_{model_type}"
         
-        # Store model reference
-        self.registered_models[model_key] = model_data
+        # Extract actual model from dict if needed (models are saved as dicts with metadata)
+        if isinstance(model_data, dict) and 'model' in model_data:
+            actual_model = model_data['model']
+            logger.info(f"📦 Extracted {type(actual_model).__name__} from model dict for {position}")
+        else:
+            actual_model = model_data
+            logger.info(f"📦 Using direct model {type(actual_model).__name__} for {position}")
+        
+        # Verify model has predict method
+        if not hasattr(actual_model, 'predict'):
+            raise ValueError(f"❌ Model for {position} does not have predict method: {type(actual_model)}")
+        
+        # Store actual model reference (not the dict)
+        self.registered_models[model_key] = actual_model
         
         # Store metadata
         self.model_metadata[model_key] = {

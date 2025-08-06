@@ -220,13 +220,8 @@ class VORCalculator:
                 raise Exception(error_msg)
             
             # Call ML Models Service for batch predictions
-            try:
-                predictions = await self._call_ml_models_service(position, player_data)
-                logger.info(f"✅ Got predictions from ML Models Service for {position}")
-            except Exception as e:
-                logger.warning(f"ML Models Service failed, using feature-based estimates: {e}")
-                # Fallback to using the loaded features to estimate predictions
-                predictions = self._estimate_predictions_from_features(player_data, position)
+            predictions = await self._call_ml_models_service(position, player_data)
+            logger.info(f"✅ Got predictions from ML Models Service for {position}")
             
             if predictions:
                 self.cached_predictions[cache_key] = predictions
@@ -250,67 +245,86 @@ class VORCalculator:
                 return []
     
     async def _load_current_player_data(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
-        """Load current player data for inference (2024 data)."""
+        """Generate 2025 projection features for current players."""
         try:
-            # Try to load from data files first - use local project path
-            data_dir = services_root / "data" / "processed"
-            logger.info(f"🔍 Looking for current player data in: {data_dir}")
+            logger.info(f"🎯 Generating 2025 projection features for {position} players...")
             
-            # Look for 2024 player data files
-            player_data_files = [
-                data_dir / "position_specific" / position.lower() / f"{position.lower()}_features_2024.parquet",
-                data_dir / "position_specific" / f"{position.lower()}_features_2024.parquet",
-                data_dir / f"player_stats_2024.parquet"
-            ]
+            # Generate 2025 projections using feature engineering pipeline
+            projection_data = await self._generate_2025_projections(position, season)
             
-            for file_path in player_data_files:
-                if file_path.exists():
-                    try:
-                        df = pd.read_parquet(file_path)
-                        
-                        # Filter for position if needed
-                        if 'position' in df.columns:
-                            df = df[df['position'] == position]
-                        
-                        if not df.empty:
-                            # Convert to the format expected by ML Models Service
-                            player_data = []
-                            for _, row in df.iterrows():
-                                # Extract features for ML model
-                                features = self._extract_ml_features(row, position)
-                                
-                                player_record = {
-                                    "player_data": {
-                                        "player_id": row.get('player_id', f"player_{len(player_data)}"),
-                                        "player_name": row.get('player_name', f"{position}_Player_{len(player_data)}"),
-                                        "team": row.get('team', 'UNK'),
-                                        "position": position
-                                    },
-                                    "features": features
-                                }
-                                player_data.append(player_record)
-                            
-                            if player_data:
-                                logger.info(f"✅ Loaded {len(player_data)} player records from {file_path.name}")
-                                return player_data
-                    
-                    except Exception as e:
-                        logger.warning(f"Could not load player data from {file_path}: {e}")
-                        continue
+            if not projection_data or len(projection_data) == 0:
+                error_msg = f"❌ CRITICAL: Failed to generate 2025 projections for {position}"
+                logger.error(error_msg)
+                raise Exception(error_msg)
             
-            # If no data found, raise an error instead of generating mock data
-            error_msg = f"❌ CRITICAL: No current player data found for {position}. Checked paths: {[str(p) for p in player_data_files]}"
-            logger.error(error_msg)
-            logger.error(f"Data directory: {data_dir}")
-            logger.error(f"Data directory exists: {data_dir.exists()}")
-            if data_dir.exists():
-                logger.error(f"Contents of data directory: {list(data_dir.glob('**/*'))}")
-            raise FileNotFoundError(error_msg)
+            logger.info(f"✅ Generated {len(projection_data)} 2025 projections for {position}")
+            return projection_data
         
         except Exception as e:
             error_msg = f"❌ CRITICAL: Failed to load current player data for {position}: {str(e)}"
             logger.error(error_msg)
             logger.error(f"Full error details: {e}", exc_info=True)
+            raise
+
+    async def _generate_2025_projections(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
+        """Generate 2025 projection features using the feature engineering pipeline."""
+        try:
+            logger.info(f"🔧 Generating 2025 projections for {position} using feature engineering pipeline...")
+            
+            # Import feature engineering components
+            sys.path.append(str(services_root / "services" / "feature-engineering" / "src" / "processors"))
+            from feature_engineering import engineer_features_for_season
+            
+            # Generate 2025 projection features based on 2024 data
+            # Use inference_mode=True to generate forward-looking projections
+            target_season = 2024  # Use 2024 data to project 2025 performance
+            
+            logger.info(f"   Engineering features: {target_season} → 2025 projections")
+            projection_features_df = engineer_features_for_season(
+                target_season=target_season,
+                historical_seasons=[2023, 2024],  # Use recent seasons for context
+                inference_mode=True  # Critical: generate projections, not training data
+            )
+            
+            if projection_features_df.empty:
+                raise Exception("Feature engineering returned empty DataFrame")
+            
+            # Filter for the specific position
+            if 'position' in projection_features_df.columns:
+                position_data = projection_features_df[projection_features_df['position'] == position]
+            else:
+                raise Exception("No position column found in projection features")
+            
+            if position_data.empty:
+                raise Exception(f"No players found for position {position} in projection features")
+            
+            logger.info(f"   Found {len(position_data)} {position} players in projection features")
+            
+            # Convert to the format expected by ML Models Service
+            player_data = []
+            for _, row in position_data.iterrows():
+                # Extract features for ML model
+                features = self._extract_ml_features(row, position)
+                
+                player_record = {
+                    "player_data": {
+                        "player_id": row.get('player_id', f"player_{len(player_data)}"),
+                        "player_name": row.get('player_name', f"{position}_Player_{len(player_data)}"),
+                        "team": row.get('team', 'UNK'),
+                        "position": position
+                    },
+                    "features": features
+                }
+                player_data.append(player_record)
+            
+            logger.info(f"✅ Generated 2025 projection data for {len(player_data)} {position} players")
+            return player_data
+            
+        except ImportError as e:
+            logger.error(f"❌ Could not import feature engineering components: {e}")
+            raise Exception(f"Feature engineering import failed: {e}")
+        except Exception as e:
+            logger.error(f"❌ Failed to generate 2025 projections for {position}: {e}")
             raise
 
     async def _call_ml_models_service(self, position: str, player_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -363,43 +377,45 @@ class VORCalculator:
             raise
 
     def _estimate_predictions_from_features(self, player_data: List[Dict[str, Any]], position: str) -> List[Dict[str, Any]]:
-        """Estimate predictions from player features when ML service is not available."""
+        """Estimate 2025 projections from player features when ML service is not available."""
+        logger.warning(f"⚠️ ML Models Service unavailable, using projection estimates for {position}")
         predictions = []
         
         for data in player_data:
             player_info = data["player_data"]
             features = data["features"]
             
-            # Use a simple heuristic to estimate fantasy points based on key stats
+            # Use lagged features with regression adjustments for realistic 2025 projections
             estimated_points = 0.0
             
-            if position == "RB":
-                # RB scoring: rushing_yards * 0.1 + rushing_tds * 6 + receptions * 0.5 + receiving_yards * 0.1 + receiving_tds * 6
-                estimated_points = (
-                    features.get("rushing_yards", 0) * 0.1 +
-                    features.get("rushing_tds", 0) * 6 +
-                    features.get("receptions", 0) * 0.5 +
-                    features.get("receiving_yards", 0) * 0.1 +
-                    features.get("receiving_tds", 0) * 6
-                )
-            elif position == "QB":
-                # QB scoring: passing_yards * 0.04 + passing_tds * 4 + rushing_yards * 0.1 + rushing_tds * 6
-                estimated_points = (
-                    features.get("passing_yards", 0) * 0.04 +
-                    features.get("passing_tds", 0) * 4 +
-                    features.get("rushing_yards", 0) * 0.1 +
-                    features.get("rushing_tds", 0) * 6
-                )
-            elif position in ["WR", "TE"]:
-                # WR/TE scoring: receptions * 0.5 + receiving_yards * 0.1 + receiving_tds * 6
-                estimated_points = (
-                    features.get("receptions", 0) * 0.5 +
-                    features.get("receiving_yards", 0) * 0.1 +
-                    features.get("receiving_tds", 0) * 6
-                )
+            # Look for previous season stats (L1 = lag 1 = previous year)
+            prev_fantasy_points = features.get("fantasy_points_ppr_L1", features.get("fantasy_points_L1", 0))
+            prev_games = features.get("games_L1", features.get("games", 16))
             
-            # Ensure reasonable bounds for predictions
-            estimated_points = max(0, min(estimated_points, 30))  # Cap at reasonable max
+            # If we have previous season data, use it as base with regression to mean
+            if prev_fantasy_points > 0 and prev_games > 0:
+                # Calculate per-game average from previous season
+                prev_fppg = prev_fantasy_points / max(prev_games, 1)
+                
+                # Apply position-specific regression factors for realistic projections
+                regression_factors = {"QB": 0.85, "RB": 0.80, "WR": 0.82, "TE": 0.85}
+                regression_factor = regression_factors.get(position, 0.80)
+                
+                # Get position baseline (typical starter performance)
+                position_baselines = {"QB": 18.0, "RB": 12.0, "WR": 11.0, "TE": 9.0}
+                baseline = position_baselines.get(position, 10.0)
+                
+                # Regress toward position baseline for realistic projections
+                estimated_points = (prev_fppg * regression_factor) + (baseline * (1 - regression_factor))
+                
+                logger.debug(f"   {player_info.get('player_name', 'Unknown')}: {prev_fppg:.1f} → {estimated_points:.1f} FPPG")
+            else:
+                # No previous season data, use position baseline
+                position_baselines = {"QB": 16.0, "RB": 10.0, "WR": 9.0, "TE": 7.0}
+                estimated_points = position_baselines.get(position, 8.0)
+            
+            # Ensure reasonable bounds for projections (convert to per-game)
+            estimated_points = max(3.0, min(estimated_points, 28.0))  # Realistic FPPG range
             
             prediction = {
                 "player_id": player_info.get("player_id"),
@@ -414,26 +430,26 @@ class VORCalculator:
         return predictions
 
     def _extract_ml_features(self, row: pd.Series, position: str) -> Dict[str, float]:
-        """Extract features for ML model prediction."""
+        """Extract features for ML model prediction - core features already filtered by feature engineering."""
         try:
-            # Extract numeric features that the ML models expect
-            # This should match the feature names used during training
+            # Load the exact feature names the model expects from saved model metadata
+            import joblib
+            model_file = services_root / "saved_models" / f"{position}_ensemble_model.joblib"
+            
+            if model_file.exists():
+                model_dict = joblib.load(model_file)
+                expected_features = model_dict.get('feature_names', [])
+                logger.debug(f"Model expects {len(expected_features)} features for {position}")
+            else:
+                error_msg = f"❌ CRITICAL: Model file not found: {model_file}"
+                logger.error(error_msg)
+                raise FileNotFoundError(error_msg)
+            
+            # Extract exactly the features the model expects
             features = {}
+            missing_features = []
             
-            # Common features across all positions
-            numeric_columns = ['games', 'rushing_yards', 'rushing_tds', 'receptions', 'targets', 
-                             'receiving_yards', 'receiving_tds', 'fantasy_points', 'fantasy_points_ppr']
-            
-            # Position-specific features
-            if position == "QB":
-                numeric_columns.extend(['passing_yards', 'passing_tds', 'interceptions', 'sacks'])
-            elif position == "RB":
-                numeric_columns.extend(['carries', 'rushing_fumbles', 'target_share'])
-            elif position in ["WR", "TE"]:
-                numeric_columns.extend(['air_yards_share', 'target_share', 'receiving_air_yards'])
-            
-            # Extract available numeric features
-            for col in numeric_columns:
+            for col in expected_features:
                 if col in row.index:
                     value = row[col]
                     # Convert to float, handling NaN values
@@ -442,19 +458,23 @@ class VORCalculator:
                     else:
                         features[col] = float(value)
                 else:
-                    # Default value if column doesn't exist
+                    missing_features.append(col)
                     features[col] = 0.0
             
+            # Fail hard if core features are missing
+            if missing_features:
+                error_msg = f"❌ CRITICAL: Core features missing from {position} projection data: {missing_features}"
+                logger.error(error_msg)
+                logger.error(f"Available features: {list(row.index)}")
+                raise ValueError(error_msg)
+            
+            logger.debug(f"Extracted {len(features)} features for {position}")
             return features
         
         except Exception as e:
-            logger.warning(f"Error extracting features for {position}: {e}")
-            # Return minimal feature set
-            return {
-                'games': 0.0,
-                'fantasy_points': 0.0,
-                'fantasy_points_ppr': 0.0
-            }
+            error_msg = f"❌ CRITICAL: Error extracting features for {position}: {e}"
+            logger.error(error_msg)
+            raise
 
     async def _load_prediction_data(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
         """Load prediction data from files or generate mock data."""
