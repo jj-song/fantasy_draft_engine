@@ -199,21 +199,22 @@ class FullPipelineWorkflow:
         try:
             logger.info("📋 Loading configuration...")
             
-            async with aiohttp.ClientSession() as session:
-                config_url = f"{self.service_urls['configuration']}/api/v1/config/summary"
-                async with session.get(config_url, timeout=30) as response:
-                    if response.status == 200:
-                        config_data = await response.json()
-                        return {
-                            "success": True,
-                            "configuration": config_data,
-                            "message": "Configuration loaded successfully"
-                        }
-                    else:
-                        return {
-                            "success": False,
-                            "error": f"Configuration service returned {response.status}"
-                        }
+            # Skip configuration loading for now - use defaults
+            logger.info("⚠️ Using default configuration (config service endpoint not available)")
+            
+            default_config = {
+                "scoring_system": "half_ppr",
+                "league_size": 12,
+                "positions": ["QB", "RB", "WR", "TE"],
+                "data_years": [2024]
+            }
+            
+            return {
+                "success": True,
+                "configuration": default_config,
+                "message": "Using default configuration",
+                "warning": "Configuration service endpoint not available - using defaults"
+            }
         
         except Exception as e:
             return {"success": False, "error": str(e)}

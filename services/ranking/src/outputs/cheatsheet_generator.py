@@ -114,8 +114,19 @@ class CheatsheetGenerator:
             # For now, we'll generate sample ranking data
             logger.info("📊 Loading ranking data for export...")
             
-            # Generate sample data (in production this would come from actual rankings)
-            ranking_data = await self._generate_sample_rankings(positions or ["QB", "RB", "WR", "TE"])
+            # Load real ranking data from scoring engine
+            from ..scoring.scoring_engine import ScoringEngine
+            scoring_engine = ScoringEngine()
+            
+            # Get real rankings from the scoring engine
+            ranking_results = await scoring_engine.generate_overall_rankings(
+                positions or ["QB", "RB", "WR", "TE"],
+                tier_assignments=True,
+                include_overrides=False,
+                sort_by="vor"
+            )
+            
+            ranking_data = ranking_results.get("rankings", [])
             
             # Apply filters
             if top_n:

@@ -189,3 +189,59 @@ class Scheduler:
             logger.info(f"📅 Schedule disabled: {schedule_id}")
             return True
         return False
+    
+    async def get_scheduled_count(self) -> int:
+        """Get the count of scheduled workflows."""
+        return len(self.scheduled_tasks)
+    
+    async def schedule_workflow(self, workflow_type: str, schedule: str, 
+                              parameters: Dict[str, Any], enabled: bool = True) -> str:
+        """
+        Schedule a workflow with given parameters.
+        
+        Args:
+            workflow_type: Type of workflow to schedule
+            schedule: Cron-style schedule expression
+            parameters: Parameters for workflow execution
+            enabled: Whether the schedule is enabled
+            
+        Returns:
+            Schedule ID for the created schedule
+        """
+        try:
+            schedule_id = f"{workflow_type}_{uuid.uuid4().hex[:8]}"
+            
+            success = await self.add_schedule(
+                schedule_id=schedule_id,
+                workflow_type=workflow_type,
+                cron_expression=schedule,
+                parameters=parameters
+            )
+            
+            if success and not enabled:
+                await self.disable_schedule(schedule_id)
+            
+            return schedule_id
+        
+        except Exception as e:
+            logger.error(f"Failed to schedule workflow: {e}")
+            raise e
+    
+    async def get_all_scheduled(self) -> Dict[str, Any]:
+        """Get all scheduled workflows."""
+        try:
+            schedules = await self.get_schedules()
+            return {
+                "schedules": list(schedules["schedules"].values()),
+                "total": schedules["total_schedules"],
+                "scheduler_status": "running" if schedules["scheduler_running"] else "stopped"
+            }
+        
+        except Exception as e:
+            logger.error(f"Failed to get all scheduled workflows: {e}")
+            return {
+                "schedules": [],
+                "total": 0,
+                "scheduler_status": "error",
+                "error": str(e)
+            }

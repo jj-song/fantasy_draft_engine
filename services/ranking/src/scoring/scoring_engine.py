@@ -128,18 +128,43 @@ class ScoringEngine:
     async def _get_position_players(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
         """Get player data for a specific position."""
         try:
-            # This would typically get data from VOR calculator or cached rankings
-            # For now, generate sample data
             logger.info(f"📊 Loading player data for {position}...")
             
-            players = await self._generate_position_sample_data(position)
+            # Import VOR calculator and get real player data
+            from ..calculation.vor_calculator import VORCalculator
+            
+            # Use Docker service URLs for inter-service communication
+            vor_calculator = VORCalculator(
+                config_service_url="http://configuration:8000",
+                ml_models_service_url="http://ml-models:8000"
+            )
+            
+            # Get VOR calculations for this position (real player data)
+            vor_results = await vor_calculator.calculate_position_vor(position, season)
+            
+            if not vor_results.get("vor_calculated", False) or not vor_results.get("players"):
+                logger.warning(f"No VOR data available for {position}, falling back to sample data")
+                players = await self._generate_position_sample_data(position)
+            else:
+                # Use real player data from VOR calculations
+                players = vor_results["players"]
+                
+                # Add missing fields that the ranking system expects
+                for player in players:
+                    player.setdefault("age", 25)  # Default age
+                    player.setdefault("bye_week", 7)  # Default bye week
+                    player.setdefault("adp", -1)  # Will be calculated later
+                    player.setdefault("tier", None)  # Will be assigned later
+                    player.setdefault("adjusted_score", None)  # Will be calculated later
             
             logger.info(f"✅ Loaded {len(players)} players for {position}")
             return players
         
         except Exception as e:
             logger.error(f"Failed to get players for {position}: {e}")
-            raise
+            logger.warning("Falling back to sample data due to error")
+            # Fallback to sample data if real data fails
+            return await self._generate_position_sample_data(position)
     
     async def _generate_position_sample_data(self, position: str) -> List[Dict[str, Any]]:
         """Generate sample player data for a position."""

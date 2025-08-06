@@ -38,13 +38,13 @@ class OrchestrationService(BaseService):
             description="Coordinate workflows and manage service interactions"
         )
         
-        # Service URLs
+        # Service URLs (use Docker container names for inter-service communication)
         self.service_urls = {
-            "configuration": "http://localhost:8001",
-            "data-ingestion": "http://localhost:8002",
-            "feature-engineering": "http://localhost:8003",
-            "ml-models": "http://localhost:8004",
-            "ranking": "http://localhost:8005"
+            "configuration": "http://configuration:8000",
+            "data-ingestion": "http://data-ingestion:8000",
+            "feature-engineering": "http://feature-engineering:8000",
+            "ml-models": "http://ml-models:8000",
+            "ranking": "http://ranking:8000"
         }
         
         # Initialize components

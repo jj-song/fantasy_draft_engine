@@ -241,12 +241,14 @@ class VORCalculator:
     async def _load_prediction_data(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
         """Load prediction data from files or generate mock data."""
         try:
-            # Try to load from data files first
-            data_dir = services_root / "data" / "processed"
+            # Try to load from data files first (use Docker volume mount path)
+            data_dir = Path("/app/data/processed")
             
             # Look for existing prediction or ranking files
+            # Use the most recent year's feature data (2023 for now)
             prediction_files = [
-                data_dir / "position_specific" / position.lower() / f"{position.lower()}_features.parquet",
+                data_dir / "position_specific" / position.lower() / f"{position.lower()}_features_2023.parquet",
+                data_dir / "position_specific" / f"{position.lower()}_features_2023.parquet",
                 data_dir / f"training_features_2023_with_matchup_intel.parquet"
             ]
             

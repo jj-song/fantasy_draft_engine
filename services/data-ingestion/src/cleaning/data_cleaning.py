@@ -33,7 +33,7 @@ def load_raw_season_data(year):
     Returns:
         pandas.DataFrame: DataFrame containing raw player statistics for the specified season
     """
-    raw_data_dir = os.path.join(Path(__file__).parent.parent, config_manager.get('data.raw_data_dir', 'data/raw'))
+    raw_data_dir = os.path.join(Path(__file__).parent.parent, config_manager.get('data.raw_data_dir', '../../data/raw'))
     file_path = os.path.join(raw_data_dir, f"player_season_{year}.parquet")
     
     try:
@@ -350,7 +350,7 @@ def save_cleaned_data(df, year):
         str: Path to the saved file
     """
     # Create the processed data directory if it doesn't exist
-    processed_data_dir = os.path.join(Path(__file__).parent.parent, config_manager.get('data.processed_data_dir', 'data/processed'))
+    processed_data_dir = os.path.join(Path(__file__).parent.parent, config_manager.get('data.processed_data_dir', '../../data/processed'))
     os.makedirs(processed_data_dir, exist_ok=True)
     
     # Define the output file path
