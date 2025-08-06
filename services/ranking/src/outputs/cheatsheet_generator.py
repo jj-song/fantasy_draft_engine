@@ -32,8 +32,15 @@ class CheatsheetGenerator:
     
     def __init__(self):
         """Initialize cheatsheet generator."""
-        # Simple solution: always use /app/data/draft_lists in Docker
-        self.output_dir = Path("/app/data/draft_lists")
+        # Determine output directory based on environment
+        services_root = Path(__file__).parent.parent.parent.parent.parent
+        
+        # Check if we're in Docker container (has /app directory)
+        if Path("/app").exists() and Path("/app").is_dir():
+            self.output_dir = Path("/app/data/draft_lists")
+        else:
+            # Use project root data directory for local development
+            self.output_dir = services_root / "data" / "draft_lists"
         
         # Create directory with full path creation
         self.output_dir.mkdir(parents=True, exist_ok=True)

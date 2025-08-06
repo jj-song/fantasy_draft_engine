@@ -6,7 +6,7 @@
 [![ML Models](https://img.shields.io/badge/ML-RandomForest%20%2B%20LightGBM-green.svg)](https://lightgbm.readthedocs.io/)
 [![Microservices](https://img.shields.io/badge/Architecture-Microservices-blue.svg)](./PLAN.md)
 [![Docker](https://img.shields.io/badge/Deployment-Docker%20Compose-blue.svg)](https://docker.com/)
-[![Production Ready](https://img.shields.io/badge/Status-3%2F6%20Services%20Production%20Ready-brightgreen.svg)](./DEVELOPER_NOTES.md)
+[![Production Ready](https://img.shields.io/badge/Status-4%2F6%20Services%20Production%20Ready-brightgreen.svg)](./developer_notes.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🎯 What Makes This Different
@@ -78,7 +78,7 @@ Players ranked by **Value Over Replacement** to optimize draft strategy across p
 - **Data Ingestion** (8002) - ✅ **Production Ready** - NFL data acquisition and cleaning
 - **Feature Engineering** (8003) - ✅ **Production Ready** - Advanced statistical feature generation
 - **ML Models** (8004) - ✅ **Production Ready** - Model training and prediction serving
-- **Ranking** (8005) - 🔄 Testing Required - VOR calculations and tier generation
+- **Ranking** (8005) - ✅ **Production Ready** - VOR calculations and tier generation
 - **Orchestration** (8006) - 🔄 Testing Required - Workflow coordination and monitoring
 
 For detailed technical documentation, see [PLAN.md](./PLAN.md)

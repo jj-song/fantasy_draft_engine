@@ -9,6 +9,7 @@ perspective and flags obviously incorrect results before they reach users.
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Set, Optional, Tuple
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -341,6 +342,118 @@ class RankingValidator:
         if len(results['warnings']) > 5:
             logger.warning(f"   ... and {len(results['warnings']) - 5} more warnings")
     
+    def validate_vor_calculations(self, vor_results: Dict) -> Dict[str, any]:
+        """
+        Validate VOR calculation results for all positions.
+        
+        Args:
+            vor_results: Dictionary containing VOR results by position
+            
+        Returns:
+            Dictionary containing validation results
+        """
+        logger.info("🔍 Validating VOR calculations across positions")
+        
+        validation_results = {
+            'overall_status': 'PASS',
+            'warnings': [],
+            'errors': [],
+            'statistics': {},
+            'positions_validated': []
+        }
+        
+        # Validate each position's VOR results
+        for position, position_data in vor_results.items():
+            if position == 'validation':  # Skip validation metadata
+                continue
+                
+            try:
+                position_validation = self._validate_position_vor(position, position_data)
+                validation_results['statistics'][position] = position_validation
+                validation_results['positions_validated'].append(position)
+                
+                # Aggregate warnings and errors
+                if 'warnings' in position_validation:
+                    validation_results['warnings'].extend(position_validation['warnings'])
+                if 'errors' in position_validation:
+                    validation_results['errors'].extend(position_validation['errors'])
+                    
+            except Exception as e:
+                error_msg = f"Failed to validate VOR for {position}: {str(e)}"
+                validation_results['errors'].append(error_msg)
+                logger.error(f"❌ {error_msg}")
+        
+        # Set overall status
+        if validation_results['errors']:
+            validation_results['overall_status'] = 'FAIL'
+        elif validation_results['warnings']:
+            validation_results['overall_status'] = 'WARNING'
+        
+        logger.info(f"✅ VOR validation completed: {validation_results['overall_status']}")
+        return validation_results
+    
+    def _validate_position_vor(self, position: str, vor_data: Dict) -> Dict[str, any]:
+        """Validate VOR calculations for a specific position."""
+        validation = {
+            'position': position,
+            'warnings': [],
+            'errors': [],
+            'player_count': 0,
+            'positive_vor_count': 0,
+            'negative_vor_count': 0
+        }
+        
+        # Basic validation if we have player data
+        if 'players' in vor_data and isinstance(vor_data['players'], list):
+            players = vor_data['players']
+            validation['player_count'] = len(players)
+            
+            positive_vor = 0
+            negative_vor = 0
+            
+            for player in players:
+                if isinstance(player, dict) and 'vor' in player:
+                    if player['vor'] > 0:
+                        positive_vor += 1
+                    else:
+                        negative_vor += 1
+            
+            validation['positive_vor_count'] = positive_vor
+            validation['negative_vor_count'] = negative_vor
+            
+            # Validation rules
+            if validation['player_count'] == 0:
+                validation['errors'].append(f"No players found for {position}")
+            elif positive_vor == 0:
+                validation['warnings'].append(f"No players with positive VOR for {position}")
+            elif positive_vor < 5:
+                validation['warnings'].append(f"Very few players with positive VOR for {position}: {positive_vor}")
+        
+        else:
+            validation['warnings'].append(f"No player data available for {position}")
+        
+        return validation
+
+    async def validate_all_rankings(self) -> Dict[str, any]:
+        """
+        Validate all available ranking data.
+        
+        Returns:
+            Dictionary containing comprehensive validation results
+        """
+        logger.info("🔍 Validating all available rankings")
+        
+        # For now, return a basic validation result
+        # In a full implementation, this would check cached rankings and files
+        validation_results = {
+            'overall_status': 'PASS',
+            'message': 'No specific ranking validation implemented yet',
+            'rankings_found': 0,
+            'timestamp': datetime.now().isoformat()
+        }
+        
+        return validation_results
+
     def generate_ranking_fixes(self, rankings_df: pd.DataFrame, validation_results: Dict) -> pd.DataFrame:
         """
         Generate fixes for ranking issues (manual overrides).

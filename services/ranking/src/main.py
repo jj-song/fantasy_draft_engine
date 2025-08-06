@@ -241,7 +241,7 @@ class RankingService(BaseService):
             # Validate results if requested
             if include_validation:
                 self.ranking_status["message"] = "Validating VOR calculations..."
-                validation_result = await self.ranking_validator.validate_vor_calculations(vor_results)
+                validation_result = self.ranking_validator.validate_vor_calculations(vor_results)
                 vor_results["validation"] = validation_result
             
             # Cache results
