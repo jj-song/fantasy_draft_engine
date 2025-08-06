@@ -28,6 +28,7 @@ Unlike subjective "expert" rankings, Fantasy Draft Engine provides **data-driven
 - 📈 **Value Over Replacement (VOR)** calculations for optimal cross-position rankings
 - 🔧 **Production-ready microservices** architecture with FastAPI endpoints
 - 📊 **Time-series validation** to prevent data leakage and ensure realistic performance
+- 🗂️ **Centralized logging system** with structured JSON logs, correlation tracking, and cloud-ready format
 
 ## 🚀 Quick Start
 
@@ -188,6 +189,11 @@ utils/
 ├── debug_analysis/        # → Validation framework
 │   ├── debug_integration.py    # → Service validation system
 │   └── debug_validator.py      # → Validation checkpoints
+├── logging/               # → Centralized logging system
+│   ├── config.py              # → Structured logging configuration
+│   ├── middleware.py          # → Request/response logging middleware
+│   ├── context.py             # → Correlation tracking and context management
+│   └── cloud_config.py        # → Cloud logging integration (AWS/GCP/Azure)
 └── validation/           # → Quality assurance tools
 ```
 

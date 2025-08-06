@@ -43,7 +43,7 @@
 • **Models**: RandomForest ensemble (production), LightGBM (planned)
 • **Data**: nfl_data_py for historical stats (2010-2024) with advanced metrics
 • **Storage**: Parquet format for all data files
-• **Architecture**: Microservices with FastAPI
+• **Architecture**: Microservices with FastAPI + centralized logging system
 
 ## Scoring System (0.5 PPR) - EXACT VALUES REQUIRED
 
@@ -81,7 +81,7 @@
 • `data/processed/position_specific/` - Position features
 • `saved_models/` - ✅ **PRODUCTION READY** ensemble models (QB, RB, WR, TE)
 • `data/draft_lists/` - ✅ **GENERATED** ML-powered rankings exports
-• `logs/` - All pipeline logs
+• `logs/` - ✅ **CENTRALIZED LOGS** structured format, auto-rotation, correlation tracking
 
 ### Microservices
 • `services/data-ingestion/` - NFL data fetching with play-by-play & snap counts
@@ -95,6 +95,7 @@
 • `utils/data_inspection/` - Data and model inspection tools
 • `utils/validation/` - Pipeline validation utilities (future)
 • `utils/core_scripts/` - Essential scripts (future)
+• `utils/logging/` - ✅ **CENTRALIZED LOGGING** structured JSON logs, correlation tracking, cloud-ready
 • `utils/` - Docker and infrastructure utilities
 
 ## Data Structure (Current as of August 2025)
