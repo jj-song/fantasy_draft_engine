@@ -51,7 +51,10 @@ class MLModelsService(BaseService):
         # Initialize components
         self.model_registry = ModelRegistry()
         self.prediction_engine = PredictionEngine(self.model_registry)
-        self.model_trainer = ModelTrainer()
+        self.model_trainer = ModelTrainer(
+            config_service_url="http://configuration:8000",
+            feature_service_url="http://feature-engineering:8000"
+        )
         
         # Service state
         self.training_status = {"status": "idle", "message": ""}

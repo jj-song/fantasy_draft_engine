@@ -175,7 +175,11 @@ class ModelTrainer:
             logger.warning(f"Could not access feature engineering service: {e}")
         
         # Load data directly from processed files
-        data_dir = services_root / "data" / "processed"
+        # Check if running in Docker container (has /app/data mount)
+        if Path("/app/data").exists():
+            data_dir = Path("/app/data/processed")
+        else:
+            data_dir = services_root / "data" / "processed"
         
         for position in positions:
             try:
@@ -333,7 +337,7 @@ class ModelTrainer:
             logger.info(f"🤖 Training ensemble model for {position}...")
             
             # Import the ensemble model class
-            from legacy.src.ensemble_model import EnsembleFantasyModel
+            from ..models.ensemble_model import EnsembleFantasyModel
             
             # Split data for validation
             split_idx = int(len(X) * (1 - validation_split))
