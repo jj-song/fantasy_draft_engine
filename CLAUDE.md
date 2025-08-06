@@ -7,6 +7,19 @@
 • `python -m services.ranking.src.main` - Start ranking service manually (port conflicts possible)
 • `python -m services.ml-models.src.main` - Start ML models service manually (port conflicts possible)
 
+## Orchestration Service Commands (NEW)
+
+• `curl http://localhost:8006/api/v1/orchestration/status` - Complete system status and health
+• `curl -X POST http://localhost:8006/api/v1/workflows/full-pipeline -H "Content-Type: application/json" -d '{"workflow_type": "full-pipeline", "parameters": {"positions": ["QB", "RB", "WR", "TE"], "years": [2024], "season": 2024}}'` - Execute full pipeline
+• `curl http://localhost:8006/api/v1/workflows/health-check` - Comprehensive health check across all services
+• `curl http://localhost:8006/api/v1/workflows/{workflow_id}/status` - Check specific workflow progress
+
+## Ranking Generation Verification
+
+• **ALWAYS verify file timestamps**: Check creation time of files in `data/draft_lists/` against when ranking generation was triggered
+• **Use**: `ls -lt data/draft_lists/fantasy_rankings_*.csv` to find most recent rankings
+• **Docker container files**: May need `docker cp` from container to host if volume mapping issues occur
+
 ## Service Port Assignments (Docker Compose)
 
 • **Configuration**: localhost:8001
