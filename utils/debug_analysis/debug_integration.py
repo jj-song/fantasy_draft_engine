@@ -12,7 +12,8 @@ from utils.debug_analysis.debug_validator import (
     DataIngestionValidator,
     FeatureEngineeringValidator, 
     MLModelsValidator,
-    RankingValidator
+    RankingValidator,
+    ConfigurationValidator
 )
 
 # Global validators - can be imported by services
@@ -20,6 +21,7 @@ data_validator = DataIngestionValidator()
 feature_validator = FeatureEngineeringValidator()
 ml_validator = MLModelsValidator()
 ranking_validator = RankingValidator()
+config_validator = ConfigurationValidator()
 
 def add_validation_checkpoint(service_name: str, step_name: str, data, **kwargs):
     """
@@ -39,7 +41,8 @@ def add_validation_checkpoint(service_name: str, step_name: str, data, **kwargs)
         'data-ingestion': data_validator,
         'feature-engineering': feature_validator,
         'ml-models': ml_validator,
-        'ranking': ranking_validator
+        'ranking': ranking_validator,
+        'configuration': config_validator
     }
     
     if service_name in validators:
@@ -54,7 +57,8 @@ def get_all_validation_summaries():
         'data-ingestion': data_validator.get_validation_summary(),
         'feature-engineering': feature_validator.get_validation_summary(),
         'ml-models': ml_validator.get_validation_summary(),
-        'ranking': ranking_validator.get_validation_summary()
+        'ranking': ranking_validator.get_validation_summary(),
+        'configuration': config_validator.get_validation_summary()
     }
 
 def save_all_validation_reports():
@@ -65,7 +69,8 @@ def save_all_validation_reports():
         ('data-ingestion', data_validator),
         ('feature-engineering', feature_validator),
         ('ml-models', ml_validator),
-        ('ranking', ranking_validator)
+        ('ranking', ranking_validator),
+        ('configuration', config_validator)
     ]:
         if validator.validation_log:  # Only save if there are validations
             report_path = validator.save_validation_report()
