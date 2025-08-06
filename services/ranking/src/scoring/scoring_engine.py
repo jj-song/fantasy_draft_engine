@@ -152,10 +152,7 @@ class ScoringEngine:
             from ..calculation.vor_calculator import VORCalculator
             
             # Use Docker service URLs for inter-service communication
-            vor_calculator = VORCalculator(
-                config_service_url="http://localhost:8001",
-                ml_models_service_url="http://localhost:8000"
-            )
+            vor_calculator = VORCalculator()  # Will use environment variables
             
             # Add validation checkpoint before VOR calculation
             vor_input = {

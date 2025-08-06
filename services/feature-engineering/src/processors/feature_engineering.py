@@ -27,6 +27,15 @@ from typing import Dict, List, Optional, Tuple, Union
 import requests
 from typing import Any
 
+# Add debug validation
+try:
+    from utils.debug_analysis.debug_integration import add_validation_checkpoint
+    VALIDATION_ENABLED = True
+except ImportError:
+    VALIDATION_ENABLED = False
+    def add_validation_checkpoint(*args, **kwargs):
+        pass
+
 # Service URLs for microservices communication
 CONFIG_SERVICE_URL = "http://configuration:8000"
 DATA_INGESTION_URL = "http://data-ingestion:8000"

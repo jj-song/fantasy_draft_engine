@@ -12,8 +12,8 @@ The Fantasy Draft Engine is a sophisticated machine learning system that generat
 - Statistical tier-based player rankings with confidence intervals
 - Value Over Replacement (VOR) calculations across positions  
 - Real-time prediction capabilities via microservices architecture
-- Comprehensive feature engineering with 177+ player metrics
-- Ensemble ML models (RandomForest + LightGBM) optimized per position
+- Core feature engineering with 23 key predictive metrics  
+- RandomForest ensemble models optimized per position
 
 ## 🏗️ System Architecture
 
@@ -45,7 +45,7 @@ Configuration ←→ Configuration ←→ Configuration ←→ Configuration ←
 - **Feature Compatibility**: Resolved critical model-feature mapping issues
 
 ### ✅ Phase 2: ML Pipeline (COMPLETED) 
-- **Feature Engineering**: Position-specific feature generation (177+ metrics)
+- **Feature Engineering**: Position-specific feature generation (streamlined for production)
 - **Model Training**: Ensemble models per position with **COMPLETE 2010-2024 HISTORICAL DATASET**
 - **Training Data**: **4,728+ samples** across positions (QB:592, RB:1,291, WR:1,856, TE:989)
 - **Prediction Engine**: Real-time prediction serving with batch support
@@ -74,9 +74,11 @@ Configuration ←→ Configuration ←→ Configuration ←→ Configuration ←
 - **Documentation**: API documentation and user guides
 
 ### 📅 Phase 5: Advanced Features (PLANNED)
+- **Extended Feature Engineering**: Implementation of 100+ additional features from research blueprint
+- **Advanced ML Models**: LightGBM integration and ensemble model expansion
 - **Real-time Updates**: Live injury status and news integration
 - **League Customization**: Flexible scoring systems and roster formats
-- **Historical Analysis**: Season-long performance tracking
+- **Historical Analysis**: Season-long performance tracking  
 - **Mobile API**: Lightweight endpoints for mobile applications
 
 ## 🔧 Technical Architecture
@@ -89,8 +91,8 @@ Configuration ←→ Configuration ←→ Configuration ←→ Configuration ←
 - **Configuration**: YAML-based settings for scoring, leagues, positions
 
 ### ML Pipeline
-- **Feature Engineering**: Position-specific feature generation with 177+ metrics
-- **Model Training**: Ensemble approach (RandomForest + LightGBM) per position
+- **Feature Engineering**: Position-specific feature generation (23 core features)  
+- **Model Training**: RandomForest ensemble approach per position
 - **Prediction Serving**: Real-time API with automatic feature mapping
 - **Validation**: Cross-validation with time-series aware splits
 

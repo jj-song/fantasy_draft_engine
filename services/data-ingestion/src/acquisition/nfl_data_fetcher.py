@@ -12,12 +12,22 @@ import nfl_data_py as nfl
 import sys
 from pathlib import Path
 
-# Add project root to path
+# Add project root to path  
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.data_storage import ensure_player_name_column
-from src.config import get_config
+# Use relative imports within the service
+from ..data_storage import ensure_player_name_column
+from ..config import get_config
+
+# Add debug validation
+try:
+    from utils.debug_analysis.debug_integration import add_validation_checkpoint
+    VALIDATION_ENABLED = True
+except ImportError:
+    VALIDATION_ENABLED = False
+    def add_validation_checkpoint(*args, **kwargs):
+        pass
 
 # Configure logging
 logging.basicConfig(
@@ -52,8 +62,17 @@ def fetch_player_season_stats(year, positions=None):
         # Fetch seasonal stats (includes passing, rushing, receiving stats)
         seasonal_stats = nfl.import_seasonal_data([year])
         
+        # VALIDATION CHECKPOINT: Raw seasonal data fetch
+        add_validation_checkpoint('data-ingestion', f'raw_seasonal_data_{year}', seasonal_stats,
+                                expected_type=pd.DataFrame,
+                                expected_columns=['player_name', 'position'])
+        
         # Fetch weekly stats to get more detailed information
         weekly_stats = nfl.import_weekly_data([year])
+        
+        # VALIDATION CHECKPOINT: Raw weekly data fetch
+        add_validation_checkpoint('data-ingestion', f'raw_weekly_data_{year}', weekly_stats,
+                                expected_type=pd.DataFrame)
         
         # Aggregate weekly stats to get additional metrics not in seasonal data
         if not weekly_stats.empty:
@@ -238,6 +257,11 @@ def fetch_player_season_stats(year, positions=None):
             # Ensure player_name column is properly populated from merged player info
             merged_stats = ensure_player_name_column(merged_stats)
             
+            # VALIDATION CHECKPOINT: After basic merging (seasonal + weekly + player info)
+            add_validation_checkpoint('data-ingestion', f'basic_merged_data_{year}', merged_stats,
+                                    expected_type=pd.DataFrame,
+                                    expected_columns=['player_name', 'position', 'games'])
+            
             # ENHANCED MERGING: Add play-by-play data if available
             if not pbp_agg.empty:
                 logger.info(f"Merging play-by-play data: {len(pbp_agg)} players with advanced metrics")
@@ -262,6 +286,12 @@ def fetch_player_season_stats(year, positions=None):
             
             # Filter for players in the specified positions
             merged_stats = merged_stats[merged_stats['position'].isin(positions)]
+            
+            # VALIDATION CHECKPOINT: Final merged and filtered data
+            add_validation_checkpoint('data-ingestion', f'final_merged_data_{year}', merged_stats,
+                                    expected_type=pd.DataFrame,
+                                    expected_columns=['player_name', 'position', 'games'],
+                                    expected_shape=(400, 50))  # Rough expected range: 400+ players, 50+ columns
             
             logger.info(f"Successfully merged stats for {year} season. Total players: {len(merged_stats)}")
             

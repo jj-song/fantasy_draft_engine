@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Add the project root to the path so we can import the config
 sys.path.append(str(Path(__file__).parent.parent))
-from src.config import get_config
+from ..config import get_config
 
 # Get configuration instance
 config_manager = get_config()

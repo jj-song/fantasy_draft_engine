@@ -23,6 +23,17 @@ from .cleaning.data_cleaning import *
 from .storage.data_storage import *
 from .config import get_data_paths
 
+# Add debug validation
+try:
+    from utils.debug_analysis.debug_integration import add_validation_checkpoint, save_all_validation_reports
+    VALIDATION_ENABLED = True
+except ImportError:
+    VALIDATION_ENABLED = False
+    def add_validation_checkpoint(*args, **kwargs):
+        pass
+    def save_all_validation_reports():
+        return {}
+
 # Custom JSON Response class to handle pandas/numpy serialization
 class SafeJSONResponse(JSONResponse):
     """Custom JSON response that safely handles pandas and numpy data types"""
@@ -512,6 +523,11 @@ class DataIngestionService(BaseService):
                     df = fetch_player_season_stats(year, positions)
                     
                     if df is not None and len(df) > 0:
+                        # VALIDATION CHECKPOINT: Data fetch results
+                        add_validation_checkpoint('data-ingestion', f'fetched_data_{year}', df,
+                                                expected_type=pd.DataFrame,
+                                                expected_columns=['player_name', 'position'])
+                        
                         # Save raw data using dynamic paths
                         paths = get_data_paths()
                         raw_file = Path(f"{paths['raw']}/player_stats_{year}.parquet")
@@ -520,6 +536,12 @@ class DataIngestionService(BaseService):
                         
                         # Basic cleaning and processing
                         processed_df = self._clean_data(df)
+                        
+                        # VALIDATION CHECKPOINT: Data cleaning results
+                        add_validation_checkpoint('data-ingestion', f'cleaned_data_{year}', processed_df,
+                                                expected_type=pd.DataFrame,
+                                                expected_columns=['player_name', 'position'])
+                        
                         processed_file = Path(f"{paths['processed']}/player_stats_{year}.parquet")
                         processed_df.to_parquet(processed_file, index=False)
                         
@@ -540,6 +562,11 @@ class DataIngestionService(BaseService):
             }
             
             logger.info("Data ingestion completed successfully")
+            
+            # Save validation report
+            if VALIDATION_ENABLED:
+                validation_reports = save_all_validation_reports()
+                logger.info(f"Validation reports saved: {validation_reports}")
             
         except Exception as e:
             logger.error(f"Data ingestion failed: {e}")
@@ -575,4 +602,5 @@ app = service.app
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("DATA_INGESTION_PORT", 8002))
+    uvicorn.run(app, host="0.0.0.0", port=port)

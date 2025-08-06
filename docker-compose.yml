@@ -75,6 +75,7 @@ services:
       - redis
     volumes:
       - ./data:/data
+      - ./saved_models:/saved_models
       - ./logs:/app/logs
     
   orchestration:

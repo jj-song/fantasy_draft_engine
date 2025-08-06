@@ -17,7 +17,7 @@ import re
 
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
-from src.config import get_config
+from ..config import get_config
 
 # Configure logging
 logger = logging.getLogger(__name__)

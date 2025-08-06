@@ -1,9 +1,9 @@
 # Fantasy Draft Engine 🏈
 
-**AI-powered fantasy football draft rankings** using machine learning, advanced feature engineering, and comprehensive NFL data analysis. Built with production-ready microservices architecture for scalability and reliability.
+**AI-powered fantasy football draft rankings** using machine learning and comprehensive NFL data analysis. Built with production-ready microservices architecture and streamlined feature engineering for reliable predictions.
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![ML Models](https://img.shields.io/badge/ML-RandomForest%20%2B%20LightGBM-green.svg)](https://lightgbm.readthedocs.io/)
+[![ML Models](https://img.shields.io/badge/ML-RandomForest%20Ensemble-green.svg)](https://scikit-learn.org/)
 [![Microservices](https://img.shields.io/badge/Architecture-Microservices-blue.svg)](./PLAN.md)
 [![Docker](https://img.shields.io/badge/Deployment-Docker%20Compose-blue.svg)](https://docker.com/)
 [![Production Ready](https://img.shields.io/badge/Status-Ranking%20Service%20Integration%20Complete-brightgreen.svg)](./DEVELOPER_NOTES.md)
@@ -14,11 +14,11 @@
 Unlike subjective "expert" rankings, Fantasy Draft Engine provides **data-driven insights** using:
 
 - 📊 **15+ years of NFL data** (2010-2024) for robust statistical modeling
-- 🤖 **Advanced ML ensemble** combining RandomForest + LightGBM models
-- 🎯 **177+ engineered features** including efficiency metrics and usage patterns  
+- 🤖 **RandomForest ensemble models** optimized for each position
+- 🎯 **Core feature engineering** with efficiency metrics and usage patterns (23 key features)
 - 📈 **Value Over Replacement (VOR)** calculations for optimal cross-position rankings
-- 🔧 **Production-ready microservices** with health monitoring and auto-scaling
-- 🌤️ **Environmental factors** including weather impact and venue adjustments
+- 🔧 **Production-ready microservices** architecture with FastAPI endpoints
+- 📊 **Time-series validation** to prevent data leakage and ensure realistic performance
 
 ## 🚀 Quick Start
 
@@ -79,8 +79,8 @@ Players ranked by **Value Over Replacement** to optimize draft strategy across p
 
 - **Configuration** (8001) - Centralized settings and league configurations
 - **Data Ingestion** (8002) - ✅ **Production Ready** - NFL data acquisition and cleaning
-- **Feature Engineering** (8003) - ✅ **Production Ready** - Advanced statistical feature generation
-- **ML Models** (8004) - ✅ **Production Ready** - Model training and prediction serving
+- **Feature Engineering** (8003) - ✅ **Production Ready** - Core statistical feature generation
+- **ML Models** (8004) - ✅ **Production Ready** - RandomForest model training and prediction serving
 - **Ranking** (8005) - ✅ **Production Ready** - VOR calculations and ML-powered draft rankings
 - **Orchestration** (8006) - 🔄 Development Phase - Workflow coordination and monitoring
 
@@ -90,12 +90,12 @@ For detailed technical documentation, see [PLAN.md](./PLAN.md)
 
 Our ensemble models trained on **15 years of historical data** achieve industry-leading accuracy:
 
-| Position | Training Samples | R² Score | RMSE (FPPG) | Key Predictive Features |
-|----------|------------------|----------|-------------|------------------------|
-| QB       | **592 samples**  | 42.5%    | 4.39        | Passing yards, TD rate, rushing production |
-| RB       | **1,291 samples**| 45.7%    | 3.60        | Carries, receptions, efficiency metrics |
-| WR       | **1,856 samples**| 46.1%    | 2.52        | Targets, air yards, catch rate |
-| TE       | **989 samples**  | 40.6%    | 1.75        | Target share, red zone opportunities |
+| Position | Training Samples | R² Score | RMSE (FPPG) | Core Features Used |
+|----------|------------------|----------|-------------|-------------------|
+| QB       | **592 samples**  | 42.5%    | 4.39        | 12 features: attempts, passing yards, TDs, rushing production |
+| RB       | **1,291 samples**| 45.7%    | 3.60        | 14 features: carries, receptions, efficiency, usage shares |
+| WR       | **1,856 samples**| 46.1%    | 2.52        | 13 features: targets, receiving production, catch rate |
+| TE       | **989 samples**  | 40.6%    | 1.75        | 13 features: targets, receiving stats, efficiency metrics |
 
 **Training Scale:** Models trained on **4,728+ player-seasons** (2010-2024) using time-series methodology.  
 **Validation:** Realistic performance metrics (R² 40-46%) indicate genuine predictive capability without data leakage.

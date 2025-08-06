@@ -2,8 +2,20 @@
 
 ## Essential Commands
 
-• `python -m services.ranking.src.main` - Start ranking service (microservices)
-• `python -m services.ml-models.src.main` - Start ML models service (microservices)
+• `docker-compose up -d` - Start all services with proper port management (RECOMMENDED)
+• `docker-compose ps` - Check service status and ports
+• `python -m services.ranking.src.main` - Start ranking service manually (port conflicts possible)
+• `python -m services.ml-models.src.main` - Start ML models service manually (port conflicts possible)
+
+## Service Port Assignments (Docker Compose)
+
+• **Configuration**: localhost:8001
+• **Data Ingestion**: localhost:8002  
+• **Feature Engineering**: localhost:8003
+• **ML Models**: localhost:8004
+• **Ranking**: localhost:8005
+• **Orchestration**: localhost:8006
+• **Redis**: localhost:6379
 • `pytest tests/` - Run all tests
 
 ## Utilities
@@ -14,8 +26,8 @@
 
 ## Tech Stack
 
-• **Python**: pandas, numpy, scikit-learn, lightgbm
-• **Models**: RandomForest + LightGBM ensemble
+• **Python**: pandas, numpy, scikit-learn
+• **Models**: RandomForest ensemble (production), LightGBM (planned)
 • **Data**: nfl_data_py for historical stats (2010-2024) with advanced metrics
 • **Storage**: Parquet format for all data files
 • **Architecture**: Microservices with FastAPI
@@ -37,7 +49,7 @@
 ### YOU MUST
 • Use type hints on ALL functions
 • Use time-series aware train/test splits
-• Ensemble RandomForest + LightGBM models
+• RandomForest ensemble models (LightGBM integration planned)
 • Log all data transformations
 • Validate realistic performance metrics (R² 40-46%, no data leakage)
 
@@ -102,7 +114,7 @@
 • **VOR**: Value Over Replacement
 • **0.5 PPR**: Half-point per reception scoring
 • **L1 Features**: Previous season lagged variables
-• **Ensemble**: RF + LightGBM combined predictions
+• **Ensemble**: RandomForest models (production), LightGBM integration planned
 • **Baseline Models**: Pre-trained models expecting specific column names
 
 ## Do Not Touch
@@ -125,6 +137,19 @@
 
 ### Key Model Performance
 • **Training samples**: 4,728 total (QB:592, RB:1,291, WR:1,856, TE:989)
+• **Feature set**: 23 core features (simplified from 100+ research blueprint)
+• **Model architecture**: RandomForest ensemble per position
 • **Realistic predictions**: QB ~17 FPPG, RB ~11 FPPG, WR ~8 FPPG, TE ~7 FPPG
 • **Proper hierarchy**: Top RBs dominate VOR rankings (scarcity-based)
+
+### Current vs Planned Feature Engineering
+• **PRODUCTION (Current)**: Core 23 features focused on reliability and consistency
+  - Basic stats: attempts, yards, touchdowns, games played, age
+  - Efficiency metrics: yards per attempt, completion %, catch rate
+  - Usage metrics: target share, rushing share
+• **RESEARCH BLUEPRINT**: 100+ advanced features documented in services/feature-engineering/
+  - Advanced metrics: WOPR, ADOT, air yards, YAC analysis
+  - Matchup intelligence: strength of schedule, weather factors
+  - Historical patterns: lagged features, trend analysis
+• **ROADMAP**: Gradual integration of research features with production validation
 

@@ -30,7 +30,7 @@ import os
 from dataclasses import dataclass
 
 # Import config using new system
-from src.config import get_config
+from ..config import get_config
 
 logger = logging.getLogger(__name__)
 

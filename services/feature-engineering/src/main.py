@@ -16,6 +16,17 @@ from .processors.feature_engineering import *
 from .quality.feature_compatibility import *
 from .quality.data_quality_validator import *
 
+# Add debug validation
+try:
+    from utils.debug_analysis.debug_integration import add_validation_checkpoint, save_all_validation_reports
+    VALIDATION_ENABLED = True
+except ImportError:
+    VALIDATION_ENABLED = False
+    def add_validation_checkpoint(*args, **kwargs):
+        pass
+    def save_all_validation_reports():
+        return {}
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -257,17 +268,43 @@ class FeatureEngineeringService(BaseService):
                         
                         # Load raw data
                         df = pd.read_parquet(raw_file)
+                        
+                        # VALIDATION CHECKPOINT: Raw data loaded
+                        add_validation_checkpoint('feature-engineering', f'raw_data_loaded_{position}_{year}', df,
+                                                expected_type=pd.DataFrame,
+                                                expected_columns=['player_name', 'position'])
+                        
                         position_df = df[df['position'] == position] if 'position' in df.columns else df
+                        
+                        # VALIDATION CHECKPOINT: Position filtered data
+                        add_validation_checkpoint('feature-engineering', f'position_data_{position}_{year}', position_df,
+                                                expected_type=pd.DataFrame,
+                                                expected_shape=(50, 81))  # ~50 players per position, 81 columns from data ingestion
                         
                         if len(position_df) > 0:
                             # Generate position-specific features
                             features_df = await self._generate_position_features(position_df, position, year)
+                            
+                            # VALIDATION CHECKPOINT: Generated features
+                            add_validation_checkpoint('feature-engineering', f'generated_features_{position}_{year}', features_df,
+                                                    expected_type=pd.DataFrame,
+                                                    expected_shape=(50, 28))  # 28 core features expected
                             
                             if features_df is not None and len(features_df) > 0:
                                 # Save features
                                 output_file = Path(f"data/processed/position_specific/{position.lower()}_features_{year}.parquet")
                                 features_df.to_parquet(output_file, index=False)
                                 logger.info(f"Saved {len(features_df)} feature records for {position} {year}")
+                                
+                                # VALIDATION CHECKPOINT: Feature file saved
+                                file_info = {
+                                    'file_path': str(output_file),
+                                    'file_size_mb': output_file.stat().st_size / 1024 / 1024 if output_file.exists() else 0,
+                                    'player_count': len(features_df),
+                                    'feature_count': len(features_df.columns)
+                                }
+                                add_validation_checkpoint('feature-engineering', f'features_saved_{position}_{year}', file_info,
+                                                        expected_type=dict)
                         
                         current_step += 1
                         self.processing_status["progress"] = f"{current_step}/{total_steps}"
@@ -287,6 +324,11 @@ class FeatureEngineeringService(BaseService):
             
             logger.info("Feature generation completed successfully")
             
+            # Save validation report
+            if VALIDATION_ENABLED:
+                validation_reports = save_all_validation_reports()
+                logger.info(f"Feature engineering validation reports saved: {validation_reports}")
+            
         except Exception as e:
             logger.error(f"Feature generation failed: {e}")
             self.processing_status = {
@@ -305,6 +347,12 @@ class FeatureEngineeringService(BaseService):
         try:
             logger.info(f"🔧 DETAILED FEATURE ENGINEERING START: {position} {year}")
             logger.info("=" * 80)
+            
+            # VALIDATION CHECKPOINT: Feature engineering input
+            add_validation_checkpoint('feature-engineering', f'feature_input_{position}_{year}', df,
+                                    expected_type=pd.DataFrame,
+                                    expected_columns=['player_name', 'position', 'games'],
+                                    expected_shape=(100, 81))  # Flexible player count, 81 columns from data ingestion
             
             # Log input data summary
             logger.info(f"📊 INPUT DATA SUMMARY:")
@@ -485,6 +533,24 @@ class FeatureEngineeringService(BaseService):
             
             logger.info("=" * 80)
             logger.info(f"✅ FEATURE ENGINEERING COMPLETE: {position} {year}")
+            
+            # VALIDATION CHECKPOINT: Final feature engineering output
+            add_validation_checkpoint('feature-engineering', f'feature_output_{position}_{year}', features_df,
+                                    expected_type=pd.DataFrame,
+                                    expected_shape=(100, 28))  # 28 core features expected
+            
+            # Additional feature quality validation
+            if features_df is not None:
+                feature_quality = {
+                    'input_players': len(df),
+                    'output_players': len(features_df),
+                    'input_columns': len(df.columns),
+                    'output_columns': len(features_df.columns),
+                    'transformations_applied': len(transformations_applied),
+                    'sample_transformations': transformations_applied[:5]  # First 5 transformations
+                }
+                add_validation_checkpoint('feature-engineering', f'feature_quality_{position}_{year}', feature_quality,
+                                        expected_type=dict)
             
             return features_df
             

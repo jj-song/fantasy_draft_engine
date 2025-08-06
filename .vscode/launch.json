@@ -1,0 +1,89 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Data Ingestion Service",
+            "type": "python",
+            "request": "launch",
+            "module": "services.data-ingestion.src.main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "DATA_INGESTION_PORT": "8002"
+            },
+            "args": [],
+            "justMyCode": false
+        },
+        {
+            "name": "Debug Feature Engineering Service",
+            "type": "python",
+            "request": "launch",
+            "module": "services.feature-engineering.src.main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/services",
+                "FEATURE_ENG_PORT": "8003"
+            },
+            "args": [],
+            "justMyCode": false
+        },
+        {
+            "name": "Debug ML Models Service",
+            "type": "python",
+            "request": "launch",
+            "module": "services.ml-models.src.main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/services",
+                "ML_MODELS_PORT": "8000"
+            },
+            "args": [],
+            "justMyCode": false
+        },
+        {
+            "name": "Debug Ranking Service",
+            "type": "python",
+            "request": "launch",
+            "module": "services.ranking.src.main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/services",
+                "RANKING_PORT": "8007"
+            },
+            "args": [],
+            "justMyCode": false
+        },
+        {
+            "name": "Debug Configuration Service",
+            "type": "python",
+            "request": "launch",
+            "module": "services.configuration.src.main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/services",
+                "CONFIG_PORT": "8001"
+            },
+            "args": [],
+            "justMyCode": false
+        },
+        {
+            "name": "Debug Orchestration Service",
+            "type": "python",
+            "request": "launch",
+            "module": "services.orchestration.src.main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/services",
+                "ORCHESTRATION_PORT": "8005"
+            },
+            "args": [],
+            "justMyCode": false
+        }
+    ]
+}

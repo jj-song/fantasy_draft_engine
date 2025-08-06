@@ -1,0 +1,181 @@
+2025-08-06 03:04:37,410 - services.ml-models.src.serving.model_registry - INFO - 🏛️ Model Registry initialized with models directory: /Users/jihoonsong/Documents/projects/fantasy_draft_engine/saved_models
+2025-08-06 03:04:37,410 - services.ml-models.src.utils.feature_compatibility - INFO - ✅ FeatureCompatibilityMapper initialized with mappings for all positions
+2025-08-06 03:04:37,410 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Prediction Engine initialized with feature compatibility mapping
+2025-08-06 03:04:37,410 - services.ml-models.src.training.model_trainer - INFO - 🏭 Model Trainer initialized
+INFO:     Started server process [15648]
+INFO:     Waiting for application startup.
+2025-08-06 03:04:37,451 - services.ml-models.src.api.base_api - INFO - Starting ML Models Service service v1.0.0
+2025-08-06 03:04:37,451 - __main__ - INFO - 🤖 ML Models Service starting up...
+2025-08-06 03:04:37,451 - services.ml-models.src.serving.model_registry - INFO - 📂 Loading available models from registry...
+2025-08-06 03:04:37,451 - services.ml-models.src.serving.model_registry - INFO - Found 4 individual model files
+2025-08-06 03:04:38,216 - services.ml-models.src.serving.model_registry - INFO - 📦 Extracted RandomForestRegressor from model dict for TE
+2025-08-06 03:04:38,216 - services.ml-models.src.serving.model_registry - INFO - ✅ Loaded ensemble model for TE
+2025-08-06 03:04:38,223 - services.ml-models.src.serving.model_registry - INFO - 📦 Extracted RandomForestRegressor from model dict for WR
+2025-08-06 03:04:38,223 - services.ml-models.src.serving.model_registry - INFO - ✅ Loaded ensemble model for WR
+2025-08-06 03:04:38,229 - services.ml-models.src.serving.model_registry - INFO - 📦 Extracted RandomForestRegressor from model dict for RB
+2025-08-06 03:04:38,229 - services.ml-models.src.serving.model_registry - INFO - ✅ Loaded ensemble model for RB
+2025-08-06 03:04:38,236 - services.ml-models.src.serving.model_registry - INFO - 📦 Extracted RandomForestRegressor from model dict for QB
+2025-08-06 03:04:38,236 - services.ml-models.src.serving.model_registry - INFO - ✅ Loaded ensemble model for QB
+2025-08-06 03:04:38,236 - services.ml-models.src.serving.model_registry - INFO - 📊 Model loading summary: 4 models loaded
+2025-08-06 03:04:38,236 - services.ml-models.src.serving.model_registry - INFO -    Ensemble: ['TE', 'WR', 'RB', 'QB']
+2025-08-06 03:04:38,236 - __main__ - INFO - ✅ Existing models loaded successfully
+2025-08-06 03:04:38,236 - __main__ - INFO - ✅ ML Models Service started successfully
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-08-06 03:05:03,622 - services.ml-models.src.api.base_api - INFO - Request started: GET /api/v1/models/registry [correlation_id: 0407e58a-ef86-43fc-9736-ab32d6ed1e7d]
+2025-08-06 03:05:03,623 - services.ml-models.src.api.base_api - INFO - Request completed: GET /api/v1/models/registry Status: 200 Duration: 0.001s [correlation_id: 0407e58a-ef86-43fc-9736-ab32d6ed1e7d]
+INFO:     127.0.0.1:64109 - "GET /api/v1/models/registry HTTP/1.1" 200 OK
+2025-08-06 03:05:20,224 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict [correlation_id: 00584c17-78f0-45cd-b1c5-05a95c9c9511]
+2025-08-06 03:05:20,225 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating single prediction for QB player
+2025-08-06 03:05:20,225 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for QB
+2025-08-06 03:05:20,226 - services.ml-models.src.serving.prediction_engine - ERROR - Single prediction failed for QB: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- dual_threat_score
+- games_played
+- passing_attempts
+- passing_completions
+- passing_touchdowns
+- ...
+
+2025-08-06 03:05:20,226 - __main__ - ERROR - Prediction failed for QB: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- dual_threat_score
+- games_played
+- passing_attempts
+- passing_completions
+- passing_touchdowns
+- ...
+
+2025-08-06 03:05:20,226 - services.ml-models.src.api.base_api - ERROR - HTTP Exception: 500 - Prediction error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- dual_threat_score
+- games_played
+- passing_attempts
+- passing_completions
+- passing_touchdowns
+- ...
+ [correlation_id: 00584c17-78f0-45cd-b1c5-05a95c9c9511]
+2025-08-06 03:05:20,226 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict Status: 500 Duration: 0.002s [correlation_id: 00584c17-78f0-45cd-b1c5-05a95c9c9511]
+INFO:     127.0.0.1:64141 - "POST /api/v1/models/predict HTTP/1.1" 500 Internal Server Error
+2025-08-06 03:05:41,048 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict [correlation_id: f3d71753-c101-4c64-a9a7-c210c5dafe3a]
+2025-08-06 03:05:41,049 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating single prediction for QB player
+2025-08-06 03:05:41,049 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for QB
+2025-08-06 03:05:41,077 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Single prediction generated: 18.06 points for QB using random_forest
+2025-08-06 03:05:41,078 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict Status: 200 Duration: 0.029s [correlation_id: f3d71753-c101-4c64-a9a7-c210c5dafe3a]
+INFO:     127.0.0.1:64191 - "POST /api/v1/models/predict HTTP/1.1" 200 OK
+2025-08-06 03:05:56,835 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: 65b04937-26c9-4f71-92c4-5b22b9ea971c]
+2025-08-06 03:05:56,835 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 2 RB players
+2025-08-06 03:05:56,835 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for RB
+2025-08-06 03:05:56,836 - services.ml-models.src.serving.prediction_engine - ERROR - Batch prediction failed for RB: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- attempts
+- yards_per_attempt
+- yards_per_reception
+Feature names seen at fit time, yet now missing:
+- carries
+- dual_threat_score
+- rushing_share
+- target_share
+- targets
+- ...
+
+2025-08-06 03:05:56,836 - __main__ - ERROR - Batch prediction failed for RB: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- attempts
+- yards_per_attempt
+- yards_per_reception
+Feature names seen at fit time, yet now missing:
+- carries
+- dual_threat_score
+- rushing_share
+- target_share
+- targets
+- ...
+
+2025-08-06 03:05:56,836 - services.ml-models.src.api.base_api - ERROR - HTTP Exception: 500 - Batch prediction error: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- attempts
+- yards_per_attempt
+- yards_per_reception
+Feature names seen at fit time, yet now missing:
+- carries
+- dual_threat_score
+- rushing_share
+- target_share
+- targets
+- ...
+ [correlation_id: 65b04937-26c9-4f71-92c4-5b22b9ea971c]
+2025-08-06 03:05:56,836 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 500 Duration: 0.002s [correlation_id: 65b04937-26c9-4f71-92c4-5b22b9ea971c]
+INFO:     127.0.0.1:64220 - "POST /api/v1/models/predict-batch HTTP/1.1" 500 Internal Server Error
+2025-08-06 03:06:17,802 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: d483fcf4-d0e4-48c6-a467-7862a3ff0e89]
+2025-08-06 03:06:17,802 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 2 RB players
+2025-08-06 03:06:17,802 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for RB
+2025-08-06 03:06:17,816 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 2 predictions for RB
+2025-08-06 03:06:17,816 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 12.08 points using random_forest
+2025-08-06 03:06:17,817 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.015s [correlation_id: d483fcf4-d0e4-48c6-a467-7862a3ff0e89]
+INFO:     127.0.0.1:64267 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:07,742 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: e50ba4c0-ec92-4696-9728-dbaabf527df8]
+2025-08-06 03:10:07,743 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 78 QB players
+2025-08-06 03:10:07,743 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for QB
+2025-08-06 03:10:07,761 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 78 predictions for QB
+2025-08-06 03:10:07,761 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 11.69 points using random_forest
+2025-08-06 03:10:07,764 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.022s [correlation_id: e50ba4c0-ec92-4696-9728-dbaabf527df8]
+INFO:     127.0.0.1:65013 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:08,766 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: de6881dc-e2c5-402d-a513-21e9a43213f8]
+2025-08-06 03:10:08,766 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 145 RB players
+2025-08-06 03:10:08,766 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for RB
+2025-08-06 03:10:08,781 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 145 predictions for RB
+2025-08-06 03:10:08,781 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 3.72 points using random_forest
+2025-08-06 03:10:08,785 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.020s [correlation_id: de6881dc-e2c5-402d-a513-21e9a43213f8]
+INFO:     127.0.0.1:65015 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:10,331 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: 0df18994-7318-4d6e-baac-ad07fe0e127f]
+2025-08-06 03:10:10,332 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 227 WR players
+2025-08-06 03:10:10,332 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for WR
+2025-08-06 03:10:10,347 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 227 predictions for WR
+2025-08-06 03:10:10,347 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 4.26 points using random_forest
+2025-08-06 03:10:10,352 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.022s [correlation_id: 0df18994-7318-4d6e-baac-ad07fe0e127f]
+INFO:     127.0.0.1:65017 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:11,189 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: bc77fdc9-f2bf-48f3-860d-f482068d5039]
+2025-08-06 03:10:11,190 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 119 TE players
+2025-08-06 03:10:11,190 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for TE
+2025-08-06 03:10:11,205 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 119 predictions for TE
+2025-08-06 03:10:11,205 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 3.04 points using random_forest
+2025-08-06 03:10:11,208 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.019s [correlation_id: bc77fdc9-f2bf-48f3-860d-f482068d5039]
+INFO:     127.0.0.1:65019 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:45,120 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: 544dd2c8-df0a-4e6d-b6e5-9aff6c974f7b]
+2025-08-06 03:10:45,121 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 78 QB players
+2025-08-06 03:10:45,121 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for QB
+2025-08-06 03:10:45,136 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 78 predictions for QB
+2025-08-06 03:10:45,136 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 11.69 points using random_forest
+2025-08-06 03:10:45,138 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.017s [correlation_id: 544dd2c8-df0a-4e6d-b6e5-9aff6c974f7b]
+INFO:     127.0.0.1:65097 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:46,104 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: f9c7684a-00d7-45ba-a39b-7b6fb03ffda1]
+2025-08-06 03:10:46,105 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 145 RB players
+2025-08-06 03:10:46,105 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for RB
+2025-08-06 03:10:46,120 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 145 predictions for RB
+2025-08-06 03:10:46,120 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 3.72 points using random_forest
+2025-08-06 03:10:46,124 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.020s [correlation_id: f9c7684a-00d7-45ba-a39b-7b6fb03ffda1]
+INFO:     127.0.0.1:65099 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:47,670 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: 7675493b-0658-4101-a70d-c697fb485c0f]
+2025-08-06 03:10:47,671 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 227 WR players
+2025-08-06 03:10:47,671 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for WR
+2025-08-06 03:10:47,686 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 227 predictions for WR
+2025-08-06 03:10:47,686 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 4.26 points using random_forest
+2025-08-06 03:10:47,692 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.022s [correlation_id: 7675493b-0658-4101-a70d-c697fb485c0f]
+INFO:     127.0.0.1:65101 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 03:10:48,490 - services.ml-models.src.api.base_api - INFO - Request started: POST /api/v1/models/predict-batch [correlation_id: ee483457-a18e-4d57-a786-737f4d589fc3]
+2025-08-06 03:10:48,492 - services.ml-models.src.serving.prediction_engine - INFO - 🎯 Generating batch predictions for 119 TE players
+2025-08-06 03:10:48,492 - services.ml-models.src.serving.prediction_engine - INFO - Using ensemble model for TE
+2025-08-06 03:10:48,506 - services.ml-models.src.serving.prediction_engine - INFO - ✅ Batch predictions generated: 119 predictions for TE
+2025-08-06 03:10:48,506 - services.ml-models.src.serving.prediction_engine - INFO -    Average prediction: 3.04 points using random_forest
+2025-08-06 03:10:48,509 - services.ml-models.src.api.base_api - INFO - Request completed: POST /api/v1/models/predict-batch Status: 200 Duration: 0.019s [correlation_id: ee483457-a18e-4d57-a786-737f4d589fc3]
+INFO:     127.0.0.1:65103 - "POST /api/v1/models/predict-batch HTTP/1.1" 200 OK
+2025-08-06 10:31:10,180 - services.ml-models.src.api.base_api - INFO - Request started: GET /health/live [correlation_id: 0719d9e7-8ec7-4a95-897d-be53889295fa]
+2025-08-06 10:31:10,184 - services.ml-models.src.api.base_api - INFO - Request completed: GET /health/live Status: 200 Duration: 0.004s [correlation_id: 0719d9e7-8ec7-4a95-897d-be53889295fa]
+INFO:     127.0.0.1:49999 - "GET /health/live HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2025-08-06 10:32:16,867 - services.ml-models.src.api.base_api - INFO - Shutting down ML Models Service service
+2025-08-06 10:32:16,867 - services.ml-models.src.api.base_api - INFO - ML Models Service shutdown completed
+INFO:     Application shutdown complete.
+INFO:     Finished server process [15648]
