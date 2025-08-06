@@ -74,7 +74,7 @@ services:
       - ml-models
       - redis
     volumes:
-      - ./data:/app/data
+      - ./data:/data
       - ./logs:/app/logs
     
   orchestration:

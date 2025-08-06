@@ -62,8 +62,44 @@ class ModelRegistry:
                 logger.warning(f"Models directory does not exist: {self.models_dir}")
                 return available_models
             
+            # Check for deprecated models directory first
+            deprecated_dir = self.models_dir / "deprecated_models"
+            if deprecated_dir.exists():
+                deprecated_files = list(deprecated_dir.glob("*.joblib"))
+                if deprecated_files:
+                    logger.warning(f"⚠️ Found {len(deprecated_files)} deprecated models - these will be ignored")
+            
+            # Load baseline models from baseline_models directory (our new models)
+            baseline_dir = self.models_dir / "baseline_models"
+            if baseline_dir.exists():
+                logger.info(f"🎯 Loading new baseline models from: {baseline_dir}")
+                baseline_files = list(baseline_dir.glob("*.joblib"))
+                
+                for baseline_file in baseline_files:
+                    try:
+                        # Parse baseline model filename (e.g., qb_baseline_models.joblib)
+                        filename = baseline_file.stem
+                        
+                        if "_baseline_models" in filename:
+                            position = filename.replace("_baseline_models", "")
+                            model_type = "baseline"
+                            
+                            # Load baseline models data
+                            model_data = joblib.load(baseline_file)
+                            
+                            # Register the model
+                            await self._register_baseline_models(position.upper(), baseline_file, model_data)
+                            
+                            available_models[model_type].append(position.upper())
+                            logger.info(f"✅ Loaded new baseline models for {position.upper()}")
+                    
+                    except Exception as e:
+                        logger.error(f"Failed to load baseline model from {baseline_file}: {e}")
+                        continue
+            
+            # Also check for individual model files in main directory (legacy support)
             model_files = list(self.models_dir.glob("*.joblib"))
-            logger.info(f"Found {len(model_files)} model files")
+            logger.info(f"Found {len(model_files)} individual model files")
             
             for model_file in model_files:
                 try:
@@ -73,7 +109,7 @@ class ModelRegistry:
                     if "_ensemble_model" in filename:
                         position = filename.replace("_ensemble_model", "")
                         model_type = "ensemble"
-                    elif "_baseline_model" in filename:
+                    elif "_baseline_model" in filename and "baseline_models" not in filename:
                         position = filename.replace("_baseline_model", "")
                         model_type = "baseline"
                     elif "_advanced_engineering_model" in filename:
@@ -83,7 +119,11 @@ class ModelRegistry:
                         position = filename.replace("_basic_engineering_model", "")
                         model_type = "basic"
                     else:
-                        logger.warning(f"Unknown model file format: {filename}")
+                        # Skip unknown formats or baseline_models files (already processed)
+                        continue
+                    
+                    # Skip if we already loaded baseline models for this position
+                    if model_type == "baseline" and position.upper() in available_models["baseline"]:
                         continue
                     
                     # Load model to get metadata
@@ -112,6 +152,70 @@ class ModelRegistry:
             logger.error(f"Failed to load available models: {e}")
             return available_models
     
+    async def _register_baseline_models(self, position: str, baseline_file: Path, model_data: Any):
+        """Register baseline models from our Phase 2 implementation."""
+        try:
+            # Our baseline models are stored as dictionaries with multiple models
+            if isinstance(model_data, dict) and 'models' in model_data:
+                # Get the best performing model from our baseline collection
+                performance = model_data.get('performance', {})
+                
+                # Find the best model based on validation R²
+                best_model_name = None
+                best_r2 = -999
+                
+                for model_name, perf in performance.items():
+                    val_r2 = perf.get('val_r2', -999)
+                    if val_r2 > best_r2:
+                        best_r2 = val_r2
+                        best_model_name = model_name
+                
+                if best_model_name and best_model_name in model_data['models']:
+                    model_key = f"{position}_baseline"
+                    
+                    # Create a wrapper for the best model
+                    best_model = model_data['models'][best_model_name]
+                    
+                    # Store the best model with prediction capability
+                    model_wrapper = {
+                        'model': best_model,
+                        'scaler': model_data.get('scaler'),
+                        'feature_names': model_data.get('feature_names', []),
+                        'position': position,
+                        'model_name': best_model_name,
+                        'performance': performance.get(best_model_name, {}),
+                        'use_scaling': best_model_name in ['ridge_regression', 'lasso_regression'],
+                        'mean_baseline_value': model_data.get('mean_baseline_value', 0.0)
+                    }
+                    
+                    self.registered_models[model_key] = model_wrapper
+                    
+                    # Store metadata
+                    self.model_metadata[model_key] = {
+                        "position": position,
+                        "model_type": "baseline",
+                        "file_path": str(baseline_file),
+                        "file_size": baseline_file.stat().st_size,
+                        "loaded_at": datetime.now().isoformat(),
+                        "last_modified": datetime.fromtimestamp(baseline_file.stat().st_mtime).isoformat(),
+                        "is_trained": True,
+                        "model_class": f"BaselineWrapper({type(best_model).__name__})",
+                        "best_model_name": best_model_name,
+                        "validation_r2": best_r2,
+                        "realistic_model": True,  # Flag indicating this is our new realistic model
+                        "feature_count": len(model_data.get('feature_names', [])),
+                        "training_samples": model_data.get('training_stats', {}).get('train_samples', 0)
+                    }
+                    
+                    logger.info(f"✅ Registered baseline model for {position}: {best_model_name} (R² = {best_r2:.3f})")
+                else:
+                    logger.error(f"No valid best model found for {position}")
+            else:
+                logger.error(f"Invalid baseline model format for {position}")
+        
+        except Exception as e:
+            logger.error(f"Failed to register baseline models for {position}: {e}")
+
     async def _register_model_from_file(self, position: str, model_type: str, model_file: Path, model_data: Any):
         """Register a model loaded from file."""
         model_key = f"{position}_{model_type}"

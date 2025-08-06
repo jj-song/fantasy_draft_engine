@@ -42,10 +42,11 @@ class EnsembleFantasyModel:
         """
         self.position = position
         self.model = RandomForestRegressor(
-            n_estimators=100,
-            max_depth=10,
-            min_samples_split=5,
-            min_samples_leaf=2,
+            n_estimators=50,          # Reduced to prevent overfitting
+            max_depth=6,              # Shallower trees to reduce complexity
+            min_samples_split=20,     # Higher threshold to prevent overspecialization
+            min_samples_leaf=10,      # Larger leaf sizes to smooth predictions
+            max_features=0.7,         # Use subset of features to reduce overfitting
             random_state=42,
             n_jobs=-1
         )
@@ -132,19 +133,42 @@ class EnsembleFantasyModel:
         train_pred = self.model.predict(X_train_processed)
         val_pred = self.model.predict(X_val_processed)
         
+        train_rmse = np.sqrt(mean_squared_error(y_train, train_pred))
+        val_rmse = np.sqrt(mean_squared_error(y_val, val_pred))
+        train_r2 = r2_score(y_train, train_pred)
+        val_r2 = r2_score(y_val, val_pred)
+        
+        # Calculate overfitting indicators
+        rmse_ratio = val_rmse / train_rmse if train_rmse > 0 else float('inf')
+        r2_diff = train_r2 - val_r2
+        
         metrics = {
-            'train_rmse': np.sqrt(mean_squared_error(y_train, train_pred)),
-            'val_rmse': np.sqrt(mean_squared_error(y_val, val_pred)),
-            'train_r2': r2_score(y_train, train_pred),
-            'val_r2': r2_score(y_val, val_pred),
+            'train_rmse': train_rmse,
+            'val_rmse': val_rmse,
+            'train_r2': train_r2,
+            'val_r2': val_r2,
+            'rmse_ratio': rmse_ratio,
+            'r2_difference': r2_diff,
             'feature_count': len(self.feature_names),
-            'sample_count': len(X_train) + len(X_val)
+            'sample_count': len(X_train) + len(X_val),
+            'overfitting_detected': rmse_ratio > 1.3 or r2_diff > 0.1 or val_r2 > 0.85
         }
         
         logger.info(f"✅ Training completed for {self.position}")
         logger.info(f"Training RMSE: {metrics['train_rmse']:.3f}")
         logger.info(f"Validation RMSE: {metrics['val_rmse']:.3f}")
         logger.info(f"Validation R²: {metrics['val_r2']:.3f}")
+        logger.info(f"RMSE Ratio (val/train): {metrics['rmse_ratio']:.3f}")
+        logger.info(f"R² Difference (train-val): {metrics['r2_difference']:.3f}")
+        
+        # Issue overfitting warning
+        if metrics['overfitting_detected']:
+            logger.warning("⚠️ OVERFITTING DETECTED!")
+            logger.warning(f"   - RMSE Ratio: {metrics['rmse_ratio']:.3f} (should be < 1.3)")
+            logger.warning(f"   - R² Difference: {metrics['r2_difference']:.3f} (should be < 0.1)")
+            logger.warning(f"   - Validation R²: {metrics['val_r2']:.3f} (should be < 0.85 for realistic models)")
+        else:
+            logger.info("✅ Model validation passed - no overfitting detected")
         
         return metrics
     

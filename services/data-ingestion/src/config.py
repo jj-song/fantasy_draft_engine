@@ -27,9 +27,10 @@ def get_data_paths() -> Dict[str, str]:
     if is_container:
         base_path = "/app/data"
     else:
-        # Local development - use centralized data directory
+        # Local development - use centralized data directory at project root
         # Navigate from service directory to project root data
-        base_path = "../../data"
+        project_root = Path(__file__).parent.parent.parent.parent
+        base_path = str(project_root / "data")
     
     return {
         "base": base_path,

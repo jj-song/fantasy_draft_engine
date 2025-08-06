@@ -2,10 +2,15 @@
 
 ## Essential Commands
 
-• `python generate_draft_rankings.py` - Generate ML-powered draft rankings
-• `python test_ranking_service_integration.py` - Test complete ML integration 
-• `python test_model_inference.py` - Test individual model predictions
+• `python -m services.ranking.src.main` - Start ranking service (microservices)
+• `python -m services.ml-models.src.main` - Start ML models service (microservices)
 • `pytest tests/` - Run all tests
+
+## Utilities
+
+• `python utils/data_inspection/inspect_parquet.py` - Inspect parquet file structure and data
+• `python utils/data_inspection/inspect_baseline_models.py` - Analyze model features and compatibility
+• `utils/wait-for-services.sh` - Docker utility for service startup coordination
 
 ## Tech Stack
 
@@ -60,6 +65,12 @@
 • `services/ranking/` - ✅ **INTEGRATION COMPLETE** VOR + ML predictions + export
 • `services/configuration/` - Centralized configuration management
 • `services/orchestration/` - Workflow coordination
+
+### Utilities
+• `utils/data_inspection/` - Data and model inspection tools
+• `utils/validation/` - Pipeline validation utilities (future)
+• `utils/core_scripts/` - Essential scripts (future)
+• `utils/` - Docker and infrastructure utilities
 
 ## Data Structure (Current as of August 2025)
 

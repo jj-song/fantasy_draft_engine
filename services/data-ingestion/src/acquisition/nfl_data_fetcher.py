@@ -286,9 +286,10 @@ def save_player_season_stats(df, year):
     Returns:
         str: Path to the saved file
     """
-    # Create the raw data directory if it doesn't exist
+    # Create the raw data directory if it doesn't exist - use project root
     config = get_config()
-    raw_data_dir = os.path.join(Path(__file__).parent.parent, config.get('paths.raw_data_dir', 'data/raw'))
+    project_root = Path(__file__).parent.parent.parent.parent.parent  # Navigate to project root
+    raw_data_dir = os.path.join(project_root, config.get('paths.raw_data_dir', 'data/raw'))
     os.makedirs(raw_data_dir, exist_ok=True)
     
     # Define the output file path

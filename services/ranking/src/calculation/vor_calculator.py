@@ -128,14 +128,9 @@ class VORCalculator:
             predictions = await self._get_position_predictions(position, season)
             
             if not predictions or len(predictions) == 0:
-                logger.warning(f"No predictions available for {position}")
-                return {
-                    "position": position,
-                    "players": [],
-                    "replacement_level": 0,
-                    "vor_calculated": False,
-                    "error": "No predictions available"
-                }
+                error_msg = f"❌ CRITICAL: No predictions available for {position}"
+                logger.error(error_msg)
+                raise Exception(error_msg)
             
             # Sort players by projected points (descending)
             sorted_players = sorted(predictions, key=lambda x: x.get("prediction", 0), reverse=True)
@@ -207,49 +202,273 @@ class VORCalculator:
             }
     
     async def _get_position_predictions(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
-        """Get predictions for all players at a position."""
+        """Get predictions for all players at a position by calling ML Models Service."""
         try:
             # Check if we have cached predictions
             cache_key = f"predictions_{position}_{season or 'current'}"
             if cache_key in self.cached_predictions:
                 return self.cached_predictions[cache_key]
             
-            # Try to get predictions from ML models service
-            try:
-                logger.info(f"🔄 Getting predictions from ML Models service for {position}...")
-                
-                # This would typically involve calling the ML models service with player data
-                # For now, we'll try to load existing prediction data
-                predictions = await self._load_prediction_data(position, season)
-                
-                if predictions:
-                    self.cached_predictions[cache_key] = predictions
-                    logger.info(f"✅ Loaded {len(predictions)} predictions for {position}")
-                    return predictions
-                else:
-                    logger.warning(f"No prediction data found for {position}")
-                    return []
+            logger.info(f"🔄 Getting predictions from ML Models service for {position}...")
             
+            # Load 2024 player data for inference
+            player_data = await self._load_current_player_data(position, season)
+            
+            if not player_data:
+                error_msg = f"❌ CRITICAL: No current player data found for {position}"
+                logger.error(error_msg)
+                raise Exception(error_msg)
+            
+            # Call ML Models Service for batch predictions
+            try:
+                predictions = await self._call_ml_models_service(position, player_data)
+                logger.info(f"✅ Got predictions from ML Models Service for {position}")
             except Exception as e:
-                logger.warning(f"Could not get predictions from ML Models service: {e}")
+                logger.warning(f"ML Models Service failed, using feature-based estimates: {e}")
+                # Fallback to using the loaded features to estimate predictions
+                predictions = self._estimate_predictions_from_features(player_data, position)
+            
+            if predictions:
+                self.cached_predictions[cache_key] = predictions
+                logger.info(f"✅ Loaded {len(predictions)} predictions for {position}")
+                return predictions
+            else:
+                error_msg = f"❌ CRITICAL: No predictions generated for {position}"
+                logger.error(error_msg)
                 return []
         
         except Exception as e:
-            logger.error(f"Failed to get position predictions for {position}: {e}")
-            return []
+            # Only catch exceptions from player data loading, not from prediction generation
+            if "current player data" in str(e):
+                error_msg = f"❌ CRITICAL: Failed to get position predictions for {position}: {str(e)}"
+                logger.error(error_msg)
+                logger.error(f"Full error details: {e}", exc_info=True)
+                raise
+            else:
+                # For other exceptions, return empty list
+                logger.error(f"Unexpected error in prediction generation: {e}")
+                return []
     
+    async def _load_current_player_data(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
+        """Load current player data for inference (2024 data)."""
+        try:
+            # Try to load from data files first - use local project path
+            data_dir = services_root / "data" / "processed"
+            logger.info(f"🔍 Looking for current player data in: {data_dir}")
+            
+            # Look for 2024 player data files
+            player_data_files = [
+                data_dir / "position_specific" / position.lower() / f"{position.lower()}_features_2024.parquet",
+                data_dir / "position_specific" / f"{position.lower()}_features_2024.parquet",
+                data_dir / f"player_stats_2024.parquet"
+            ]
+            
+            for file_path in player_data_files:
+                if file_path.exists():
+                    try:
+                        df = pd.read_parquet(file_path)
+                        
+                        # Filter for position if needed
+                        if 'position' in df.columns:
+                            df = df[df['position'] == position]
+                        
+                        if not df.empty:
+                            # Convert to the format expected by ML Models Service
+                            player_data = []
+                            for _, row in df.iterrows():
+                                # Extract features for ML model
+                                features = self._extract_ml_features(row, position)
+                                
+                                player_record = {
+                                    "player_data": {
+                                        "player_id": row.get('player_id', f"player_{len(player_data)}"),
+                                        "player_name": row.get('player_name', f"{position}_Player_{len(player_data)}"),
+                                        "team": row.get('team', 'UNK'),
+                                        "position": position
+                                    },
+                                    "features": features
+                                }
+                                player_data.append(player_record)
+                            
+                            if player_data:
+                                logger.info(f"✅ Loaded {len(player_data)} player records from {file_path.name}")
+                                return player_data
+                    
+                    except Exception as e:
+                        logger.warning(f"Could not load player data from {file_path}: {e}")
+                        continue
+            
+            # If no data found, raise an error instead of generating mock data
+            error_msg = f"❌ CRITICAL: No current player data found for {position}. Checked paths: {[str(p) for p in player_data_files]}"
+            logger.error(error_msg)
+            logger.error(f"Data directory: {data_dir}")
+            logger.error(f"Data directory exists: {data_dir.exists()}")
+            if data_dir.exists():
+                logger.error(f"Contents of data directory: {list(data_dir.glob('**/*'))}")
+            raise FileNotFoundError(error_msg)
+        
+        except Exception as e:
+            error_msg = f"❌ CRITICAL: Failed to load current player data for {position}: {str(e)}"
+            logger.error(error_msg)
+            logger.error(f"Full error details: {e}", exc_info=True)
+            raise
+
+    async def _call_ml_models_service(self, position: str, player_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Call ML Models Service for batch predictions."""
+        try:
+            import requests
+            import json
+            
+            # Prepare the request for ML Models Service
+            batch_request = {
+                "position": position,
+                "predictions_data": player_data
+            }
+            
+            # Call ML Models Service batch prediction endpoint
+            response = requests.post(
+                f"{self.ml_models_service_url}/api/v1/models/predict-batch",
+                json=batch_request,
+                timeout=60
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                if result.get("status") == "success":
+                    predictions_data = result.get("data", {}).get("predictions", [])
+                    
+                    # Convert ML service response to VOR calculator format
+                    predictions = []
+                    for pred in predictions_data:
+                        player_info = pred.get("player_info", {})
+                        prediction = {
+                            "player_id": player_info.get("player_id"),
+                            "player_name": player_info.get("player_name", "Unknown"),
+                            "team": player_info.get("team", "Unknown"),
+                            "position": position,
+                            "prediction": pred.get("predicted_fantasy_points", 0.0)
+                        }
+                        predictions.append(prediction)
+                    
+                    logger.info(f"✅ Got {len(predictions)} predictions from ML Models Service")
+                    return predictions
+                else:
+                    raise Exception(f"ML Models Service error: {result}")
+            else:
+                raise Exception(f"ML Models Service HTTP error {response.status_code}: {response.text}")
+        
+        except Exception as e:
+            error_msg = f"❌ CRITICAL: Failed to get predictions from ML Models Service: {str(e)}"
+            logger.error(error_msg)
+            raise
+
+    def _estimate_predictions_from_features(self, player_data: List[Dict[str, Any]], position: str) -> List[Dict[str, Any]]:
+        """Estimate predictions from player features when ML service is not available."""
+        predictions = []
+        
+        for data in player_data:
+            player_info = data["player_data"]
+            features = data["features"]
+            
+            # Use a simple heuristic to estimate fantasy points based on key stats
+            estimated_points = 0.0
+            
+            if position == "RB":
+                # RB scoring: rushing_yards * 0.1 + rushing_tds * 6 + receptions * 0.5 + receiving_yards * 0.1 + receiving_tds * 6
+                estimated_points = (
+                    features.get("rushing_yards", 0) * 0.1 +
+                    features.get("rushing_tds", 0) * 6 +
+                    features.get("receptions", 0) * 0.5 +
+                    features.get("receiving_yards", 0) * 0.1 +
+                    features.get("receiving_tds", 0) * 6
+                )
+            elif position == "QB":
+                # QB scoring: passing_yards * 0.04 + passing_tds * 4 + rushing_yards * 0.1 + rushing_tds * 6
+                estimated_points = (
+                    features.get("passing_yards", 0) * 0.04 +
+                    features.get("passing_tds", 0) * 4 +
+                    features.get("rushing_yards", 0) * 0.1 +
+                    features.get("rushing_tds", 0) * 6
+                )
+            elif position in ["WR", "TE"]:
+                # WR/TE scoring: receptions * 0.5 + receiving_yards * 0.1 + receiving_tds * 6
+                estimated_points = (
+                    features.get("receptions", 0) * 0.5 +
+                    features.get("receiving_yards", 0) * 0.1 +
+                    features.get("receiving_tds", 0) * 6
+                )
+            
+            # Ensure reasonable bounds for predictions
+            estimated_points = max(0, min(estimated_points, 30))  # Cap at reasonable max
+            
+            prediction = {
+                "player_id": player_info.get("player_id"),
+                "player_name": player_info.get("player_name", "Unknown"),
+                "team": player_info.get("team", "Unknown"),
+                "position": position,
+                "prediction": float(estimated_points)
+            }
+            predictions.append(prediction)
+        
+        logger.info(f"✅ Generated {len(predictions)} estimated predictions for {position}")
+        return predictions
+
+    def _extract_ml_features(self, row: pd.Series, position: str) -> Dict[str, float]:
+        """Extract features for ML model prediction."""
+        try:
+            # Extract numeric features that the ML models expect
+            # This should match the feature names used during training
+            features = {}
+            
+            # Common features across all positions
+            numeric_columns = ['games', 'rushing_yards', 'rushing_tds', 'receptions', 'targets', 
+                             'receiving_yards', 'receiving_tds', 'fantasy_points', 'fantasy_points_ppr']
+            
+            # Position-specific features
+            if position == "QB":
+                numeric_columns.extend(['passing_yards', 'passing_tds', 'interceptions', 'sacks'])
+            elif position == "RB":
+                numeric_columns.extend(['carries', 'rushing_fumbles', 'target_share'])
+            elif position in ["WR", "TE"]:
+                numeric_columns.extend(['air_yards_share', 'target_share', 'receiving_air_yards'])
+            
+            # Extract available numeric features
+            for col in numeric_columns:
+                if col in row.index:
+                    value = row[col]
+                    # Convert to float, handling NaN values
+                    if pd.isna(value):
+                        features[col] = 0.0
+                    else:
+                        features[col] = float(value)
+                else:
+                    # Default value if column doesn't exist
+                    features[col] = 0.0
+            
+            return features
+        
+        except Exception as e:
+            logger.warning(f"Error extracting features for {position}: {e}")
+            # Return minimal feature set
+            return {
+                'games': 0.0,
+                'fantasy_points': 0.0,
+                'fantasy_points_ppr': 0.0
+            }
+
     async def _load_prediction_data(self, position: str, season: Optional[int]) -> List[Dict[str, Any]]:
         """Load prediction data from files or generate mock data."""
         try:
-            # Try to load from data files first (use Docker volume mount path)
-            data_dir = Path("/app/data/processed")
+            # Try to load from data files first - use local project path
+            data_dir = services_root / "data" / "processed"
+            logger.info(f"🔍 Looking for prediction data in: {data_dir}")
             
-            # Look for existing prediction or ranking files
-            # Use the most recent year's feature data (2023 for now)
+            # Look for existing player data files
+            # Use the most recent year's feature data (2024 for current players)
             prediction_files = [
-                data_dir / "position_specific" / position.lower() / f"{position.lower()}_features_2023.parquet",
-                data_dir / "position_specific" / f"{position.lower()}_features_2023.parquet",
-                data_dir / f"training_features_2023_with_matchup_intel.parquet"
+                data_dir / "position_specific" / position.lower() / f"{position.lower()}_features_2024.parquet",
+                data_dir / "position_specific" / f"{position.lower()}_features_2024.parquet",
+                data_dir / f"player_stats_2024.parquet"
             ]
             
             for file_path in prediction_files:
@@ -287,13 +506,20 @@ class VORCalculator:
                         logger.warning(f"Could not load predictions from {file_path}: {e}")
                         continue
             
-            # If no data found, generate mock data for testing
-            logger.warning(f"No prediction data found for {position}, generating mock data for testing")
-            return self._generate_mock_predictions(position)
+            # If no data found, raise an error instead of generating mock data
+            error_msg = f"❌ CRITICAL: No prediction data found for {position}. Checked paths: {[str(p) for p in prediction_files]}"
+            logger.error(error_msg)
+            logger.error(f"Data directory: {data_dir}")
+            logger.error(f"Data directory exists: {data_dir.exists()}")
+            if data_dir.exists():
+                logger.error(f"Contents of data directory: {list(data_dir.glob('**/*'))}")
+            raise FileNotFoundError(error_msg)
         
         except Exception as e:
-            logger.error(f"Failed to load prediction data for {position}: {e}")
-            return []
+            error_msg = f"❌ CRITICAL: Failed to load prediction data for {position}: {str(e)}"
+            logger.error(error_msg)
+            logger.error(f"Full error details: {e}", exc_info=True)
+            raise
     
     def _estimate_points_from_stats(self, row: pd.Series, position: str) -> float:
         """Estimate fantasy points from basic stats."""

@@ -143,8 +143,10 @@ class ScoringEngine:
             vor_results = await vor_calculator.calculate_position_vor(position, season)
             
             if not vor_results.get("vor_calculated", False) or not vor_results.get("players"):
-                logger.warning(f"No VOR data available for {position}, falling back to sample data")
-                players = await self._generate_position_sample_data(position)
+                error_msg = f"❌ CRITICAL: No VOR data available for {position}. VOR calculation failed or returned empty results."
+                logger.error(error_msg)
+                logger.error(f"VOR results: {vor_results}")
+                raise Exception(error_msg)
             else:
                 # Use real player data from VOR calculations
                 players = vor_results["players"]
@@ -161,10 +163,10 @@ class ScoringEngine:
             return players
         
         except Exception as e:
-            logger.error(f"Failed to get players for {position}: {e}")
-            logger.warning("Falling back to sample data due to error")
-            # Fallback to sample data if real data fails
-            return await self._generate_position_sample_data(position)
+            error_msg = f"❌ CRITICAL: Failed to get players for {position}: {str(e)}"
+            logger.error(error_msg)
+            logger.error(f"Full error details: {e}", exc_info=True)
+            raise Exception(error_msg) from e
     
     async def _generate_position_sample_data(self, position: str) -> List[Dict[str, Any]]:
         """Generate sample player data for a position."""

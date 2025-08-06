@@ -66,45 +66,52 @@ class PredictionEngine:
             logger.info(f"🎯 Generating single prediction for {position} player")
             
             # Get the best available model for this position
-            model = await self._get_best_model(position)
-            if model is None:
+            model_wrapper = await self._get_best_model(position)
+            if model_wrapper is None:
                 raise ValueError(f"No trained model available for position {position}")
             
-            # Prepare features for prediction
-            features_df = pd.DataFrame([features])
-            
-            # Apply feature mapping only for legacy baseline models, not our new ensemble models
-            model_type = self._get_model_type(model)
-            # Skip feature mapping for our newly trained ensemble models (they expect direct feature names)
-            if model_type in ['baseline', 'basic_engineering', 'advanced_engineering'] and model_type != 'ensemble':
-                logger.info(f"Applying feature mapping for {model_type} model")
-                original_shape = features_df.shape
-                features_df = self.feature_mapper.map_features_for_position(features_df, position)
-                logger.info(f"Feature mapping: {original_shape} → {features_df.shape}")
+            # Handle our new baseline model format
+            if isinstance(model_wrapper, dict) and 'model' in model_wrapper:
+                # This is our Phase 2 baseline model wrapper
+                model = model_wrapper['model']
+                scaler = model_wrapper.get('scaler')
+                feature_names = model_wrapper.get('feature_names', [])
+                use_scaling = model_wrapper.get('use_scaling', False)
+                model_name = model_wrapper.get('model_name', 'unknown')
                 
-                # Validate mapped features
-                validation = self.feature_mapper.validate_mapped_features(features_df, position)
-                if not validation['validation_passed']:
-                    logger.error(f"Feature mapping validation failed: {validation}")
-                    raise ValueError(f"Feature mapping failed for {position}: {validation['missing_features']}")
-            else:
-                logger.info(f"Skipping feature mapping for {model_type} model - using features as provided")
-            
-            # Validate features
-            await self._validate_features(features_df, position)
-            
-            # Generate prediction
-            if hasattr(model, 'predict'):
-                # Handle custom ensemble models that may need player_data
-                if hasattr(model, 'position') and hasattr(model, '__class__') and 'EnsembleFantasyModel' in str(model.__class__):
-                    player_df = pd.DataFrame([player_data]) if player_data else None
-                    prediction = model.predict(features_df, player_df)
+                logger.info(f"Using Phase 2 baseline model: {model_name} for {position}")
+                
+                # Prepare features using the expected feature names
+                if feature_names:
+                    # Create DataFrame with expected features, fill missing with 0
+                    features_data = {}
+                    for feature_name in feature_names:
+                        features_data[feature_name] = features.get(feature_name, 0.0)
+                    features_df = pd.DataFrame([features_data])
                 else:
-                    # Handle sklearn-style models (including our RandomForestRegressor ensemble models)
-                    prediction = model.predict(features_df)
+                    features_df = pd.DataFrame([features])
+                
+                # Apply scaling if required (Ridge, Lasso models)
+                if use_scaling and scaler is not None:
+                    features_array = scaler.transform(features_df.values)
+                else:
+                    features_array = features_df.values
+                
+                # Generate prediction
+                if model_name == 'mean_baseline':
+                    prediction = [model_wrapper.get('mean_baseline_value', 0.0)]
+                else:
+                    prediction = model.predict(features_array)
+                
+                model_type = f"baseline_{model_name}"
             else:
-                # Fallback for models without predict method
-                raise ValueError(f"Model does not have a predict method: {type(model)}")
+                # Handle legacy models
+                model = model_wrapper
+                features_df = pd.DataFrame([features])
+                model_type = self._get_model_type(model)
+                
+                # Generate prediction with legacy model
+                prediction = model.predict(features_df)
             
             # Format prediction result
             prediction_value = float(prediction[0]) if isinstance(prediction, (list, np.ndarray)) else float(prediction)
@@ -113,11 +120,11 @@ class PredictionEngine:
                 "position": position,
                 "predicted_fantasy_points": prediction_value,
                 "prediction": prediction_value,
-                "model_type": self._get_model_type(model),
+                "model_type": model_type,
                 "confidence": await self._calculate_confidence(prediction_value, position),
                 "prediction_timestamp": datetime.now().isoformat(),
                 "features_count": len(features),
-                "features_used": list(features_df.columns)
+                "realistic_model": True  # Flag indicating this uses our new realistic models
             }
             
             # Add player metadata if provided
@@ -128,7 +135,7 @@ class PredictionEngine:
                     "team": player_data.get("team")
                 }
             
-            logger.info(f"✅ Single prediction generated: {prediction_value:.2f} points for {position}")
+            logger.info(f"✅ Single prediction generated: {prediction_value:.2f} points for {position} using {model_type}")
             return result
         
         except Exception as e:
@@ -151,8 +158,8 @@ class PredictionEngine:
             logger.info(f"🎯 Generating batch predictions for {len(predictions_data)} {position} players")
             
             # Get the best available model for this position
-            model = await self._get_best_model(position)
-            if model is None:
+            model_wrapper = await self._get_best_model(position)
+            if model_wrapper is None:
                 raise ValueError(f"No trained model available for position {position}")
             
             # Prepare batch features
@@ -167,37 +174,51 @@ class PredictionEngine:
             if not features_list:
                 raise ValueError("No features provided for batch prediction")
             
-            # Create features DataFrame
-            features_df = pd.DataFrame(features_list)
-            
-            # Apply feature mapping for baseline models
-            model_type = self._get_model_type(model)
-            # Apply mapping for baseline models (which are typically RandomForest models)
-            if model_type in ['baseline', 'basic_engineering', 'advanced_engineering', 'random_forest', 'lightgbm']:
-                logger.info(f"Applying feature mapping for {model_type} model (batch)")
-                original_shape = features_df.shape
-                features_df = self.feature_mapper.map_features_for_position(features_df, position)
-                logger.info(f"Batch feature mapping: {original_shape} → {features_df.shape}")
+            # Handle our new baseline model format
+            if isinstance(model_wrapper, dict) and 'model' in model_wrapper:
+                # This is our Phase 2 baseline model wrapper
+                model = model_wrapper['model']
+                scaler = model_wrapper.get('scaler')
+                feature_names = model_wrapper.get('feature_names', [])
+                use_scaling = model_wrapper.get('use_scaling', False)
+                model_name = model_wrapper.get('model_name', 'unknown')
                 
-                # Validate mapped features
-                validation = self.feature_mapper.validate_mapped_features(features_df, position)
-                if not validation['validation_passed']:
-                    logger.error(f"Batch feature mapping validation failed: {validation}")
-                    raise ValueError(f"Batch feature mapping failed for {position}: {validation['missing_features']}")
-            
-            # Validate features
-            await self._validate_features(features_df, position)
-            
-            # Generate batch predictions
-            if hasattr(model, 'predict'):
-                # Handle ensemble models
-                if hasattr(model, 'position') and player_data_list:
-                    player_df = pd.DataFrame(player_data_list)
-                    predictions = model.predict(features_df, player_df)
+                logger.info(f"Using Phase 2 baseline model: {model_name} for {position} batch")
+                
+                # Prepare features using the expected feature names
+                if feature_names:
+                    # Create DataFrame with expected features, fill missing with 0
+                    batch_features_data = []
+                    for features in features_list:
+                        features_data = {}
+                        for feature_name in feature_names:
+                            features_data[feature_name] = features.get(feature_name, 0.0)
+                        batch_features_data.append(features_data)
+                    features_df = pd.DataFrame(batch_features_data)
                 else:
-                    predictions = model.predict(features_df)
+                    features_df = pd.DataFrame(features_list)
+                
+                # Apply scaling if required (Ridge, Lasso models)
+                if use_scaling and scaler is not None:
+                    features_array = scaler.transform(features_df.values)
+                else:
+                    features_array = features_df.values
+                
+                # Generate batch predictions
+                if model_name == 'mean_baseline':
+                    mean_value = model_wrapper.get('mean_baseline_value', 0.0)
+                    predictions = [mean_value] * len(features_list)
+                else:
+                    predictions = model.predict(features_array)
+                
+                model_type = f"baseline_{model_name}"
             else:
-                # Handle sklearn-style models
+                # Handle legacy models
+                model = model_wrapper
+                features_df = pd.DataFrame(features_list)
+                model_type = self._get_model_type(model)
+                
+                # Generate predictions with legacy model
                 predictions = model.predict(features_df)
             
             # Format batch results
@@ -209,11 +230,12 @@ class PredictionEngine:
                     "position": position,
                     "predicted_fantasy_points": prediction_value,
                     "prediction": prediction_value,
-                    "model_type": self._get_model_type(model),
+                    "model_type": model_type,
                     "confidence": await self._calculate_confidence(prediction_value, position),
                     "prediction_timestamp": datetime.now().isoformat(),
                     "batch_index": i,
-                    "features_count": len(features_list[i])
+                    "features_count": len(features_list[i]),
+                    "realistic_model": True  # Flag indicating this uses our new realistic models
                 }
                 
                 # Add player metadata if provided
@@ -227,7 +249,7 @@ class PredictionEngine:
                 results.append(result)
             
             logger.info(f"✅ Batch predictions generated: {len(results)} predictions for {position}")
-            logger.info(f"   Average prediction: {np.mean([r['prediction'] for r in results]):.2f} points")
+            logger.info(f"   Average prediction: {np.mean([r['prediction'] for r in results]):.2f} points using {model_type}")
             
             return results
         
