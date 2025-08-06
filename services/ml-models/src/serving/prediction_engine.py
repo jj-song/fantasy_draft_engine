@@ -105,13 +105,32 @@ class PredictionEngine:
                 
                 model_type = f"baseline_{model_name}"
             else:
-                # Handle legacy models
-                model = model_wrapper
-                features_df = pd.DataFrame([features])
-                model_type = self._get_model_type(model)
-                
-                # Generate prediction with legacy model
-                prediction = model.predict(features_df)
+                # Handle ensemble/legacy models - check if it's a dictionary with feature selection
+                if isinstance(model_wrapper, dict) and 'feature_names' in model_wrapper:
+                    # This is an ensemble model with feature selection capability
+                    model = model_wrapper['model']
+                    feature_names = model_wrapper['feature_names']
+                    model_type = f"ensemble_{model_wrapper.get('position', 'unknown').lower()}"
+                    
+                    logger.info(f"Using ensemble model for {position} with {len(feature_names)} required features")
+                    
+                    # Create DataFrame with only the required features
+                    features_data = {}
+                    for feature_name in feature_names:
+                        features_data[feature_name] = features.get(feature_name, 0.0)
+                    features_df = pd.DataFrame([features_data])
+                    
+                    # Generate prediction with selected features
+                    prediction = model.predict(features_df)
+                    
+                else:
+                    # Handle true legacy models (raw sklearn models)
+                    model = model_wrapper
+                    features_df = pd.DataFrame([features])
+                    model_type = self._get_model_type(model)
+                    
+                    # Generate prediction with legacy model
+                    prediction = model.predict(features_df)
             
             # Format prediction result
             prediction_value = float(prediction[0]) if isinstance(prediction, (list, np.ndarray)) else float(prediction)
@@ -213,13 +232,35 @@ class PredictionEngine:
                 
                 model_type = f"baseline_{model_name}"
             else:
-                # Handle legacy models
-                model = model_wrapper
-                features_df = pd.DataFrame(features_list)
-                model_type = self._get_model_type(model)
-                
-                # Generate predictions with legacy model
-                predictions = model.predict(features_df)
+                # Handle ensemble/legacy models - check if it's a dictionary with feature selection
+                if isinstance(model_wrapper, dict) and 'feature_names' in model_wrapper:
+                    # This is an ensemble model with feature selection capability
+                    model = model_wrapper['model']
+                    feature_names = model_wrapper['feature_names']
+                    model_type = f"ensemble_{model_wrapper.get('position', 'unknown').lower()}"
+                    
+                    logger.info(f"Using ensemble model for {position} batch with {len(feature_names)} required features")
+                    
+                    # Create DataFrame with only the required features for batch
+                    batch_features_data = []
+                    for features in features_list:
+                        features_data = {}
+                        for feature_name in feature_names:
+                            features_data[feature_name] = features.get(feature_name, 0.0)
+                        batch_features_data.append(features_data)
+                    features_df = pd.DataFrame(batch_features_data)
+                    
+                    # Generate batch predictions with selected features
+                    predictions = model.predict(features_df)
+                    
+                else:
+                    # Handle true legacy models (raw sklearn models)
+                    model = model_wrapper
+                    features_df = pd.DataFrame(features_list)
+                    model_type = self._get_model_type(model)
+                    
+                    # Generate predictions with legacy model
+                    predictions = model.predict(features_df)
             
             # Format batch results
             results = []

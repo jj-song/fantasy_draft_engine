@@ -1,0 +1,33 @@
+{
+  "service": "ml-models",
+  "total_steps": 1,
+  "passed": 1,
+  "failed": 0,
+  "errors": 0,
+  "success_rate": 100.0,
+  "validations": [
+    {
+      "step": "model_registry_loaded",
+      "timestamp": "2025-08-06T12:38:22.052527",
+      "service": "ml-models",
+      "status": "PASS",
+      "issues": [],
+      "data_summary": {
+        "type": "dict",
+        "keys": [
+          "models_loaded",
+          "available_positions",
+          "available_model_types",
+          "registry_initialized"
+        ],
+        "key_count": 4,
+        "value_types": {
+          "models_loaded": "int",
+          "available_positions": "list",
+          "available_model_types": "list",
+          "registry_initialized": "bool"
+        }
+      }
+    }
+  ]
+}

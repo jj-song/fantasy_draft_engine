@@ -12,6 +12,16 @@ import os
 import sys
 from pathlib import Path
 
+# Add validation system integration
+try:
+    from utils.debug_analysis.debug_integration import add_validation_checkpoint, save_all_validation_reports
+except ImportError:
+    # Fallback for environments without validation system
+    def add_validation_checkpoint(*args, **kwargs):
+        pass
+    def save_all_validation_reports(*args, **kwargs):
+        pass
+
 # Add the services directory to the Python path
 services_root = Path(__file__).parent.parent.parent.parent
 sys.path.append(str(services_root))
@@ -67,12 +77,21 @@ class MLModelsService(BaseService):
         
         # Load existing models
         try:
-            await self.model_registry.load_available_models()
+            models_loaded = await self.model_registry.load_available_models()
+            
+            # Add validation checkpoint for model loading
+            registry_status = await self.model_registry.get_registry_status()
+            add_validation_checkpoint('ml-models', 'model_registry_loaded', registry_status,
+                expected_type=dict)
+            
             logger.info("✅ Existing models loaded successfully")
         except Exception as e:
             logger.warning(f"⚠️ Could not load existing models: {e}")
         
         logger.info("✅ ML Models Service started successfully")
+        
+        # Save validation report for service startup
+        save_all_validation_reports()
     
     def _setup_routes(self):
         
@@ -178,11 +197,19 @@ class MLModelsService(BaseService):
                 if position not in ['QB', 'RB', 'WR', 'TE']:
                     raise HTTPException(status_code=400, detail=f"Invalid position: {position}")
                 
+                # Add validation checkpoint for prediction input
+                add_validation_checkpoint('ml-models', f'prediction_input_{position}', request.features,
+                    expected_type=dict)
+                
                 prediction = await self.prediction_engine.predict_single(
                     position=position,
                     features=request.features,
                     player_data=request.player_data
                 )
+                
+                # Add validation checkpoint for prediction output
+                add_validation_checkpoint('ml-models', f'prediction_output_{position}', prediction,
+                    expected_type=dict)
                 
                 return create_standard_response(
                     data=prediction,
@@ -203,10 +230,31 @@ class MLModelsService(BaseService):
                 if position not in ['QB', 'RB', 'WR', 'TE']:
                     raise HTTPException(status_code=400, detail=f"Invalid position: {position}")
                 
+                # Add validation checkpoint for batch input
+                batch_info = {
+                    'position': position,
+                    'player_count': len(request.predictions_data),
+                    'sample_features': request.predictions_data[0].get('features', {}) if request.predictions_data else {}
+                }
+                add_validation_checkpoint('ml-models', f'batch_input_{position}', batch_info,
+                    expected_type=dict)
+                
                 predictions = await self.prediction_engine.predict_batch(
                     position=position,
                     predictions_data=request.predictions_data
                 )
+                
+                # Add validation checkpoint for batch output
+                if predictions:
+                    batch_output = {
+                        'position': position,
+                        'predictions_count': len(predictions),
+                        'avg_prediction': sum(p.get('prediction', 0) for p in predictions) / len(predictions),
+                        'prediction_range': [min(p.get('prediction', 0) for p in predictions), 
+                                            max(p.get('prediction', 0) for p in predictions)]
+                    }
+                    add_validation_checkpoint('ml-models', f'batch_output_{position}', batch_output,
+                        expected_type=dict)
                 
                 return create_standard_response(
                     data={

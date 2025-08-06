@@ -220,20 +220,28 @@ class ModelRegistry:
         """Register a model loaded from file."""
         model_key = f"{position}_{model_type}"
         
-        # Extract actual model from dict if needed (models are saved as dicts with metadata)
+        # Handle model dictionaries with metadata (ensemble models)
         if isinstance(model_data, dict) and 'model' in model_data:
             actual_model = model_data['model']
             logger.info(f"📦 Extracted {type(actual_model).__name__} from model dict for {position}")
+            
+            # For ensemble models, preserve the full dictionary structure with feature_names
+            if model_type == "ensemble" and 'feature_names' in model_data:
+                logger.info(f"🎯 Preserving feature selection for {position} ensemble model ({len(model_data['feature_names'])} features)")
+                # Store the full dictionary to enable feature selection
+                self.registered_models[model_key] = model_data
+            else:
+                # For other model types, extract just the model
+                self.registered_models[model_key] = actual_model
         else:
             actual_model = model_data
             logger.info(f"📦 Using direct model {type(actual_model).__name__} for {position}")
+            self.registered_models[model_key] = actual_model
         
-        # Verify model has predict method
-        if not hasattr(actual_model, 'predict'):
-            raise ValueError(f"❌ Model for {position} does not have predict method: {type(actual_model)}")
-        
-        # Store actual model reference (not the dict)
-        self.registered_models[model_key] = actual_model
+        # Verify model has predict method (check the actual sklearn model)
+        test_model = model_data['model'] if isinstance(model_data, dict) and 'model' in model_data else model_data
+        if not hasattr(test_model, 'predict'):
+            raise ValueError(f"❌ Model for {position} does not have predict method: {type(test_model)}")
         
         # Store metadata
         self.model_metadata[model_key] = {

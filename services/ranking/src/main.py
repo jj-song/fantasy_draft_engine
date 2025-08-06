@@ -13,6 +13,16 @@ import sys
 from pathlib import Path
 import requests
 
+# Add validation system integration
+try:
+    from utils.debug_analysis.debug_integration import add_validation_checkpoint, save_all_validation_reports
+except ImportError:
+    # Fallback for environments without validation system
+    def add_validation_checkpoint(*args, **kwargs):
+        pass
+    def save_all_validation_reports(*args, **kwargs):
+        pass
+
 # Add the services directory to the Python path
 services_root = Path(__file__).parent.parent.parent.parent
 sys.path.append(str(services_root))
@@ -278,6 +288,17 @@ class RankingService(BaseService):
         try:
             self.ranking_status = {"status": "generating", "message": "Generating rankings..."}
             
+            # Add validation checkpoint for ranking generation input
+            generation_input = {
+                'positions': positions,
+                'season': season,
+                'tier_assignments': tier_assignments,
+                'include_overrides': include_overrides,
+                'sort_by': sort_by
+            }
+            add_validation_checkpoint('ranking', 'ranking_generation_input', generation_input,
+                expected_type=dict)
+            
             # Generate rankings using scoring engine
             rankings = await self.scoring_engine.generate_overall_rankings(
                 positions=positions,
@@ -286,6 +307,18 @@ class RankingService(BaseService):
                 include_overrides=include_overrides,
                 sort_by=sort_by
             )
+            
+            # Add validation checkpoint for ranking generation output
+            if isinstance(rankings, list):
+                ranking_summary = {
+                    'total_players': len(rankings),
+                    'positions_generated': positions,
+                    'sample_rankings': rankings[:5] if rankings else []
+                }
+            else:
+                ranking_summary = rankings
+            add_validation_checkpoint('ranking', 'ranking_generation_output', ranking_summary,
+                expected_type=dict)
             
             # Cache results
             cache_key = f"rankings_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -306,6 +339,9 @@ class RankingService(BaseService):
             }
             
             logger.info(f"✅ Ranking generation completed for positions: {positions}")
+            
+            # Save validation report at the end
+            save_all_validation_reports()
         
         except Exception as e:
             error_msg = f"Ranking generation failed: {str(e)}"
@@ -365,4 +401,4 @@ app = service.app
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8007)

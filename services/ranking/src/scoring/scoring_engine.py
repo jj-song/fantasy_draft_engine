@@ -16,6 +16,14 @@ from datetime import datetime
 from pathlib import Path
 import yaml
 
+# Add validation system integration
+try:
+    from utils.debug_analysis.debug_integration import add_validation_checkpoint
+except ImportError:
+    # Fallback for environments without validation system
+    def add_validation_checkpoint(*args, **kwargs):
+        pass
+
 logger = logging.getLogger(__name__)
 
 class ScoringEngine:
@@ -82,6 +90,16 @@ class ScoringEngine:
             if not all_players:
                 logger.error("No player data available for ranking generation")
                 raise Exception("No player data available")
+                
+            # Add validation checkpoint for player data collection
+            player_data_summary = {
+                'total_players': len(all_players),
+                'positions': positions,
+                'sample_player': all_players[0] if all_players else None,
+                'players_by_position': {pos: len([p for p in all_players if p.get('position') == pos]) for pos in positions}
+            }
+            add_validation_checkpoint('ranking', 'player_data_collected', player_data_summary,
+                expected_type=dict)
             
             # Apply manual overrides
             if include_overrides and self.manual_overrides:
@@ -135,12 +153,32 @@ class ScoringEngine:
             
             # Use Docker service URLs for inter-service communication
             vor_calculator = VORCalculator(
-                config_service_url="http://configuration:8000",
-                ml_models_service_url="http://ml-models:8000"
+                config_service_url="http://localhost:8001",
+                ml_models_service_url="http://localhost:8000"
             )
+            
+            # Add validation checkpoint before VOR calculation
+            vor_input = {
+                'position': position,
+                'season': season,
+                'ml_service_url': "http://localhost:8000"
+            }
+            add_validation_checkpoint('ranking', f'vor_calculation_input_{position}', vor_input,
+                expected_type=dict)
             
             # Get VOR calculations for this position (real player data)
             vor_results = await vor_calculator.calculate_position_vor(position, season)
+            
+            # Add validation checkpoint for VOR calculation results
+            vor_summary = {
+                'position': position,
+                'vor_calculated': vor_results.get("vor_calculated", False),
+                'player_count': len(vor_results.get("players", [])),
+                'replacement_level': vor_results.get("replacement_level"),
+                'has_players': bool(vor_results.get("players"))
+            }
+            add_validation_checkpoint('ranking', f'vor_calculation_output_{position}', vor_summary,
+                expected_type=dict)
             
             if not vor_results.get("vor_calculated", False) or not vor_results.get("players"):
                 error_msg = f"❌ CRITICAL: No VOR data available for {position}. VOR calculation failed or returned empty results."

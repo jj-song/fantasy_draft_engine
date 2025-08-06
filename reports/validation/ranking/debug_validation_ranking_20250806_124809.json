@@ -1,0 +1,127 @@
+{
+  "service": "ranking",
+  "total_steps": 5,
+  "passed": 5,
+  "failed": 0,
+  "errors": 0,
+  "success_rate": 100.0,
+  "validations": [
+    {
+      "step": "ranking_generation_input",
+      "timestamp": "2025-08-06T12:48:07.861274",
+      "service": "ranking",
+      "status": "PASS",
+      "issues": [],
+      "data_summary": {
+        "type": "dict",
+        "keys": [
+          "positions",
+          "season",
+          "tier_assignments",
+          "include_overrides",
+          "sort_by"
+        ],
+        "key_count": 5,
+        "value_types": {
+          "positions": "list",
+          "season": "int",
+          "tier_assignments": "bool",
+          "include_overrides": "bool",
+          "sort_by": "str"
+        }
+      }
+    },
+    {
+      "step": "vor_calculation_input_QB",
+      "timestamp": "2025-08-06T12:48:07.866525",
+      "service": "ranking",
+      "status": "PASS",
+      "issues": [],
+      "data_summary": {
+        "type": "dict",
+        "keys": [
+          "position",
+          "season",
+          "ml_service_url"
+        ],
+        "key_count": 3,
+        "value_types": {
+          "position": "str",
+          "season": "int",
+          "ml_service_url": "str"
+        }
+      }
+    },
+    {
+      "step": "vor_calculation_output_QB",
+      "timestamp": "2025-08-06T12:48:09.280642",
+      "service": "ranking",
+      "status": "PASS",
+      "issues": [],
+      "data_summary": {
+        "type": "dict",
+        "keys": [
+          "position",
+          "vor_calculated",
+          "player_count",
+          "replacement_level",
+          "has_players"
+        ],
+        "key_count": 5,
+        "value_types": {
+          "position": "str",
+          "vor_calculated": "bool",
+          "player_count": "int",
+          "replacement_level": "NoneType",
+          "has_players": "bool"
+        }
+      }
+    },
+    {
+      "step": "player_data_collected",
+      "timestamp": "2025-08-06T12:48:09.280705",
+      "service": "ranking",
+      "status": "PASS",
+      "issues": [],
+      "data_summary": {
+        "type": "dict",
+        "keys": [
+          "total_players",
+          "positions",
+          "sample_player",
+          "players_by_position"
+        ],
+        "key_count": 4,
+        "value_types": {
+          "total_players": "int",
+          "positions": "list",
+          "sample_player": "dict",
+          "players_by_position": "dict"
+        }
+      }
+    },
+    {
+      "step": "ranking_generation_output",
+      "timestamp": "2025-08-06T12:48:09.280929",
+      "service": "ranking",
+      "status": "PASS",
+      "issues": [],
+      "data_summary": {
+        "type": "dict",
+        "keys": [
+          "success",
+          "rankings",
+          "summary",
+          "metadata"
+        ],
+        "key_count": 4,
+        "value_types": {
+          "success": "bool",
+          "rankings": "list",
+          "summary": "dict",
+          "metadata": "dict"
+        }
+      }
+    }
+  ]
+}
