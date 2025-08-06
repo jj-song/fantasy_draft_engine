@@ -36,6 +36,11 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_root)
 sys.path.insert(0, os.path.join(project_root, 'src'))
 
+# Import strict data quality validator and new ranking systems
+from data_quality_validator import validator, DataQualityError
+from player_filter import player_filter
+from ranking_validator import ranking_validator
+
 # Set plot style
 plt.style.use('seaborn-v0_8-darkgrid')
 sns.set_palette('viridis')
@@ -205,33 +210,46 @@ def load_position_data(
                 
                 # NO TRY/CATCH - Let it fail if feature engineering fails
                 # CRITICAL FIX: Use legacy feature engineering (models were trained on this)
+                # INFERENCE MODE: Preserve historical fantasy points for draft rankings
                 df_engineered = engineer_features_for_season(
                     target_season,
                     include_matchup_intelligence=include_matchup_intelligence,
                     include_position_specific_features=False,  # Use legacy features that models expect
-                    weeks_ahead_sos=weeks_ahead_sos
+                    weeks_ahead_sos=weeks_ahead_sos,
+                    inference_mode=True  # CRITICAL: Preserve fantasy points instead of setting to NaN
                 )
                 
                 # STRICT validation - fail if feature engineering didn't work
                 if df_engineered is None or df_engineered.empty:
-                    raise ValueError(f"CRITICAL: Feature engineering returned empty data for {position}")
+                    raise DataQualityError(f"Feature engineering returned empty data for {position}")
                 
                 print(f"   ✅ Feature engineering successful: {len(df_engineered)} players, {len(df_engineered.columns)} features")
+                
+                # Apply strict data quality validation (inference mode - strict thresholds)
+                validator.validate_feature_engineered_data(
+                    df_engineered, 
+                    target_season, 
+                    include_matchup_intelligence=include_matchup_intelligence,
+                    training_mode=False  # Inference mode uses strict thresholds
+                )
                 
                 # Filter for position 
                 position_engineered = df_engineered[df_engineered['position'] == position].copy()
                 
                 if position_engineered.empty:
-                    raise ValueError(f"CRITICAL: No {position} players found in engineered features")
+                    raise DataQualityError(f"No {position} players found in engineered features")
                 
                 print(f"   📊 Found {len(position_engineered)} {position} players in engineered features")
+                
+                # Apply position-specific data quality validation
+                validator.validate_position_data(position_engineered, position)
                 
                 # Update with current team assignments from current_data - FAIL if this fails
                 from current_data_pipeline import update_data_with_current_teams, get_current_roster_assignments
                 current_rosters = get_current_roster_assignments()
                 
                 if current_rosters.empty:
-                    raise ValueError("CRITICAL: No current roster assignments available")
+                    raise DataQualityError("No current roster assignments available")
                 
                 # This should now work with the fixed team comparison
                 position_engineered = update_data_with_current_teams(position_engineered, current_rosters)
@@ -257,7 +275,7 @@ def load_position_data(
                     logger.warning(f"QB missing matchup intelligence features. Found {len(matchup_cols)}, expected 10+. Proceeding with available features.")
                 
                 if position in ['RB', 'WR', 'TE'] and len(opportunity_cols) == 0:
-                    raise ValueError(f"CRITICAL: {position} missing opportunity metrics. Expected target_share, air_yards, etc.")
+                    raise DataQualityError(f"{position} missing opportunity metrics. Expected target_share, air_yards, etc.")
                 
                 print(f"✅ FEATURE ENGINEERING VALIDATION PASSED for {len(position_engineered)} {position} players")
                 return position_engineered
@@ -277,7 +295,8 @@ def load_position_data(
                 most_recent_year,
                 include_matchup_intelligence=include_matchup_intelligence,
                 include_position_specific_features=True,  # Always enable for any enhanced features
-                weeks_ahead_sos=weeks_ahead_sos
+                weeks_ahead_sos=weeks_ahead_sos,
+                inference_mode=True  # CRITICAL: Preserve fantasy points for rankings
             )
             
             if df is not None and not df.empty:
@@ -511,10 +530,17 @@ def predict_fantasy_points_baseline(df: pd.DataFrame, model, position: str, targ
         # Make predictions with baseline model
         predictions = model.predict(X)
         
+        # Apply strict prediction validation
+        player_names = result_df['player_name'].tolist() if 'player_name' in result_df.columns else ['Unknown'] * len(predictions)
+        validator.validate_model_predictions(predictions, position, player_names)
+        
         # CRITICAL FIX: Convert per-game predictions to seasonal totals
         # Baseline models predict per-game values, but draft rankings expect seasonal totals
         games_played = result_df['games'] if 'games' in result_df.columns else 16  # Default to 16 games
         seasonal_predictions = predictions * games_played
+        
+        # Validate seasonal predictions as well
+        validator.validate_model_predictions(seasonal_predictions, position, player_names)
         
         print(f"   🔄 Converting per-game to seasonal predictions:")
         print(f"      Per-game range: {predictions.min():.1f} - {predictions.max():.1f}")
@@ -607,6 +633,8 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
     
     # Get feature columns
     X = df_engineered.drop(columns=[col for col in drop_cols if col in df_engineered.columns])
+    
+    # Move this logic after loading expected features
     
     print(f"📋 Feature preparation:")
     print(f"   Original columns: {len(df_engineered.columns)}")
@@ -732,50 +760,80 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
     
     print(f"   Final feature set: {len(X.columns)} columns")
     
-    # CRITICAL: Validate feature compatibility and FAIL HARD if missing
-    print(f"🔍 Validating feature compatibility with {position} ensemble model...")
+    # CRITICAL: Load expected features BEFORE feature preparation
+    print(f"🔧 Loading expected features from {position} ensemble model...")
+    expected_features = []
     
     try:
-        # Load model to get expected features
+        # Load model to get expected features - FIXED for EnsembleFantasyModel compatibility
         import joblib
         model_path = f"saved_models/{position}_ensemble_model.joblib"
         model_dict = joblib.load(model_path)
-        expected_features = model_dict['rf_model'].model.feature_names_in_
         
-        print(f"   Model expects: {len(expected_features)} features")
-        print(f"   Data provides: {len(X.columns)} features")
+        # Handle different model loading scenarios
+        if isinstance(model_dict, dict):
+            # Legacy dict-based model loading
+            if 'rf_model' in model_dict:
+                rf_model = model_dict['rf_model']
+                # Try multiple access patterns for RF model features
+                if hasattr(rf_model, 'model') and hasattr(rf_model.model, 'feature_names_in_'):
+                    expected_features = list(rf_model.model.feature_names_in_)
+                elif hasattr(rf_model, 'feature_names_in_'):
+                    expected_features = list(rf_model.feature_names_in_)
+                elif hasattr(rf_model, 'estimator') and hasattr(rf_model.estimator, 'feature_names_in_'):
+                    expected_features = list(rf_model.estimator.feature_names_in_)
+        else:
+            # Direct EnsembleFantasyModel object
+            if hasattr(model_dict, 'rf_model') and hasattr(model_dict.rf_model, 'model'):
+                if hasattr(model_dict.rf_model.model, 'feature_names_in_'):
+                    expected_features = list(model_dict.rf_model.model.feature_names_in_)
+            elif hasattr(model_dict, 'get_expected_features'):
+                expected_features = list(model_dict.get_expected_features())
         
-        # Find missing and extra features
+        print(f"   ✅ Loaded {len(expected_features)} expected features from model")
+        
+    except Exception as e:
+        print(f"   ⚠️ Cannot load expected features: {e}")
+        expected_features = []
+    
+    # CRITICAL: Create model-compatible features using the compatibility system
+    if expected_features and len(expected_features) > 0:
+        print(f"🔧 Creating model-compatible features using FeatureCompatibilityMapper...")
+        from src.feature_compatibility import create_model_compatible_features
+        
+        try:
+            X_compatible = create_model_compatible_features(
+                df_engineered,  # Use original data with all columns
+                expected_features, 
+                position
+            )
+            
+            print(f"   ✅ Compatible features created: {len(X_compatible.columns)}")
+            print(f"   📊 Compatibility: {len(X_compatible.columns)}/{len(expected_features)} features")
+            
+            # Use compatible features for prediction
+            X = X_compatible
+            
+        except Exception as e:
+            print(f"   ⚠️ Feature compatibility creation failed: {e}")
+            print(f"   🔄 Falling back to original feature preparation")
+        
+        # Validate feature compatibility after creating compatible features
         provided_features = set(X.columns)
         expected_features_set = set(expected_features)
         
         missing_features = expected_features_set - provided_features
-        extra_features = provided_features - expected_features_set
-        
-        print(f"   Missing: {len(missing_features)} | Extra: {len(extra_features)} | Matching: {len(expected_features_set & provided_features)}")
         
         if missing_features:
-            print(f"❌ CRITICAL FAILURE: {position} model missing {len(missing_features)} required features:")
-            for i, feature in enumerate(sorted(missing_features)[:10]):  # Show first 10
-                print(f"     {i+1:2d}. {feature}")
-            if len(missing_features) > 10:
-                print(f"     ... and {len(missing_features) - 10} more")
-                
-            print(f"🔧 Available features that might map:")
-            for feature in sorted(extra_features)[:5]:  # Show first 5 extra
-                print(f"     • {feature}")
-            
-            print(f"⚠️ ENSEMBLE MODEL INCOMPATIBLE: {position} ensemble model requires {len(missing_features)} missing features.")
-            print(f"🔄 FALLING BACK TO BASELINE MODEL: Using baseline model trained on available features.")
+            print(f"❌ Still missing {len(missing_features)} features after compatibility mapping")
+            for i, feature in enumerate(sorted(missing_features)[:5]):
+                print(f"     {i+1}. {feature}")
+            print(f"🔄 FALLING BACK TO BASELINE MODEL")
             return "fallback_to_baseline"
         else:
-            print(f"✅ All required features present for {position} model")
-            
-    except Exception as e:
-        if "missing features" in str(e) or "HARD FAILURE" in str(e):
-            raise  # Re-raise critical failures
-        else:
-            print(f"⚠️ Warning: Could not validate features: {e}")
+            print(f"✅ Feature compatibility successful - all {len(expected_features)} features available")
+    else:
+        print(f"⚠️ No expected features loaded, using enhanced features directly")
     
     # Make predictions with ensemble model
     print(f"🎯 Starting ensemble prediction...")
@@ -801,6 +859,11 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
                         player_data[col] = df[col]
             
             predictions = model.predict(X, player_data)
+            
+            # Apply strict prediction validation
+            player_names = player_data['player_name'].tolist()
+            validator.validate_model_predictions(predictions, position, player_names)
+            
             print(f"✅ Ensemble prediction completed with dynamic weighting")
             
         else:
@@ -811,20 +874,25 @@ def predict_fantasy_points(df: pd.DataFrame, model, position: str, target_col: s
             # Handle legacy model prediction
             if hasattr(model, 'predict'):
                 predictions = model.predict(X)
+                
+                # Apply strict prediction validation
+                player_names = df['player_name'].tolist() if 'player_name' in df.columns else [f'Player_{i}' for i in range(len(df))]
+                validator.validate_model_predictions(predictions, position, player_names)
+                
             else:
-                raise ValueError(f"Model object has no predict method")
+                raise DataQualityError(f"Model object has no predict method")
             
             print(f"✅ Legacy prediction completed")
         
-        # Validate predictions
+        # Additional prediction validation
         if predictions is None:
-            raise ValueError("Model returned None predictions")
+            raise DataQualityError("Model returned None predictions")
         
         if len(predictions) != len(df):
-            raise ValueError(f"Prediction length mismatch: got {len(predictions)}, expected {len(df)}")
+            raise DataQualityError(f"Prediction length mismatch: got {len(predictions)}, expected {len(df)}")
         
         if np.any(np.isnan(predictions)):
-            raise ValueError("Model predictions contain NaN values")
+            raise DataQualityError("Model predictions contain NaN values")
         
         # CRITICAL FIX: Convert seasonal model predictions to per-game averages
         # Models were trained on seasonal totals but VOR expects per-game values
@@ -1683,7 +1751,42 @@ def main():
         use_schedule_adjusted_vor=args.include_matchup_intelligence
     )
     
-    # Validate the overall rankings
+    # Apply strict final rankings validation
+    validator.validate_final_rankings(overall_rankings)
+    
+    print("\n🔍 RANKING VALIDATION & QUALITY ASSURANCE")
+    print("=" * 60)
+    
+    # Step 1: Filter out inactive/retired players
+    print("   🧹 Filtering inactive and retired players...")
+    original_count = len(overall_rankings)
+    overall_rankings = player_filter.filter_active_players(overall_rankings)
+    filtered_count = len(overall_rankings)
+    print(f"   Removed {original_count - filtered_count} inactive players ({original_count} → {filtered_count})")
+    
+    # Step 2: Comprehensive ranking validation
+    print("   🔍 Running comprehensive ranking validation...")
+    validation_results = ranking_validator.validate_rankings(overall_rankings)
+    
+    # Step 3: Apply ranking fixes if needed
+    if validation_results['overall_status'] != 'PASS':
+        print("   🔧 Applying ranking fixes for quality issues...")
+        overall_rankings = ranking_validator.generate_ranking_fixes(overall_rankings, validation_results)
+        
+        # Re-validate after fixes
+        final_validation = ranking_validator.validate_rankings(overall_rankings)
+        print(f"   Final validation status: {final_validation['overall_status']}")
+    else:
+        print("   ✅ Rankings passed all validation checks!")
+    
+    # Step 4: Elite player presence check
+    elite_present = player_filter.validate_elite_players_present(overall_rankings)
+    if elite_present:
+        print("   ✅ Elite players validation passed")
+    else:
+        print("   ⚠️ WARNING: Some expected elite players missing from rankings")
+    
+    # Legacy validation function (if still needed)
     overall_rankings = validate_overall_rankings(overall_rankings)
     
     # Create position-specific rankings

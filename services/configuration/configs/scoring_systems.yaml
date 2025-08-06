@@ -1,0 +1,85 @@
+# Fantasy Football Scoring Systems
+scoring:
+  # Default scoring system (0.5 PPR)
+  fantasy_points:
+    # Passing
+    passing_yards: 0.04    # 1 point per 25 yards
+    passing_tds: 4
+    interceptions: -2
+    
+    # Rushing
+    rushing_yards: 0.1     # 1 point per 10 yards
+    rushing_tds: 6
+    
+    # Receiving
+    receptions: 0.5        # Half PPR
+    receiving_yards: 0.1   # 1 point per 10 yards
+    receiving_tds: 6
+    
+    # Other
+    fumbles_lost: -2
+    two_point_conversions: 2
+    
+    # Kicking (per distance)
+    field_goals_0_19: 3
+    field_goals_20_29: 3
+    field_goals_30_39: 3
+    field_goals_40_49: 4
+    field_goals_50_plus: 5
+    field_goals_missed: -1
+    extra_points: 1
+    extra_points_missed: -1
+    
+    # Defense/Special Teams
+    defensive_tds: 6
+    interception_tds: 6
+    fumble_recovery_tds: 6
+    kickoff_return_tds: 6
+    punt_return_tds: 6
+    blocked_kicks: 2
+    safeties: 2
+    sacks: 1
+    
+    # Points allowed (DST)
+    points_allowed_0: 10
+    points_allowed_1_6: 7
+    points_allowed_7_13: 4
+    points_allowed_14_20: 1
+    points_allowed_21_27: 0
+    points_allowed_28_34: -1
+    points_allowed_35_plus: -4
+    
+    # Yards allowed (DST)
+    yards_allowed_under_100: 5
+    yards_allowed_100_199: 3
+    yards_allowed_200_299: 2
+    yards_allowed_300_399: 0
+    yards_allowed_400_499: -1
+    yards_allowed_500_plus: -3
+
+  # Alternative scoring systems
+  scoring_systems:
+    PPR:
+      receptions: 1.0
+      # All other settings same as default
+      
+    Standard:
+      receptions: 0.0
+      # All other settings same as default
+      
+    HalfPPR:
+      receptions: 0.5
+      # All other settings same as default
+    
+    SuperFlex:
+      # Same as HalfPPR but with superflex considerations
+      qb_scoring_multiplier: 1.0  # No penalty for QB in flex
+      
+  # Column mappings for different scoring systems
+  fantasy_points_columns:
+    PPR: 'fantasy_points_ppr'
+    HalfPPR: 'fantasy_points'  # Our calculated column
+    Standard: 'fantasy_points'
+    
+  # Default system to use
+  default_scoring_system: 'HalfPPR'

@@ -1,0 +1,48 @@
+# Fantasy Football League Settings
+league:
+  league_size: 12
+  ppr_scoring: 0.5
+  
+  # Roster configuration
+  roster:
+    qb_starters: 1
+    rb_starters: 2
+    wr_starters: 2
+    te_starters: 1
+    flex_spots: 1
+    kicker_spots: 1
+    defense_spots: 1
+    bench_spots: 6
+    ir_spots: 1
+    
+  # VOR (Value Over Replacement) settings
+  vor_replacement_levels:
+    QB: 18    # More QBs viable for streaming
+    RB: 30    # RB scarcity - need proper valuation
+    WR: 36    # WRs have good depth
+    TE: 15    # More TEs available after elite tier
+    K: 13     # Kickers are replaceable
+    DST: 13   # Defenses are streamable
+  
+  # Position scarcity multipliers
+  vor_scarcity_multipliers:
+    RB: 1.5   # High scarcity but not extreme
+    TE: 1.2   # Moderate scarcity - Elite TEs valuable
+    WR: 1.0   # Baseline - Good depth at WR
+    QB: 0.85  # Low scarcity - Multiple viable options
+    K: 0.5    # Very low - Nearly interchangeable
+    DST: 0.5  # Very low - Defenses are streamable
+  
+  # Advanced league settings
+  trade_deadline_week: 10
+  playoff_weeks: [14, 15, 16, 17]
+  regular_season_weeks: 14
+  
+  # Scoring bonuses
+  bonuses:
+    passing_yards_300: 3
+    passing_yards_400: 5
+    rushing_yards_100: 3
+    rushing_yards_200: 5
+    receiving_yards_100: 3
+    receiving_yards_200: 5

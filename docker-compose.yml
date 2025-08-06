@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  configuration:
+    build: ./services/configuration
+    ports:
+      - "8001:8000"
+    environment:
+      - ENV=development
+      - FF_ENVIRONMENT=development
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    
+  data-ingestion:
+    build: ./services/data-ingestion
+    ports:
+      - "8002:8000"
+    environment:
+      - ENV=development
+      - CONFIG_SERVICE_URL=http://configuration:8000
+    depends_on:
+      - configuration
+      - redis
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    
+  feature-engineering:
+    build: ./services/feature-engineering
+    ports:
+      - "8003:8000"
+    environment:
+      - ENV=development
+      - CONFIG_SERVICE_URL=http://configuration:8000
+      - DATA_INGESTION_URL=http://data-ingestion:8000
+    depends_on:
+      - configuration
+      - data-ingestion
+      - redis
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    
+  ml-models:
+    build: ./services/ml-models
+    ports:
+      - "8004:8000"
+    environment:
+      - ENV=development
+      - CONFIG_SERVICE_URL=http://configuration:8000
+      - FEATURE_ENGINEERING_URL=http://feature-engineering:8000
+    depends_on:
+      - configuration
+      - feature-engineering  
+      - redis
+    volumes:
+      - ./data:/app/data
+      - ./saved_models:/saved_models
+      - ./logs:/app/logs
+    
+  ranking:
+    build: ./services/ranking
+    ports:
+      - "8005:8000"
+    environment:
+      - ENV=development
+      - CONFIG_SERVICE_URL=http://configuration:8000
+      - ML_MODELS_URL=http://ml-models:8000
+    depends_on:
+      - configuration
+      - ml-models
+      - redis
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    
+  orchestration:
+    build: ./services/orchestration
+    ports:
+      - "8006:8000"
+    environment:
+      - ENV=development
+      - CONFIG_SERVICE_URL=http://configuration:8000
+    depends_on:
+      - configuration
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  redis_data:
