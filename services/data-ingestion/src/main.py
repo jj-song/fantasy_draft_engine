@@ -88,6 +88,23 @@ class DataIngestionRequest(BaseModel):
     force_refresh: bool = False
     include_weather: bool = True
     include_rosters: bool = True
+    
+    class Config:
+        # Add validation configuration for better error reporting
+        validate_assignment = True
+        extra = "forbid"  # Reject extra fields
+        
+    def __init__(self, **data):
+        """Enhanced initialization with detailed logging"""
+        try:
+            logger.info(f"🔍 DataIngestionRequest validation starting with data keys: {list(data.keys())}")
+            logger.info(f"🔍 DataIngestionRequest raw data (first 200 chars): {str(data)[:200]}...")
+            super().__init__(**data)
+            logger.info(f"✅ DataIngestionRequest validation completed successfully")
+        except Exception as e:
+            logger.error(f"❌ DataIngestionRequest validation failed: {type(e).__name__}: {str(e)}", exc_info=True)
+            logger.error(f"❌ Failed data was: {data}", exc_info=True)
+            raise
 
 class DataIngestionService(BaseService):
     def __init__(self):
@@ -104,6 +121,7 @@ class DataIngestionService(BaseService):
         # Override the default response class for the entire app
         self.app.default_response_class = SafeJSONResponse
         
+        # Setup routes
         self._setup_routes()
     
     def _setup_error_handlers(self):
@@ -237,8 +255,13 @@ class DataIngestionService(BaseService):
         async def ingest_data(request: DataIngestionRequest, background_tasks: BackgroundTasks):
             """Trigger data ingestion"""
             try:
+                logger.info(f"🎯 ENDPOINT REACHED: Data ingestion handler started")
+                logger.info(f"🔍 Data ingestion request received: years={request.years}, positions={request.positions}, force_refresh={request.force_refresh}")
+                logger.info(f"🔍 Request details: include_weather={request.include_weather}, include_rosters={request.include_rosters}")
+                
                 # Get configuration from Configuration Service
                 config = await self._get_configuration()
+                logger.info(f"📋 Configuration loaded: {config}")
                 
                 # Default parameters from config or fallback
                 years = request.years or list(range(
@@ -247,7 +270,19 @@ class DataIngestionService(BaseService):
                 ))
                 positions = request.positions or config.get("positions", ['QB', 'RB', 'WR', 'TE', 'K'])
                 
+                logger.info(f"🎯 Processing with years={years}, positions={positions}")
+                
+                # Validate parameters
+                if not years:
+                    logger.error("❌ No years specified for data ingestion")
+                    raise HTTPException(status_code=400, detail="No years specified for data ingestion")
+                
+                if not positions:
+                    logger.error("❌ No positions specified for data ingestion")
+                    raise HTTPException(status_code=400, detail="No positions specified for data ingestion")
+                
                 # Start background ingestion
+                logger.info("🚀 Starting background data ingestion task...")
                 background_tasks.add_task(
                     self._run_data_ingestion,
                     years,
@@ -256,6 +291,8 @@ class DataIngestionService(BaseService):
                     request.include_weather,
                     request.include_rosters
                 )
+                
+                logger.info("✅ Data ingestion background task started successfully")
                 
                 return create_standard_response(
                     data={
@@ -270,9 +307,12 @@ class DataIngestionService(BaseService):
                     metadata={"service": "data-ingestion"}
                 )
                 
+            except HTTPException as he:
+                logger.error(f"❌ HTTP exception in data ingestion: {he.status_code} - {he.detail}")
+                raise he
             except Exception as e:
-                logger.error(f"Error starting data ingestion: {e}")
-                raise HTTPException(status_code=500, detail=str(e))
+                logger.error(f"❌ Unexpected error starting data ingestion: {type(e).__name__}: {str(e)}", exc_info=True)
+                raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
         
         @self.app.get("/api/v1/data/health")
         async def check_data_health():
@@ -347,6 +387,24 @@ class DataIngestionService(BaseService):
         async def test_endpoint():
             """Simple test endpoint"""
             return {"status": "success", "message": "Test endpoint working"}
+        
+        @self.app.post("/api/v1/data/test-direct")
+        async def test_direct_ingestion():
+            """Test data ingestion without background tasks"""
+            try:
+                logger.info("🧪 Starting direct data ingestion test...")
+                years = [2024]
+                positions = ['QB']
+                
+                # Call the background task function directly
+                await self._run_data_ingestion(years, positions, False, True, True)
+                
+                logger.info("🎉 Direct data ingestion test completed")
+                return {"status": "success", "message": "Direct ingestion test completed"}
+                
+            except Exception as e:
+                logger.error(f"❌ Direct ingestion test failed: {type(e).__name__}: {str(e)}", exc_info=True)
+                raise HTTPException(status_code=500, detail=f"Direct ingestion test failed: {str(e)}")
         
         @self.app.get("/api/v1/data/years/{year}", response_model=None)
         async def get_year_data(year: int):
@@ -511,16 +569,23 @@ class DataIngestionService(BaseService):
         try:
             self.ingestion_status = {"status": "running", "started_at": datetime.now().isoformat()}
             
-            logger.info(f"Starting data ingestion for years {years}, positions {positions}")
+            logger.info(f"🚀 Starting background data ingestion for years {years}, positions {positions}")
+            logger.info(f"🔧 Parameters: force_refresh={force_refresh}, include_weather={include_weather}, include_rosters={include_rosters}")
             
             total_steps = len(years) * (1 + (1 if include_weather else 0) + (1 if include_rosters else 0))
             current_step = 0
             
             for year in years:
                 try:
-                    # Fetch player stats
-                    logger.info(f"Fetching player stats for {year}")
-                    df = fetch_player_season_stats(year, positions)
+                    logger.info(f"📥 Fetching player stats for {year}...")
+                    
+                    # Test if nfl_data_py is working
+                    try:
+                        df = fetch_player_season_stats(year, positions)
+                        logger.info(f"✅ Successfully fetched data for {year}: {len(df) if df is not None else 0} records")
+                    except Exception as fetch_error:
+                        logger.error(f"❌ Failed to fetch data for {year}: {type(fetch_error).__name__}: {str(fetch_error)}", exc_info=True)
+                        raise fetch_error
                     
                     if df is not None and len(df) > 0:
                         # VALIDATION CHECKPOINT: Data fetch results
@@ -530,12 +595,102 @@ class DataIngestionService(BaseService):
                         
                         # Save raw data using dynamic paths
                         paths = get_data_paths()
+                        logger.info(f"💾 Saving raw data to {paths['raw']}")
+                        
                         raw_file = Path(f"{paths['raw']}/player_stats_{year}.parquet")
-                        df.to_parquet(raw_file, index=False)
-                        logger.info(f"Saved {len(df)} records for {year}")
+                        try:
+                            # SIMPLE RELIABLE SAVING: Try multiple engines until one works
+                            logger.info(f"💾 Saving {len(df)} records with {len(df.columns)} columns")
+                            
+                            # AGGRESSIVE DATA CLEANING for older years compatibility
+                            def clean_dataframe_for_parquet(df_to_clean):
+                                logger.info(f"🔧 Aggressive cleaning for {year} - {len(df_to_clean)} records, {len(df_to_clean.columns)} columns")
+                                clean_df = df_to_clean.copy()
+                                
+                                # Convert ALL object columns to string, handle ALL edge cases
+                                for col in clean_df.columns:
+                                    if clean_df[col].dtype == 'object':
+                                        # Handle NaN, None, and mixed types aggressively
+                                        clean_df[col] = clean_df[col].fillna('').astype(str)
+                                        # Clean any problematic characters that might confuse PyArrow
+                                        if clean_df[col].dtype == 'object':  # Still object after str conversion
+                                            clean_df[col] = clean_df[col].apply(lambda x: str(x) if pd.notna(x) else '')
+                                
+                                # Handle numeric columns with inf/nan issues
+                                numeric_cols = clean_df.select_dtypes(include=[np.number]).columns
+                                for col in numeric_cols:
+                                    # Replace inf values with nan, then handle appropriately
+                                    clean_df[col] = clean_df[col].replace([np.inf, -np.inf], np.nan)
+                                    
+                                    # Convert to appropriate nullable types
+                                    if clean_df[col].dtype in ['int8', 'int16', 'int32', 'int64']:
+                                        clean_df[col] = clean_df[col].astype('Int64')
+                                    elif clean_df[col].dtype in ['float32', 'float64']:
+                                        clean_df[col] = clean_df[col].astype('Float64')
+                                
+                                # Force specific problematic columns to string (from the error messages)
+                                text_cols = ['player_name', 'player_id', 'position', 'team', 'first_name', 'last_name', 
+                                           'display_name', 'college_name', 'gsis_id']
+                                for col in text_cols:
+                                    if col in clean_df.columns:
+                                        clean_df[col] = clean_df[col].fillna('').astype(str)
+                                
+                                logger.info(f"✅ Cleaned DataFrame - final dtypes: {dict(clean_df.dtypes.value_counts())}")
+                                return clean_df
+                            
+                            # Try multiple approaches in order of preference
+                            saved = False
+                            
+                            # For problematic years (2010-2016), go straight to CSV to avoid PyArrow issues
+                            if year <= 2016:
+                                logger.info(f"🎯 Using CSV for older year {year} to avoid PyArrow compatibility issues")
+                                try:
+                                    csv_file = Path(f"{paths['raw']}/player_stats_{year}.csv")
+                                    df.to_csv(csv_file, index=False)
+                                    logger.info(f"✅ Saved {len(df)} records for {year} as CSV: {csv_file}")
+                                    saved = True
+                                except Exception as csv_error:
+                                    logger.error(f"❌ CSV save failed for {year}: {csv_error}")
+                                    raise csv_error
+                            else:
+                                # For newer years, try parquet formats
+                                # 1. Try fastparquet first (usually most forgiving)
+                                try:
+                                    df.to_parquet(raw_file, index=False, engine='fastparquet')
+                                    logger.info(f"✅ Saved {len(df)} records for {year} using fastparquet")
+                                    saved = True
+                                except Exception as fastparquet_error:
+                                    logger.warning(f"⚠️ fastparquet failed: {fastparquet_error}")
+                                
+                                # 2. Try PyArrow with aggressive cleaning
+                                if not saved:
+                                    try:
+                                        clean_df = clean_dataframe_for_parquet(df)
+                                        clean_df.to_parquet(raw_file, index=False, engine='pyarrow')
+                                        logger.info(f"✅ Saved {len(clean_df)} records for {year} using pyarrow with cleaning")
+                                        saved = True
+                                    except Exception as pyarrow_error:
+                                        logger.warning(f"⚠️ pyarrow with cleaning failed: {pyarrow_error}")
+                                
+                                # 3. Final fallback: CSV
+                                if not saved:
+                                    try:
+                                        csv_file = Path(f"{paths['raw']}/player_stats_{year}.csv")
+                                        df.to_csv(csv_file, index=False)
+                                        logger.info(f"✅ Saved {len(df)} records for {year} as CSV: {csv_file}")
+                                        saved = True
+                                    except Exception as csv_error:
+                                        logger.error(f"❌ All save methods failed for {year}: {csv_error}")
+                                        raise csv_error
                         
                         # Basic cleaning and processing
-                        processed_df = self._clean_data(df)
+                        logger.info(f"🧹 Cleaning data for {year}...")
+                        try:
+                            processed_df = self._clean_data(df)
+                            logger.info(f"✅ Data cleaned for {year}: {len(processed_df)} records after cleaning")
+                        except Exception as clean_error:
+                            logger.error(f"❌ Failed to clean data for {year}: {type(clean_error).__name__}: {str(clean_error)}", exc_info=True)
+                            raise clean_error
                         
                         # VALIDATION CHECKPOINT: Data cleaning results
                         add_validation_checkpoint('data-ingestion', f'cleaned_data_{year}', processed_df,
@@ -543,13 +698,69 @@ class DataIngestionService(BaseService):
                                                 expected_columns=['player_name', 'position'])
                         
                         processed_file = Path(f"{paths['processed']}/player_stats_{year}.parquet")
-                        processed_df.to_parquet(processed_file, index=False)
+                        try:
+                            # SIMPLE RELIABLE SAVING: Try multiple engines for processed data
+                            logger.info(f"💾 Saving processed {len(processed_df)} records")
+                            
+                            # Apply same logic for processed data
+                            saved_processed = False
+                            
+                            # For problematic years, use CSV
+                            if year <= 2016:
+                                logger.info(f"🎯 Using CSV for processed data for older year {year}")
+                                try:
+                                    csv_file = Path(f"{paths['processed']}/player_stats_{year}.csv")
+                                    processed_df.to_csv(csv_file, index=False)
+                                    logger.info(f"✅ Saved processed data for {year} as CSV: {csv_file}")
+                                    saved_processed = True
+                                except Exception as csv_error:
+                                    logger.error(f"❌ Processed CSV save failed for {year}: {csv_error}")
+                                    raise csv_error
+                            else:
+                                # For newer years, try parquet
+                                # 1. Try fastparquet first
+                                try:
+                                    processed_df.to_parquet(processed_file, index=False, engine='fastparquet')
+                                    logger.info(f"✅ Saved processed data for {year} using fastparquet")
+                                    saved_processed = True
+                                except Exception as fastparquet_error:
+                                    logger.warning(f"⚠️ fastparquet failed for processed data: {fastparquet_error}")
+                                
+                                # 2. Try PyArrow with aggressive cleaning
+                                if not saved_processed:
+                                    try:
+                                        clean_processed_df = clean_dataframe_for_parquet(processed_df)
+                                        clean_processed_df.to_parquet(processed_file, index=False, engine='pyarrow')
+                                        logger.info(f"✅ Saved processed data for {year} using pyarrow with cleaning")
+                                        saved_processed = True
+                                    except Exception as pyarrow_error:
+                                        logger.warning(f"⚠️ pyarrow with cleaning failed for processed data: {pyarrow_error}")
+                                
+                                # 3. Final fallback: CSV
+                                if not saved_processed:
+                                    try:
+                                        csv_file = Path(f"{paths['processed']}/player_stats_{year}.csv")
+                                        processed_df.to_csv(csv_file, index=False)
+                                        logger.info(f"✅ Saved processed data for {year} as CSV: {csv_file}")
+                                        saved_processed = True
+                                    except Exception as csv_error:
+                                        logger.error(f"❌ All processed save methods failed for {year}: {csv_error}")
+                                        raise csv_error
+                            
+                        except Exception as save_processed_error:
+                            logger.error(f"❌ Failed to save processed data for {year}: {save_processed_error}")
+                            raise save_processed_error
+                    else:
+                        logger.warning(f"⚠️ No data retrieved for year {year}")
                         
                     current_step += 1
                     self.ingestion_status["progress"] = f"{current_step}/{total_steps}"
+                    logger.info(f"📊 Progress: {current_step}/{total_steps}")
                     
                 except Exception as e:
-                    logger.error(f"Error ingesting data for year {year}: {e}")
+                    logger.error(f"❌ Error ingesting data for year {year}: {type(e).__name__}: {str(e)}", exc_info=True)
+                    # Continue with other years even if one fails - don't let one bad year stop everything
+                    logger.warning(f"⚠️ Skipping year {year} and continuing with remaining years")
                     continue
             
             self.ingestion_status = {"status": "completed", "completed_at": datetime.now().isoformat()}
@@ -561,28 +772,32 @@ class DataIngestionService(BaseService):
                 "records_processed": current_step
             }
             
-            logger.info("Data ingestion completed successfully")
+            logger.info("🎉 Data ingestion completed successfully")
             
             # Save validation report
             if VALIDATION_ENABLED:
                 validation_reports = save_all_validation_reports()
-                logger.info(f"Validation reports saved: {validation_reports}")
+                logger.info(f"📋 Validation reports saved: {validation_reports}")
             
         except Exception as e:
-            logger.error(f"Data ingestion failed: {e}")
+            logger.error(f"💥 Data ingestion failed: {type(e).__name__}: {str(e)}", exc_info=True)
             self.ingestion_status = {
                 "status": "failed", 
                 "error": str(e),
+                "error_type": type(e).__name__,
                 "failed_at": datetime.now().isoformat()
             }
             self.last_ingestion = {
                 "timestamp": datetime.now().isoformat(),
                 "status": "failed",
-                "error": str(e)
+                "error": str(e),
+                "error_type": type(e).__name__
             }
     
     def _clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Basic data cleaning"""
+        """Basic data cleaning - keep it simple"""
+        logger.info(f"🧹 Cleaning {len(df)} records with {len(df.columns)} columns")
+        
         # Remove duplicates
         df = df.drop_duplicates()
         
@@ -594,6 +809,7 @@ class DataIngestionService(BaseService):
         if 'position' not in df.columns and 'pos' in df.columns:
             df['position'] = df['pos']
         
+        logger.info(f"✅ Cleaned data: {len(df)} records")
         return df
 
 # Create service instance

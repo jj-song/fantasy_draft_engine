@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   configuration:
     build: ./services/configuration
@@ -13,6 +11,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - ./utils:/app/utils
     
   data-ingestion:
     build: ./services/data-ingestion
@@ -27,6 +26,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - ./utils:/app/utils
     
   feature-engineering:
     build: ./services/feature-engineering
@@ -43,6 +43,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+      - ./utils:/app/utils
     
   ml-models:
     build: ./services/ml-models
@@ -60,6 +61,7 @@ services:
       - ./data:/app/data
       - ./saved_models:/saved_models
       - ./logs:/app/logs
+      - ./utils:/app/utils
     
   ranking:
     build: ./services/ranking
@@ -77,6 +79,7 @@ services:
       - ./data:/data
       - ./saved_models:/saved_models
       - ./logs:/app/logs
+      - ./utils:/app/utils
     
   orchestration:
     build: ./services/orchestration
@@ -90,6 +93,7 @@ services:
       - redis
     volumes:
       - ./logs:/app/logs
+      - ./utils:/app/utils
     
   redis:
     image: redis:7-alpine

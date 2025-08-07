@@ -2,8 +2,11 @@
 
 ## Essential Commands
 
-• `docker-compose up -d` - Start all services with proper port management (RECOMMENDED)
+• `./start_services.sh` - **RECOMMENDED** Automated startup with error handling and Docker detection
+• `docker-compose up -d` - Start all services with proper port management 
 • `docker-compose ps` - Check service status and ports
+• `python utils/system_monitor.py --check-all` - Comprehensive system health check
+• `python utils/system_monitor.py --auto-recover` - Automated issue detection and recovery
 • `python -m services.ranking.src.main` - Start ranking service manually (port conflicts possible)
 • `python -m services.ml-models.src.main` - Start ML models service manually (port conflicts possible)
 
@@ -166,4 +169,41 @@
   - Matchup intelligence: strength of schedule, weather factors
   - Historical patterns: lagged features, trend analysis
 • **ROADMAP**: Gradual integration of research features with production validation
+
+## Troubleshooting & Common Issues (RESOLVED)
+
+### Issue 1: Docker Volume Mount Error ✅ FIXED
+**Problem**: Services failing with `ModuleNotFoundError: No module named 'utils'`
+**Root Cause**: Missing `./utils:/app/utils` volume mount in docker-compose.yml
+**Solution**: Added utils volume mount to all services in docker-compose.yml
+**Prevention**: Use `./start_services.sh` which validates configuration
+
+### Issue 2: Docker Not Running ✅ AUTOMATED
+**Problem**: `Cannot connect to the Docker daemon` error
+**Root Cause**: Docker Desktop not started on macOS
+**Solution**: Automatic Docker startup detection and launch
+**Prevention**: `./start_services.sh` checks and starts Docker automatically
+
+### Issue 3: Live Health Check Failures ⚠️ DOCUMENTED
+**Problem**: Services report "Service not live" on /health/live endpoints
+**Status**: Services are functional (ready/deep health checks pass)
+**Impact**: Orchestration works, full pipeline executes successfully
+**Monitoring**: Use `python utils/system_monitor.py --check-all` for detailed status
+
+### Issue 4: Obsolete docker-compose.yml Version ✅ FIXED
+**Problem**: Warning about obsolete 'version' attribute
+**Solution**: Removed `version: '3.8'` line from docker-compose.yml
+**Prevention**: Configuration is now clean and warning-free
+
+## Future-Proofing Tools
+
+### Automated Startup & Recovery
+• `./start_services.sh` - Handles Docker startup, validates config, starts all services
+• `python utils/system_monitor.py --auto-recover` - Detects and fixes common issues
+• `python utils/system_monitor.py --check-all` - Comprehensive system health report
+
+### Service Verification Commands
+• `curl http://localhost:8006/api/v1/orchestration/status` - Quick system overview
+• `curl http://localhost:8006/api/v1/workflows/health-check` - Detailed health analysis
+• `docker-compose logs -f [service-name]` - Real-time service logs for debugging
 
