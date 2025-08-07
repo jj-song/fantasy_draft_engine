@@ -1,0 +1,40 @@
+2025-08-07 02:34:37 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 78a6eb11-e651-483f-bf15-d29f2a16e4c5]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.004s [correlation_id: 78a6eb11-e651-483f-bf15-d29f2a16e4c5]
+2025-08-07 02:35:01 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 1700314c-cbbb-437c-a25c-f25a8e7ce7d2]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 1700314c-cbbb-437c-a25c-f25a8e7ce7d2]
+2025-08-07 02:35:31 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: dbf525ac-4331-4a44-b6e7-c1f91c2163dd]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: dbf525ac-4331-4a44-b6e7-c1f91c2163dd]
+2025-08-07 02:39:10 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 59492bb3-7bbd-4cfc-93f7-83f980ed9053]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.009s [correlation_id: 59492bb3-7bbd-4cfc-93f7-83f980ed9053]
+2025-08-07 02:39:46 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: d9af35e7-9cd9-407c-9a81-233a0e19cb49]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.007s [correlation_id: d9af35e7-9cd9-407c-9a81-233a0e19cb49]

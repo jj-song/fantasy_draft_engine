@@ -1,0 +1,62 @@
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: ce48b3f2-1a12-4bd7-97a1-3324ed61f292]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.006s [correlation_id: ce48b3f2-1a12-4bd7-97a1-3324ed61f292]
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: b8f010b9-d94c-4158-852d-ac8b9985a5aa]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: b8f010b9-d94c-4158-852d-ac8b9985a5aa]
+2025-08-07 02:34:11 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: 268e71df-b9bf-4571-8287-f5e40177fd9b]
+2025-08-07 02:34:37 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 5cc440c2-2036-4b50-b028-da7fdccd6e8a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 5cc440c2-2036-4b50-b028-da7fdccd6e8a]
+2025-08-07 02:35:01 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 612c3d79-e5cc-4364-b519-37003d0a1a2c]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.011s [correlation_id: 612c3d79-e5cc-4364-b519-37003d0a1a2c]
+2025-08-07 02:35:31 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: fb3633a8-0339-482b-8dcd-d6c2a62f1194]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: fb3633a8-0339-482b-8dcd-d6c2a62f1194]
+2025-08-07 02:39:10 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 1e0a9887-82a5-4f0f-ba73-8f4ede72540b]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.014s [correlation_id: 1e0a9887-82a5-4f0f-ba73-8f4ede72540b]
+2025-08-07 02:39:46 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: b9d74166-ce48-4884-aabe-788ed0951038]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.007s [correlation_id: b9d74166-ce48-4884-aabe-788ed0951038]
+2025-08-07 02:42:27 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: 067989e8-de8e-48bc-8926-400b99d8fe6c]
+2025-08-07 02:47:54 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: e5831d2f-19fb-4b6e-8799-a42108b3bf43]
+2025-08-07 03:05:14 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: 01b0dc32-ec93-4293-98c8-060b71b0cf63]
+2025-08-07 03:08:33 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: d1fe1351-1fa9-411b-b1a5-5e3e22ca76b8]
+2025-08-07 03:19:37 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: e142a107-bf3b-4477-ae66-c4075884779e]

@@ -75,17 +75,14 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         }
         
         # Add request body if configured (be careful with sensitive data)
+        # NOTE: Reading request body in middleware can cause issues with FastAPI's Pydantic validation
+        # We'll capture the body after the request is processed instead
         if self.log_request_body and request.method in ["POST", "PUT", "PATCH"]:
             try:
-                body = await request.body()
-                if body:
-                    # Try to parse as JSON, fall back to string
-                    try:
-                        request_context["body"] = json.loads(body.decode('utf-8'))
-                    except (json.JSONDecodeError, UnicodeDecodeError):
-                        request_context["body"] = body.decode('utf-8', errors='ignore')[:1000]  # Limit size
+                # Store the request for later body capture (if needed)
+                request_context["capture_body"] = True
             except Exception:
-                # If we can't read the body, don't fail the request
+                # If we can't setup body capture, don't fail the request
                 pass
         
         # Set correlation ID in request state for use by route handlers

@@ -10,7 +10,20 @@
 • `python -m services.ranking.src.main` - Start ranking service manually (port conflicts possible)
 • `python -m services.ml-models.src.main` - Start ML models service manually (port conflicts possible)
 
-## Orchestration Service Commands (NEW)
+## Data Ingestion Service Commands (PRODUCTION READY)
+
+• `curl -X GET http://localhost:8002/api/v1/data/status` - Check data ingestion status and available files
+• `curl -X GET http://localhost:8002/api/v1/data/years/2024` - Get specific year data details and quality metrics
+• `curl -X POST http://localhost:8002/api/v1/data/ingest -H "Content-Type: application/json" -d '{"years": [2024], "positions": ["QB", "RB", "WR", "TE"], "force_refresh": true}'` - Ingest NFL data for specific years
+• `curl -X GET http://localhost:8002/api/v1/data/test` - Test data ingestion service connectivity
+
+**Data Ingestion Notes:**
+- ✅ **15 Years Available**: Successfully supports 2010-2024 with comprehensive NFL data
+- ✅ **Advanced Metrics**: Play-by-play data, snap counts, EPA, air yards, YAC 
+- ✅ **Robust Pipeline**: Multi-engine approach (fastparquet → PyArrow → CSV fallback)
+- ✅ **PyArrow Compatibility**: Fixed data type issues across all historical years
+
+## Orchestration Service Commands
 
 • `curl http://localhost:8006/api/v1/orchestration/status` - Complete system status and health
 • `curl -X POST http://localhost:8006/api/v1/workflows/full-pipeline -H "Content-Type: application/json" -d '{"workflow_type": "full-pipeline", "parameters": {"positions": ["QB", "RB", "WR", "TE"], "years": [2024], "season": 2024}}'` - Execute full pipeline

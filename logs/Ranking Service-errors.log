@@ -1,0 +1,48 @@
+2025-08-07 02:34:37 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 83edecfd-0fff-4d41-89e0-dd95d58a483a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.005s [correlation_id: 83edecfd-0fff-4d41-89e0-dd95d58a483a]
+2025-08-07 02:35:01 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 8482054c-544b-4b11-bdaf-b54917536163]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 8482054c-544b-4b11-bdaf-b54917536163]
+2025-08-07 02:35:20 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 2051242d-17c3-40a1-8691-639e2e60ca89]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:20 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.004s [correlation_id: 2051242d-17c3-40a1-8691-639e2e60ca89]
+2025-08-07 02:35:31 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: a8446d87-a394-4ca0-8fc6-5a5ada244c1a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: a8446d87-a394-4ca0-8fc6-5a5ada244c1a]
+2025-08-07 02:39:10 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: b9e937eb-2afc-4736-adde-d872a8255305]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.009s [correlation_id: b9e937eb-2afc-4736-adde-d872a8255305]
+2025-08-07 02:39:46 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: f79a8292-5fd5-45ed-8641-6ae0083bc087]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.006s [correlation_id: f79a8292-5fd5-45ed-8641-6ae0083bc087]

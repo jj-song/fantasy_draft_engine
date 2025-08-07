@@ -1,0 +1,203 @@
+2025-08-07 02:34:11 - ML Models Service - INFO - ML Models Service - 🏗️ ML Models Service v1.0.0 initialized
+2025-08-07 02:34:11 - ML Models Service - INFO - ML Models Service - 🚀 ML Models Service v1.0.0 starting up...
+2025-08-07 02:34:11 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 started successfully in 0.64s
+2025-08-07 02:34:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 5e02795f-4ec0-40d6-82a8-83de051fc437]
+2025-08-07 02:34:37 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 5e02795f-4ec0-40d6-82a8-83de051fc437]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - ML Models Service - WARNING - ML Models Service.base - HTTP Exception 503: Service not live [correlation_id: 5e02795f-4ec0-40d6-82a8-83de051fc437]
+2025-08-07 02:34:37 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.005s [correlation_id: 5e02795f-4ec0-40d6-82a8-83de051fc437]
+2025-08-07 02:35:01 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 67211eb3-eb57-4fd6-a53e-3adc5937adfa]
+2025-08-07 02:35:01 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 67211eb3-eb57-4fd6-a53e-3adc5937adfa]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - ML Models Service - WARNING - ML Models Service.base - HTTP Exception 503: Service not live [correlation_id: 67211eb3-eb57-4fd6-a53e-3adc5937adfa]
+2025-08-07 02:35:01 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 67211eb3-eb57-4fd6-a53e-3adc5937adfa]
+2025-08-07 02:35:01 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/ready started [correlation_id: 0bf6fe1f-548e-4eda-86e6-afb48704fca2]
+2025-08-07 02:35:02 - ML Models Service - INFO - ML Models Service - ✅ GET /health/ready completed (200) in 1.007s [correlation_id: 0bf6fe1f-548e-4eda-86e6-afb48704fca2]
+2025-08-07 02:35:02 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/deep started [correlation_id: 596ebfea-a818-4a39-a86c-10c355f02f6a]
+2025-08-07 02:35:02 - ML Models Service - INFO - ML Models Service - ✅ GET /health/deep completed (200) in 0.001s [correlation_id: 596ebfea-a818-4a39-a86c-10c355f02f6a]
+2025-08-07 02:35:11 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/ready started [correlation_id: cf50ada4-c988-4044-b9ed-98a7f2e4957d]
+2025-08-07 02:35:12 - ML Models Service - INFO - ML Models Service - ✅ GET /health/ready completed (200) in 1.008s [correlation_id: cf50ada4-c988-4044-b9ed-98a7f2e4957d]
+2025-08-07 02:35:20 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 557c9a3c-da10-40f4-8172-a83752535e97]
+2025-08-07 02:35:20 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 557c9a3c-da10-40f4-8172-a83752535e97]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:20 - ML Models Service - WARNING - ML Models Service.base - HTTP Exception 503: Service not live [correlation_id: 557c9a3c-da10-40f4-8172-a83752535e97]
+2025-08-07 02:35:20 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.005s [correlation_id: 557c9a3c-da10-40f4-8172-a83752535e97]
+2025-08-07 02:35:31 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: bf7f1772-1fc7-4e4b-9804-04f15bca5891]
+2025-08-07 02:35:31 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: bf7f1772-1fc7-4e4b-9804-04f15bca5891]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - ML Models Service - WARNING - ML Models Service.base - HTTP Exception 503: Service not live [correlation_id: bf7f1772-1fc7-4e4b-9804-04f15bca5891]
+2025-08-07 02:35:31 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: bf7f1772-1fc7-4e4b-9804-04f15bca5891]
+2025-08-07 02:39:10 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 3a591526-c84e-4a6c-9c92-9edd8052f59e]
+2025-08-07 02:39:10 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 3a591526-c84e-4a6c-9c92-9edd8052f59e]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - ML Models Service - WARNING - ML Models Service.base - HTTP Exception 503: Service not live [correlation_id: 3a591526-c84e-4a6c-9c92-9edd8052f59e]
+2025-08-07 02:39:10 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.009s [correlation_id: 3a591526-c84e-4a6c-9c92-9edd8052f59e]
+2025-08-07 02:39:46 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: aa386b24-3656-4ab8-84fb-2484b9ff8e6a]
+2025-08-07 02:39:46 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: aa386b24-3656-4ab8-84fb-2484b9ff8e6a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - ML Models Service - WARNING - ML Models Service.base - HTTP Exception 503: Service not live [correlation_id: aa386b24-3656-4ab8-84fb-2484b9ff8e6a]
+2025-08-07 02:39:46 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.006s [correlation_id: aa386b24-3656-4ab8-84fb-2484b9ff8e6a]
+2025-08-07 02:40:55 - ML Models Service - INFO - ML Models Service - 🛑 ML Models Service v1.0.0 shutting down...
+2025-08-07 02:40:55 - ML Models Service - INFO - ML Models Service - ML Models Service shutdown completed
+2025-08-07 02:40:55 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 shutdown complete
+2025-08-07 02:42:27 - ML Models Service - INFO - ML Models Service - 🏗️ ML Models Service v1.0.0 initialized
+2025-08-07 02:42:27 - ML Models Service - INFO - ML Models Service - 🚀 ML Models Service v1.0.0 starting up...
+2025-08-07 02:42:27 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 started successfully in 0.31s
+2025-08-07 02:42:50 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: dfd72bb8-c9b7-4ec9-a670-c687f371788a]
+2025-08-07 02:42:50 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.002s [correlation_id: dfd72bb8-c9b7-4ec9-a670-c687f371788a]
+2025-08-07 02:43:03 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: d8d914f6-588b-4140-9b91-50b001813df6]
+2025-08-07 02:43:03 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: d8d914f6-588b-4140-9b91-50b001813df6]
+2025-08-07 02:47:12 - ML Models Service - INFO - ML Models Service - 🛑 ML Models Service v1.0.0 shutting down...
+2025-08-07 02:47:12 - ML Models Service - INFO - ML Models Service - ML Models Service shutdown completed
+2025-08-07 02:47:12 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 shutdown complete
+2025-08-07 02:47:54 - ML Models Service - INFO - ML Models Service - 🏗️ ML Models Service v1.0.0 initialized
+2025-08-07 02:47:54 - ML Models Service - INFO - ML Models Service - 🚀 ML Models Service v1.0.0 starting up...
+2025-08-07 02:47:55 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 started successfully in 0.32s
+2025-08-07 02:48:31 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 19437ebd-efaa-464c-87a8-f5c17a7f8907]
+2025-08-07 02:48:31 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 19437ebd-efaa-464c-87a8-f5c17a7f8907]
+2025-08-07 02:52:54 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: bbf66696-42eb-4ccc-85e2-7ae1084e830b]
+2025-08-07 02:52:54 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: bbf66696-42eb-4ccc-85e2-7ae1084e830b]
+2025-08-07 02:57:54 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 95db5ac2-0064-4ae8-b2d7-f18209629d48]
+2025-08-07 02:57:54 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 95db5ac2-0064-4ae8-b2d7-f18209629d48]
+2025-08-07 03:02:54 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 5bf649c5-4fb2-49af-8984-5d5123031624]
+2025-08-07 03:02:54 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: 5bf649c5-4fb2-49af-8984-5d5123031624]
+2025-08-07 03:05:08 - ML Models Service - INFO - ML Models Service - 🛑 ML Models Service v1.0.0 shutting down...
+2025-08-07 03:05:08 - ML Models Service - INFO - ML Models Service - ML Models Service shutdown completed
+2025-08-07 03:05:08 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 shutdown complete
+2025-08-07 03:05:14 - ML Models Service - INFO - ML Models Service - 🏗️ ML Models Service v1.0.0 initialized
+2025-08-07 03:05:14 - ML Models Service - INFO - ML Models Service - 🚀 ML Models Service v1.0.0 starting up...
+2025-08-07 03:05:14 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 started successfully in 0.41s
+2025-08-07 03:05:28 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 1c0a9a79-2156-4d48-bbdb-1aebe02bf469]
+2025-08-07 03:05:28 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 1c0a9a79-2156-4d48-bbdb-1aebe02bf469]
+2025-08-07 03:08:31 - ML Models Service - INFO - ML Models Service - 🛑 ML Models Service v1.0.0 shutting down...
+2025-08-07 03:08:31 - ML Models Service - INFO - ML Models Service - ML Models Service shutdown completed
+2025-08-07 03:08:31 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 shutdown complete
+2025-08-07 03:08:33 - ML Models Service - INFO - ML Models Service - 🏗️ ML Models Service v1.0.0 initialized
+2025-08-07 03:08:33 - ML Models Service - INFO - ML Models Service - 🚀 ML Models Service v1.0.0 starting up...
+2025-08-07 03:08:33 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 started successfully in 0.29s
+2025-08-07 03:09:09 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 9fb1f472-42c1-4b06-8571-0d1d13aa458a]
+2025-08-07 03:09:09 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 9fb1f472-42c1-4b06-8571-0d1d13aa458a]
+2025-08-07 03:09:09 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/ready started [correlation_id: ebc2c83b-5214-4d24-8f0b-abc36fa40d56]
+2025-08-07 03:09:10 - ML Models Service - INFO - ML Models Service - ✅ GET /health/ready completed (200) in 1.005s [correlation_id: ebc2c83b-5214-4d24-8f0b-abc36fa40d56]
+2025-08-07 03:09:10 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/deep started [correlation_id: a5b07391-d369-454d-9691-2491fd2dc2ec]
+2025-08-07 03:09:10 - ML Models Service - INFO - ML Models Service - ✅ GET /health/deep completed (200) in 0.002s [correlation_id: a5b07391-d369-454d-9691-2491fd2dc2ec]
+2025-08-07 03:13:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: cc069fe9-9863-4e60-a3c8-4c5108a30caa]
+2025-08-07 03:13:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: cc069fe9-9863-4e60-a3c8-4c5108a30caa]
+2025-08-07 03:18:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 697e55b6-3031-42d4-9309-db5fcd258a6f]
+2025-08-07 03:18:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 697e55b6-3031-42d4-9309-db5fcd258a6f]
+2025-08-07 03:19:32 - ML Models Service - INFO - ML Models Service - 🛑 ML Models Service v1.0.0 shutting down...
+2025-08-07 03:19:32 - ML Models Service - INFO - ML Models Service - ML Models Service shutdown completed
+2025-08-07 03:19:32 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 shutdown complete
+2025-08-07 03:19:37 - ML Models Service - INFO - ML Models Service - 🏗️ ML Models Service v1.0.0 initialized
+2025-08-07 03:19:37 - ML Models Service - INFO - ML Models Service - 🚀 ML Models Service v1.0.0 starting up...
+2025-08-07 03:19:38 - ML Models Service - INFO - ML Models Service - ✅ ML Models Service v1.0.0 started successfully in 0.40s
+2025-08-07 03:19:52 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 6206a51b-f9fa-4133-abd9-aa49aad6d2d3]
+2025-08-07 03:19:52 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 6206a51b-f9fa-4133-abd9-aa49aad6d2d3]
+2025-08-07 03:24:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 05a738a0-98d7-4758-a91e-ea67868d703b]
+2025-08-07 03:24:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 05a738a0-98d7-4758-a91e-ea67868d703b]
+2025-08-07 03:29:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: e7efc914-b06b-4700-bd1b-f580f075906a]
+2025-08-07 03:29:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: e7efc914-b06b-4700-bd1b-f580f075906a]
+2025-08-07 03:34:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 79bdb7b9-23aa-4e35-94df-860adcc3546b]
+2025-08-07 03:34:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 79bdb7b9-23aa-4e35-94df-860adcc3546b]
+2025-08-07 03:39:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 33d75679-8031-41b0-8fd0-9c9868aa6937]
+2025-08-07 03:39:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 33d75679-8031-41b0-8fd0-9c9868aa6937]
+2025-08-07 03:44:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: fc325609-dddd-4aa7-8e4c-a76d1ade8c1b]
+2025-08-07 03:44:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: fc325609-dddd-4aa7-8e4c-a76d1ade8c1b]
+2025-08-07 03:49:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 9546434c-b6f8-48e9-9845-9c54572dc653]
+2025-08-07 03:49:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 9546434c-b6f8-48e9-9845-9c54572dc653]
+2025-08-07 03:54:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: c56155cb-d3bb-4723-8013-dc5851159ed6]
+2025-08-07 03:54:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: c56155cb-d3bb-4723-8013-dc5851159ed6]
+2025-08-07 03:59:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 5a5d0d76-f0d7-4c20-8575-53648e97403a]
+2025-08-07 03:59:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 5a5d0d76-f0d7-4c20-8575-53648e97403a]
+2025-08-07 04:04:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: b5944a92-9b06-4368-9051-82d35230c5e7]
+2025-08-07 04:04:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: b5944a92-9b06-4368-9051-82d35230c5e7]
+2025-08-07 04:09:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 5714659a-9689-466d-898a-8ee656465aaf]
+2025-08-07 04:09:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 5714659a-9689-466d-898a-8ee656465aaf]
+2025-08-07 04:14:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: d7360dca-9d5b-4df2-9746-e1e7f5482335]
+2025-08-07 04:14:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: d7360dca-9d5b-4df2-9746-e1e7f5482335]
+2025-08-07 04:19:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: b0d41c84-9559-4923-9f34-a07f72295d9b]
+2025-08-07 04:19:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: b0d41c84-9559-4923-9f34-a07f72295d9b]
+2025-08-07 04:24:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 9488a223-a1b1-4f39-8f2d-34ca98121020]
+2025-08-07 04:24:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 9488a223-a1b1-4f39-8f2d-34ca98121020]
+2025-08-07 04:29:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 09d5af86-83f4-4985-85bf-477f79a9fcb4]
+2025-08-07 04:29:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: 09d5af86-83f4-4985-85bf-477f79a9fcb4]
+2025-08-07 04:34:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 322aaa38-a1d1-42a2-96c7-2e9edff551e1]
+2025-08-07 04:34:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 322aaa38-a1d1-42a2-96c7-2e9edff551e1]
+2025-08-07 04:39:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 33e4a015-dd3c-4c41-aed4-5bd2fb4161b4]
+2025-08-07 04:39:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: 33e4a015-dd3c-4c41-aed4-5bd2fb4161b4]
+2025-08-07 04:44:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 5b22609d-2f60-4869-97f0-06b31fbef167]
+2025-08-07 04:44:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 5b22609d-2f60-4869-97f0-06b31fbef167]
+2025-08-07 04:49:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 32828593-fedc-42fe-a428-7de9a1956628]
+2025-08-07 04:49:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 32828593-fedc-42fe-a428-7de9a1956628]
+2025-08-07 04:54:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 69c12970-ad82-48e8-9ffa-0a5c8575c5aa]
+2025-08-07 04:54:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 69c12970-ad82-48e8-9ffa-0a5c8575c5aa]
+2025-08-07 04:59:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: f722d456-dc1b-41cc-858b-a897308b7c7a]
+2025-08-07 04:59:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: f722d456-dc1b-41cc-858b-a897308b7c7a]
+2025-08-07 05:04:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 626c5707-4603-4800-a7d2-01358500cec8]
+2025-08-07 05:04:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 626c5707-4603-4800-a7d2-01358500cec8]
+2025-08-07 05:09:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 4a9c83c5-c4f2-43d2-8317-cb120ffb35ed]
+2025-08-07 05:09:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 4a9c83c5-c4f2-43d2-8317-cb120ffb35ed]
+2025-08-07 05:14:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 202b3263-b2be-42e5-88ca-97f1cd959ee2]
+2025-08-07 05:14:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: 202b3263-b2be-42e5-88ca-97f1cd959ee2]
+2025-08-07 05:19:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 0cfc0a9a-d73d-4c4f-baed-6c3ae7fe6bba]
+2025-08-07 05:19:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 0cfc0a9a-d73d-4c4f-baed-6c3ae7fe6bba]
+2025-08-07 05:24:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 8ceed05d-b32d-427c-bc75-97497932dcb7]
+2025-08-07 05:24:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.011s [correlation_id: 8ceed05d-b32d-427c-bc75-97497932dcb7]
+2025-08-07 05:29:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 3a96f459-5e83-4b3d-ba22-08e9ff84de0f]
+2025-08-07 05:29:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 3a96f459-5e83-4b3d-ba22-08e9ff84de0f]
+2025-08-07 05:34:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 51d2a152-2560-44d6-9624-fe3d4676f8bf]
+2025-08-07 05:34:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.011s [correlation_id: 51d2a152-2560-44d6-9624-fe3d4676f8bf]
+2025-08-07 05:39:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: f2a1d287-d3a4-4f68-b75c-0ca385bf19bc]
+2025-08-07 05:39:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: f2a1d287-d3a4-4f68-b75c-0ca385bf19bc]
+2025-08-07 05:44:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 1a9748c6-f035-40e8-b4cc-33c632d24df0]
+2025-08-07 05:44:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.011s [correlation_id: 1a9748c6-f035-40e8-b4cc-33c632d24df0]
+2025-08-07 05:49:37 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 202b64df-999b-4b64-8f37-6a765e8b73d0]
+2025-08-07 05:49:37 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 202b64df-999b-4b64-8f37-6a765e8b73d0]
+2025-08-07 08:46:58 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 93e52bd9-a83e-4a84-921c-518e141a420a]
+2025-08-07 08:46:58 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 93e52bd9-a83e-4a84-921c-518e141a420a]
+2025-08-07 14:46:50 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: af50f92c-a375-4a08-9d77-6608077e4b42]
+2025-08-07 14:46:50 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.015s [correlation_id: af50f92c-a375-4a08-9d77-6608077e4b42]
+2025-08-07 15:04:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 34adf43b-83e4-4863-9870-f91b30368f9d]
+2025-08-07 15:04:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: 34adf43b-83e4-4863-9870-f91b30368f9d]
+2025-08-07 15:09:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 197d73d8-cfef-4cb8-96c1-9fc579139990]
+2025-08-07 15:09:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 197d73d8-cfef-4cb8-96c1-9fc579139990]
+2025-08-07 15:14:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 55d4804e-6003-41d8-903f-2ef425e3933a]
+2025-08-07 15:14:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 55d4804e-6003-41d8-903f-2ef425e3933a]
+2025-08-07 15:19:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: cb31486a-6367-4e51-a62c-ecdd042248dc]
+2025-08-07 15:19:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: cb31486a-6367-4e51-a62c-ecdd042248dc]
+2025-08-07 15:24:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 4a4ebce4-6671-4bfe-9565-81e4359cb62d]
+2025-08-07 15:24:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 4a4ebce4-6671-4bfe-9565-81e4359cb62d]
+2025-08-07 15:29:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: 8fc21270-25f1-44af-aaa8-763a77a3650c]
+2025-08-07 15:29:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 8fc21270-25f1-44af-aaa8-763a77a3650c]
+2025-08-07 15:34:32 - ML Models Service - INFO - ML Models Service - 🔥 GET /health/live started [correlation_id: fe181904-417e-4bc0-abef-2e82b0259d8a]
+2025-08-07 15:34:32 - ML Models Service - INFO - ML Models Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: fe181904-417e-4bc0-abef-2e82b0259d8a]

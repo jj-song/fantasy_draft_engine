@@ -1,0 +1,189 @@
+2025-08-07 02:34:10 - Feature Engineering Service - INFO - Feature Engineering Service - 🏗️ Feature Engineering Service v1.0.0 initialized
+2025-08-07 02:34:10 - Feature Engineering Service - INFO - Feature Engineering Service - 🚀 Feature Engineering Service v1.0.0 starting up...
+2025-08-07 02:34:10 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 started successfully in 0.01s
+2025-08-07 02:34:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 78a6eb11-e651-483f-bf15-d29f2a16e4c5]
+2025-08-07 02:34:37 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 78a6eb11-e651-483f-bf15-d29f2a16e4c5]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - Feature Engineering Service - WARNING - Feature Engineering Service.base - HTTP Exception 503: Service not live [correlation_id: 78a6eb11-e651-483f-bf15-d29f2a16e4c5]
+2025-08-07 02:34:37 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.004s [correlation_id: 78a6eb11-e651-483f-bf15-d29f2a16e4c5]
+2025-08-07 02:35:01 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 1700314c-cbbb-437c-a25c-f25a8e7ce7d2]
+2025-08-07 02:35:01 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 1700314c-cbbb-437c-a25c-f25a8e7ce7d2]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - Feature Engineering Service - WARNING - Feature Engineering Service.base - HTTP Exception 503: Service not live [correlation_id: 1700314c-cbbb-437c-a25c-f25a8e7ce7d2]
+2025-08-07 02:35:01 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 1700314c-cbbb-437c-a25c-f25a8e7ce7d2]
+2025-08-07 02:35:01 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/ready started [correlation_id: 3ab19951-48a0-43be-ac49-26b55e1fdcdd]
+2025-08-07 02:35:02 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/ready completed (200) in 1.007s [correlation_id: 3ab19951-48a0-43be-ac49-26b55e1fdcdd]
+2025-08-07 02:35:02 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/deep started [correlation_id: f3ce042a-7827-4d35-a4fe-92761f467405]
+2025-08-07 02:35:02 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/deep completed (200) in 0.001s [correlation_id: f3ce042a-7827-4d35-a4fe-92761f467405]
+2025-08-07 02:35:31 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: dbf525ac-4331-4a44-b6e7-c1f91c2163dd]
+2025-08-07 02:35:31 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: dbf525ac-4331-4a44-b6e7-c1f91c2163dd]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - Feature Engineering Service - WARNING - Feature Engineering Service.base - HTTP Exception 503: Service not live [correlation_id: dbf525ac-4331-4a44-b6e7-c1f91c2163dd]
+2025-08-07 02:35:31 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: dbf525ac-4331-4a44-b6e7-c1f91c2163dd]
+2025-08-07 02:39:10 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 59492bb3-7bbd-4cfc-93f7-83f980ed9053]
+2025-08-07 02:39:10 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 59492bb3-7bbd-4cfc-93f7-83f980ed9053]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - Feature Engineering Service - WARNING - Feature Engineering Service.base - HTTP Exception 503: Service not live [correlation_id: 59492bb3-7bbd-4cfc-93f7-83f980ed9053]
+2025-08-07 02:39:10 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.009s [correlation_id: 59492bb3-7bbd-4cfc-93f7-83f980ed9053]
+2025-08-07 02:39:46 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: d9af35e7-9cd9-407c-9a81-233a0e19cb49]
+2025-08-07 02:39:46 - Feature Engineering Service - ERROR - Feature Engineering Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: d9af35e7-9cd9-407c-9a81-233a0e19cb49]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - Feature Engineering Service - WARNING - Feature Engineering Service.base - HTTP Exception 503: Service not live [correlation_id: d9af35e7-9cd9-407c-9a81-233a0e19cb49]
+2025-08-07 02:39:46 - Feature Engineering Service - ERROR - Feature Engineering Service - ❌ GET /health/live server error (503) in 0.007s [correlation_id: d9af35e7-9cd9-407c-9a81-233a0e19cb49]
+2025-08-07 02:40:56 - Feature Engineering Service - INFO - Feature Engineering Service - 🛑 Feature Engineering Service v1.0.0 shutting down...
+2025-08-07 02:40:56 - Feature Engineering Service - INFO - Feature Engineering Service - Feature Engineering Service shutdown completed
+2025-08-07 02:40:56 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 shutdown complete
+2025-08-07 02:42:27 - Feature Engineering Service - INFO - Feature Engineering Service - 🏗️ Feature Engineering Service v1.0.0 initialized
+2025-08-07 02:42:27 - Feature Engineering Service - INFO - Feature Engineering Service - 🚀 Feature Engineering Service v1.0.0 starting up...
+2025-08-07 02:42:27 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 started successfully in 0.01s
+2025-08-07 02:43:03 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 7666a89b-a1ba-4468-91be-885a31151dc4]
+2025-08-07 02:43:03 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 7666a89b-a1ba-4468-91be-885a31151dc4]
+2025-08-07 02:47:12 - Feature Engineering Service - INFO - Feature Engineering Service - 🛑 Feature Engineering Service v1.0.0 shutting down...
+2025-08-07 02:47:12 - Feature Engineering Service - INFO - Feature Engineering Service - Feature Engineering Service shutdown completed
+2025-08-07 02:47:12 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 shutdown complete
+2025-08-07 02:47:54 - Feature Engineering Service - INFO - Feature Engineering Service - 🏗️ Feature Engineering Service v1.0.0 initialized
+2025-08-07 02:47:54 - Feature Engineering Service - INFO - Feature Engineering Service - 🚀 Feature Engineering Service v1.0.0 starting up...
+2025-08-07 02:47:54 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 started successfully in 0.01s
+2025-08-07 02:48:31 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: cfa33320-e274-41ac-bef3-003d0d3127fa]
+2025-08-07 02:48:31 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: cfa33320-e274-41ac-bef3-003d0d3127fa]
+2025-08-07 02:52:54 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 138bab2b-1c54-4d66-b451-df29819a498a]
+2025-08-07 02:52:54 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 138bab2b-1c54-4d66-b451-df29819a498a]
+2025-08-07 02:57:54 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 66073193-c7e8-46a4-9bc4-56d2506c5212]
+2025-08-07 02:57:54 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 66073193-c7e8-46a4-9bc4-56d2506c5212]
+2025-08-07 03:02:54 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 25feff5f-160b-44bf-a44b-788e807c9533]
+2025-08-07 03:02:54 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 25feff5f-160b-44bf-a44b-788e807c9533]
+2025-08-07 03:05:09 - Feature Engineering Service - INFO - Feature Engineering Service - 🛑 Feature Engineering Service v1.0.0 shutting down...
+2025-08-07 03:05:09 - Feature Engineering Service - INFO - Feature Engineering Service - Feature Engineering Service shutdown completed
+2025-08-07 03:05:09 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 shutdown complete
+2025-08-07 03:05:13 - Feature Engineering Service - INFO - Feature Engineering Service - 🏗️ Feature Engineering Service v1.0.0 initialized
+2025-08-07 03:05:13 - Feature Engineering Service - INFO - Feature Engineering Service - 🚀 Feature Engineering Service v1.0.0 starting up...
+2025-08-07 03:05:13 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 started successfully in 0.01s
+2025-08-07 03:05:28 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: a8bb2f95-65a7-4256-ace1-df9614acb90f]
+2025-08-07 03:05:28 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: a8bb2f95-65a7-4256-ace1-df9614acb90f]
+2025-08-07 03:08:31 - Feature Engineering Service - INFO - Feature Engineering Service - 🛑 Feature Engineering Service v1.0.0 shutting down...
+2025-08-07 03:08:31 - Feature Engineering Service - INFO - Feature Engineering Service - Feature Engineering Service shutdown completed
+2025-08-07 03:08:31 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 shutdown complete
+2025-08-07 03:08:33 - Feature Engineering Service - INFO - Feature Engineering Service - 🏗️ Feature Engineering Service v1.0.0 initialized
+2025-08-07 03:08:33 - Feature Engineering Service - INFO - Feature Engineering Service - 🚀 Feature Engineering Service v1.0.0 starting up...
+2025-08-07 03:08:33 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 started successfully in 0.01s
+2025-08-07 03:09:09 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 6d464f32-2d1d-492c-a6ec-a89cd76761eb]
+2025-08-07 03:09:09 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 6d464f32-2d1d-492c-a6ec-a89cd76761eb]
+2025-08-07 03:09:09 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/ready started [correlation_id: 4d95fbd7-45e1-488d-b6b7-39a60f3863bb]
+2025-08-07 03:09:10 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/ready completed (200) in 1.004s [correlation_id: 4d95fbd7-45e1-488d-b6b7-39a60f3863bb]
+2025-08-07 03:09:10 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/deep started [correlation_id: 10ae0dca-bd24-47f7-b73f-1d5f3cb94070]
+2025-08-07 03:09:10 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/deep completed (200) in 0.002s [correlation_id: 10ae0dca-bd24-47f7-b73f-1d5f3cb94070]
+2025-08-07 03:13:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 28f52c4e-c7b4-4ecd-92ea-43434361e93a]
+2025-08-07 03:13:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: 28f52c4e-c7b4-4ecd-92ea-43434361e93a]
+2025-08-07 03:18:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 20cd619c-b269-4050-a124-6fa2451c5577]
+2025-08-07 03:18:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 20cd619c-b269-4050-a124-6fa2451c5577]
+2025-08-07 03:19:33 - Feature Engineering Service - INFO - Feature Engineering Service - 🛑 Feature Engineering Service v1.0.0 shutting down...
+2025-08-07 03:19:33 - Feature Engineering Service - INFO - Feature Engineering Service - Feature Engineering Service shutdown completed
+2025-08-07 03:19:33 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 shutdown complete
+2025-08-07 03:19:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🏗️ Feature Engineering Service v1.0.0 initialized
+2025-08-07 03:19:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🚀 Feature Engineering Service v1.0.0 starting up...
+2025-08-07 03:19:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ Feature Engineering Service v1.0.0 started successfully in 0.01s
+2025-08-07 03:19:52 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 0828ba74-0a47-4bcf-96a0-57aee42acac4]
+2025-08-07 03:19:52 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 0828ba74-0a47-4bcf-96a0-57aee42acac4]
+2025-08-07 03:24:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 1593939d-57ee-4d88-9e5a-ea5a9b693c6e]
+2025-08-07 03:24:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 1593939d-57ee-4d88-9e5a-ea5a9b693c6e]
+2025-08-07 03:29:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 4d25ff3a-5239-49cc-bf6f-43bb6d2ba460]
+2025-08-07 03:29:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 4d25ff3a-5239-49cc-bf6f-43bb6d2ba460]
+2025-08-07 03:34:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 5cacc5cb-97a8-41e8-aaad-d1cd7579fd25]
+2025-08-07 03:34:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 5cacc5cb-97a8-41e8-aaad-d1cd7579fd25]
+2025-08-07 03:39:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 5bf7aa5f-5790-449b-bd6e-6d423b9339dc]
+2025-08-07 03:39:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 5bf7aa5f-5790-449b-bd6e-6d423b9339dc]
+2025-08-07 03:44:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: e52622d4-e2f5-45b4-9b94-0cf3be7aa4c3]
+2025-08-07 03:44:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: e52622d4-e2f5-45b4-9b94-0cf3be7aa4c3]
+2025-08-07 03:49:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 7f2d9af0-be68-419c-8cd4-9759e995adc7]
+2025-08-07 03:49:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 7f2d9af0-be68-419c-8cd4-9759e995adc7]
+2025-08-07 03:54:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 72ff2138-3177-4c7d-a347-eae27bbff0a2]
+2025-08-07 03:54:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 72ff2138-3177-4c7d-a347-eae27bbff0a2]
+2025-08-07 03:59:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 64b4f124-8a5c-423b-82cb-60215f527286]
+2025-08-07 03:59:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 64b4f124-8a5c-423b-82cb-60215f527286]
+2025-08-07 04:04:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 72f4c3d4-95e8-4542-8dd3-19681fd2c301]
+2025-08-07 04:04:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 72f4c3d4-95e8-4542-8dd3-19681fd2c301]
+2025-08-07 04:09:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 580c0cc6-ae42-40fb-81d7-fd168ee69086]
+2025-08-07 04:09:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 580c0cc6-ae42-40fb-81d7-fd168ee69086]
+2025-08-07 04:14:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 0ecdcc8d-212a-472b-ac8a-6279bc462bff]
+2025-08-07 04:14:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 0ecdcc8d-212a-472b-ac8a-6279bc462bff]
+2025-08-07 04:19:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: dee121c7-3353-4422-8f6d-a1f5d453484a]
+2025-08-07 04:19:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: dee121c7-3353-4422-8f6d-a1f5d453484a]
+2025-08-07 04:24:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 6e010a44-861c-4ff1-af74-fcf0fbd0d443]
+2025-08-07 04:24:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.002s [correlation_id: 6e010a44-861c-4ff1-af74-fcf0fbd0d443]
+2025-08-07 04:29:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 400fde27-2d6a-4401-9240-9a08861553a3]
+2025-08-07 04:29:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 400fde27-2d6a-4401-9240-9a08861553a3]
+2025-08-07 04:34:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: ceaede12-6830-4253-9138-015aecf9393e]
+2025-08-07 04:34:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: ceaede12-6830-4253-9138-015aecf9393e]
+2025-08-07 04:39:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: d24bf470-8ca7-4130-9146-d9ecf6da7a14]
+2025-08-07 04:39:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: d24bf470-8ca7-4130-9146-d9ecf6da7a14]
+2025-08-07 04:44:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 002c7377-5398-4f8b-9025-735723705111]
+2025-08-07 04:44:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 002c7377-5398-4f8b-9025-735723705111]
+2025-08-07 04:49:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: cf24a821-d970-45e4-8cc6-7462f0a8353b]
+2025-08-07 04:49:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: cf24a821-d970-45e4-8cc6-7462f0a8353b]
+2025-08-07 04:54:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 21e15f0f-b8b1-4193-ad91-929ab1688c6b]
+2025-08-07 04:54:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: 21e15f0f-b8b1-4193-ad91-929ab1688c6b]
+2025-08-07 04:59:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: b130eb80-6d54-4907-98c9-254f171828a8]
+2025-08-07 04:59:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.012s [correlation_id: b130eb80-6d54-4907-98c9-254f171828a8]
+2025-08-07 05:04:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 04042ce3-f634-45b5-9dbd-f6d6296339b8]
+2025-08-07 05:04:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 04042ce3-f634-45b5-9dbd-f6d6296339b8]
+2025-08-07 05:09:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 90e759f7-bdff-43e4-92d2-fd736b043051]
+2025-08-07 05:09:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 90e759f7-bdff-43e4-92d2-fd736b043051]
+2025-08-07 05:14:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 33c6e968-297f-4cd5-9ede-7754728aa41a]
+2025-08-07 05:14:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: 33c6e968-297f-4cd5-9ede-7754728aa41a]
+2025-08-07 05:19:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 4acc0fe9-0896-4c06-99f7-b560c653f58d]
+2025-08-07 05:19:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 4acc0fe9-0896-4c06-99f7-b560c653f58d]
+2025-08-07 05:24:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 92ff9a87-4500-441a-9241-0c63782a239a]
+2025-08-07 05:24:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.010s [correlation_id: 92ff9a87-4500-441a-9241-0c63782a239a]
+2025-08-07 05:29:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 4761ecc3-169e-4314-91ab-7012be975327]
+2025-08-07 05:29:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 4761ecc3-169e-4314-91ab-7012be975327]
+2025-08-07 05:34:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: cd0e5f16-a49e-4ca0-9278-c891cf5d7447]
+2025-08-07 05:34:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.010s [correlation_id: cd0e5f16-a49e-4ca0-9278-c891cf5d7447]
+2025-08-07 05:39:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 1b20c2b2-63f6-435d-8869-5b85883cf6e2]
+2025-08-07 05:39:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: 1b20c2b2-63f6-435d-8869-5b85883cf6e2]
+2025-08-07 05:44:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 5d309ac4-ab3b-4ab6-9e28-8a94adddba59]
+2025-08-07 05:44:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.011s [correlation_id: 5d309ac4-ab3b-4ab6-9e28-8a94adddba59]
+2025-08-07 05:49:37 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 104434b0-d074-46b7-aaf0-66fc998f46e6]
+2025-08-07 05:49:37 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 104434b0-d074-46b7-aaf0-66fc998f46e6]
+2025-08-07 08:46:58 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 7fb77d1d-db9c-46f4-aa34-373e0ffefbea]
+2025-08-07 08:46:58 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: 7fb77d1d-db9c-46f4-aa34-373e0ffefbea]
+2025-08-07 14:46:50 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: f0539ea9-29a5-4ec5-94de-6fdc9ad7abb9]
+2025-08-07 14:46:50 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.012s [correlation_id: f0539ea9-29a5-4ec5-94de-6fdc9ad7abb9]
+2025-08-07 15:04:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 4275c230-a86b-46a3-acf5-897dc8934870]
+2025-08-07 15:04:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 4275c230-a86b-46a3-acf5-897dc8934870]
+2025-08-07 15:09:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: d79660f9-893e-4e15-9f0a-570caf6daeb4]
+2025-08-07 15:09:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: d79660f9-893e-4e15-9f0a-570caf6daeb4]
+2025-08-07 15:14:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 867d6398-f7f7-4762-864e-ad10271220e2]
+2025-08-07 15:14:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 867d6398-f7f7-4762-864e-ad10271220e2]
+2025-08-07 15:19:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 904ef525-1b73-47fa-96ed-c8f2fc038df1]
+2025-08-07 15:19:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 904ef525-1b73-47fa-96ed-c8f2fc038df1]
+2025-08-07 15:24:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: d69be876-cc76-4650-b499-fa32c7374766]
+2025-08-07 15:24:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: d69be876-cc76-4650-b499-fa32c7374766]
+2025-08-07 15:29:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: a35325fb-eced-484d-9d48-59190e43ea6f]
+2025-08-07 15:29:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: a35325fb-eced-484d-9d48-59190e43ea6f]
+2025-08-07 15:34:32 - Feature Engineering Service - INFO - Feature Engineering Service - 🔥 GET /health/live started [correlation_id: 404100ca-6094-4ba4-bc67-885c8fde60d6]
+2025-08-07 15:34:32 - Feature Engineering Service - INFO - Feature Engineering Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 404100ca-6094-4ba4-bc67-885c8fde60d6]

@@ -1,0 +1,48 @@
+2025-08-07 02:34:37 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 5e02795f-4ec0-40d6-82a8-83de051fc437]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.005s [correlation_id: 5e02795f-4ec0-40d6-82a8-83de051fc437]
+2025-08-07 02:35:01 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 67211eb3-eb57-4fd6-a53e-3adc5937adfa]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 67211eb3-eb57-4fd6-a53e-3adc5937adfa]
+2025-08-07 02:35:20 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 557c9a3c-da10-40f4-8172-a83752535e97]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:20 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.005s [correlation_id: 557c9a3c-da10-40f4-8172-a83752535e97]
+2025-08-07 02:35:31 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: bf7f1772-1fc7-4e4b-9804-04f15bca5891]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: bf7f1772-1fc7-4e4b-9804-04f15bca5891]
+2025-08-07 02:39:10 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 3a591526-c84e-4a6c-9c92-9edd8052f59e]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.009s [correlation_id: 3a591526-c84e-4a6c-9c92-9edd8052f59e]
+2025-08-07 02:39:46 - ML Models Service - ERROR - ML Models Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: aa386b24-3656-4ab8-84fb-2484b9ff8e6a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - ML Models Service - ERROR - ML Models Service - ❌ GET /health/live server error (503) in 0.006s [correlation_id: aa386b24-3656-4ab8-84fb-2484b9ff8e6a]

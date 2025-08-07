@@ -1,0 +1,203 @@
+2025-08-07 02:34:11 - Ranking Service - INFO - Ranking Service - 🏗️ Ranking Service v1.0.0 initialized
+2025-08-07 02:34:11 - Ranking Service - INFO - Ranking Service - 🚀 Ranking Service v1.0.0 starting up...
+2025-08-07 02:34:11 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 started successfully in 0.00s
+2025-08-07 02:34:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 83edecfd-0fff-4d41-89e0-dd95d58a483a]
+2025-08-07 02:34:37 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 83edecfd-0fff-4d41-89e0-dd95d58a483a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - Ranking Service - WARNING - Ranking Service.base - HTTP Exception 503: Service not live [correlation_id: 83edecfd-0fff-4d41-89e0-dd95d58a483a]
+2025-08-07 02:34:37 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.005s [correlation_id: 83edecfd-0fff-4d41-89e0-dd95d58a483a]
+2025-08-07 02:35:01 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 8482054c-544b-4b11-bdaf-b54917536163]
+2025-08-07 02:35:01 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 8482054c-544b-4b11-bdaf-b54917536163]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - Ranking Service - WARNING - Ranking Service.base - HTTP Exception 503: Service not live [correlation_id: 8482054c-544b-4b11-bdaf-b54917536163]
+2025-08-07 02:35:01 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 8482054c-544b-4b11-bdaf-b54917536163]
+2025-08-07 02:35:01 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/ready started [correlation_id: 62dee1b2-68eb-462b-9e73-43814e99ef3e]
+2025-08-07 02:35:02 - Ranking Service - INFO - Ranking Service - ✅ GET /health/ready completed (200) in 1.007s [correlation_id: 62dee1b2-68eb-462b-9e73-43814e99ef3e]
+2025-08-07 02:35:02 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/deep started [correlation_id: 2cb4271e-c999-4617-a002-21d659d07220]
+2025-08-07 02:35:02 - Ranking Service - INFO - Ranking Service - ✅ GET /health/deep completed (200) in 0.001s [correlation_id: 2cb4271e-c999-4617-a002-21d659d07220]
+2025-08-07 02:35:15 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/ready started [correlation_id: 7da74337-29d2-44a5-bc43-4a28d92b785b]
+2025-08-07 02:35:16 - Ranking Service - INFO - Ranking Service - ✅ GET /health/ready completed (200) in 1.008s [correlation_id: 7da74337-29d2-44a5-bc43-4a28d92b785b]
+2025-08-07 02:35:20 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 2051242d-17c3-40a1-8691-639e2e60ca89]
+2025-08-07 02:35:20 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 2051242d-17c3-40a1-8691-639e2e60ca89]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:20 - Ranking Service - WARNING - Ranking Service.base - HTTP Exception 503: Service not live [correlation_id: 2051242d-17c3-40a1-8691-639e2e60ca89]
+2025-08-07 02:35:20 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.004s [correlation_id: 2051242d-17c3-40a1-8691-639e2e60ca89]
+2025-08-07 02:35:31 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: a8446d87-a394-4ca0-8fc6-5a5ada244c1a]
+2025-08-07 02:35:31 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: a8446d87-a394-4ca0-8fc6-5a5ada244c1a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - Ranking Service - WARNING - Ranking Service.base - HTTP Exception 503: Service not live [correlation_id: a8446d87-a394-4ca0-8fc6-5a5ada244c1a]
+2025-08-07 02:35:31 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: a8446d87-a394-4ca0-8fc6-5a5ada244c1a]
+2025-08-07 02:39:10 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: b9e937eb-2afc-4736-adde-d872a8255305]
+2025-08-07 02:39:10 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: b9e937eb-2afc-4736-adde-d872a8255305]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - Ranking Service - WARNING - Ranking Service.base - HTTP Exception 503: Service not live [correlation_id: b9e937eb-2afc-4736-adde-d872a8255305]
+2025-08-07 02:39:10 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.009s [correlation_id: b9e937eb-2afc-4736-adde-d872a8255305]
+2025-08-07 02:39:46 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: f79a8292-5fd5-45ed-8641-6ae0083bc087]
+2025-08-07 02:39:46 - Ranking Service - ERROR - Ranking Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: f79a8292-5fd5-45ed-8641-6ae0083bc087]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - Ranking Service - WARNING - Ranking Service.base - HTTP Exception 503: Service not live [correlation_id: f79a8292-5fd5-45ed-8641-6ae0083bc087]
+2025-08-07 02:39:46 - Ranking Service - ERROR - Ranking Service - ❌ GET /health/live server error (503) in 0.006s [correlation_id: f79a8292-5fd5-45ed-8641-6ae0083bc087]
+2025-08-07 02:40:55 - Ranking Service - INFO - Ranking Service - 🛑 Ranking Service v1.0.0 shutting down...
+2025-08-07 02:40:55 - Ranking Service - INFO - Ranking Service - Ranking Service shutdown completed
+2025-08-07 02:40:55 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 shutdown complete
+2025-08-07 02:42:27 - Ranking Service - INFO - Ranking Service - 🏗️ Ranking Service v1.0.0 initialized
+2025-08-07 02:42:27 - Ranking Service - INFO - Ranking Service - 🚀 Ranking Service v1.0.0 starting up...
+2025-08-07 02:42:27 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 started successfully in 0.00s
+2025-08-07 02:42:55 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 6a770ec7-a6af-4b9e-8588-23d2874e5412]
+2025-08-07 02:42:55 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 6a770ec7-a6af-4b9e-8588-23d2874e5412]
+2025-08-07 02:43:03 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: eaa0fd41-b1bf-4cc5-a652-763f8f50d581]
+2025-08-07 02:43:03 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: eaa0fd41-b1bf-4cc5-a652-763f8f50d581]
+2025-08-07 02:47:11 - Ranking Service - INFO - Ranking Service - 🛑 Ranking Service v1.0.0 shutting down...
+2025-08-07 02:47:11 - Ranking Service - INFO - Ranking Service - Ranking Service shutdown completed
+2025-08-07 02:47:11 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 shutdown complete
+2025-08-07 02:47:54 - Ranking Service - INFO - Ranking Service - 🏗️ Ranking Service v1.0.0 initialized
+2025-08-07 02:47:54 - Ranking Service - INFO - Ranking Service - 🚀 Ranking Service v1.0.0 starting up...
+2025-08-07 02:47:54 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 started successfully in 0.00s
+2025-08-07 02:48:31 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 85bbfa50-5f91-4519-a7b3-3ece162f1d72]
+2025-08-07 02:48:31 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 85bbfa50-5f91-4519-a7b3-3ece162f1d72]
+2025-08-07 02:52:54 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 44fe0937-f8b9-42c9-b4a5-cedfc13b895f]
+2025-08-07 02:52:54 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 44fe0937-f8b9-42c9-b4a5-cedfc13b895f]
+2025-08-07 02:57:54 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 6902ef24-f365-46b5-b952-f7addb463dc7]
+2025-08-07 02:57:54 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 6902ef24-f365-46b5-b952-f7addb463dc7]
+2025-08-07 03:02:54 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 4ae79a7d-22ef-41fb-b29c-1534d4b58d54]
+2025-08-07 03:02:54 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: 4ae79a7d-22ef-41fb-b29c-1534d4b58d54]
+2025-08-07 03:05:08 - Ranking Service - INFO - Ranking Service - 🛑 Ranking Service v1.0.0 shutting down...
+2025-08-07 03:05:08 - Ranking Service - INFO - Ranking Service - Ranking Service shutdown completed
+2025-08-07 03:05:08 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 shutdown complete
+2025-08-07 03:05:14 - Ranking Service - INFO - Ranking Service - 🏗️ Ranking Service v1.0.0 initialized
+2025-08-07 03:05:14 - Ranking Service - INFO - Ranking Service - 🚀 Ranking Service v1.0.0 starting up...
+2025-08-07 03:05:14 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 started successfully in 0.00s
+2025-08-07 03:05:28 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: fcc37b4e-1c6a-4fb1-a7f6-35b5252ae514]
+2025-08-07 03:05:28 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: fcc37b4e-1c6a-4fb1-a7f6-35b5252ae514]
+2025-08-07 03:08:31 - Ranking Service - INFO - Ranking Service - 🛑 Ranking Service v1.0.0 shutting down...
+2025-08-07 03:08:31 - Ranking Service - INFO - Ranking Service - Ranking Service shutdown completed
+2025-08-07 03:08:31 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 shutdown complete
+2025-08-07 03:08:33 - Ranking Service - INFO - Ranking Service - 🏗️ Ranking Service v1.0.0 initialized
+2025-08-07 03:08:33 - Ranking Service - INFO - Ranking Service - 🚀 Ranking Service v1.0.0 starting up...
+2025-08-07 03:08:33 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 started successfully in 0.01s
+2025-08-07 03:09:09 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: c8a8d812-4105-4385-861d-b453fb692cb4]
+2025-08-07 03:09:09 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.002s [correlation_id: c8a8d812-4105-4385-861d-b453fb692cb4]
+2025-08-07 03:09:09 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/ready started [correlation_id: 883fa06b-6f47-4689-afe1-fb8dc72c9a9e]
+2025-08-07 03:09:10 - Ranking Service - INFO - Ranking Service - ✅ GET /health/ready completed (200) in 1.006s [correlation_id: 883fa06b-6f47-4689-afe1-fb8dc72c9a9e]
+2025-08-07 03:09:10 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/deep started [correlation_id: 05ba24cc-e1ae-4aad-84c0-0c111352dfee]
+2025-08-07 03:09:10 - Ranking Service - INFO - Ranking Service - ✅ GET /health/deep completed (200) in 0.002s [correlation_id: 05ba24cc-e1ae-4aad-84c0-0c111352dfee]
+2025-08-07 03:13:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 812dd902-03f5-4326-88a0-68e6a17b15fa]
+2025-08-07 03:13:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: 812dd902-03f5-4326-88a0-68e6a17b15fa]
+2025-08-07 03:18:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: b02a059a-b47f-417b-b2d1-94b79882bdb5]
+2025-08-07 03:18:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: b02a059a-b47f-417b-b2d1-94b79882bdb5]
+2025-08-07 03:19:32 - Ranking Service - INFO - Ranking Service - 🛑 Ranking Service v1.0.0 shutting down...
+2025-08-07 03:19:32 - Ranking Service - INFO - Ranking Service - Ranking Service shutdown completed
+2025-08-07 03:19:32 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 shutdown complete
+2025-08-07 03:19:37 - Ranking Service - INFO - Ranking Service - 🏗️ Ranking Service v1.0.0 initialized
+2025-08-07 03:19:37 - Ranking Service - INFO - Ranking Service - 🚀 Ranking Service v1.0.0 starting up...
+2025-08-07 03:19:37 - Ranking Service - INFO - Ranking Service - ✅ Ranking Service v1.0.0 started successfully in 0.00s
+2025-08-07 03:19:52 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 0073d2d3-d8a0-4f3a-aebc-be2697c8179b]
+2025-08-07 03:19:52 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 0073d2d3-d8a0-4f3a-aebc-be2697c8179b]
+2025-08-07 03:24:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 91e5b75f-cc94-418f-a959-575b16ccd4c8]
+2025-08-07 03:24:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 91e5b75f-cc94-418f-a959-575b16ccd4c8]
+2025-08-07 03:29:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 60163bc5-cfe0-43ce-bc1e-d57fa39809f4]
+2025-08-07 03:29:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 60163bc5-cfe0-43ce-bc1e-d57fa39809f4]
+2025-08-07 03:34:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 21ff4dcc-1d9f-4845-929f-d21cf71b336b]
+2025-08-07 03:34:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 21ff4dcc-1d9f-4845-929f-d21cf71b336b]
+2025-08-07 03:39:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: febb51f4-4709-4d62-84f5-46f4b984a9b6]
+2025-08-07 03:39:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: febb51f4-4709-4d62-84f5-46f4b984a9b6]
+2025-08-07 03:44:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: a5cc2029-bfbf-4357-85e3-907563a20003]
+2025-08-07 03:44:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: a5cc2029-bfbf-4357-85e3-907563a20003]
+2025-08-07 03:49:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 1858ff33-c8d4-44b8-8b0e-5ff3a55e187d]
+2025-08-07 03:49:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 1858ff33-c8d4-44b8-8b0e-5ff3a55e187d]
+2025-08-07 03:54:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 6812e1dd-10d5-4dfa-b7e6-52b520542957]
+2025-08-07 03:54:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 6812e1dd-10d5-4dfa-b7e6-52b520542957]
+2025-08-07 03:59:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 211961dc-c5cd-4370-a642-7588560f3ddb]
+2025-08-07 03:59:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 211961dc-c5cd-4370-a642-7588560f3ddb]
+2025-08-07 04:04:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 1fa721cc-58b4-40b8-b49a-dc311b7ff797]
+2025-08-07 04:04:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 1fa721cc-58b4-40b8-b49a-dc311b7ff797]
+2025-08-07 04:09:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: af7c4833-d846-4fbb-923f-5b449edf62f0]
+2025-08-07 04:09:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: af7c4833-d846-4fbb-923f-5b449edf62f0]
+2025-08-07 04:14:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: d6a593dd-08af-4585-97ed-c6934866a1bd]
+2025-08-07 04:14:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: d6a593dd-08af-4585-97ed-c6934866a1bd]
+2025-08-07 04:19:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 1e50e56f-387b-4481-9c89-633ebcab9362]
+2025-08-07 04:19:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 1e50e56f-387b-4481-9c89-633ebcab9362]
+2025-08-07 04:24:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 52632112-4b09-4adf-a6ea-f049a265087d]
+2025-08-07 04:24:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: 52632112-4b09-4adf-a6ea-f049a265087d]
+2025-08-07 04:29:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 156ac47f-0109-402b-8ae7-0bf8cd416afc]
+2025-08-07 04:29:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 156ac47f-0109-402b-8ae7-0bf8cd416afc]
+2025-08-07 04:34:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 406d9456-ba51-49f5-9c93-4f4638779180]
+2025-08-07 04:34:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 406d9456-ba51-49f5-9c93-4f4638779180]
+2025-08-07 04:39:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: f7ecd95d-3395-4b86-a4f5-9379c49d16b7]
+2025-08-07 04:39:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: f7ecd95d-3395-4b86-a4f5-9379c49d16b7]
+2025-08-07 04:44:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 98a29069-ec43-4f8c-92b3-5618b3ab8016]
+2025-08-07 04:44:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 98a29069-ec43-4f8c-92b3-5618b3ab8016]
+2025-08-07 04:49:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 6b0da2a9-6ed3-495b-9071-276ea0e97407]
+2025-08-07 04:49:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 6b0da2a9-6ed3-495b-9071-276ea0e97407]
+2025-08-07 04:54:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: c1fe6456-b38d-483d-8fee-d15901860417]
+2025-08-07 04:54:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: c1fe6456-b38d-483d-8fee-d15901860417]
+2025-08-07 04:59:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 72530a2c-3a72-4391-ba8d-a8da8668e3f0]
+2025-08-07 04:59:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 72530a2c-3a72-4391-ba8d-a8da8668e3f0]
+2025-08-07 05:04:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 2bb77687-6e0f-450b-8be3-ebc783816762]
+2025-08-07 05:04:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 2bb77687-6e0f-450b-8be3-ebc783816762]
+2025-08-07 05:09:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 0cdb2900-5248-4a66-83a1-97f58ab48bf3]
+2025-08-07 05:09:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 0cdb2900-5248-4a66-83a1-97f58ab48bf3]
+2025-08-07 05:14:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 41700dc7-7166-4ccc-abd7-b1e793eb295e]
+2025-08-07 05:14:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 41700dc7-7166-4ccc-abd7-b1e793eb295e]
+2025-08-07 05:19:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 253972c9-5028-46b9-95c4-0652bc6246f6]
+2025-08-07 05:19:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: 253972c9-5028-46b9-95c4-0652bc6246f6]
+2025-08-07 05:24:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: aca49253-66f6-49a7-895d-2e248606b744]
+2025-08-07 05:24:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: aca49253-66f6-49a7-895d-2e248606b744]
+2025-08-07 05:29:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: f459abb9-78bc-4786-a6c5-47c4bf96b48e]
+2025-08-07 05:29:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: f459abb9-78bc-4786-a6c5-47c4bf96b48e]
+2025-08-07 05:34:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 81e9a563-e2e5-4451-b1c2-f916906a6380]
+2025-08-07 05:34:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: 81e9a563-e2e5-4451-b1c2-f916906a6380]
+2025-08-07 05:39:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 625c1151-edb2-4e57-8d33-d9c375f9920e]
+2025-08-07 05:39:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 625c1151-edb2-4e57-8d33-d9c375f9920e]
+2025-08-07 05:44:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: b07f2c06-d284-4695-b02a-1f75a7fa9cec]
+2025-08-07 05:44:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.013s [correlation_id: b07f2c06-d284-4695-b02a-1f75a7fa9cec]
+2025-08-07 05:49:37 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: d937042f-c8a4-4c02-8c89-561a92e5e319]
+2025-08-07 05:49:37 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: d937042f-c8a4-4c02-8c89-561a92e5e319]
+2025-08-07 08:46:58 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 54fcaed3-ee29-4be9-b6ea-14c9fe4e8ebe]
+2025-08-07 08:46:58 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.009s [correlation_id: 54fcaed3-ee29-4be9-b6ea-14c9fe4e8ebe]
+2025-08-07 14:46:50 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: d6413423-d995-42a3-8fcd-39dd2362df09]
+2025-08-07 14:46:50 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.013s [correlation_id: d6413423-d995-42a3-8fcd-39dd2362df09]
+2025-08-07 15:04:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 8f07ce3e-e924-4a25-a6ee-abb847580015]
+2025-08-07 15:04:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 8f07ce3e-e924-4a25-a6ee-abb847580015]
+2025-08-07 15:09:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: c46c8215-184f-4b0f-ad3f-4ad1d29545c0]
+2025-08-07 15:09:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: c46c8215-184f-4b0f-ad3f-4ad1d29545c0]
+2025-08-07 15:14:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 69ec9779-a20f-4f44-ac48-8c09d0a338cf]
+2025-08-07 15:14:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 69ec9779-a20f-4f44-ac48-8c09d0a338cf]
+2025-08-07 15:19:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 533b0ddb-7f34-4f63-b4c2-8953caa24ce4]
+2025-08-07 15:19:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 533b0ddb-7f34-4f63-b4c2-8953caa24ce4]
+2025-08-07 15:24:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: 5331fc98-542e-41c9-bf11-8a5ac7740fdc]
+2025-08-07 15:24:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 5331fc98-542e-41c9-bf11-8a5ac7740fdc]
+2025-08-07 15:29:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: bb0fd77f-2a23-448c-b128-dccccd489beb]
+2025-08-07 15:29:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: bb0fd77f-2a23-448c-b128-dccccd489beb]
+2025-08-07 15:34:32 - Ranking Service - INFO - Ranking Service - 🔥 GET /health/live started [correlation_id: ae7d5910-c88b-40c2-b1e6-983099af7b04]
+2025-08-07 15:34:32 - Ranking Service - INFO - Ranking Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: ae7d5910-c88b-40c2-b1e6-983099af7b04]

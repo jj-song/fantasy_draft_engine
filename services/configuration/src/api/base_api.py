@@ -171,7 +171,7 @@ class BaseService:
         async def liveness_check():
             try:
                 result = await self.health_checker.liveness_check()
-                self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                self.contextual_logger.debug("Liveness check completed", extra={"status": result.status})
                 return result
             except Exception as e:
                 self.contextual_logger.error(f"Liveness check failed: {str(e)}", exc_info=True)
@@ -181,7 +181,7 @@ class BaseService:
         async def readiness_check():
             try:
                 result = await self.health_checker.readiness_check()
-                status = result.get("status", "unknown") if isinstance(result, dict) else getattr(result, "status", "unknown")
+                status = result.status if isinstance(result, dict) else getattr(result, "status", "unknown")
                 
                 self.contextual_logger.debug("Readiness check completed", extra={"status": status})
                 
@@ -198,7 +198,7 @@ class BaseService:
         async def deep_health_check():
             try:
                 result = await self.health_checker.deep_health_check()
-                status = result.get("status", "unknown") if isinstance(result, dict) else getattr(result, "status", "unknown")
+                status = result.status if isinstance(result, dict) else getattr(result, "status", "unknown")
                 
                 self.contextual_logger.debug("Deep health check completed", extra={"status": status})
                 

@@ -1,0 +1,284 @@
+2025-08-07 02:34:10 - Configuration Service - INFO - Configuration Service - 🏗️ Configuration Service v1.0.0 initialized
+2025-08-07 02:34:10 - Configuration Service - INFO - Configuration Service - 🚀 Configuration Service v1.0.0 starting up...
+2025-08-07 02:34:10 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 started successfully in 0.00s
+2025-08-07 02:34:10 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: ce48b3f2-1a12-4bd7-97a1-3324ed61f292]
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: ce48b3f2-1a12-4bd7-97a1-3324ed61f292]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:10 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 503: Service not live [correlation_id: ce48b3f2-1a12-4bd7-97a1-3324ed61f292]
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.006s [correlation_id: ce48b3f2-1a12-4bd7-97a1-3324ed61f292]
+2025-08-07 02:34:10 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: b8f010b9-d94c-4158-852d-ac8b9985a5aa]
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: b8f010b9-d94c-4158-852d-ac8b9985a5aa]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:10 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 503: Service not live [correlation_id: b8f010b9-d94c-4158-852d-ac8b9985a5aa]
+2025-08-07 02:34:10 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: b8f010b9-d94c-4158-852d-ac8b9985a5aa]
+2025-08-07 02:34:11 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/summary started [correlation_id: 268e71df-b9bf-4571-8287-f5e40177fd9b]
+2025-08-07 02:34:11 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 500:  [correlation_id: 268e71df-b9bf-4571-8287-f5e40177fd9b]
+2025-08-07 02:34:11 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: 268e71df-b9bf-4571-8287-f5e40177fd9b]
+2025-08-07 02:34:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 5cc440c2-2036-4b50-b028-da7fdccd6e8a]
+2025-08-07 02:34:37 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 5cc440c2-2036-4b50-b028-da7fdccd6e8a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 503: Service not live [correlation_id: 5cc440c2-2036-4b50-b028-da7fdccd6e8a]
+2025-08-07 02:34:37 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: 5cc440c2-2036-4b50-b028-da7fdccd6e8a]
+2025-08-07 02:35:01 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 612c3d79-e5cc-4364-b519-37003d0a1a2c]
+2025-08-07 02:35:01 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 612c3d79-e5cc-4364-b519-37003d0a1a2c]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 503: Service not live [correlation_id: 612c3d79-e5cc-4364-b519-37003d0a1a2c]
+2025-08-07 02:35:01 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.011s [correlation_id: 612c3d79-e5cc-4364-b519-37003d0a1a2c]
+2025-08-07 02:35:01 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/ready started [correlation_id: 5c5a098b-da76-4e8e-94f6-dd0f2846be12]
+2025-08-07 02:35:02 - Configuration Service - INFO - Configuration Service - ✅ GET /health/ready completed (200) in 1.007s [correlation_id: 5c5a098b-da76-4e8e-94f6-dd0f2846be12]
+2025-08-07 02:35:02 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/deep started [correlation_id: c8d5f361-59cc-44c2-a6ba-a5c23c773289]
+2025-08-07 02:35:02 - Configuration Service - INFO - Configuration Service - ✅ GET /health/deep completed (200) in 0.002s [correlation_id: c8d5f361-59cc-44c2-a6ba-a5c23c773289]
+2025-08-07 02:35:31 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: fb3633a8-0339-482b-8dcd-d6c2a62f1194]
+2025-08-07 02:35:31 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: fb3633a8-0339-482b-8dcd-d6c2a62f1194]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 503: Service not live [correlation_id: fb3633a8-0339-482b-8dcd-d6c2a62f1194]
+2025-08-07 02:35:31 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: fb3633a8-0339-482b-8dcd-d6c2a62f1194]
+2025-08-07 02:39:10 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 1e0a9887-82a5-4f0f-ba73-8f4ede72540b]
+2025-08-07 02:39:10 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 1e0a9887-82a5-4f0f-ba73-8f4ede72540b]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 503: Service not live [correlation_id: 1e0a9887-82a5-4f0f-ba73-8f4ede72540b]
+2025-08-07 02:39:10 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.014s [correlation_id: 1e0a9887-82a5-4f0f-ba73-8f4ede72540b]
+2025-08-07 02:39:46 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: b9d74166-ce48-4884-aabe-788ed0951038]
+2025-08-07 02:39:46 - Configuration Service - ERROR - Configuration Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: b9d74166-ce48-4884-aabe-788ed0951038]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 503: Service not live [correlation_id: b9d74166-ce48-4884-aabe-788ed0951038]
+2025-08-07 02:39:46 - Configuration Service - ERROR - Configuration Service - ❌ GET /health/live server error (503) in 0.007s [correlation_id: b9d74166-ce48-4884-aabe-788ed0951038]
+2025-08-07 02:40:56 - Configuration Service - INFO - Configuration Service - 🛑 Configuration Service v1.0.0 shutting down...
+2025-08-07 02:40:56 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 shutdown complete
+2025-08-07 02:42:26 - Configuration Service - INFO - Configuration Service - 🏗️ Configuration Service v1.0.0 initialized
+2025-08-07 02:42:26 - Configuration Service - INFO - Configuration Service - 🚀 Configuration Service v1.0.0 starting up...
+2025-08-07 02:42:26 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 started successfully in 0.00s
+2025-08-07 02:42:26 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: e7136752-b5ef-4f82-833c-6409862f5690]
+2025-08-07 02:42:26 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: e7136752-b5ef-4f82-833c-6409862f5690]
+2025-08-07 02:42:27 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: e9e6ea45-9e61-42ac-83dc-64ca87e9b40f]
+2025-08-07 02:42:27 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: e9e6ea45-9e61-42ac-83dc-64ca87e9b40f]
+2025-08-07 02:42:27 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/summary started [correlation_id: 067989e8-de8e-48bc-8926-400b99d8fe6c]
+2025-08-07 02:42:27 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 500:  [correlation_id: 067989e8-de8e-48bc-8926-400b99d8fe6c]
+2025-08-07 02:42:27 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: 067989e8-de8e-48bc-8926-400b99d8fe6c]
+2025-08-07 02:43:03 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: c6bd293a-8308-414e-adda-3a5d786caf92]
+2025-08-07 02:43:03 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: c6bd293a-8308-414e-adda-3a5d786caf92]
+2025-08-07 02:47:13 - Configuration Service - INFO - Configuration Service - 🛑 Configuration Service v1.0.0 shutting down...
+2025-08-07 02:47:13 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 shutdown complete
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - 🏗️ Configuration Service v1.0.0 initialized
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - 🚀 Configuration Service v1.0.0 starting up...
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 started successfully in 0.00s
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 732a934c-c2b3-4e8b-9f72-a805ebb12b54]
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 732a934c-c2b3-4e8b-9f72-a805ebb12b54]
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 4f9293b5-a357-488c-8f8e-0f78a75cf0f0]
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 4f9293b5-a357-488c-8f8e-0f78a75cf0f0]
+2025-08-07 02:47:54 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/summary started [correlation_id: e5831d2f-19fb-4b6e-8799-a42108b3bf43]
+2025-08-07 02:47:54 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 500:  [correlation_id: e5831d2f-19fb-4b6e-8799-a42108b3bf43]
+2025-08-07 02:47:54 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: e5831d2f-19fb-4b6e-8799-a42108b3bf43]
+2025-08-07 02:48:31 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: f4b7271b-9a96-47d3-9b1d-adccce9a09b9]
+2025-08-07 02:48:31 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: f4b7271b-9a96-47d3-9b1d-adccce9a09b9]
+2025-08-07 02:52:54 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 31d11706-e3cb-4565-9099-ac6518ce17b0]
+2025-08-07 02:52:54 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 31d11706-e3cb-4565-9099-ac6518ce17b0]
+2025-08-07 02:57:54 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: ec7966d3-94e6-4cf2-a6f2-9421706d58d8]
+2025-08-07 02:57:54 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: ec7966d3-94e6-4cf2-a6f2-9421706d58d8]
+2025-08-07 03:02:54 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 83838a2a-c5c9-40b4-acd8-9ed960867ee1]
+2025-08-07 03:02:54 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: 83838a2a-c5c9-40b4-acd8-9ed960867ee1]
+2025-08-07 03:05:10 - Configuration Service - INFO - Configuration Service - 🛑 Configuration Service v1.0.0 shutting down...
+2025-08-07 03:05:10 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 shutdown complete
+2025-08-07 03:05:13 - Configuration Service - INFO - Configuration Service - 🏗️ Configuration Service v1.0.0 initialized
+2025-08-07 03:05:13 - Configuration Service - INFO - Configuration Service - 🚀 Configuration Service v1.0.0 starting up...
+2025-08-07 03:05:13 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 started successfully in 0.00s
+2025-08-07 03:05:13 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 9641df2c-52ce-40ea-b489-b8103457bb42]
+2025-08-07 03:05:13 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 9641df2c-52ce-40ea-b489-b8103457bb42]
+2025-08-07 03:05:13 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 21a8cb92-c552-44fc-8750-5d00df0790c6]
+2025-08-07 03:05:13 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 21a8cb92-c552-44fc-8750-5d00df0790c6]
+2025-08-07 03:05:14 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/summary started [correlation_id: 01b0dc32-ec93-4293-98c8-060b71b0cf63]
+2025-08-07 03:05:14 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 500:  [correlation_id: 01b0dc32-ec93-4293-98c8-060b71b0cf63]
+2025-08-07 03:05:14 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: 01b0dc32-ec93-4293-98c8-060b71b0cf63]
+2025-08-07 03:05:28 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: d4e826e9-ba66-471d-8721-a5445e396c48]
+2025-08-07 03:05:28 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: d4e826e9-ba66-471d-8721-a5445e396c48]
+2025-08-07 03:08:31 - Configuration Service - INFO - Configuration Service - 🛑 Configuration Service v1.0.0 shutting down...
+2025-08-07 03:08:31 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 shutdown complete
+2025-08-07 03:08:32 - Configuration Service - INFO - Configuration Service - 🏗️ Configuration Service v1.0.0 initialized
+2025-08-07 03:08:32 - Configuration Service - INFO - Configuration Service - 🚀 Configuration Service v1.0.0 starting up...
+2025-08-07 03:08:32 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 started successfully in 0.00s
+2025-08-07 03:08:33 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 86a02846-f547-4dd0-8d3d-ad0382e4957e]
+2025-08-07 03:08:33 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.002s [correlation_id: 86a02846-f547-4dd0-8d3d-ad0382e4957e]
+2025-08-07 03:08:33 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/summary started [correlation_id: d1fe1351-1fa9-411b-b1a5-5e3e22ca76b8]
+2025-08-07 03:08:33 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 500:  [correlation_id: d1fe1351-1fa9-411b-b1a5-5e3e22ca76b8]
+2025-08-07 03:08:33 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: d1fe1351-1fa9-411b-b1a5-5e3e22ca76b8]
+2025-08-07 03:08:50 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: d08411b1-024a-4453-b2d8-5c9d7b337985]
+2025-08-07 03:08:50 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: d08411b1-024a-4453-b2d8-5c9d7b337985]
+2025-08-07 03:09:09 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 2c318006-aab4-4190-b63d-e20a606fd410]
+2025-08-07 03:09:09 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.002s [correlation_id: 2c318006-aab4-4190-b63d-e20a606fd410]
+2025-08-07 03:09:09 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/ready started [correlation_id: 0a220d9b-3499-4d10-8d58-6dc77d3eef88]
+2025-08-07 03:09:10 - Configuration Service - INFO - Configuration Service - ✅ GET /health/ready completed (200) in 1.004s [correlation_id: 0a220d9b-3499-4d10-8d58-6dc77d3eef88]
+2025-08-07 03:09:10 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/deep started [correlation_id: 04b104ee-5ca5-438c-a781-b0fff31797d1]
+2025-08-07 03:09:10 - Configuration Service - INFO - Configuration Service - ✅ GET /health/deep completed (200) in 0.002s [correlation_id: 04b104ee-5ca5-438c-a781-b0fff31797d1]
+2025-08-07 03:12:01 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 1f692201-7ca3-4477-87d1-437978e3b3ab]
+2025-08-07 03:12:01 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: 1f692201-7ca3-4477-87d1-437978e3b3ab]
+2025-08-07 03:12:43 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: ebef7763-a3f4-4b99-a4d4-d488484fc8cb]
+2025-08-07 03:12:43 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: ebef7763-a3f4-4b99-a4d4-d488484fc8cb]
+2025-08-07 03:13:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 38bf7528-319b-497f-a147-a7992a45703b]
+2025-08-07 03:13:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: 38bf7528-319b-497f-a147-a7992a45703b]
+2025-08-07 03:18:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 654acf36-a221-41d3-9eb7-70db01f3271c]
+2025-08-07 03:18:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 654acf36-a221-41d3-9eb7-70db01f3271c]
+2025-08-07 03:19:34 - Configuration Service - INFO - Configuration Service - 🛑 Configuration Service v1.0.0 shutting down...
+2025-08-07 03:19:34 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 shutdown complete
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - 🏗️ Configuration Service v1.0.0 initialized
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - 🚀 Configuration Service v1.0.0 starting up...
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - ✅ Configuration Service v1.0.0 started successfully in 0.00s
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 964890d3-e5e8-4450-9f0b-6ec68137b035]
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 964890d3-e5e8-4450-9f0b-6ec68137b035]
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 8886a4c0-d8e2-4ae7-a4c8-38cecb0c4681]
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.001s [correlation_id: 8886a4c0-d8e2-4ae7-a4c8-38cecb0c4681]
+2025-08-07 03:19:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/summary started [correlation_id: e142a107-bf3b-4477-ae66-c4075884779e]
+2025-08-07 03:19:37 - Configuration Service - WARNING - Configuration Service.base - HTTP Exception 500:  [correlation_id: e142a107-bf3b-4477-ae66-c4075884779e]
+2025-08-07 03:19:37 - Configuration Service - ERROR - Configuration Service - ❌ GET /api/v1/config/summary server error (500) in 0.001s [correlation_id: e142a107-bf3b-4477-ae66-c4075884779e]
+2025-08-07 03:19:52 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 256b7a82-5c5b-41b3-bfde-4c66bd3b6b73]
+2025-08-07 03:19:52 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 256b7a82-5c5b-41b3-bfde-4c66bd3b6b73]
+2025-08-07 03:20:47 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 3953f267-7daa-42f5-ae5d-e17ee3b923cf]
+2025-08-07 03:20:47 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: 3953f267-7daa-42f5-ae5d-e17ee3b923cf]
+2025-08-07 03:21:04 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 664f680a-314b-45c8-a83f-c56cd0be9879]
+2025-08-07 03:21:04 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: 664f680a-314b-45c8-a83f-c56cd0be9879]
+2025-08-07 03:23:35 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: a23dabfb-79da-49ab-a69e-f4b2632e16b0]
+2025-08-07 03:23:35 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: a23dabfb-79da-49ab-a69e-f4b2632e16b0]
+2025-08-07 03:24:07 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 873b911e-5480-4f12-a94c-bbaa95a2b64a]
+2025-08-07 03:24:07 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: 873b911e-5480-4f12-a94c-bbaa95a2b64a]
+2025-08-07 03:24:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 59a26c63-02d4-4a94-b2e9-50a27fcbb7bf]
+2025-08-07 03:24:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 59a26c63-02d4-4a94-b2e9-50a27fcbb7bf]
+2025-08-07 03:25:58 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 4891f48f-9c54-4115-9515-bde5ed9ae4bd]
+2025-08-07 03:25:58 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: 4891f48f-9c54-4115-9515-bde5ed9ae4bd]
+2025-08-07 03:27:13 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: fcbc8353-b026-4c21-8a74-aaa64d3e8519]
+2025-08-07 03:27:13 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: fcbc8353-b026-4c21-8a74-aaa64d3e8519]
+2025-08-07 03:29:19 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: e1f82613-1eac-4186-bd31-752c02c516bc]
+2025-08-07 03:29:19 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: e1f82613-1eac-4186-bd31-752c02c516bc]
+2025-08-07 03:29:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 7e38d4c4-5d31-45e4-b2a8-d1926409920f]
+2025-08-07 03:29:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 7e38d4c4-5d31-45e4-b2a8-d1926409920f]
+2025-08-07 03:32:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: c4ce867e-6e3d-42be-a609-bbf8c4ffb386]
+2025-08-07 03:32:32 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: c4ce867e-6e3d-42be-a609-bbf8c4ffb386]
+2025-08-07 03:33:19 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 0303f4fe-3d0c-46fe-a3b8-92904c587712]
+2025-08-07 03:33:19 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: 0303f4fe-3d0c-46fe-a3b8-92904c587712]
+2025-08-07 03:34:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 82089634-8965-467d-8ea4-fe0c1fa6fec4]
+2025-08-07 03:34:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 82089634-8965-467d-8ea4-fe0c1fa6fec4]
+2025-08-07 03:39:02 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 48fa466c-2a40-4615-a72a-2bffa3c21988]
+2025-08-07 03:39:02 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: 48fa466c-2a40-4615-a72a-2bffa3c21988]
+2025-08-07 03:39:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 2274e66c-5f8f-4d42-9981-870b7c12441e]
+2025-08-07 03:39:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 2274e66c-5f8f-4d42-9981-870b7c12441e]
+2025-08-07 03:40:03 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 410c9e93-5032-4ab1-9c7b-0662f7e9223b]
+2025-08-07 03:40:03 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: 410c9e93-5032-4ab1-9c7b-0662f7e9223b]
+2025-08-07 03:44:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 50f0e233-048d-4b5c-afde-7efb4d7669a6]
+2025-08-07 03:44:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 50f0e233-048d-4b5c-afde-7efb4d7669a6]
+2025-08-07 03:46:42 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 30f28482-4f40-4c19-a7b1-85ad318cf98e]
+2025-08-07 03:46:42 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: 30f28482-4f40-4c19-a7b1-85ad318cf98e]
+2025-08-07 03:48:29 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 925c90e7-4f23-4a95-ae0c-6f288f7f7e1d]
+2025-08-07 03:48:29 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: 925c90e7-4f23-4a95-ae0c-6f288f7f7e1d]
+2025-08-07 03:49:15 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 1e24d76b-c32b-4e3f-a3b4-79167d097960]
+2025-08-07 03:49:15 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: 1e24d76b-c32b-4e3f-a3b4-79167d097960]
+2025-08-07 03:49:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: e8df3a00-ffe2-49e8-9d95-5d04365f4512]
+2025-08-07 03:49:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: e8df3a00-ffe2-49e8-9d95-5d04365f4512]
+2025-08-07 03:54:20 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 82aa0501-8f17-4044-860c-6e710cbd8b77]
+2025-08-07 03:54:20 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: 82aa0501-8f17-4044-860c-6e710cbd8b77]
+2025-08-07 03:54:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 4a3f0421-f780-4346-9161-029c1c5e5a12]
+2025-08-07 03:54:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 4a3f0421-f780-4346-9161-029c1c5e5a12]
+2025-08-07 03:59:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 735549e1-de57-4c2a-aefa-0af310015d7f]
+2025-08-07 03:59:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: 735549e1-de57-4c2a-aefa-0af310015d7f]
+2025-08-07 04:00:19 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: bb7a8265-8b1c-4f58-948c-c103f9bebd9b]
+2025-08-07 04:00:19 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: bb7a8265-8b1c-4f58-948c-c103f9bebd9b]
+2025-08-07 04:04:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 3104703c-d268-4e51-b584-27bcbd1341fa]
+2025-08-07 04:04:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 3104703c-d268-4e51-b584-27bcbd1341fa]
+2025-08-07 04:04:40 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: b7adf6d6-6839-4f47-a8e1-ed607d5d2a92]
+2025-08-07 04:04:40 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.002s [correlation_id: b7adf6d6-6839-4f47-a8e1-ed607d5d2a92]
+2025-08-07 04:06:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 3f1a2181-7ffe-4b5c-876b-93faac45d9e2]
+2025-08-07 04:06:37 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: 3f1a2181-7ffe-4b5c-876b-93faac45d9e2]
+2025-08-07 04:07:46 - Configuration Service - INFO - Configuration Service - 🔥 GET /api/v1/config/data started [correlation_id: 653b3726-f0ba-4a81-ab79-9baa90cb5483]
+2025-08-07 04:07:46 - Configuration Service - INFO - Configuration Service - ✅ GET /api/v1/config/data completed (200) in 0.001s [correlation_id: 653b3726-f0ba-4a81-ab79-9baa90cb5483]
+2025-08-07 04:09:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 03a41d4a-dc2d-495b-afdf-ecee5d631b86]
+2025-08-07 04:09:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 03a41d4a-dc2d-495b-afdf-ecee5d631b86]
+2025-08-07 04:14:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 1281cc10-71a5-4f9d-8c54-eb2192a2fcc3]
+2025-08-07 04:14:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 1281cc10-71a5-4f9d-8c54-eb2192a2fcc3]
+2025-08-07 04:19:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: bdcd6d01-0963-48bd-bbeb-1cfd0588a75d]
+2025-08-07 04:19:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: bdcd6d01-0963-48bd-bbeb-1cfd0588a75d]
+2025-08-07 04:24:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 14ba6326-3e54-454a-97ff-62cfe46c9af9]
+2025-08-07 04:24:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.003s [correlation_id: 14ba6326-3e54-454a-97ff-62cfe46c9af9]
+2025-08-07 04:29:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 5e2d1c41-bfc0-44ed-9a2e-d59e19032a6d]
+2025-08-07 04:29:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 5e2d1c41-bfc0-44ed-9a2e-d59e19032a6d]
+2025-08-07 04:34:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: e3d06b01-b386-4eef-ba2c-bf942a4a87b0]
+2025-08-07 04:34:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: e3d06b01-b386-4eef-ba2c-bf942a4a87b0]
+2025-08-07 04:39:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 283e2d4a-74c4-4d2f-9777-5a3b631e2977]
+2025-08-07 04:39:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 283e2d4a-74c4-4d2f-9777-5a3b631e2977]
+2025-08-07 04:44:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: cc70bfb3-359c-49b5-ab00-016ea84afa39]
+2025-08-07 04:44:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: cc70bfb3-359c-49b5-ab00-016ea84afa39]
+2025-08-07 04:49:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 623b06e7-8a93-4041-a054-a35cc660e020]
+2025-08-07 04:49:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.004s [correlation_id: 623b06e7-8a93-4041-a054-a35cc660e020]
+2025-08-07 04:54:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: c7f89478-065f-49ec-ba25-5d11e1ffc640]
+2025-08-07 04:54:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: c7f89478-065f-49ec-ba25-5d11e1ffc640]
+2025-08-07 04:59:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: ffe621b6-ec89-41cc-a87a-169ff686f5a1]
+2025-08-07 04:59:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: ffe621b6-ec89-41cc-a87a-169ff686f5a1]
+2025-08-07 05:04:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: c55be59d-512f-441a-bedf-221ea51e1a71]
+2025-08-07 05:04:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: c55be59d-512f-441a-bedf-221ea51e1a71]
+2025-08-07 05:09:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: babe1b34-6af1-40fa-9522-cef29fac7867]
+2025-08-07 05:09:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: babe1b34-6af1-40fa-9522-cef29fac7867]
+2025-08-07 05:14:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: a88b004f-be75-4afc-ae74-d7529a16c2a6]
+2025-08-07 05:14:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.008s [correlation_id: a88b004f-be75-4afc-ae74-d7529a16c2a6]
+2025-08-07 05:19:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 98ed4698-a3e1-45af-8e92-4deabc9fd8ba]
+2025-08-07 05:19:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 98ed4698-a3e1-45af-8e92-4deabc9fd8ba]
+2025-08-07 05:24:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: a2f390af-07b6-429f-9b7b-9a01ff2fec98]
+2025-08-07 05:24:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.012s [correlation_id: a2f390af-07b6-429f-9b7b-9a01ff2fec98]
+2025-08-07 05:29:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: d96cf4bd-2b0e-424a-98f3-a74a107ab153]
+2025-08-07 05:29:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: d96cf4bd-2b0e-424a-98f3-a74a107ab153]
+2025-08-07 05:34:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 79d5c6d1-fc74-4ea8-87bd-72c05d1366ef]
+2025-08-07 05:34:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.012s [correlation_id: 79d5c6d1-fc74-4ea8-87bd-72c05d1366ef]
+2025-08-07 05:39:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 37d5f1d4-dfc5-4234-84ef-db5bea212c4b]
+2025-08-07 05:39:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 37d5f1d4-dfc5-4234-84ef-db5bea212c4b]
+2025-08-07 05:44:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: be103842-bdef-4a17-aef7-1321fce40d3d]
+2025-08-07 05:44:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.012s [correlation_id: be103842-bdef-4a17-aef7-1321fce40d3d]
+2025-08-07 05:49:37 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 51b93c30-334e-4eb9-bf90-5d23fdea305f]
+2025-08-07 05:49:37 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 51b93c30-334e-4eb9-bf90-5d23fdea305f]
+2025-08-07 08:46:58 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 6d928f2b-0e28-4bf7-8d8a-f14621bcd33f]
+2025-08-07 08:46:58 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 6d928f2b-0e28-4bf7-8d8a-f14621bcd33f]
+2025-08-07 14:46:50 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 96c121b2-8bfa-45a1-9ed9-e8f59a77ca69]
+2025-08-07 14:46:50 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.011s [correlation_id: 96c121b2-8bfa-45a1-9ed9-e8f59a77ca69]
+2025-08-07 15:04:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 130136dc-20ed-4a07-89f2-026b40fd31d1]
+2025-08-07 15:04:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 130136dc-20ed-4a07-89f2-026b40fd31d1]
+2025-08-07 15:09:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 09103ae1-9c14-43ed-91a2-e7838af25720]
+2025-08-07 15:09:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 09103ae1-9c14-43ed-91a2-e7838af25720]
+2025-08-07 15:14:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 6d89f795-db9e-407b-bc16-bf25e6338580]
+2025-08-07 15:14:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 6d89f795-db9e-407b-bc16-bf25e6338580]
+2025-08-07 15:19:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 757d093d-121b-49f6-a2c3-5334b24e50c5]
+2025-08-07 15:19:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.006s [correlation_id: 757d093d-121b-49f6-a2c3-5334b24e50c5]
+2025-08-07 15:24:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 4bd23e9b-960d-4588-abdb-bb63ac9bdbe3]
+2025-08-07 15:24:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: 4bd23e9b-960d-4588-abdb-bb63ac9bdbe3]
+2025-08-07 15:29:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: b6f25213-4370-4b93-94b1-8fd577ec57ae]
+2025-08-07 15:29:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.005s [correlation_id: b6f25213-4370-4b93-94b1-8fd577ec57ae]
+2025-08-07 15:34:32 - Configuration Service - INFO - Configuration Service - 🔥 GET /health/live started [correlation_id: 12ad2648-a15e-425f-9dc9-820e308835d0]
+2025-08-07 15:34:32 - Configuration Service - INFO - Configuration Service - ✅ GET /health/live completed (200) in 0.007s [correlation_id: 12ad2648-a15e-425f-9dc9-820e308835d0]

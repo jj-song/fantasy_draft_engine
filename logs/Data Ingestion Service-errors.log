@@ -1,0 +1,160 @@
+2025-08-07 02:34:10 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 4e9d3cad-21e5-4c48-accb-94d7bc17c49e]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:10 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.003s [correlation_id: 4e9d3cad-21e5-4c48-accb-94d7bc17c49e]
+2025-08-07 02:34:15 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 9cc52d68-73a9-419a-897f-6e6ecbadaa4f]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:15 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.001s [correlation_id: 9cc52d68-73a9-419a-897f-6e6ecbadaa4f]
+2025-08-07 02:34:37 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 193ebbb0-43d2-4811-ad8f-9b5003c2a78f]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:37 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.005s [correlation_id: 193ebbb0-43d2-4811-ad8f-9b5003c2a78f]
+2025-08-07 02:34:45 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: e6c4da64-d314-4ec6-8215-3c47e793d244]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:34:45 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: e6c4da64-d314-4ec6-8215-3c47e793d244]
+2025-08-07 02:35:01 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 19115c49-1338-4e77-9a4c-135dc90a7469]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:01 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.010s [correlation_id: 19115c49-1338-4e77-9a4c-135dc90a7469]
+2025-08-07 02:35:15 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 34f2c515-7683-4d15-a368-ea067bc54edc]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:15 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.001s [correlation_id: 34f2c515-7683-4d15-a368-ea067bc54edc]
+2025-08-07 02:35:31 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 95b8201a-b6b8-44a6-98aa-dc8da8ee540d]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:31 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.001s [correlation_id: 95b8201a-b6b8-44a6-98aa-dc8da8ee540d]
+2025-08-07 02:35:45 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 73d3d8ea-191a-4e98-959c-8b78a57dc590]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:35:45 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: 73d3d8ea-191a-4e98-959c-8b78a57dc590]
+2025-08-07 02:36:15 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: bc1a8bf7-fde3-4778-80a6-739d0a775a53]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:36:15 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: bc1a8bf7-fde3-4778-80a6-739d0a775a53]
+2025-08-07 02:36:45 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 812cfebe-3222-4626-80a0-7b64c638ea3a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:36:45 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: 812cfebe-3222-4626-80a0-7b64c638ea3a]
+2025-08-07 02:37:15 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 5044a544-25b9-4dbf-8d21-977a253d65e0]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:37:15 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: 5044a544-25b9-4dbf-8d21-977a253d65e0]
+2025-08-07 02:37:45 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 10c1d40f-0b89-4fd3-a6cb-21ff81ba429d]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:37:45 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: 10c1d40f-0b89-4fd3-a6cb-21ff81ba429d]
+2025-08-07 02:38:15 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 27f3d379-3950-4d1a-b5ff-2d09991d0359]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:38:15 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: 27f3d379-3950-4d1a-b5ff-2d09991d0359]
+2025-08-07 02:38:45 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: d467d9be-f9b6-4320-af62-8b04caabdfe8]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:38:45 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.014s [correlation_id: d467d9be-f9b6-4320-af62-8b04caabdfe8]
+2025-08-07 02:39:10 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: f6b97c82-f55a-4f82-8d90-2cd90e02d56a]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:10 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.007s [correlation_id: f6b97c82-f55a-4f82-8d90-2cd90e02d56a]
+2025-08-07 02:39:15 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: a206813e-6a4b-4e6f-ac5e-bd9638686ec7]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:15 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: a206813e-6a4b-4e6f-ac5e-bd9638686ec7]
+2025-08-07 02:39:45 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 8d799d69-ff2f-444d-a737-390656342127]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:45 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.002s [correlation_id: 8d799d69-ff2f-444d-a737-390656342127]
+2025-08-07 02:39:46 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: e0dc35bc-a4f9-4183-b214-00e377aae8f0]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:39:46 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.008s [correlation_id: e0dc35bc-a4f9-4183-b214-00e377aae8f0]
+2025-08-07 02:40:15 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: f759f887-eb90-4c37-8bca-272096d9270b]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:40:15 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.004s [correlation_id: f759f887-eb90-4c37-8bca-272096d9270b]
+2025-08-07 02:40:45 - Data Ingestion Service - ERROR - Data Ingestion Service.base - Liveness check failed: 'HealthStatus' object has no attribute 'get' [correlation_id: 8c1bc2d2-fe1b-44a4-a9c0-18d62009f475]\nTraceback (most recent call last):
+  File "/app/src/api/base_api.py", line 174, in liveness_check
+    self.contextual_logger.debug("Liveness check completed", extra={"status": result.get("status", "unknown")})
+                                                                              ^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 761, in __getattr__
+    raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+AttributeError: 'HealthStatus' object has no attribute 'get'
+2025-08-07 02:40:45 - Data Ingestion Service - ERROR - Data Ingestion Service - ❌ GET /health/live server error (503) in 0.004s [correlation_id: 8c1bc2d2-fe1b-44a4-a9c0-18d62009f475]
